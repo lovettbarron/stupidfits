@@ -12,61 +12,37 @@ export default (props) => {
       isOpen={props.open}
       autoFocus
       onClose={() => setIsOpen(false)}
-      size={SIZE.auto}
+      size={SIZE.full}
       anchor={ANCHOR.right}
     >
-      <div className="left">
+      <div className="nav">
         <Link href="/">
           <a className="bold" data-active={isActive("/")}>
             Fits
           </a>
         </Link>
         <Link href="/drafts">
-          <a data-active={isActive("/drafts")}>Drafts</a>
+          <a data-active={isActive("/drafts")}>Gram</a>
         </Link>
-      </div>
-      <div className="right">
         <Link href="/signup">
-          <a data-active={isActive("/signup")}>Signup</a>
+          <a data-active={isActive("/signup")}>Closet</a>
         </Link>
         <Link href="/create">
-          <a data-active={isActive("/create")}>+ Create draft</a>
+          <a data-active={isActive("/create")}>Brand</a>
+        </Link>
+        <Link href="/create">
+          <a data-active={isActive("/setting")}>Setting</a>
         </Link>
       </div>
       <style jsx>{`
-        nav {
-          display: flex;
-          padding: 2rem;
+        .nav a {
+          display: block;
+          line-height: 4rem;
+          margin: 4rem;
+          font-size: 3rem;
           align-items: center;
-        }
-
-        .bold {
-          font-weight: bold;
-        }
-
-        a {
-          text-decoration: none;
-          display: inline-block;
           color: #ffffff;
           text-decoration: underline;
-        }
-
-        .left a[data-active="true"] {
-          color: gray;
-        }
-
-        a + a {
-          margin-left: 1rem;
-        }
-
-        .right {
-          margin-left: auto;
-        }
-
-        .right a {
-          border: 1px solid black;
-          padding: 0.5rem 1rem;
-          border-radius: 3px;
         }
       `}</style>
     </Drawer>

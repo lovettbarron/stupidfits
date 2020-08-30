@@ -21,7 +21,7 @@ const Header = () => {
       <style jsx>{`
         nav {
           display: flex;
-          padding: 2rem;
+          padding: 0.4rem;
           align-items: center;
         }
 
