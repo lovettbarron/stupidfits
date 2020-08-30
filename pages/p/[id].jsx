@@ -4,7 +4,7 @@ import fetch from "isomorphic-unfetch";
 import Router from "next/router";
 
 async function publish(id) {
-  const res = await fetch(`http://localhost:3000/api/publish/${id}`, {
+  const res = await fetch(`/api/publish/${id}`, {
     method: "PUT",
   });
   const data = await res.json();
@@ -12,7 +12,7 @@ async function publish(id) {
 }
 
 async function destroy(id) {
-  const res = await fetch(`http://localhost:3000/api/post/${id}`, {
+  const res = await fetch(`/api/post/${id}`, {
     method: "DELETE",
   });
   const data = await res.json();
@@ -64,9 +64,7 @@ const Post = (props) => {
 };
 
 export const getServerSideProps = async (context) => {
-  const res = await fetch(
-    `http://localhost:3000/api/post/${context.params.id}`
-  );
+  const res = await fetch(`/api/post/${context.params.id}`);
   const data = await res.json();
   return { props: { ...data } };
 };
