@@ -60,7 +60,7 @@ const Blog = (props) => {
 };
 
 export const getServerSideProps = async () => {
-  const res = await fetch("/api/feed");
+  const res = await fetch(`${process.env.HOST}/api/feed`);
   const feed = await res.json();
   return {
     props: { feed },

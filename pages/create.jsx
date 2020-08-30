@@ -12,7 +12,7 @@ const Draft = () => {
     e.preventDefault();
     try {
       const body = { title, content, authorEmail };
-      const res = await fetch(`/api/post`, {
+      const res = await fetch(`${process.env.HOST}/api/post`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),

@@ -11,7 +11,7 @@ const SignUp = () => {
     e.preventDefault();
     try {
       const body = { name, email };
-      const res = await fetch(`/api/user`, {
+      const res = await fetch(`${process.env.HOST}/api/user`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
