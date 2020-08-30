@@ -3,8 +3,8 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = "file:./dev.db"
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model User {
@@ -16,29 +16,37 @@ model User {
 }
 
 model Post {
+  id        Int     @default(autoincrement()) @id
+  author    User?   @relation(fields: [authorId], references: [id])
   authorId  Int?
   content   String?
-  id        Int     @default(autoincrement()) @id
   published Boolean @default(false)
-  title     String
-  author    User?   @relation(fields: [authorId], references: [id])
+  title     String?
+  social    Social
+}
+
+model Social {
+  id         Int      @default(autoincrement()) @id
+  platform   Platform
+  platformId String
+  url        String
+  image      String
 }
 
 model Fit {
-  postId Int?
-  photo  String?
-  bag    Item[]
-  shoes  Item[]
-  jacket Item[]
-  pants  Item[]
-  shirt  Item[]
-  layer  Item[]
-  extra  Item[]
-  desc   String
-  temp   Item
+  id         Int     @default(autoincrement()) @id
+  post       Post
+  photo      String?
+  components Item[]  @relation("FitComponent")
+  desc       String?
+  temp       Item?
 }
 
 model Closet {
+  id     Int    @default(autoincrement()) @id
+  name   String
+  grails Item[] @relation("ClosetGrails")
+  items  Item[] @relation("ClosetContent")
 }
 
 model Brand {
@@ -49,16 +57,23 @@ model Brand {
 }
 
 model Item {
-  type   ItemType
-  photo  String?
-  brand  Brand
-  model  String
-  year   Int?
-  size   String
-  colour Colour[]
-  Sale   String?
-  repair Boolean
-  qual   Qual
+  id       Int      @default(autoincrement()) @id
+  type     ItemType
+  photo    String?
+  brand    Brand
+  model    String
+  year     Int?
+  size     String?
+  colour   Colour[]
+  Sale     String?
+  repair   Boolean?
+  qual     Qual?
+  grail    Closet?  @relation("ClosetGrails", fields: [grailId], references: [id])
+  grailId  Int?
+  closet   Closet?  @relation("ClosetContent", fields: [closetId], references: [id])
+  closetId Int?
+  fit      Fit?     @relation("FitComponent", fields: [fitId], references: [id])
+  fitId    Int?
 }
 
 enum ItemType {
@@ -121,4 +136,8 @@ enum Colour {
 enum Qual {
   WATERPROOF
   BREATHABLE
+}
+
+enum Platform {
+  INSTAGRAM
 }
