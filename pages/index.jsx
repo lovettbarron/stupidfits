@@ -2,7 +2,10 @@ import Layout from "../components/Layout";
 import fetch from "isomorphic-unfetch";
 import Post from "../components/Post";
 
+import { useSession, signin, signout } from "next-auth/client";
+
 const Blog = (props) => {
+  const [session, loading] = useSession();
   return (
     <Layout>
       <div className="page">
@@ -13,10 +16,19 @@ const Blog = (props) => {
             <br /> your Fitpics
           </h2>
         </header>
+        {!session && (
+          <>
+            <a className="auth" onClick={signin}>
+              <img src={`/img/instagram.png`} />
+            </a>
+          </>
+        )}
+        {session && (
+          <>
+            <button onClick={signout}>Sign out</button>
+          </>
+        )}
 
-        <a className="auth" href="/">
-          <img src={`/img/instagram.png`} />
-        </a>
         <ol>
           <li>Post Fits on Instagram.</li>
           <li>Link fits with your wardrobe on StupidFits</li>
@@ -30,6 +42,13 @@ const Blog = (props) => {
             </div>
           ))}
         </main>
+        <footer>
+          <ul>
+            <li>WTF is this?</li>
+            <li>Privacy</li>
+            <li>Terms</li>
+          </ul>
+        </footer>
       </div>
       <style jsx>{`
         header > h1 {
@@ -53,8 +72,20 @@ const Blog = (props) => {
         .post + .post {
           margin-top: 2rem;
         }
+
+        footer {
+        }
+
+        footer ul {
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: center;
+        }
+
+        footer li {
+          margin: 2rem;
+        }
       `}</style>
-      r
     </Layout>
   );
 };

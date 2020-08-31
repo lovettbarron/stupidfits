@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { BaseProvider, DarkTheme } from "baseui";
 import { Provider as StyletronProvider } from "styletron-react";
 import { Client as Styletron } from "styletron-engine-atomic";
+import { Provider } from "next-auth/client";
 
 function App({ Component, pageProps }) {
   const [engine, setEngine] = useState(null);
@@ -18,11 +19,13 @@ function App({ Component, pageProps }) {
 
   if (!engine) return null;
   return (
-    <StyletronProvider value={engine}>
-      <BaseProvider theme={DarkTheme}>
-        <Component {...pageProps} />{" "}
-      </BaseProvider>
-    </StyletronProvider>
+    <Provider session={pageProps.session}>
+      <StyletronProvider value={engine}>
+        <BaseProvider theme={DarkTheme}>
+          <Component {...pageProps} />{" "}
+        </BaseProvider>
+      </StyletronProvider>
+    </Provider>
   );
 }
 

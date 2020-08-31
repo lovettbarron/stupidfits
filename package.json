@@ -10,7 +10,10 @@
     "dev": "next",
     "build": "next build",
     "start": "next start -p $PORT",
-    "postinstall": "npx prisma generate"
+    "preinstall": "npx prisma migrate up --experimental",
+    "postinstall": "npx prisma generate",
+    "prisma-stage": "DB_URL=$(cat .env.stage | grep DB_URL | cut -d '=' -f 2) npx prisma migrate up --experimental",
+    "prisma-prod": "DB_URL=$(cat .env.prod | grep DB_URL | cut -d '=' -f 2) npx prisma migrate up --experimental"
   },
   "keywords": [],
   "author": "",
@@ -22,6 +25,7 @@
     "next": "^9.3.3",
     "next-absolute-url": "^1.2.2",
     "next-auth": "^3.1.0",
+    "postmark": "^2.5.5",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-instagram-login": "^1.4.0",

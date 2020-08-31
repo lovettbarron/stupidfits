@@ -3,9 +3,12 @@ import fetch from "isomorphic-unfetch";
 import Router from "next/router";
 import Layout from "../components/Layout";
 
+import { useSession, signin, signout } from "next-auth/client";
+
 const SignUp = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [session, loading] = useSession();
 
   const submitData = async (e) => {
     e.preventDefault();
@@ -25,6 +28,20 @@ const SignUp = () => {
 
   return (
     <Layout>
+      <p>
+        {!session && (
+          <>
+            Not signed in <br />
+            <button onClick={signin}>Sign in</button>
+          </>
+        )}
+        {session && (
+          <>
+            Signed in as {session.user.email} <br />
+            <button onClick={signout}>Sign out</button>
+          </>
+        )}
+      </p>
       <div className="page">
         <form onSubmit={submitData}>
           <h1>Signup user</h1>
