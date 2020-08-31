@@ -3,7 +3,18 @@ import Providers from "next-auth/providers";
 import Adapters from "next-auth/adapters";
 import { PrismaClient } from "@prisma/client";
 
-const prisma = new PrismaClient();
+// const prisma = new PrismaClient();
+
+let prisma;
+
+if (process.env.NODE_ENV === "production") {
+  prisma = new PrismaClient();
+} else {
+  if (!global.prisma) {
+    global.prisma = new PrismaClient();
+  }
+  prisma = global.prisma;
+}
 
 const options = {
   site: process.env.HOST,
@@ -37,19 +48,22 @@ const options = {
     // newUser: null // If set, new users will be directed here on first sign in
   },
   callbacks: {
-    // signIn: async (user, account, profile) => { return Promise.resolve(true) },
-    // redirect: async (url, baseUrl) => { return Promise.resolve(baseUrl) },
-    // session: async (session, user) => { return Promise.resolve(session) },
-    // jwt: async (token, user, account, profile, isNewUser) => { return Promise.resolve(token) }
+    signIn: async (user, account, profile) => {
+      return Promise.resolve(true);
+    },
+    redirect: async (url, baseUrl) => {
+      console.log("Redirect callback trigger");
+      return Promise.resolve(baseUrl);
+    },
+    session: async (session, user) => {
+      return Promise.resolve(session);
+    },
+    jwt: async (token, user, account, profile, isNewUser) => {
+      return Promise.resolve(token);
+    },
   },
   adapter: Adapters.Prisma.Adapter({
     prisma,
-    modelMapping: {
-      User: "user",
-      Account: "providerAccount",
-      Session: "session",
-      VerificationRequest: "verification",
-    },
   }),
 };
 
