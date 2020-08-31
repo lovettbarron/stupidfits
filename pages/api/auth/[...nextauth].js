@@ -25,6 +25,31 @@ const options = {
       clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
       scope: "email instagram_basic",
     }),
+    {
+      id: "instagram",
+      name: "Instagram",
+      type: "oauth",
+      version: "2.0",
+      scope: "user_profile",
+      state: false,
+      params: { grant_type: "authorization_code", response_type: "code" },
+      accessTokenUrl: "https://api.instagram.com/oauth/access_token",
+      authorizationUrl:
+        "https://api.instagram.com/oauth/authorize?response_type=code",
+      profileUrl: "https://graph.instagram.com/me?fields=id,username",
+      profile: (_profile) => {
+        return {
+          id: _profile.id,
+          username: _profile.username,
+          name: profile.name,
+          email: profile.email,
+          image: profile.picture,
+        };
+      },
+      clientId: process.env.INSTAGRAM_CLIENT_ID,
+      clientSecret: process.env.INSTAGRAM_CLIENT_SECRET,
+    },
+
     // Providers.Email({
     //   server: process.env.MAIL_SERVER,
     //   from: "<hej@stupidfits.com>",
