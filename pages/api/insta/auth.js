@@ -15,7 +15,7 @@ export default async function handle(req, res) {
   ig.retrieveToken(code).then((data) => {
     const token = data.access_token;
 
-    ig.retrieveUse rNode(token).then((data) => {
+    ig.retrieveUserNode(token).then((data) => {
       console.log(data);
       res.json(data);
     });

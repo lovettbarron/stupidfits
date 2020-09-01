@@ -10,7 +10,6 @@
     "dev": "next",
     "build": "next build",
     "start": "next start -p $PORT",
-
     "prismastage": "DB_URL=$(cat .env | grep DB_URL | cut -d '=' -f 2) npx prisma generate && npx prisma migrate up --experimental --name 'up' && npx prisma migrate up --experimental",
     "prisma-prod": "DB_URL=$(cat .env.prod | grep DB_URL | cut -d '=' -f 2) npx prisma generate && npx prisma migrate up --experimental --name 'up' && npx prisma migrate up --experimental",
     "db": "npx prisma studio --experimental"
