@@ -6,6 +6,17 @@ import { useSession, signin, signout } from "next-auth/client";
 
 const Blog = (props) => {
   const [session, loading] = useSession();
+
+  const iglogin = async () => {
+    const url = process.env.HOST || "http://localhost:3000";
+    console.log(`${url}/api/insta/auth`);
+    const res = await fetch(`${url}/api/insta/auth`);
+    const feed = await res.json();
+    return {
+      props: { feed },
+    };
+  };
+
   return (
     <Layout>
       <div className="page">
@@ -25,6 +36,10 @@ const Blog = (props) => {
         )}
         {session && (
           <>
+            <a className="auth" onClick={iglogin}>
+              <img src={`/img/instagram.png`} />
+            </a>
+            <br />
             <button onClick={signout}>Sign out</button>
           </>
         )}

@@ -22,6 +22,9 @@
   "dependencies": {
     "@prisma/client": "2.5.1",
     "baseui": "^9.97.0",
+    "instagram-basic-display": "github:stupidsystems/instagram-basic-display#master",
+    "instagram-private-api": "^1.41.0",
+    "instagram-web-api": "^2.2.2",
     "isomorphic-unfetch": "^3.0.0",
     "next": "^9.3.3",
     "next-absolute-url": "^1.2.2",
