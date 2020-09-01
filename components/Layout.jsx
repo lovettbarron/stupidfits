@@ -83,6 +83,15 @@ const Layout = (props) => (
 
       button {
         cursor: pointer;
+        border: 1px solid #ffffff;
+        background: transparent;
+        font-size: 1rem;
+        font-family: Apercu-Mono;
+        padding: 2rem;
+        white-space: nowrap;
+        color: #ffffff;
+        letter-spacing: 0;
+        text-align: center;
       }
     `}</style>
     <style jsx>{`

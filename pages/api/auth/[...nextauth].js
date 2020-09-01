@@ -2,6 +2,7 @@ import NextAuth from "next-auth";
 import Providers from "next-auth/providers";
 import Adapters from "next-auth/adapters";
 import { PrismaClient } from "@prisma/client";
+import { session } from "next-auth/client";
 
 // const prisma = new PrismaClient();
 
@@ -18,12 +19,20 @@ if (process.env.NODE_ENV === "production") {
 
 const options = {
   site: process.env.HOST,
-  debug: true,
+  debug: false,
   providers: [
     Providers.Facebook({
       clientId: process.env.FACEBOOK_CLIENT_ID,
       clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
       scope: "email instagram_basic",
+      profile: (_profile) => {
+        console.log("PROFILE!", _profile);
+        return {
+          id: _profile.id,
+          name: _profile.name,
+          email: _profile.email,
+        };
+      },
     }),
     Providers.Email({
       server: {
@@ -36,60 +45,60 @@ const options = {
       },
       from: process.env.EMAIL_FROM,
     }),
-    // {
-    //   id: "instagram",
-    //   name: "Instagram",
-    //   type: "oauth",
-    //   version: "2.0",
-    //   scope: "user_profile",
-    //   state: false,
-    //   params: { grant_type: "authorization_code", response_type: "code" },
-    //   accessTokenUrl: "https://api.instagram.com/oauth/access_token",
-    //   authorizationUrl:
-    //     "https://api.instagram.com/oauth/authorize?response_type=code",
-    //   profileUrl: "https://graph.instagram.com/me?fields=id,username",
-    //   profile: (_profile) => {
-    //     return {
-    //       id: _profile.id,
-    //       username: _profile.username,
-    //       name: profile.name,
-    //       email: profile.email,
-    //       image: profile.picture,
-    //     };
-    //   },
-    //   clientId: process.env.INSTAGRAM_CLIENT_ID,
-    //   clientSecret: process.env.INSTAGRAM_CLIENT_SECRET,
-    // },
   ],
   secret: process.env.SECRET,
   session: {
-    jwt: true,
+    jwt: false,
     maxAge: 90 * 24 * 60 * 60,
   },
-  jwt: {
-    // A secret to use for key generation (you should set this explicitly)
-    secret: process.env.SECRET,
-    encryption: true,
-  },
+  // jwt: {
+  //   // A secret to use for key generation (you should set this explicitly)
+  //   secret: process.env.SECRET,
+  //   encryption: true,
+  // },
   pages: {
     // signIn: "/api/auth/signin", // Displays signin buttons
     // signOut: '/api/auth/signout', // Displays form with sign out button
     error: "/api/auth/error", // Error code passed in query string as ?error=
     // verifyRequest: '/api/auth/verify-request', // Used for check email page
-    // newUser: null // If set, new users will be directed here on first sign in
+    newUser: "/me", // If set, new users will be directed here on first sign in
   },
   callbacks: {
     signIn: async (user, account, profile) => {
+      // console.log("Signed in", user, account, profile);
       return Promise.resolve(true);
     },
     redirect: async (url, baseUrl) => {
-      console.log("Redirect callback trigger");
       return Promise.resolve(baseUrl);
     },
-    session: async (session, user) => {
+    session: async (session, token) => {
+      // console.log("sesh", session, user);
+      // console.log("Session", token, session);
+      if (!session?.user || !token?.account) {
+        return Promise.resolve(session);
+      }
+
+      const user = await prisma.user.findOne({
+        where: { email: session.user.email },
+      });
+      console.log("token", token);
+      session.user.uid = user.uid;
+      session.user.instagram = user.instagram;
+      session.user.userId = token.user.id;
+      session.user.id = token.user.id;
+      session.accessToken = token.account.accessToken;
+      console.log("Updated", session);
       return Promise.resolve(session);
     },
     jwt: async (token, user, account, profile, isNewUser) => {
+      // console.log("jwt", token, user, account, profile, isNewUser);
+      const isSignIn = user ? true : false;
+      if (user) {
+        token.uid = user.id;
+      }
+      if (isSignIn) {
+        token.auth_time = Math.floor(Date.now() / 1000);
+      }
       return Promise.resolve(token);
     },
   },

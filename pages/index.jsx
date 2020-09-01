@@ -1,16 +1,19 @@
+import React, { useState } from "react";
 import Layout from "../components/Layout";
 import fetch from "isomorphic-unfetch";
 import Post from "../components/Post";
+import FitBox from "../components/FitBox";
 
 import { useSession, signin, signout } from "next-auth/client";
 
 const Blog = (props) => {
   const [session, loading] = useSession();
+  const [instagram, setInstagram] = useState("");
 
   const iglogin = async () => {
     const url = props.url;
-    console.log(`${url}/api/insta/auth`);
-    const res = await fetch(`${url}/api/insta/auth`);
+    console.log(`${url}/api/insta/user`);
+    const res = await fetch(`${url}/api/insta/user?id=${instagram}`);
     const feed = await res.json();
     return {
       props: { feed },
@@ -36,25 +39,19 @@ const Blog = (props) => {
         )}
         {session && (
           <>
-            <a className="auth" onClick={iglogin}>
-              <img src={`/img/instagram.png`} />
-            </a>
-            <br />
-            <button onClick={signout}>Sign out</button>
+            <h3>Hej {session.username}</h3>
           </>
         )}
 
         <ol>
           <li>Post Fits on Instagram.</li>
           <li>Link fits with your wardrobe on StupidFits</li>
-          <li>Learn what others are doing.</li>
-          <li>Repeat.</li>
+          <li>Learn from others; rethink your own.</li>
+          <li>Repeat but better.</li>
         </ol>
         <main>
-          {props.feed.map((post) => (
-            <div key={post.id} className="post">
-              <Post post={post} />
-            </div>
+          {props.feed.map((fit) => (
+            <FitBox {...fit} />
           ))}
         </main>
         <footer>

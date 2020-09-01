@@ -22,7 +22,7 @@ function App({ Component, pageProps }) {
     <Provider session={pageProps.session}>
       <StyletronProvider value={engine}>
         <BaseProvider theme={DarkTheme}>
-          <Component {...pageProps} />{" "}
+          <Component {...pageProps} url={process.env.HOST} />
         </BaseProvider>
       </StyletronProvider>
     </Provider>

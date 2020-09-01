@@ -7,22 +7,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id            Int       @default(autoincrement()) @id
-  username      String?   @unique
-  email         String?   @unique
-  name          String?
-  posts         Post[]
-  emailVerified DateTime? @map(name: "email_verified")
-  image         String?
-  createdAt     DateTime  @default(now()) @map(name: "created_at")
-  updatedAt     DateTime  @default(now()) @map(name: "updated_at")
-
-  @@map(name: "users")
-  @@index([email], name: "email")
-  @@index([username], name: "username")
-}
-
 model Account {
   id                 Int       @default(autoincrement()) @id
   compoundId         String    @unique @map(name: "compound_id")
@@ -55,6 +39,21 @@ model Session {
   @@map(name: "sessions")
 }
 
+model User {
+  id            Int       @default(autoincrement()) @id
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime? @map(name: "email_verified")
+  image         String?
+  createdAt     DateTime  @default(now()) @map(name: "created_at")
+  updatedAt     DateTime  @default(now()) @map(name: "updated_at")
+  username      String?
+
+  instagram String? @unique
+
+  @@map(name: "users")
+}
+
 model VerificationRequest {
   id         Int      @default(autoincrement()) @id
   identifier String
@@ -66,22 +65,23 @@ model VerificationRequest {
   @@map(name: "verification_requests")
 }
 
-model Post {
-  id        Int     @default(autoincrement()) @id
-  author    User?   @relation(fields: [authorId], references: [id])
-  authorId  Int?
-  content   String?
-  published Boolean @default(false)
-  title     String?
+model Media {
+  id          Int    @default(autoincrement()) @id
+  insta_id    Int    @unique
+  shortcode   String @unique
+  timestamp   Int
+  image       String
+  url         String
+  description String
 }
 
 model Fit {
   id         Int     @default(autoincrement()) @id
-  post       Post
+  media      Media
   photo      String?
   components Item[]  @relation("FitComponent")
   desc       String?
-  temp       Item?
+  temp       String?
 }
 
 model Closet {

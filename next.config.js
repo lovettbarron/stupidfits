@@ -4,4 +4,7 @@ module.exports = {
     config.externals["styletron-server"] = "styletron-server";
     return config;
   },
+  env: {
+    HOST: process.env.HOST,
+  },
 };

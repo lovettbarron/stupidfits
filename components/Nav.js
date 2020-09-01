@@ -38,17 +38,17 @@ export default (props) => {
               Fits
             </a>
           </Link>
-          <Link href="/drafts">
-            <a data-active={isActive("/drafts")}>Gram</a>
+          <Link href="/feed">
+            <a data-active={isActive("/feed")}>Gram</a>
           </Link>
-          <Link href="/signup">
-            <a data-active={isActive("/signup")}>Closet</a>
+          <Link href="/closet">
+            <a data-active={isActive("/closet")}>Closet</a>
           </Link>
-          <Link href="/create">
-            <a data-active={isActive("/create")}>Brand</a>
+          <Link href="/brand">
+            <a data-active={isActive("/brand")}>Brand</a>
           </Link>
-          <Link href="/create">
-            <a data-active={isActive("/setting")}>Setting</a>
+          <Link href="/me">
+            <a data-active={isActive("/me")}>Setting</a>
           </Link>
         </div>
       </Drawer>
