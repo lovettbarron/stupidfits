@@ -8,7 +8,7 @@ const Blog = (props) => {
   const [session, loading] = useSession();
 
   const iglogin = async () => {
-    const url = process.env.HOST || "http://localhost:3000";
+    const url = props.url;
     console.log(`${url}/api/insta/auth`);
     const res = await fetch(`${url}/api/insta/auth`);
     const feed = await res.json();
@@ -109,7 +109,7 @@ export const getServerSideProps = async () => {
   const res = await fetch(`${process.env.HOST}/api/feed`);
   const feed = await res.json();
   return {
-    props: { feed },
+    props: { feed, url: process.env.HOST },
   };
 };
 
