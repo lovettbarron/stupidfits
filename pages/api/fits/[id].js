@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import { getSession, session } from "next-auth/client";
+import { getSession } from "next-auth/client";
 
 const prisma = new PrismaClient();
 

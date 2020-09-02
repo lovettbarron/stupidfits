@@ -19,7 +19,8 @@ function App({ Component, pageProps }) {
 
   if (!engine) return null;
   return (
-    <Provider session={pageProps.session}>
+    // <Provider session={pageProps.session}>
+    <Provider options={{ site: process.env.HOST }} session={pageProps.session}>
       <StyletronProvider value={engine}>
         <BaseProvider theme={DarkTheme}>
           <Component {...pageProps} url={process.env.HOST} />

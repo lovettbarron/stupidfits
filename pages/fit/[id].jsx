@@ -41,19 +41,15 @@ const Fit = (props) => {
           <FitBox {...props} />
           <Select
             creatable
-            options={[
-              { label: "AliceBlue", id: "#F0F8FF" },
-              { label: "AntiqueWhite", id: "#FAEBD7" },
-              { label: "Aqua", id: "#00FFFF" },
-              { label: "Aquamarine", id: "#7FFFD4" },
-              { label: "Azure", id: "#F0FFFF" },
-              { label: "Beige", id: "#F5F5DC" },
-            ]}
+            options={props.items.map((i) => ({
+              label: `${i.brand.name} ${i.model} ${i.year}`,
+              id: i.id,
+            }))}
             value={components}
             isLoading
             multi
             placeholder="Fit Anatomy"
-            onChange={(params) => setValue(params.value)}
+            onChange={(params) => setComponents(params.value)}
           />
 
           <textarea
@@ -101,6 +97,7 @@ const Fit = (props) => {
 };
 
 export const getServerSideProps = async (context) => {
+  // Get Fit
   const res = await fetch(`${process.env.HOST}/api/fits/${context.params.id}`);
   let data;
   try {
@@ -108,8 +105,24 @@ export const getServerSideProps = async (context) => {
   } catch (e) {
     console.log("error:", e.message);
   }
+
+  // Get Items
+  const b = await fetch(`${process.env.HOST}/api/item`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      cookie: context.req.headers.cookie,
+    },
+  });
+  let items;
+  try {
+    items = await b.json();
+  } catch (e) {
+    console.log("error:", e.message);
+  }
+
   return {
-    props: { ...data, url: process.env.HOST },
+    props: { ...data, items: items, url: process.env.HOST },
   };
 };
 
