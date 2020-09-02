@@ -40,8 +40,8 @@ const Item = (props) => {
   const submitData = async (e) => {
     e.preventDefault();
     try {
-      const body = { title, content, authorEmail };
-      const res = await fetch(`${process.env.HOST}/api/item/${props.id}`, {
+      const body = { brand, model, year, type };
+      const res = await fetch(`${process.env.HOST}/api/item`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
@@ -89,10 +89,11 @@ const Item = (props) => {
           <label>
             <br />
             <Input
-              value={model}
+              value={year}
               onChange={(e) => setYear(e.target.value)}
               placeholder="Year or Season"
               clearOnEscape
+              type="Number"
             />
           </label>
           <br />
@@ -157,15 +158,6 @@ const Item = (props) => {
 };
 
 export const getServerSideProps = async (context) => {
-  // Get item
-  const res = await fetch(`${process.env.HOST}/api/item/${context.params.id}`);
-  let data;
-  try {
-    data = await res.json();
-  } catch (e) {
-    console.log("error:", e.message);
-  }
-
   // Fetch Brands
   const b = await fetch(`${process.env.HOST}/api/brand`);
   let brands;
@@ -177,7 +169,6 @@ export const getServerSideProps = async (context) => {
 
   return {
     props: {
-      ...data,
       brands: brands && brands.map((b) => ({ label: b.name, id: b.id })),
       url: process.env.HOST,
     },
