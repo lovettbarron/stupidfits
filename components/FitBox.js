@@ -26,24 +26,32 @@ const FitBox = (props) => {
 
   const editFit = async (e) => {};
 
-  useEffect(async () => {
-    const res = await fetch(`${props.hosturl}/api/insta/${props.id}`);
+  useEffect(() => {
+    const res = fetch(`${props.hosturl}/api/insta/${props.id}`);
     try {
-      const media = await res.json();
+      const media = res.json();
       setFit(media.id ? true : false);
     } catch (e) {
       console.log("error:", e.message);
     }
+    return () => {
+      console.log("This will be logged on unmount");
+    };
   }, []);
 
+  console.log("fitbox props", props);
   return (
     <div className="fitbox">
-      <img src={props.imageUrl || props.image} />
+      <img src={props.imageUrl || props.media.image} />
 
       <div className="description">
-        <a href={props.url}>Link</a>
+        <div>
+          <h3>{props.username || props.media.username}</h3>
+          <br />
+          <a href={props.url || props.media.url}>Post Link</a>
+        </div>
         <br />
-        {props.caption}
+        {props.caption || props.media.description}
         {(fit && <button onClick={editFit}>Edit Fit</button>) || (
           <button onClick={addFit}>Add Fit</button>
         )}
@@ -56,6 +64,8 @@ const FitBox = (props) => {
 
         .description {
           display: flex;
+          flex-wrap: wrap;
+          justify-content: center;
           padding: 1rem 2rem;
           align-items: center;
           background: #6f6f6f;

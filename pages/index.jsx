@@ -104,7 +104,12 @@ const Blog = (props) => {
 
 export const getServerSideProps = async () => {
   const res = await fetch(`${process.env.HOST}/api/feed`);
-  const feed = await res.json();
+  let feed;
+  try {
+    feed = await res.json();
+  } catch (e) {
+    console.log("error:", e.message);
+  }
   return {
     props: { feed, url: process.env.HOST },
   };

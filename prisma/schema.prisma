@@ -48,8 +48,10 @@ model User {
   createdAt     DateTime  @default(now()) @map(name: "created_at")
   updatedAt     DateTime  @default(now()) @map(name: "updated_at")
   username      String?
-
-  instagram String? @unique
+  fit           Fit[]     @relation("FitRelation")
+  item          Item[]    @relation("ItemRelation")
+  closet        Closet[]  @relation("ClosetRelation")
+  instagram     String?   @unique
 
   @@map(name: "users")
 }
@@ -66,9 +68,10 @@ model VerificationRequest {
 }
 
 model Media {
-  id          Int    @default(autoincrement()) @id
-  insta_id    Int    @unique
-  shortcode   String @unique
+  id          Int     @default(autoincrement()) @id
+  insta_id    Int     @unique
+  username    String?
+  shortcode   String  @unique
   timestamp   Int
   image       String
   url         String
@@ -78,10 +81,11 @@ model Media {
 model Fit {
   id         Int     @default(autoincrement()) @id
   media      Media
-  photo      String?
   components Item[]  @relation("FitComponent")
   desc       String?
   temp       String?
+  user       User?   @relation("FitRelation", fields: [userId], references: [id])
+  userId     Int?
 }
 
 model Closet {
@@ -89,6 +93,8 @@ model Closet {
   name   String
   grails Item[] @relation("ClosetGrails")
   items  Item[] @relation("ClosetContent")
+  user   User?  @relation("ClosetRelation", fields: [userId], references: [id])
+  userId Int?
 }
 
 model Brand {
@@ -116,6 +122,8 @@ model Item {
   closetId Int?
   fit      Fit?     @relation("FitComponent", fields: [fitId], references: [id])
   fitId    Int?
+  user     User?    @relation("ItemRelation", fields: [userId], references: [id])
+  userId   Int?
 }
 
 enum ItemType {

@@ -10,7 +10,11 @@ const Drafts = (props) => {
         <h1>All The Fits</h1>
         <main>
           {props.insta.posts.map((fit) => (
-            <FitBox {...fit} hosturl={props.url} />
+            <FitBox
+              {...fit}
+              hosturl={props.url}
+              username={props.insta.username}
+            />
           ))}
         </main>
       </div>

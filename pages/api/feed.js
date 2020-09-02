@@ -1,10 +1,20 @@
 import { PrismaClient } from "@prisma/client";
+import { getSession } from "next-auth/client";
 
 const prisma = new PrismaClient();
 
 export default async function handle(req, res) {
-  const posts = await prisma.media.findMany({
-    where: {},
-  });
-  res.json(posts);
+  const session = await getSession({ req });
+  console.log("Session", session);
+
+  if (session) {
+    const posts = await prisma.fit.findMany({
+      where: {},
+      include: { media: true },
+    });
+    console.log(posts);
+    res.json(posts);
+  } else {
+    res.send([]);
+  }
 }
