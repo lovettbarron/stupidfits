@@ -1,25 +1,27 @@
 import React, { useState } from "react";
 import fetch from "isomorphic-unfetch";
-import Layout from "../components/Layout";
+import Layout from "../../components/Layout";
 import Router from "next/router";
 import { Select } from "baseui/select";
+import FitBox from "../../components/FitBox";
 
-const Fit = () => {
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
-  const [authorEmail, setAuthorEmail] = useState("");
+const Fit = (props) => {
+  const [desc, setDesc] = useState("");
 
-  const [value, setValue] = React.useState([
-    { label: "AntiqueWhite", id: "#FAEBD7" },
-    { label: "Azure", id: "#F0FFFF" },
-    { label: "Beige", id: "#F5F5DC" },
-  ]);
+  const [components, setComponents] = React.useState(
+    (props.components &&
+      props.components.map((c) => ({
+        label: `${c.brand} ${c.model} ${c.year}`,
+        id: c.id,
+      }))) ||
+      []
+  );
 
   const submitData = async (e) => {
     e.preventDefault();
     try {
       const body = { title, content, authorEmail };
-      const res = await fetch(`${process.env.HOST}/api/post`, {
+      const res = await fetch(`${process.env.HOST}/api/fit`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
@@ -36,6 +38,7 @@ const Fit = () => {
       <div className="page">
         <form onSubmit={submitData}>
           <h1>Describe your fit</h1>
+          <FitBox {...props} />
           <Select
             creatable
             options={[
@@ -46,30 +49,21 @@ const Fit = () => {
               { label: "Azure", id: "#F0FFFF" },
               { label: "Beige", id: "#F5F5DC" },
             ]}
-            value={value}
+            value={components}
             isLoading
             multi
             placeholder="Fit Anatomy"
             onChange={(params) => setValue(params.value)}
           />
-          <input
-            onChange={(e) => setAuthorEmail(e.target.value)}
-            placeholder="Author (email address)"
-            type="text"
-            value={authorEmail}
-          />
+
           <textarea
             cols={50}
             onChange={(e) => setContent(e.target.value)}
-            placeholder="Content"
+            placeholder="Fit Description"
             rows={8}
-            value={content}
+            value={desc}
           />
-          <input
-            disabled={!content || !title || !authorEmail}
-            type="submit"
-            value="Create"
-          />
+          <input disabled={!desc || !components} type="submit" value="Create" />
           <a className="back" href="#" onClick={() => Router.push("/")}>
             or Cancel
           </a>
@@ -104,6 +98,19 @@ const Fit = () => {
       `}</style>
     </Layout>
   );
+};
+
+export const getServerSideProps = async (context) => {
+  const res = await fetch(`${process.env.HOST}/api/fits/${context.params.id}`);
+  let data;
+  try {
+    data = await res.json();
+  } catch (e) {
+    console.log("error:", e.message);
+  }
+  return {
+    props: { ...data, url: process.env.HOST },
+  };
 };
 
 export default Fit;

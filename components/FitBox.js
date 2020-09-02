@@ -52,14 +52,82 @@ const FitBox = (props) => {
         </div>
         <br />
         {props.caption || props.media.description}
-        {(fit && <button onClick={editFit}>Edit Fit</button>) || (
-          <button onClick={addFit}>Add Fit</button>
-        )}
+        {!props.media && <button onClick={addFit}>Add Fit</button>}
+
+        <div className="components">
+          {props.components && (
+            <>
+              <h4>Outerwear</h4>
+              <ul>
+                {props.components
+                  .filter((c) => c.type === "JACKET")
+                  .map((c) => (
+                    <li>{`${c.brand} ${c.model} ${c.year}`}</li>
+                  ))}
+              </ul>
+              <h4>Layers</h4>
+              <ul>
+                {props.components
+                  .filter((c) => c.type === "LAYER")
+                  .map((c) => (
+                    <li>{`${c.brand} ${c.model} ${c.year}`}</li>
+                  ))}
+              </ul>
+              <h4>Pants</h4>
+              <ul>
+                {props.components
+                  .filter((c) => c.type === "PANT")
+                  .map((c) => (
+                    <li>{`${c.brand} ${c.model} ${c.year}`}</li>
+                  ))}
+              </ul>
+              <h4>Carry</h4>
+              <ul>
+                {props.components
+                  .filter((c) => c.type === "BAG")
+                  .map((c) => (
+                    <li>{`${c.brand} ${c.model} ${c.year}`}</li>
+                  ))}
+              </ul>
+              <h4>Shoes</h4>
+              <ul>
+                {props.components
+                  .filter((c) => c.type === "SHOE")
+                  .map((c) => (
+                    <li>{`${c.brand} ${c.model} ${c.year}`}</li>
+                  ))}
+              </ul>
+              <h4>Extra</h4>
+              <ul>
+                {props.components
+                  .filter((c) => c.type === "EXTRA")
+                  .map((c) => (
+                    <li>{`${c.brand} ${c.model} ${c.year}`}</li>
+                  ))}
+              </ul>
+            </>
+          )}
+          {props.desc && (
+            <>
+              <h4>Comment</h4>
+              {props.desc}
+            </>
+          )}
+        </div>
       </div>
 
       <style jsx>{`
         .fitbox {
           margin: 2rem 0;
+        }
+
+        .fitbox ul {
+          display: flex;
+          flex-wrap: wrap;
+        }
+
+        .fitbox li {
+          margin: 0 1rem;
         }
 
         .description {

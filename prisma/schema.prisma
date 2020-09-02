@@ -114,13 +114,12 @@ model Item {
   size     String?
   colour   Colour[]
   Sale     String?
+  archive  Boolean?
   repair   Boolean?
-  qual     Qual?
-  grail    Closet?  @relation("ClosetGrails", fields: [grailId], references: [id])
-  grailId  Int?
-  closet   Closet?  @relation("ClosetContent", fields: [closetId], references: [id])
+  qual     Qual[]
+  closet   Closet[] @relation("ClosetContent", fields: [closetId], references: [id])
   closetId Int?
-  fit      Fit?     @relation("FitComponent", fields: [fitId], references: [id])
+  fit      Fit[]    @relation("FitComponent", fields: [fitId], references: [id])
   fitId    Int?
   user     User?    @relation("ItemRelation", fields: [userId], references: [id])
   userId   Int?

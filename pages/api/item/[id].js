@@ -20,30 +20,29 @@ export default async function handle(req, res) {
   }
 }
 
-// GET /api/post/:id
+// GET /api/item/:id
 async function handleGET(req, res) {
   const id = req.query.id;
-  const fit = await prisma.fit.findOne({
+  const fit = await prisma.item.findOne({
     where: { id: Number(id) },
-    include: { media: true },
   });
   res.json(fit);
 }
 
-// POST /api/post/:id
+// POST /api/item/:id
 async function handlePOST(req, res) {
   const id = req.query.id;
-  const fit = await prisma.fit.update({
+  const fit = await prisma.item.update({
     where: { id: Number(id) },
-    data: { payload },
+    data: { req.body },
   });
   res.json(fit);
 }
 
-// DELETE /api/post/:id
+// DELETE /api/item/:id
 async function handleDELETE(req, res) {
   const id = req.query.id;
-  const post = await prisma.fit.delete({
+  const post = await prisma.item.delete({
     where: { id: Number(id) },
   });
   res.json(post);
