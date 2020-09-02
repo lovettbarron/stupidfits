@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/router";
+import Router, { useRouter } from "next/router";
+import { useSession } from "next-auth/client";
 
 const FitBox = (props) => {
   const router = useRouter();
+  const [session, loading] = useSession();
   const [fit, setFit] = useState(false);
 
   const addFit = async (e) => {
@@ -18,7 +20,7 @@ const FitBox = (props) => {
       });
       const data = await res.json();
       console.log("Added fit!", data);
-      if (data) setFit(media.id ? true : false);
+      if (data) Router.push(`/fit/${data.id}`);
     } catch (error) {
       console.error(error);
     }
@@ -34,12 +36,9 @@ const FitBox = (props) => {
     } catch (e) {
       console.log("error:", e.message);
     }
-    return () => {
-      console.log("This will be logged on unmount");
-    };
-  }, []);
+    return () => {};
+  }, [session]);
 
-  console.log("fitbox props", props);
   return (
     <div className="fitbox">
       <img src={props.imageUrl || props.media.image} />
@@ -52,7 +51,7 @@ const FitBox = (props) => {
         </div>
         <br />
         {props.caption || props.media.description}
-        {!props.media && <button onClick={addFit}>Add Fit</button>}
+        {!props.media && !fit && <button onClick={addFit}>Add Fit</button>}
 
         <div className="components">
           {props.components && (

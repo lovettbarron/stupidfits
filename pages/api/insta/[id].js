@@ -1,11 +1,11 @@
 import { PrismaClient } from "@prisma/client";
-import { getSession, session } from "next-auth/client";
+import { getSession } from "next-auth/client";
 
 const prisma = new PrismaClient();
 
 export default async function handle(req, res) {
   const session = await getSession({ req });
-  console.log("Session", session);
+  // console.log("Session", session);
 
   if (session) {
     if (req.method === "GET") {
@@ -32,7 +32,7 @@ async function handleGET(req, res) {
   const post = await prisma.media.findOne({
     where: { insta_id: Math.trunc(id) },
   });
-  console.log("Returned media", post);
+  console.log("Returned media", id, post);
   res.json(post);
 }
 

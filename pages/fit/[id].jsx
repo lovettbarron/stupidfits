@@ -4,10 +4,23 @@ import Layout from "../../components/Layout";
 import Router from "next/router";
 import { Select } from "baseui/select";
 import FitBox from "../../components/FitBox";
+import Item from "../item/index";
+import { useSession } from "next-auth/client";
+
+import {
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  ModalButton,
+  SIZE,
+  ROLE,
+} from "baseui/modal";
 
 const Fit = (props) => {
+  const [session, loading] = useSession();
   const [desc, setDesc] = useState("");
-
+  const [items, setItems] = useState(props.items);
   const [components, setComponents] = React.useState(
     (props.components &&
       props.components.map((c) => ({
@@ -16,6 +29,8 @@ const Fit = (props) => {
       }))) ||
       []
   );
+
+  const [isOpen, setIsOpen] = React.useState(false);
 
   const submitData = async (e) => {
     e.preventDefault();
@@ -33,6 +48,27 @@ const Fit = (props) => {
     }
   };
 
+  const fetchItems = async (e) => {
+    // Get Items
+    console.log("session", session);
+    const b = await fetch(`${process.env.HOST}/api/item`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        cookie: context.req.headers.cookie,
+      },
+    });
+    let it;
+    try {
+      it = await b.json();
+      const diff = it.filter((i) => items.find((t) => t.id === i.id));
+      setItems(it);
+      setComponents(components.push(diff));
+    } catch (e) {
+      console.log("error:", e.message);
+    }
+  };
+
   return (
     <Layout>
       <div className="page">
@@ -40,8 +76,7 @@ const Fit = (props) => {
           <h1>Describe your fit</h1>
           <FitBox {...props} />
           <Select
-            creatable
-            options={props.items.map((i) => ({
+            options={items.map((i) => ({
               label: `${i.brand.name} ${i.model} ${i.year}`,
               id: i.id,
             }))}
@@ -51,7 +86,8 @@ const Fit = (props) => {
             placeholder="Fit Anatomy"
             onChange={(params) => setComponents(params.value)}
           />
-
+          Don't see your stuff? <a onClick={setIsOpen}>Add an item</a>
+          <br />
           <textarea
             cols={50}
             onChange={(e) => setContent(e.target.value)}
@@ -59,11 +95,34 @@ const Fit = (props) => {
             rows={8}
             value={desc}
           />
-          <input disabled={!desc || !components} type="submit" value="Create" />
+          <button disabled={!components} type="submit">
+            Update Fit
+          </button>
           <a className="back" href="#" onClick={() => Router.push("/")}>
             or Cancel
           </a>
         </form>
+
+        <Modal
+          onClose={() => {
+            setIsOpen(false);
+            fetchItems();
+          }}
+          closeable
+          isOpen={isOpen}
+          animate
+          autoFocus
+          size={SIZE.default}
+          role={ROLE.dialog}
+        >
+          <ModalHeader>Add To Your Closet</ModalHeader>
+          <ModalBody>
+            <Item />
+          </ModalBody>
+          <ModalFooter>
+            <ModalButton onClick={setIsOpen}>Finished</ModalButton>
+          </ModalFooter>
+        </Modal>
       </div>
       <style jsx>{`
         .page {

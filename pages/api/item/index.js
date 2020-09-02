@@ -24,28 +24,50 @@ export default async function handle(req, res) {
       create: { name: (b.id || "").toLowerCase() },
     }));
 
-    console.log("brands", brand);
-    const result = await prisma.item.create({
+    const brandChecker = req.body.brand.map((b) => ({
+      where: { name: (b.id || "").toLowerCase() },
+    }));
+
+    // Check if this combo exists
+    const exists = await prisma.item.findOne({
       data: {
         user: {
           connect: {
             email: session.user.email,
           },
         },
-        fit: req.body.fitid && {
-          connect: {
-            id: req.body.fitid,
-          },
-        },
         model: req.body.model,
         year: Number(req.body.year),
-        brand: {
-          connectOrCreate: brand.length < 2 ? brand[0] : brand,
-        },
+        brand: brandChecker.length < 2 ? brandChecker[0] : brandChecker,
         type: req.body.type[0].id,
       },
     });
-    res.json(result);
+
+    // If it exists, just return the result
+    if (exists) res.json(exists);
+    else {
+      const result = await prisma.item.create({
+        data: {
+          user: {
+            connect: {
+              email: session.user.email,
+            },
+          },
+          fit: req.body.fitid && {
+            connect: {
+              id: req.body.fitid,
+            },
+          },
+          model: req.body.model,
+          year: Number(req.body.year),
+          brand: {
+            connectOrCreate: brand.length < 2 ? brand[0] : brand,
+          },
+          type: req.body.type[0].id,
+        },
+      });
+      res.json(result);
+    }
   } else {
     throw new Error(
       `The HTTP ${req.method} method is not supported at this route.`

@@ -19,7 +19,7 @@ if (process.env.NODE_ENV === "production") {
 
 const options = {
   site: process.env.HOST,
-  debug: true,
+  debug: false,
   providers: [
     Providers.Facebook({
       clientId: process.env.FACEBOOK_CLIENT_ID,
