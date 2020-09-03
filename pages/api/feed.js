@@ -22,6 +22,21 @@ export default async function handle(req, res) {
       });
     console.log(posts);
     res.json(posts);
+  } else if (req.query.id) {
+    const posts = await prisma.fit
+      .findMany({
+        where: {
+          user: {
+            instagram: req.query.id,
+          },
+        },
+        include: { media: true, components: { include: { brand: true } } },
+      })
+      .finally(async () => {
+        await prisma.$disconnect();
+      });
+    // console.log(posts);
+    res.json(posts);
   } else {
     res.send([]);
   }

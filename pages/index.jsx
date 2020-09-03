@@ -30,6 +30,10 @@ const Blog = (props) => {
         {session && (
           <>
             <h3>Hej {props.user.username}</h3>
+            <p>
+              Your public page is
+              <br /> {process.env.HOST}/u/{props.user.instagram}
+            </p>
           </>
         )}
 

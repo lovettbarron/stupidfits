@@ -66,6 +66,10 @@ const Layout = (props) => (
         font-size: 31pt;
       }
 
+      a {
+        color: white;
+      }
+
       input,
       textarea {
         font-size: 16px;

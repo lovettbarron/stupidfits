@@ -8,6 +8,7 @@ const Feed = (props) => {
     <Layout>
       <div className="page">
         <h1>All The Fits</h1>
+        <p>Pick your fits from your instagram, share the details.</p>
         <main>
           {props.insta.posts.map((fit) => (
             <Gram
@@ -29,6 +30,7 @@ const Feed = (props) => {
         main {
           display: flex;
           flex-wrap: wrap;
+          justify-content: center;
         }
         .post {
           transition: box-shadow 0.1s ease-in;

@@ -58,8 +58,8 @@ const Gram = (props) => {
 
       <style jsx>{`
         .fitbox {
-          margin: 2rem 0.5rem;
-          max-width: 30%;
+          margin: 2rem 2.5%;
+          max-width: 40%;
         }
 
         .fitbox ul {
@@ -88,6 +88,11 @@ const Gram = (props) => {
 
         .bold {
           font-weight: bold;
+        }
+
+        button {
+          margin: 1rem 0 0 0;
+          padding: 1rem;
         }
 
         a {

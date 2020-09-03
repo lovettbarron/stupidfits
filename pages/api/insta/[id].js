@@ -57,7 +57,7 @@ async function handlePOST(req, res) {
       },
       media: {
         create: {
-          insta_id: Math.trunc(req.body.id),
+          insta_id: req.body.id,
           username: req.body.username,
           shortcode: req.body.shortCode,
           timestamp: req.body.timestamp,
