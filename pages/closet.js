@@ -32,7 +32,7 @@ const Blog = (props) => {
                   {`${c.brand.name} ${c.model} ${c.year}`}
                   <br />
                   <div className="hover">
-                    <Link href="/">
+                    <Link href={`/item/${c.id}`}>
                       <a>Edit</a>
                     </Link>{" "}
                     ·{" "}

@@ -23,11 +23,11 @@ const colour = [];
 const qual = [];
 
 const Item = (props) => {
-  const [brand, setBrand] = useState([]);
-  const [model, setModel] = useState("");
-  const [year, setYear] = useState("");
+  const [brand, setBrand] = useState(props.brand);
+  const [model, setModel] = useState(props.model);
+  const [thetype, setThetype] = useState(props.type);
+  const [year, setYear] = useState(props.year);
   const [photo, setPhoto] = useState("");
-  const [type, setType] = React.useState(props.type || "");
   const [errorMessage, setErrorMessage] = React.useState("");
 
   const { upload, data, isLoading, isError, error } = useUpload({
@@ -40,7 +40,7 @@ const Item = (props) => {
   const submitData = async (e) => {
     e.preventDefault();
     try {
-      const body = { title, content, authorEmail };
+      const body = { brand, model, type: thetype, year };
       const res = await fetch(`${process.env.HOST}/api/item/${props.id}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -60,17 +60,17 @@ const Item = (props) => {
           <h1>Describe your gear</h1>
           <Select
             options={types}
-            value={type}
+            value={types.find((c) => c.id === thetype)}
             required
             placeholder="What is it?"
-            onChange={(params) => setType(params.value)}
+            onChange={(params) => setThetype(params.value)}
           />
           <label>
             <br />
             <Select
               creatable
               options={props.brands}
-              value={brand}
+              value={props.brands.filter((c) => c.id === brand.id)}
               // isLoading
               multi
               placeholder="Brand"
@@ -108,7 +108,7 @@ const Item = (props) => {
           />
           {photo && <img src={data.url} />}
           <button
-            disabled={!brand || !model || !type}
+            disabled={!brand || !model || !thetype}
             type="submit"
             value="model"
           >

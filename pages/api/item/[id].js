@@ -25,6 +25,7 @@ async function handleGET(req, res) {
   const id = req.query.id;
   const fit = await prisma.item.findOne({
     where: { id: Number(id) },
+    include: { brand: true },
   });
   res.json(fit);
 }
