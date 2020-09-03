@@ -20,31 +20,34 @@ export default async function handle(req, res) {
     res.json(posts);
   } else if (req.method === "POST") {
     const brand = req.body.brand.map((b) => ({
-      where: { name: (b.id || "").toLowerCase() },
-      create: { name: (b.id || "").toLowerCase() },
+      where: { name: (b.label || "").toLowerCase() },
+      create: { name: (b.label || "").toLowerCase() },
     }));
 
     const brandChecker = req.body.brand.map((b) => ({
-      where: { name: (b.id || "").toLowerCase() },
+      where: { name: (b.label || "").toLowerCase() },
     }));
 
     // Check if this combo exists
-    const exists = await prisma.item.findOne({
-      data: {
+    const exists = await prisma.item.findMany({
+      where: {
         user: {
-          connect: {
-            email: session.user.email,
-          },
+          email: session.user.email,
         },
-        model: req.body.model,
-        year: Number(req.body.year),
-        brand: brandChecker.length < 2 ? brandChecker[0] : brandChecker,
-        type: req.body.type[0].id,
       },
     });
 
+    // TODO add brand filter
+    const filtered = exists.filter(
+      (e) =>
+        e.model == req.body.model &&
+        e.year == Number(req.body.year) &&
+        e.type == req.body.type[0].id
+    );
+    console.log("f", filtered);
+
     // If it exists, just return the result
-    if (exists) res.json(exists);
+    if (filtered) res.json(exists);
     else {
       const result = await prisma.item.create({
         data: {

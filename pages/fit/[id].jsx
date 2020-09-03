@@ -4,7 +4,7 @@ import Layout from "../../components/Layout";
 import Router from "next/router";
 import { Select } from "baseui/select";
 import FitBox from "../../components/FitBox";
-import Item from "../item/index";
+import CreateItem from "../../components/CreateItem";
 import { useSession } from "next-auth/client";
 
 import {
@@ -42,7 +42,7 @@ const Fit = (props) => {
         body: JSON.stringify(body),
       });
       const data = await res.json();
-      await Router.push("/drafts");
+      await Router.push("/");
     } catch (error) {
       console.error(error);
     }
@@ -55,7 +55,6 @@ const Fit = (props) => {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        cookie: context.req.headers.cookie,
       },
     });
     let it;
@@ -86,7 +85,12 @@ const Fit = (props) => {
             placeholder="Fit Anatomy"
             onChange={(params) => setComponents(params.value)}
           />
-          Don't see your stuff? <a onClick={setIsOpen}>Add an item</a>
+          <br />
+          Don't see your stuff?{" "}
+          <a className="modal" onClick={setIsOpen}>
+            Add an item
+          </a>
+          <br />
           <br />
           <textarea
             cols={50}
@@ -116,9 +120,7 @@ const Fit = (props) => {
           role={ROLE.dialog}
         >
           <ModalHeader>Add To Your Closet</ModalHeader>
-          <ModalBody>
-            <Item />
-          </ModalBody>
+          <ModalBody>{isOpen && <CreateItem />}</ModalBody>
           <ModalFooter>
             <ModalButton onClick={setIsOpen}>Finished</ModalButton>
           </ModalFooter>
@@ -130,6 +132,13 @@ const Fit = (props) => {
           display: flex;
           justify-content: center;
           align-items: center;
+        }
+        a.modal {
+          border: 1px solid white;
+          border-radius: 0.25rem;
+          padding: 0.5rem;
+          margin: 1rem;
+          cursor: pointer;
         }
 
         input[type="text"],

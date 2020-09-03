@@ -10,7 +10,7 @@ export default async function handle(req, res) {
     const posts = await prisma.brand.findMany({
       where: {},
     });
-    console.log(posts);
+    console.log("Returning brands", posts);
     res.json(posts);
   } else if (req.method === "POST") {
     const { name, logo, description } = req.body;
