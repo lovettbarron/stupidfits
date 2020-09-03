@@ -41,7 +41,8 @@ const FitBox = (props) => {
   };
 
   useEffect(() => {
-    checkIfExists();
+    // component is used for both displaying instagram images that aren't yet in the db, and fits that are currently in the db. It probably shouldn't, but this just prevent weird api request
+    if (props.imageUrl) checkIfExists();
     return () => {};
   }, [session]);
 

@@ -6,5 +6,6 @@ module.exports = {
   },
   env: {
     HOST: process.env.HOST,
+    NEXTAUTH_URL: process.env.NEXTAUTH_URL,
   },
 };

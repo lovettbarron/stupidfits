@@ -76,8 +76,9 @@ async function handlePOST(req, res) {
 
 // DELETE /api/post/:id
 async function handleDELETE(req, res) {
-  const post = await prisma.media.delete({
-    where: { id: Number(postId) },
-  });
+  const id = req.query.id;
+  // const post = await prisma.fit.delete({
+  //   where: { id: Number(postId) },
+  // });
   res.json(post);
 }
