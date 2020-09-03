@@ -118,18 +118,30 @@ const Me = (props) => {
 
 export async function getServerSideProps(context) {
   const session = await getSession(context);
-  const res = await fetch(
-    `${process.env.HOST}/api/user?user=${session.user.email}`
-  );
+  const res = await fetch(`${process.env.HOST}/api/user`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      cookie: context.req.headers.cookie,
+    },
+  });
+
+  const b = await fetch(`${process.env.HOST}/api/item`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      cookie: context.req.headers.cookie,
+    },
+  });
+
+  let user = null;
   console.log("Res", res);
-  const user = await res.json();
-  // let insta;
-  // // if (user && user.instagram) {
-  // //   const res = await fetch(`${props.url}/api/insta/user?id=${user.instagram}`);
-  // //   insta = await res.json();
-  // //   console.log("Instagram check", data);
-  // // }
-  // // console.log("insta", insta);
+  try {
+    user = await res.json();
+  } catch (e) {
+    console.log("error:", e.message);
+  }
+
   return {
     props: { user },
   };
