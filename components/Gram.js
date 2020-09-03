@@ -41,13 +41,13 @@ const Gram = (props) => {
     <div className="fitbox">
       <img src={props.imageUrl || props.media.image} />
 
-      <div className="description">
+      <div className={fit && `description`}>
         <div>
           <a href={props.url || props.media.url}>Post Link</a>
         </div>
         <br />
 
-        {!props.media && !fit && <button onClick={addFit}>Add Fit</button>}
+        {!fit && <button onClick={addFit}>Add Fit</button>}
 
         {fit && <button onClick={editFit}>Edit Fit</button>}
 

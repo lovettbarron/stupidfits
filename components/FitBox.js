@@ -93,6 +93,10 @@ const FitBox = (props) => {
           border-radius: 0 0 5px 5px;
         }
 
+        .components {
+          font-size: 1rem;
+        }
+
         img {
           width: 100%;
           max-width: 40rem;

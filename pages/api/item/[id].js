@@ -5,7 +5,6 @@ const prisma = new PrismaClient();
 
 export default async function handle(req, res) {
   const id = req.query.id;
-  const session = await getSession({ req });
 
   if (req.method === "GET") {
     handleGET(req, res);
@@ -37,19 +36,29 @@ async function handleGET(req, res) {
 // POST /api/item/:id
 async function handlePOST(req, res) {
   const id = req.query.id;
-  const fit = await prisma.item.update({
-    where: { id: Number(id) },
+  const session = await getSession({ req });
+  console.log("update item", req.body);
+
+  const brand = req.body.brand.map((b) => ({
+    where: { name: (b.label || "").toLowerCase() },
+    create: { name: (b.label || "").toLowerCase() },
+  }));
+
+  const item = await prisma.item.update({
+    where: {
+      id: Number(id),
+    },
     data: {
-      ...req.body,
-      components: {
-        connectOrCreate: {
-          where: { name: (req.body.brand || "").toLowerCase() },
-          create: { name: (req.body.brand || "").toLowerCase() },
-        },
+      model: req.body.model,
+      year: Number(req.body.year),
+      brand: {
+        connectOrCreate: brand.length < 2 ? brand[0] : brand,
       },
+      type: req.body.type[0].id,
     },
   });
-  res.json(fit);
+
+  res.json(item);
 }
 
 // DELETE /api/item/:id

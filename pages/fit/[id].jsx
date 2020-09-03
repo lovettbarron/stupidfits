@@ -123,7 +123,7 @@ const Fit = (props) => {
           <br />
           <textarea
             cols={50}
-            onChange={(e) => setContent(e.target.value)}
+            onChange={(e) => setDesc(e.target.value)}
             placeholder="Fit Description"
             rows={8}
             value={desc}

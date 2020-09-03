@@ -23,6 +23,10 @@ export default async function handle(req, res) {
     // console.log(posts);
     res.json(posts);
   } else if (req.method === "POST") {
+    //
+    // Creating an item
+    //
+
     const brand = req.body.brand.map((b) => ({
       where: { name: (b.label || "").toLowerCase() },
       create: { name: (b.label || "").toLowerCase() },

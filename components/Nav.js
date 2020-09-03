@@ -41,11 +41,12 @@ export default (props) => {
             <Link href="/closet">
               <a data-active={isActive("/closet")}>Closet</a>
             </Link>
-            <Link href="/brand">
-              <a data-active={isActive("/brand")}>Brand</a>
-            </Link>
             <Link href="/me">
               <a data-active={isActive("/me")}>Setting</a>
+            </Link>
+            <hr />
+            <Link href={signout}>
+              <a>Sign out</a>
             </Link>
           </div>
         )) || <h3>You're not logged in.</h3>}

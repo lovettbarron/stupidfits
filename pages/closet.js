@@ -29,7 +29,7 @@ const Blog = (props) => {
               .filter((c) => c.type === "JACKET")
               .map((c) => (
                 <li onClick={() => editItem(c.id)}>
-                  {`${c.brand.name} ${c.model} ${c.year}`}
+                  {`${c.brand.name} ${c.model} ${c.year > 0 ? c.year : ""}`}
                   <br />
                   <div className="hover">
                     <Link href={`/item/${c.id}`}>
@@ -48,7 +48,19 @@ const Blog = (props) => {
             {props.items
               .filter((c) => c.type === "LAYER")
               .map((c) => (
-                <li>{`${c.brand.name} ${c.model} ${c.year}`}</li>
+                <li>
+                  {`${c.brand.name} ${c.model} ${c.year > 0 ? c.year : ""}`}{" "}
+                  <br />
+                  <div className="hover">
+                    <Link href={`/item/${c.id}`}>
+                      <a>Edit</a>
+                    </Link>{" "}
+                    ·{" "}
+                    <Link href="/">
+                      <a>Delete</a>
+                    </Link>
+                  </div>
+                </li>
               ))}
           </ul>
           <h2>Pants</h2>
@@ -56,7 +68,19 @@ const Blog = (props) => {
             {props.items
               .filter((c) => c.type === "PANT")
               .map((c) => (
-                <li>{`${c.brand.name} ${c.model} ${c.year}`}</li>
+                <li>
+                  {`${c.brand.name} ${c.model} ${c.year > 0 ? c.year : ""}`}{" "}
+                  <br />
+                  <div className="hover">
+                    <Link href={`/item/${c.id}`}>
+                      <a>Edit</a>
+                    </Link>{" "}
+                    ·{" "}
+                    <Link href="/">
+                      <a>Delete</a>
+                    </Link>
+                  </div>
+                </li>
               ))}
           </ul>
           <h2>Carry</h2>
@@ -64,7 +88,19 @@ const Blog = (props) => {
             {props.items
               .filter((c) => c.type === "BAG")
               .map((c) => (
-                <li>{`${c.brand.name} ${c.model} ${c.year}`}</li>
+                <li>
+                  {`${c.brand.name} ${c.model} ${c.year > 0 ? c.year : ""}`}{" "}
+                  <br />
+                  <div className="hover">
+                    <Link href={`/item/${c.id}`}>
+                      <a>Edit</a>
+                    </Link>{" "}
+                    ·{" "}
+                    <Link href="/">
+                      <a>Delete</a>
+                    </Link>
+                  </div>
+                </li>
               ))}
           </ul>
           <h2>Shoes</h2>
@@ -72,7 +108,19 @@ const Blog = (props) => {
             {props.items
               .filter((c) => c.type === "SHOE")
               .map((c) => (
-                <li>{`${c.brand.name} ${c.model} ${c.year}`}</li>
+                <li>
+                  {`${c.brand.name} ${c.model} ${c.year > 0 ? c.year : ""}`}{" "}
+                  <br />
+                  <div className="hover">
+                    <Link href={`/item/${c.id}`}>
+                      <a>Edit</a>
+                    </Link>{" "}
+                    ·{" "}
+                    <Link href="/">
+                      <a>Delete</a>
+                    </Link>
+                  </div>
+                </li>
               ))}
           </ul>
           <h2>Extra</h2>
@@ -80,7 +128,19 @@ const Blog = (props) => {
             {props.items
               .filter((c) => c.type === "EXTRA")
               .map((c) => (
-                <li>{`${c.brand.name} ${c.model} ${c.year}`}</li>
+                <li>
+                  {`${c.brand.name} ${c.model} ${c.year > 0 ? c.year : ""}`}{" "}
+                  <br />
+                  <div className="hover">
+                    <Link href={`/item/${c.id}`}>
+                      <a>Edit</a>
+                    </Link>{" "}
+                    ·{" "}
+                    <Link href="/">
+                      <a>Delete</a>
+                    </Link>
+                  </div>
+                </li>
               ))}
           </ul>
         </main>

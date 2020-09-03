@@ -23,9 +23,17 @@ const colour = [];
 const qual = [];
 
 const Item = (props) => {
-  const [brand, setBrand] = useState(props.brand);
+  const [brand, setBrand] = useState(
+    Array.isArray(props.brand)
+      ? props.brand.map((b) => ({ label: b.name, id: b.id }))
+      : [{ label: props.brand.name, id: props.brand.id }]
+  );
   const [model, setModel] = useState(props.model);
-  const [thetype, setThetype] = useState(props.type);
+  const [type, setType] = useState(
+    Array.isArray(props.type)
+      ? props.type.map((t) => types.find((t) => t.id === props.type))
+      : [types.find((t) => t.id === props.type)]
+  );
   const [year, setYear] = useState(props.year);
   const [photo, setPhoto] = useState("");
   const [errorMessage, setErrorMessage] = React.useState("");
@@ -39,8 +47,9 @@ const Item = (props) => {
 
   const submitData = async (e) => {
     e.preventDefault();
+    console.log("Submitting data");
     try {
-      const body = { brand, model, type: thetype, year };
+      const body = { brand, model, type, year };
       const res = await fetch(`${process.env.HOST}/api/item/${props.id}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -60,17 +69,17 @@ const Item = (props) => {
           <h1>Describe your gear</h1>
           <Select
             options={types}
-            value={types.find((c) => c.id === thetype)}
+            value={type}
             required
             placeholder="What is it?"
-            onChange={(params) => setThetype(params.value)}
+            onChange={(params) => setType(params.value)}
           />
           <label>
             <br />
             <Select
               creatable
               options={props.brands}
-              value={props.brands.filter((c) => c.id === brand.id)}
+              value={brand.map((b) => props.brands.find((t) => b.id === t.id))}
               // isLoading
               multi
               placeholder="Brand"
@@ -89,7 +98,7 @@ const Item = (props) => {
           <label>
             <br />
             <Input
-              value={model}
+              value={year}
               onChange={(e) => setYear(e.target.value)}
               placeholder="Year or Season"
               clearOnEscape
@@ -108,11 +117,11 @@ const Item = (props) => {
           />
           {photo && <img src={data.url} />}
           <button
-            disabled={!brand || !model || !thetype}
+            disabled={!brand || !model || !type}
             type="submit"
             value="model"
           >
-            Set Item
+            Save Item
           </button>
           <br />
           <a className="back" href="#" onClick={() => Router.push("/")}>
