@@ -19,7 +19,7 @@ if (process.env.NODE_ENV === "production") {
 
 const options = {
   site: process.env.HOST,
-  debug: false,
+  debug: true,
   providers: [
     Providers.Facebook({
       clientId: process.env.FACEBOOK_CLIENT_ID,
@@ -52,7 +52,6 @@ const options = {
     maxAge: 90 * 24 * 60 * 60,
   },
   // jwt: {
-  //   // A secret to use for key generation (you should set this explicitly)
   //   secret: process.env.SECRET,
   //   encryption: true,
   // },
@@ -65,7 +64,7 @@ const options = {
   },
   callbacks: {
     signIn: async (user, account, profile) => {
-      // console.log("Signed in", user, account, profile);
+      console.log("Signed in", user, account, profile);
       return Promise.resolve(true);
     },
     redirect: async (url, baseUrl) => {

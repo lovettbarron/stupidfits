@@ -4,6 +4,8 @@ import { getSession } from "next-auth/client";
 const prisma = new PrismaClient();
 
 export default async function handle(req, res) {
+  const session = await getSession({ req });
+  if (!session && session.user.email) res.json(null);
   if (req.method === "GET") {
     handleGET(req, res);
   } else if (req.method === "POST") {
@@ -20,7 +22,7 @@ export default async function handle(req, res) {
 // GET /api/user/:id
 async function handleGET(req, res) {
   const session = await getSession({ req });
-  // console.log("/user Session", session);
+  console.log("/user Session", session);
   const user = await prisma.user.findOne({
     where: { email: session.user.email },
   });
