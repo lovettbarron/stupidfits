@@ -102,8 +102,14 @@ const Blog = (props) => {
   );
 };
 
-export const getServerSideProps = async () => {
-  const res = await fetch(`${process.env.HOST}/api/feed`);
+export const getServerSideProps = async (context) => {
+  const res = await fetch(`${process.env.HOST}/api/feed`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      cookie: context.req.headers.cookie,
+    },
+  });
   let feed;
   try {
     feed = await res.json();

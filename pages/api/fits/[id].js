@@ -33,10 +33,25 @@ async function handleGET(req, res) {
 // POST /api/post/:id
 async function handlePOST(req, res) {
   const id = req.query.id;
+
+  const items =
+    (req.body.components &&
+      req.body.components.map((c) => ({
+        id: c.id,
+      }))) ||
+    null;
+
   const fit = await prisma.fit.update({
     where: { id: Number(id) },
-    data: { payload },
+    data: {
+      components: {
+        connect: items,
+      },
+      desc: req.body.desc,
+    },
   });
+
+  console.log("Updated fit", fit);
   res.json(fit);
 }
 

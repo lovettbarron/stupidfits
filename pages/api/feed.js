@@ -10,7 +10,7 @@ export default async function handle(req, res) {
   if (session) {
     const posts = await prisma.fit.findMany({
       where: {},
-      include: { media: true },
+      include: { media: true, components: { include: { brand: true } } },
     });
     console.log(posts);
     res.json(posts);

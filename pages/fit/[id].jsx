@@ -38,14 +38,19 @@ const Fit = (props) => {
 
   const submitData = async (e) => {
     e.preventDefault();
+    console.log("Submitting data");
     try {
-      const body = { title, content, authorEmail };
-      const res = await fetch(`${process.env.HOST}/api/fit`, {
+      const body = { desc, components };
+      const res = await fetch(`${process.env.HOST}/api/fits/${props.id}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
       });
-      const data = await res.json();
+      try {
+        const data = await res.json();
+      } catch (e) {
+        console.log("error:", e.message);
+      }
       await Router.push("/");
     } catch (error) {
       console.error(error);
@@ -123,7 +128,11 @@ const Fit = (props) => {
             rows={8}
             value={desc}
           />
-          <button disabled={!components} type="submit">
+          <button
+            disabled={!components || components.length < 1}
+            type="submit"
+            onClick={submitData}
+          >
             Update Fit
           </button>
           <a className="back" href="#" onClick={() => Router.push("/")}>
