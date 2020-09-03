@@ -34,7 +34,7 @@ const Me = (props) => {
       const body = { instagram, email, username };
       const res = await fetch(`${props.url}/api/insta/user?id=${id}`);
       const data = await res.json();
-      console.log("Instagram check", data);
+      // console.log("Instagram check", data);
       setInstagramData(data);
     } catch (error) {
       console.error(error);

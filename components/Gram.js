@@ -4,11 +4,11 @@ import Router, { useRouter } from "next/router";
 import { useSession } from "next-auth/client";
 import Anatomy from "./Anatomy";
 
-const FitBox = (props) => {
+const Gram = (props) => {
   const router = useRouter();
   const [session, loading] = useSession();
-  const [fit, setFit] = useState(false);
-
+  const [fit, setFit] = useState(props.fit);
+  console.log("Fit?", props.fit);
   const addFit = async (e) => {
     e.preventDefault();
     console.log("Adding fit", `${process.env.HOST}/api/insta/{props.id}`);
@@ -31,20 +31,9 @@ const FitBox = (props) => {
     Router.push(`/fit/${fit}`);
   };
 
-  const checkIfExists = async () => {
-    const res = await fetch(`${process.env.HOST}/api/insta/${props.id}`);
-    try {
-      const fit = await res.json();
-      console.log("Got media for ", props.id, media.id);
-      setFit(fit.id ? true : false);
-    } catch (e) {
-      console.log("error:", e.message);
-    }
-  };
-
   useEffect(() => {
     // component is used for both displaying instagram images that aren't yet in the db, and fits that are currently in the db. It probably shouldn't, but this just prevent weird api request
-    if (props.imageUrl) checkIfExists();
+
     return () => {};
   }, [session]);
 
@@ -54,12 +43,10 @@ const FitBox = (props) => {
 
       <div className="description">
         <div>
-          <h3>{props.username || props.media.username}</h3>
-          <br />
           <a href={props.url || props.media.url}>Post Link</a>
         </div>
         <br />
-        {props.caption || props.media.description}
+
         {!props.media && !fit && <button onClick={addFit}>Add Fit</button>}
 
         {fit && <button onClick={editFit}>Edit Fit</button>}
@@ -71,7 +58,8 @@ const FitBox = (props) => {
 
       <style jsx>{`
         .fitbox {
-          margin: 2rem 0;
+          margin: 2rem 0.5rem;
+          max-width: 30%;
         }
 
         .fitbox ul {
@@ -121,4 +109,4 @@ const FitBox = (props) => {
   );
 };
 
-export default FitBox;
+export default Gram;

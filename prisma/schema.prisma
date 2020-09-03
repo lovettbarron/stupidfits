@@ -70,7 +70,7 @@ model VerificationRequest {
 
 model Media {
   id          Int     @default(autoincrement()) @id
-  insta_id    Int     @unique
+  insta_id    String  @unique
   username    String?
   shortcode   String  @unique
   timestamp   Int
