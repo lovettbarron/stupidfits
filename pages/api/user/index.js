@@ -20,20 +20,20 @@ export default async function handle(req, res) {
 // GET /api/user/:id
 async function handleGET(req, res) {
   const session = await getSession({ req });
-  console.log("/user Session", session);
+  // console.log("/user Session", session);
   const user = await prisma.user.findOne({
     where: { email: session.user.email },
   });
-  console.log("Fetched user", user);
+  // console.log("Fetched user", user);
   res.json(user);
 }
 
 // POST /api/user/:id
 async function handlePOST(req, res) {
   const session = await getSession({ req });
-  console.log("Update", req.query.user, req.body);
+  // console.log("Update", req.query.user, req.body);
   const user = await prisma.user.update({
-    where: { email: req.body.email },
+    where: { email: session.user.email },
     data: {
       instagram: req.body.instagram,
       username: req.body.username,

@@ -11,10 +11,10 @@ const FitBox = (props) => {
 
   const addFit = async (e) => {
     e.preventDefault();
-    console.log("Adding fit", `${props.hosturl}/api/insta/{props.id}`);
+    console.log("Adding fit", `${process.env.HOST}/api/insta/{props.id}`);
     try {
       const body = { ...props };
-      const res = await fetch(`${props.hosturl}/api/insta/{props.id}`, {
+      const res = await fetch(`${process.env.HOST}/api/insta/{props.id}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
@@ -29,14 +29,19 @@ const FitBox = (props) => {
 
   const editFit = async (e) => {};
 
-  useEffect(() => {
-    const res = fetch(`${props.hosturl}/api/insta/${props.id}`);
+  const checkIfExists = async () => {
+    const res = await fetch(`${process.env.HOST}/api/insta/${props.id}`);
     try {
-      const media = res.json();
+      const media = await res.json();
+      console.log("Got media for ", props.id, media.id);
       setFit(media.id ? true : false);
     } catch (e) {
       console.log("error:", e.message);
     }
+  };
+
+  useEffect(() => {
+    checkIfExists();
     return () => {};
   }, [session]);
 

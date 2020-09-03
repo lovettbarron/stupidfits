@@ -5,7 +5,7 @@ const prisma = new PrismaClient();
 
 export default async function handle(req, res) {
   const session = await getSession({ req });
-  console.log("Session", session);
+  // console.log("Session", session);
 
   if (session) {
     const posts = await prisma.fit.findMany({

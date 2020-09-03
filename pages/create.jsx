@@ -25,7 +25,7 @@ const Fit = () => {
         body: JSON.stringify(body),
       });
       const data = await res.json();
-      await Router.push("/drafts");
+      // await Router.push("/drafts");
     } catch (error) {
       console.error(error);
     }

@@ -32,7 +32,7 @@ async function handleGET(req, res) {
   const post = await prisma.media.findOne({
     where: { insta_id: Math.trunc(id) },
   });
-  console.log("Returned media", id, post);
+  // console.log("Returned media", id, post);
   res.json(post);
 }
 

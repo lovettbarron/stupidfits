@@ -9,17 +9,7 @@ import { useSession, signin, signout } from "next-auth/client";
 const Blog = (props) => {
   const [session, loading] = useSession();
   const [instagram, setInstagram] = useState("");
-
-  const iglogin = async () => {
-    const url = props.url;
-    console.log(`${url}/api/insta/user`);
-    const res = await fetch(`${url}/api/insta/user?id=${instagram}`);
-    const feed = await res.json();
-    return {
-      props: { feed },
-    };
-  };
-
+  console.log("session", props.user);
   return (
     <Layout>
       <div className="page">
@@ -39,7 +29,7 @@ const Blog = (props) => {
         )}
         {session && (
           <>
-            <h3>Hej {session.username}</h3>
+            <h3>Hej {props.user.username}</h3>
           </>
         )}
 
@@ -49,6 +39,8 @@ const Blog = (props) => {
           <li>Learn from others; rethink your own.</li>
           <li>Repeat but better.</li>
         </ol>
+        <hr />
+        <h3>Get started with your recent fits</h3>
         <main>
           {props.feed.map((fit) => (
             <FitBox {...fit} />
@@ -103,6 +95,21 @@ const Blog = (props) => {
 };
 
 export const getServerSideProps = async (context) => {
+  const userres = await fetch(`${process.env.HOST}/api/user`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      cookie: context.req.headers.cookie,
+    },
+  });
+
+  let user = null;
+  try {
+    user = await userres.json();
+  } catch (e) {
+    console.log("error:", e.message);
+  }
+
   const res = await fetch(`${process.env.HOST}/api/feed`, {
     method: "GET",
     headers: {
@@ -117,7 +124,7 @@ export const getServerSideProps = async (context) => {
     console.log("error:", e.message);
   }
   return {
-    props: { feed, url: process.env.HOST },
+    props: { feed, user, url: process.env.HOST },
   };
 };
 

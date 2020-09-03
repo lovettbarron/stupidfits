@@ -51,7 +51,7 @@ async function handlePOST(req, res) {
     },
   });
 
-  console.log("Updated fit", fit);
+  // console.log("Updated fit", fit);
   res.json(fit);
 }
 

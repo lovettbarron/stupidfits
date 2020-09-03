@@ -59,7 +59,7 @@ const Fit = (props) => {
 
   const fetchItems = async (first) => {
     // Get Items
-    console.log("session", session);
+    // console.log("session", session);
     const b = await fetch(`${process.env.HOST}/api/item`, {
       method: "GET",
       headers: {

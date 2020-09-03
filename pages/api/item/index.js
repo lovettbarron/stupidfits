@@ -8,8 +8,8 @@ const prisma = new PrismaClient();
 // Optional fields in body: content
 export default async function handle(req, res) {
   const session = await getSession({ req });
-  console.log("item Session", session);
-  console.log("item req body", req.body);
+  // console.log("item Session", session);
+  // console.log("item req body", req.body);
 
   if (req.method === "GET") {
     const posts = await prisma.item.findMany({
@@ -44,7 +44,7 @@ export default async function handle(req, res) {
         e.year == Number(req.body.year) &&
         e.type == req.body.type[0].id
     );
-    console.log("f", filtered);
+    // console.log("f", filtered);
 
     // If it exists, just return the result
     if (filtered && filtered.length > 0) res.json(exists);

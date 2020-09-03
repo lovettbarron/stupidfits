@@ -3,7 +3,7 @@ import Layout from "../components/Layout";
 import FitBox from "../components/FitBox";
 import { useSession, getSession } from "next-auth/client";
 
-const Drafts = (props) => {
+const Feed = (props) => {
   return (
     <Layout>
       <div className="page">
@@ -37,9 +37,13 @@ const Drafts = (props) => {
 
 export const getServerSideProps = async (context) => {
   const session = await getSession(context);
-  const res = await fetch(
-    `${process.env.HOST}/api/user?user=${session.user.email}`
-  );
+  const res = await fetch(`${process.env.HOST}/api/user`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      cookie: context.req.headers.cookie,
+    },
+  });
   const user = await res.json();
   let insta;
   if (user && user.instagram) {
@@ -54,4 +58,4 @@ export const getServerSideProps = async (context) => {
   };
 };
 
-export default Drafts;
+export default Feed;

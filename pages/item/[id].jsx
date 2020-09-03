@@ -47,7 +47,7 @@ const Item = (props) => {
         body: JSON.stringify(body),
       });
       const data = await res.json();
-      await Router.push("/drafts");
+      await Router.push("/closet");
     } catch (error) {
       console.error(error);
     }
