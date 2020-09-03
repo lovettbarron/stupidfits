@@ -23,10 +23,14 @@ export default async function handle(req, res) {
 // GET /api/item/:id
 async function handleGET(req, res) {
   const id = req.query.id;
-  const fit = await prisma.item.findOne({
-    where: { id: Number(id) },
-    include: { brand: true },
-  });
+  const fit = await prisma.item
+    .findOne({
+      where: { id: Number(id) },
+      include: { brand: true },
+    })
+    .finally(async () => {
+      await prisma.$disconnect();
+    });
   res.json(fit);
 }
 

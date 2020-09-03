@@ -8,10 +8,18 @@ export default async function handle(req, res) {
   // console.log("Session", session);
 
   if (session) {
-    const posts = await prisma.fit.findMany({
-      where: {},
-      include: { media: true, components: { include: { brand: true } } },
-    });
+    const posts = await prisma.fit
+      .findMany({
+        where: {
+          user: {
+            email: session.user.email,
+          },
+        },
+        include: { media: true, components: { include: { brand: true } } },
+      })
+      .finally(async () => {
+        await prisma.$disconnect();
+      });
     console.log(posts);
     res.json(posts);
   } else {

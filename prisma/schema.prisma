@@ -77,11 +77,13 @@ model Media {
   image       String
   url         String
   description String
+  fit         Fit?    @relation("MediaRelationship", fields: [fitId], references: [id])
+  fitId       Int?
 }
 
 model Fit {
   id         Int     @default(autoincrement()) @id
-  media      Media
+  media      Media   @relation("MediaRelationship")
   components Item[]  @relation("FitComponent")
   desc       String?
   temp       String?
@@ -103,13 +105,14 @@ model Brand {
   name String  @unique
   logo String?
   desc String?
+  Item Item[]
 }
 
 model Item {
   id       Int      @default(autoincrement()) @id
   type     ItemType
   photo    String?
-  brand    Brand
+  brand    Brand    @relation(fields: [brandId], references: [id])
   model    String
   year     Int?
   size     String?
@@ -123,6 +126,8 @@ model Item {
   fitId    Int?
   user     User?    @relation("ItemRelation", fields: [userId], references: [id])
   userId   Int?
+  Closet   Closet?  @relation("ClosetGrails", fields: [closetId], references: [id])
+  brandId  Int
 }
 
 enum ItemType {

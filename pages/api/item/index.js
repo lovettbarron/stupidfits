@@ -12,10 +12,14 @@ export default async function handle(req, res) {
   // console.log("item req body", req.body);
 
   if (req.method === "GET") {
-    const posts = await prisma.item.findMany({
-      where: { user: { email: session.user.email } },
-      include: { brand: true },
-    });
+    const posts = await prisma.item
+      .findMany({
+        where: { user: { email: session.user.email } },
+        include: { brand: true },
+      })
+      .finally(async () => {
+        await prisma.$disconnect();
+      });
     // console.log(posts);
     res.json(posts);
   } else if (req.method === "POST") {
