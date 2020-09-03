@@ -16,7 +16,7 @@ export default async function handle(req, res) {
       where: { user: { email: session.user.email } },
       include: { brand: true },
     });
-    console.log(posts);
+    // console.log(posts);
     res.json(posts);
   } else if (req.method === "POST") {
     const brand = req.body.brand.map((b) => ({
@@ -47,8 +47,9 @@ export default async function handle(req, res) {
     console.log("f", filtered);
 
     // If it exists, just return the result
-    if (filtered) res.json(exists);
+    if (filtered && filtered.length > 0) res.json(exists);
     else {
+      console.log("Making new item");
       const result = await prisma.item.create({
         data: {
           user: {

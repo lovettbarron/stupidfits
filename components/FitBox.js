@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Router, { useRouter } from "next/router";
 import { useSession } from "next-auth/client";
+import Anatomy from "./Anatomy";
 
 const FitBox = (props) => {
   const router = useRouter();
@@ -54,64 +55,7 @@ const FitBox = (props) => {
         {!props.media && !fit && <button onClick={addFit}>Add Fit</button>}
 
         <div className="components">
-          {props.components && (
-            <>
-              <h4>Outerwear</h4>
-              <ul>
-                {props.components
-                  .filter((c) => c.type === "JACKET")
-                  .map((c) => (
-                    <li>{`${c.brand} ${c.model} ${c.year}`}</li>
-                  ))}
-              </ul>
-              <h4>Layers</h4>
-              <ul>
-                {props.components
-                  .filter((c) => c.type === "LAYER")
-                  .map((c) => (
-                    <li>{`${c.brand} ${c.model} ${c.year}`}</li>
-                  ))}
-              </ul>
-              <h4>Pants</h4>
-              <ul>
-                {props.components
-                  .filter((c) => c.type === "PANT")
-                  .map((c) => (
-                    <li>{`${c.brand} ${c.model} ${c.year}`}</li>
-                  ))}
-              </ul>
-              <h4>Carry</h4>
-              <ul>
-                {props.components
-                  .filter((c) => c.type === "BAG")
-                  .map((c) => (
-                    <li>{`${c.brand} ${c.model} ${c.year}`}</li>
-                  ))}
-              </ul>
-              <h4>Shoes</h4>
-              <ul>
-                {props.components
-                  .filter((c) => c.type === "SHOE")
-                  .map((c) => (
-                    <li>{`${c.brand} ${c.model} ${c.year}`}</li>
-                  ))}
-              </ul>
-              <h4>Extra</h4>
-              <ul>
-                {props.components
-                  .filter((c) => c.type === "EXTRA")
-                  .map((c) => (
-                    <li>{`${c.brand} ${c.model} ${c.year}`}</li>
-                  ))}
-              </ul>
-            </>
-          )}
-          {props.desc && (
-            <>
-              <h4>Comment</h4>
-              {props.desc}
-            </>
-          )}
+          {props.components && <Anatomy components={props.components} />}
         </div>
       </div>
 

@@ -39,6 +39,10 @@ const Item = (props) => {
   if (isLoading) return <p>Loading...</p>;
   if (isError) return <p>{error.message}</p>;
 
+  const handle = (data) => {
+    props.handler(data);
+  };
+
   const submitData = async (e) => {
     e.preventDefault();
     try {
@@ -48,7 +52,14 @@ const Item = (props) => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
       });
-      const data = await res.json();
+      try {
+        const data = await res.json();
+        if (props.handler) {
+          handle(data);
+        }
+      } catch (e) {
+        console.log("error:", e.message);
+      }
       // await Router.push("/drafts");
     } catch (error) {
       console.error(error);

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import fetch from "isomorphic-unfetch";
 import Layout from "../../components/Layout";
 import Router from "next/router";
@@ -20,17 +20,21 @@ import {
 const Fit = (props) => {
   const [session, loading] = useSession();
   const [desc, setDesc] = useState("");
-  const [items, setItems] = useState(props.items);
+  const [items, setItems] = useState(null);
   const [components, setComponents] = React.useState(
-    (props.components &&
-      props.components.map((c) => ({
-        label: `${c.brand} ${c.model} ${c.year}`,
-        id: c.id,
-      }))) ||
-      []
+    props.components && itemToOptions(props.components)
   );
 
   const [isOpen, setIsOpen] = React.useState(false);
+
+  const itemToOptions = (items) => {
+    return (
+      items.map((c) => ({
+        label: `${c.brand.name} ${c.model} ${c.year}`,
+        id: c.id,
+      })) || []
+    );
+  };
 
   const submitData = async (e) => {
     e.preventDefault();
@@ -48,7 +52,7 @@ const Fit = (props) => {
     }
   };
 
-  const fetchItems = async (e) => {
+  const fetchItems = async (first) => {
     // Get Items
     console.log("session", session);
     const b = await fetch(`${process.env.HOST}/api/item`, {
@@ -58,29 +62,49 @@ const Fit = (props) => {
       },
     });
     let it;
+    if (first) {
+      it = await b.json();
+      setItems(it);
+    }
     try {
       it = await b.json();
-      const diff = it.filter((i) => items.find((t) => t.id === i.id));
+      const diff = it.filter((i) => !items.find((t) => t.id === i.id));
       setItems(it);
-      setComponents(components.push(diff));
+      setComponents(components.concat(itemToOptions(diff)));
+      console.log("Components after refresh!", components);
     } catch (e) {
       console.log("error:", e.message);
     }
   };
+
+  useEffect(() => {
+    fetchItems(true);
+    return () => {};
+  }, [session]);
 
   return (
     <Layout>
       <div className="page">
         <form onSubmit={submitData}>
           <h1>Describe your fit</h1>
-          <FitBox {...props} />
+          <FitBox
+            {...props}
+            components={
+              items &&
+              components &&
+              items.filter((i) => components.find((c) => c.id === i.id))
+            }
+          />
           <Select
-            options={items.map((i) => ({
-              label: `${i.brand.name} ${i.model} ${i.year}`,
-              id: i.id,
-            }))}
+            options={
+              items &&
+              items.map((i) => ({
+                label: `${i.brand.name} ${i.model} ${i.year}`,
+                id: i.id,
+              }))
+            }
             value={components}
-            isLoading
+            isLoading={!items}
             multi
             placeholder="Fit Anatomy"
             onChange={(params) => setComponents(params.value)}
@@ -120,7 +144,16 @@ const Fit = (props) => {
           role={ROLE.dialog}
         >
           <ModalHeader>Add To Your Closet</ModalHeader>
-          <ModalBody>{isOpen && <CreateItem />}</ModalBody>
+          <ModalBody>
+            {isOpen && (
+              <CreateItem
+                handler={() => {
+                  setIsOpen();
+                  fetchItems();
+                }}
+              />
+            )}
+          </ModalBody>
           <ModalFooter>
             <ModalButton onClick={setIsOpen}>Finished</ModalButton>
           </ModalFooter>
@@ -175,22 +208,22 @@ export const getServerSideProps = async (context) => {
   }
 
   // Get Items
-  const b = await fetch(`${process.env.HOST}/api/item`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      cookie: context.req.headers.cookie,
-    },
-  });
-  let items;
-  try {
-    items = await b.json();
-  } catch (e) {
-    console.log("error:", e.message);
-  }
+  // const b = await fetch(`${process.env.HOST}/api/item`, {
+  //   method: "GET",
+  //   headers: {
+  //     "Content-Type": "application/json",
+  //     cookie: context.req.headers.cookie,
+  //   },
+  // });
+  // let items;
+  // try {
+  //   items = await b.json();
+  // } catch (e) {
+  //   console.log("error:", e.message);
+  // }  items: items
 
   return {
-    props: { ...data, items: items, url: process.env.HOST },
+    props: { ...data, url: process.env.HOST },
   };
 };
 
