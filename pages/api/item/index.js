@@ -9,7 +9,7 @@ const prisma = new PrismaClient();
 export default async function handle(req, res) {
   const session = await getSession({ req });
   // console.log("item Session", session);
-  // console.log("item req body", req.body);
+  console.log("item req query", req.query);
 
   ///
   /// FETCH ITEMS
@@ -18,7 +18,7 @@ export default async function handle(req, res) {
   if (req.method === "GET") {
     const id = req.query.id;
     let posts;
-    if (session.user.email) {
+    if (session && session.user.email) {
       posts = await prisma.item
         .findMany({
           where: { user: { email: session.user.email } },
@@ -27,20 +27,21 @@ export default async function handle(req, res) {
         .finally(async () => {
           await prisma.$disconnect();
         });
+      res.json(posts);
     } else if (id) {
       posts = await prisma.item
         .findMany({
-          where: { user: { id: id } },
+          where: { user: { username: id } },
           include: { brand: true },
         })
         .finally(async () => {
           await prisma.$disconnect();
         });
+      res.json(posts);
     } else {
       res.json([]);
     }
     // console.log(posts);
-    res.json(posts);
   } else if (req.method === "POST") {
     //
     // CREATE NEW ITEM
