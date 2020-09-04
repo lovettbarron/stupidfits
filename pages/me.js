@@ -22,8 +22,8 @@ const Me = (props) => {
         body: JSON.stringify(body),
       });
       const data = await res.json();
-      checkInstagram(instagram);
-      // await Router.push("/fits");
+      // checkInstagram(instagram);
+      await Router.push("/feed");
     } catch (error) {
       console.error(error);
     }
@@ -50,6 +50,12 @@ const Me = (props) => {
             <form onSubmit={submitData}>
               <h1>My Settings</h1>
               <h3>{email}</h3>
+              <h2>Your Instagram Handle</h2>
+              <p>
+                We need your instagram handle to pull in your fits. You can then
+                select which ones you want to annotate on Stupid Fits.
+              </p>
+
               <input
                 autoFocus
                 onChange={(e) => setInstagram(e.target.value)}
@@ -58,12 +64,28 @@ const Me = (props) => {
                 value={instagram}
               />
               {instagramData && <>verified</>}
+              <br />
+              <h2>Your Stupidfits Username</h2>
+              <p>
+                We give you a custom landing page for your fits. Drop this in
+                your instagram URL, or on Imgur, or Reddit, or wherever so folk
+                can wrap their minds around your revolutionary genius fit
+                combinitronics.
+              </p>
+              <h4>Your StupidFits Username</h4>
               <input
                 onChange={(e) => setUsername(e.target.value)}
                 placeholder="Username"
                 type="text"
                 value={username}
               />
+              <p>
+                <small>Your public page is</small>
+                <br /> {process.env.HOST}
+                <br />
+                /u/{username}
+              </p>
+
               <input
                 disabled={!instagram || !email || !username}
                 type="submit"

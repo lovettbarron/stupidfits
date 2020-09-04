@@ -48,7 +48,7 @@ model User {
   image         String?
   createdAt     DateTime  @default(now()) @map(name: "created_at")
   updatedAt     DateTime  @default(now()) @map(name: "updated_at")
-  username      String?
+  username      String?   @unique
   fit           Fit[]     @relation("FitRelation")
   item          Item[]    @relation("ItemRelation")
   closet        Closet[]  @relation("ClosetRelation")

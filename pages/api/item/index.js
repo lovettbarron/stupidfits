@@ -11,20 +11,39 @@ export default async function handle(req, res) {
   // console.log("item Session", session);
   // console.log("item req body", req.body);
 
+  ///
+  /// FETCH ITEMS
+  //
+
   if (req.method === "GET") {
-    const posts = await prisma.item
-      .findMany({
-        where: { user: { email: session.user.email } },
-        include: { brand: true },
-      })
-      .finally(async () => {
-        await prisma.$disconnect();
-      });
+    const id = req.query.id;
+    let posts;
+    if (session.user.email) {
+      posts = await prisma.item
+        .findMany({
+          where: { user: { email: session.user.email } },
+          include: { brand: true },
+        })
+        .finally(async () => {
+          await prisma.$disconnect();
+        });
+    } else if (id) {
+      posts = await prisma.item
+        .findMany({
+          where: { user: { id: id } },
+          include: { brand: true },
+        })
+        .finally(async () => {
+          await prisma.$disconnect();
+        });
+    } else {
+      res.json([]);
+    }
     // console.log(posts);
     res.json(posts);
   } else if (req.method === "POST") {
     //
-    // Creating an item
+    // CREATE NEW ITEM
     //
 
     const brand = req.body.brand.map((b) => ({

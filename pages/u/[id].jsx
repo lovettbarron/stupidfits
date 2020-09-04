@@ -3,8 +3,12 @@ import Layout from "../../components/Layout";
 import FitBox from "../../components/FitBox";
 import { useSession, getSession } from "next-auth/client";
 import Link from "next/link";
+import { Tabs, Tab, FILL } from "baseui/tabs-motion";
+import Anatomy from "../../components/Anatomy";
 
-const Feed = (props) => {
+const UserProfile = (props) => {
+  const [activeKey, setActiveKey] = React.useState("0");
+
   return (
     <Layout>
       <div className="page">
@@ -18,9 +22,29 @@ const Feed = (props) => {
           Instagram
         </a>
         <main>
-          {props.fits.map((fit) => (
-            <FitBox {...fit} username={props.insta.username} />
-          ))}
+          <Tabs
+            activeKey={activeKey}
+            fill={FILL.fixed}
+            onChange={({ activeKey }) => {
+              setActiveKey(activeKey);
+            }}
+            activateOnFocus
+          >
+            <Tab title="Fits">
+              {" "}
+              {props.fits.map((fit) => (
+                <FitBox {...fit} username={props.insta.username} />
+              ))}
+            </Tab>
+            <Tab title="Closet">
+              {" "}
+              {props.closet && (
+                <div className="closet">
+                  <Anatomy components={props.closet} />
+                </div>
+              )}
+            </Tab>
+          </Tabs>
         </main>
       </div>
       <style jsx>{`
@@ -28,6 +52,15 @@ const Feed = (props) => {
           display: flex;
           flex-wrap: wrap;
           justify-content: center;
+          min-width: 40rem;
+        }
+
+        .closet {
+          font-size: 2rem;
+        }
+
+        .closet ul {
+          list-style: none;
         }
 
         h1 > a {
@@ -119,6 +152,21 @@ export const getServerSideProps = async (context) => {
     // console.log("insta", insta);
   }
 
+  // Get User's Items
+  const resc = await fetch(`${process.env.HOST}/api/item?id=${user.id}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      cookie: context.req.headers.cookie,
+    },
+  });
+  let closet;
+  try {
+    closet = await resc.json();
+  } catch (e) {
+    console.log("error:", e.message);
+  }
+
   // Fetch fits for this user and check against existing instagram
   const fitres = await fetch(
     `${process.env.HOST}/api/feed/?id=${user.instagram}`,
@@ -138,8 +186,8 @@ export const getServerSideProps = async (context) => {
   }
 
   return {
-    props: { insta: insta, fits: fits },
+    props: { insta: insta, fits: fits, closet: closet },
   };
 };
 
-export default Feed;
+export default UserProfile;

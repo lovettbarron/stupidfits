@@ -45,9 +45,7 @@ export default (props) => {
               <a data-active={isActive("/me")}>Setting</a>
             </Link>
             <hr />
-            <Link href={signout}>
-              <a>Sign out</a>
-            </Link>
+            <a href={signout}>Sign out</a>
           </div>
         )) || <h3>You're not logged in.</h3>}
       </Drawer>

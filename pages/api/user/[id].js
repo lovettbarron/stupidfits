@@ -26,7 +26,7 @@ async function handleGET(req, res) {
   if (id) {
     console.log("Fetching user on ID", id);
     const post = await prisma.user.findOne({
-      where: { instagram: id },
+      where: { username: id },
     });
     res.json(post);
   } else {

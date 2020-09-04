@@ -13,7 +13,9 @@ const Anatomy = (props) => {
             {props.components
               .filter((c) => c.type === "JACKET")
               .map((c) => (
-                <li key={c.id}>{`${c.brand.name} ${c.model} ${c.year}`}</li>
+                <li key={c.id}>{`${c.brand.name} ${c.model} ${
+                  c.year > 0 ? c.year : ""
+                }`}</li>
               ))}
           </ul>
         </>
@@ -25,7 +27,9 @@ const Anatomy = (props) => {
             {props.components
               .filter((c) => c.type === "LAYER")
               .map((c) => (
-                <li key={c.id}>{`${c.brand.name} ${c.model} ${c.year}`}</li>
+                <li key={c.id}>{`${c.brand.name} ${c.model} ${
+                  c.year > 0 ? c.year : ""
+                }`}</li>
               ))}
           </ul>
         </>
@@ -37,7 +41,9 @@ const Anatomy = (props) => {
             {props.components
               .filter((c) => c.type === "PANT")
               .map((c) => (
-                <li key={c.id}>{`${c.brand.name} ${c.model} ${c.year}`}</li>
+                <li key={c.id}>{`${c.brand.name} ${c.model} ${
+                  c.year > 0 ? c.year : ""
+                }`}</li>
               ))}
           </ul>
         </>
@@ -49,7 +55,9 @@ const Anatomy = (props) => {
             {props.components
               .filter((c) => c.type === "BAG")
               .map((c) => (
-                <li key={c.id}>{`${c.brand.name} ${c.model} ${c.year}`}</li>
+                <li key={c.id}>{`${c.brand.name} ${c.model} ${
+                  c.year > 0 ? c.year : ""
+                }`}</li>
               ))}
           </ul>
         </>
@@ -61,7 +69,9 @@ const Anatomy = (props) => {
             {props.components
               .filter((c) => c.type === "SHOE")
               .map((c) => (
-                <li key={c.id}>{`${c.brand.name} ${c.model} ${c.year}`}</li>
+                <li key={c.id}>{`${c.brand.name} ${c.model} ${
+                  c.year > 0 ? c.year : ""
+                }`}</li>
               ))}
           </ul>
         </>
@@ -73,7 +83,9 @@ const Anatomy = (props) => {
             {props.components
               .filter((c) => c.type === "EXTRA")
               .map((c) => (
-                <li key={c.id}>{`${c.brand.name} ${c.model} ${c.year}`}</li>
+                <li key={c.id}>{`${c.brand.name} ${c.model} ${
+                  c.year > 0 ? c.year : ""
+                }`}</li>
               ))}
           </ul>
         </>
