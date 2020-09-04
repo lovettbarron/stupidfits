@@ -47,7 +47,7 @@ const Item = (props) => {
         body: JSON.stringify(body),
       });
       const data = await res.json();
-      // await Router.push("/drafts");
+      await Router.push("/closet");
     } catch (error) {
       console.error(error);
     }
@@ -58,18 +58,18 @@ const Item = (props) => {
       <div className="page">
         <form onSubmit={submitData}>
           <h1>Describe your gear</h1>
-               <label>
+          <label>
             <br />
             <h3>What is it?</h3>
-          <Select
-            options={types}
-            value={type}
-            required
-            startOpen
-            placeholder="What is it?"
-            onChange={(params) => setType(params.value)}
-          />
-            </label>
+            <Select
+              options={types}
+              value={type}
+              required
+              startOpen
+              placeholder="What is it?"
+              onChange={(params) => setType(params.value)}
+            />
+          </label>
           <label>
             <br />
             <h3>What's the brand?</h3>
@@ -122,7 +122,7 @@ const Item = (props) => {
             type="submit"
             value="model"
           >
-            Set Item
+            Save Item
           </button>
           <br />
           <a className="back" href="#" onClick={() => Router.push("/")}>
