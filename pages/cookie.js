@@ -132,4 +132,4 @@ const Cookie = (props) => {
   );
 };
 
-export default TOS;
+export default Cookie;
