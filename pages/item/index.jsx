@@ -58,15 +58,21 @@ const Item = (props) => {
       <div className="page">
         <form onSubmit={submitData}>
           <h1>Describe your gear</h1>
+               <label>
+            <br />
+            <h3>What is it?</h3>
           <Select
             options={types}
             value={type}
             required
+            startOpen
             placeholder="What is it?"
             onChange={(params) => setType(params.value)}
           />
+            </label>
           <label>
             <br />
+            <h3>What's the brand?</h3>
             <Select
               creatable
               options={props.brands}
@@ -79,6 +85,7 @@ const Item = (props) => {
           </label>
           <label>
             <br />
+            <h3>Model name or description</h3>
             <Input
               value={model}
               onChange={(e) => setModel(e.target.value)}
@@ -88,6 +95,7 @@ const Item = (props) => {
           </label>
           <label>
             <br />
+            <h3>Is it from a specific year?</h3>
             <Input
               value={year}
               onChange={(e) => setYear(e.target.value)}
@@ -97,6 +105,7 @@ const Item = (props) => {
             />
           </label>
           <br />
+          <h3>Upload a photo (doesn't work yet)</h3>
           <FileUploader
             errorMessage={errorMessage}
             disabled
