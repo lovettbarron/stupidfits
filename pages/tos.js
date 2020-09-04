@@ -20,7 +20,11 @@ const TOS = (props) => {
           application if their activities. An example is racist activites or
           association with racist groups (eg. faschion H/T diet prada).
         </li>
-        <li>If you have concerns or if you run into trouble (eg. bullying, or similar)< just reach out. This is a solo passion project, so I'm around.</li>
+        <li>
+          If you have concerns or if you run into trouble (eg. bullying, or
+          similar) — Just reach out. This is a solo passion project, so I'm
+          around.
+        </li>
       </ol>
       <h2>The Details</h2>
       <h2>Stupid Systems LLC Terms of Service</h2>

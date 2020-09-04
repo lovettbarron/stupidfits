@@ -12,7 +12,7 @@
     "start": "next start -p $PORT",
     "preinstall": "npx prisma generate",
     "prismastage": "npx prisma generate && npx prisma migrate save  -n 'up' --experimental && npx prisma migrate up --experimental",
-    "prismaprod": "mv .env .env.stage && mv .env.prod .env && npx prisma generate && npx prisma migrate save -n 'up' --experimental && npx prisma migrate up --experimental && mv .env .env.prod && mv .env.stage .env",
+    "prismaprod": "npx prisma generate && npx prisma migrate save -n 'up' --experimental && npx prisma migrate up --experimental",
     "db": "npx prisma studio --experimental"
   },
   "keywords": [],
