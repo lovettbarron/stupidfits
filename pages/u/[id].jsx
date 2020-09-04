@@ -12,16 +12,21 @@ const UserProfile = (props) => {
   return (
     <Layout>
       <div className="page">
-        <h1>
-          <Link href="/">
-            <a>Stupid Fits</a>
-          </Link>
-        </h1>
-        <p>Welcome to {props.insta.username}'s closet.</p>
-        <a href={`https://instagram.com/u/${props.insta.username}`}>
-          Instagram
-        </a>
         <main>
+          <div className="top">
+            <h1>
+              <Link href="/">
+                <a>Stupid Fits</a>
+              </Link>
+            </h1>
+            <p>Welcome to {props.insta.username}'s closet.</p>
+            <p>
+              <a href={`https://instagram.com/u/${props.insta.username}`}>
+                Instagram
+              </a>
+            </p>
+          </div>
+
           <Tabs
             activeKey={activeKey}
             fill={FILL.fixed}
@@ -52,7 +57,14 @@ const UserProfile = (props) => {
           display: flex;
           flex-wrap: wrap;
           justify-content: center;
-          min-width: 40rem;
+          min-width: 20rem;
+          width: 100%;
+          margin: 0;
+        }
+
+        .top {
+          text-align: center;
+          width: 100%;
         }
 
         .closet {
