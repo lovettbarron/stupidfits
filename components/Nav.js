@@ -54,17 +54,17 @@ export default (props) => {
                   </Link>
                 </li>
                 <li>
-                  <Link href="/wtf">
+                  <Link href="/privacy">
                     <a>Privacy</a>
                   </Link>
                 </li>
                 <li>
-                  <Link href="/wtf">
+                  <Link href="/tos">
                     <a>Terms</a>
                   </Link>
                 </li>
                 <li>
-                  <Link href="/wtf">
+                  <Link href="/cookie">
                     <a>Cookies</a>
                   </Link>
                 </li>
