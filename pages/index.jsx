@@ -3,7 +3,7 @@ import Layout from "../components/Layout";
 import fetch from "isomorphic-unfetch";
 import Post from "../components/Post";
 import FitBox from "../components/FitBox";
-
+import Link from "next/link";
 import { useSession, signin, signout } from "next-auth/client";
 
 const Blog = (props) => {
@@ -32,7 +32,12 @@ const Blog = (props) => {
             <h3>Hej {props.user.username}</h3>
             <p>
               Your public page is
-              <br /> {process.env.HOST}/u/{props.user.instagram}
+              <br />
+              <Link href={`${process.env.HOST}/u/${props.user.instagram}`}>
+                <a>
+                  {process.env.HOST}/u/{props.user.instagram}
+                </a>
+              </Link>
             </p>
           </>
         )}
@@ -52,9 +57,26 @@ const Blog = (props) => {
         </main>
         <footer>
           <ul>
-            <li>WTF is this?</li>
-            <li>Privacy</li>
-            <li>Terms</li>
+            <li>
+              <Link href="/wtf">
+                <a>WTF is this?</a>
+              </Link>
+            </li>
+            <li>
+              <Link href="/wtf">
+                <a>Privacy</a>
+              </Link>
+            </li>
+            <li>
+              <Link href="/wtf">
+                <a>Terms</a>
+              </Link>
+            </li>
+            <li>
+              <Link href="/wtf">
+                <a>Cookies</a>
+              </Link>
+            </li>
           </ul>
         </footer>
       </div>

@@ -46,6 +46,30 @@ export default (props) => {
             </Link>
             <hr />
             <a href={signout}>Sign out</a>
+            <footer>
+              <ul>
+                <li>
+                  <Link href="/wtf">
+                    <a>WTF is this?</a>
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/wtf">
+                    <a>Privacy</a>
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/wtf">
+                    <a>Terms</a>
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/wtf">
+                    <a>Cookies</a>
+                  </Link>
+                </li>
+              </ul>
+            </footer>
           </div>
         )) || <h3>You're not logged in.</h3>}
       </Drawer>
@@ -62,6 +86,23 @@ export default (props) => {
         }
 
         .navigation a {
+        }
+
+        footer ul {
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: center;
+          margin: 0;
+        }
+
+        footer a {
+          font-size: 1.5rem !important;
+          margin: 0 1rem;
+        }
+
+        footer li {
+          margin: 0;
+          list-style: none;
         }
         .nav a {
           display: block;
