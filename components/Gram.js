@@ -8,6 +8,7 @@ const Gram = (props) => {
   const router = useRouter();
   const [session, loading] = useSession();
   const [fit, setFit] = useState(props.fit);
+
   console.log("Fit?", props.fit);
   const addFit = async (e) => {
     e.preventDefault();
@@ -28,7 +29,7 @@ const Gram = (props) => {
   };
 
   const editFit = async (e) => {
-    Router.push(`/fit/${fit}`);
+    Router.push(`/fit/${props.fit.id}`);
   };
 
   useEffect(() => {

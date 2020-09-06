@@ -9,6 +9,7 @@
   "scripts": {
     "dev": "next",
     "build": "next build",
+    "heroku-postbuild ": "next start -p $PORT",
     "start": "next start -p $PORT",
     "preinstall": "npx prisma generate",
     "prismastage": "npx prisma generate && npx prisma migrate save  -n 'up' --experimental && npx prisma migrate up --experimental",
@@ -22,6 +23,7 @@
     "@prisma/client": "2.5.1",
     "baseui": "^9.97.0",
     "cloudinary-react": "^1.6.6",
+    "fabric": "^4.1.0",
     "instagram-basic-display": "github:stupidsystems/instagram-basic-display#master",
     "instagram-private-api": "^1.41.0",
     "instagram-web-api": "^2.2.2",

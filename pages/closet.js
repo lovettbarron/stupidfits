@@ -23,8 +23,12 @@ const Blog = (props) => {
         </header>
 
         <main>
+          <Link href="/item">
+            <a>
+              <button>Add an item</button>
+            </a>
+          </Link>
           <h2>Outerwear</h2>
-          <Link href="/item"><a><button>Add an item</button></a></Link>
           <ul>
             {props.items
               .filter((c) => c.type === "JACKET")
