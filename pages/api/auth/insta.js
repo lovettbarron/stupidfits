@@ -5,7 +5,7 @@ export default async function handle(req, res) {
   try {
     ig = await new InstagramBasicDisplayApi({
       appId: process.env.INSTAGRAM_CLIENT_ID,
-      redirectUri: process.env.HOST,
+      redirectUri: `${process.env.HOST}/api/auth/insta`,
       appSecret: process.env.INSTAGRAM_CLIENT_SECRET,
     });
   } catch (err) {
