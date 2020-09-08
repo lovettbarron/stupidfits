@@ -15,7 +15,10 @@ export default async function handle(req, res) {
             email: session.user.email,
           },
         },
-        include: { media: true, components: { include: { brand: true } } },
+        include: {
+          media: true,
+          components: { include: { brand: true } },
+        },
       })
       .finally(async () => {
         await prisma.$disconnect();

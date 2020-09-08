@@ -51,9 +51,13 @@ const Blog = (props) => {
         <hr />
         <h3>Get started with your recent fits</h3>
         <main>
-          {props.feed.map((fit) => (
-            <FitBox {...fit} />
-          ))}
+          {props.feed
+            .sort((a, b) => {
+              return b.media.timestamp - a.media.timestamp;
+            })
+            .map((fit) => (
+              <FitBox {...fit} />
+            ))}
         </main>
         <footer>
           <ul>
