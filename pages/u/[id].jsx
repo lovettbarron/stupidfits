@@ -37,9 +37,13 @@ const UserProfile = (props) => {
           >
             <Tab title="Fits">
               {" "}
-              {props.fits.map((fit) => (
-                <FitBox {...fit} username={props.insta.username} />
-              ))}
+              {props.fits
+                .sort((a, b) => {
+                  return b.media.timestamp - a.media.timestamp;
+                })
+                .map((fit) => (
+                  <FitBox {...fit} username={props.insta.username} />
+                ))}
             </Tab>
             <Tab title="Closet">
               {" "}
