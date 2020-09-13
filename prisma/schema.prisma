@@ -118,7 +118,7 @@ model Item {
   year     Int?
   size     String?
   colour   Colour[]
-  Sale     String?
+  sale     String?
   archive  Boolean?
   repair   Boolean?
   closet   Closet[] @relation("ClosetContent", fields: [closetId], references: [id])

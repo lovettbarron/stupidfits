@@ -19,20 +19,22 @@ export default async function handle(req, res) {
   }
 
   const code = res.query.code;
-  console.log("Insta return",res.query)
+  console.log("Insta return", res.query);
 
   ig.retrieveToken(code).then((data) => {
     const token = res.data.token;
 
-      ig.retrieveLongLivedToken(token).then((d)=> {
-        const instaUpdate = await prisma.user.update({
+    ig.retrieveLongLivedToken(token).then((d) => {
+      const instaUpdate = prisma.user
+        .update({
           where: { email: session.user.email },
           data: {
-            instagramlong: d.access_token
-          }
+            instagramlong: d.access_token,
+          },
+        })
+        .then((u) => {
+          res.json(u);
         });
-
-      })
-
+    });
   });
 }
