@@ -41,6 +41,16 @@ const Me = (props) => {
     }
   };
 
+  const AuthWithInstagram = async () => {
+    const appid = process.env.INSTAGRAM_CLIENT_ID;
+    const uri = `${process.env.HOST}/api/auth/insta`;
+    const scope = `user_profile,user_media`;
+
+    const url = `https://api.instagram.com/oauth/authorize?client_id=${appid}&redirect_uri=${uri}&scope=${scope}&response_type=code`;
+
+    window.open(url);
+  };
+
   // checkInstagram(instagram);
   return (
     <>
@@ -55,6 +65,12 @@ const Me = (props) => {
                 We need your instagram handle to pull in your fits. You can then
                 select which ones you want to annotate on Stupid Fits.
               </p>
+
+              <>
+                <a className="auth" onClick={AuthWithInstagram}>
+                  <img src={`/img/instagram.png`} />
+                </a>
+              </>
 
               <input
                 autoFocus
@@ -91,9 +107,29 @@ const Me = (props) => {
                 type="submit"
                 value="Update"
               />
-              <a className="back" href="#" onClick={() => Router.push("/")}>
-                or Cancel
-              </a>
+              <hr />
+              <h2>Import Closet CSV</h2>
+              <p>
+                This project started with my{" "}
+                <a
+                  href="https://andrewlb.com/writing/intentional-wardrobe/"
+                  target="_blank"
+                >
+                  More Intentional Wardrobe
+                </a>{" "}
+                prototype on Notion. Building this app, I wanted an easy way to
+                import the work I'd already done. So, you can too.
+              </p>
+              <p>
+                Basically, if you have a CSV file with the following columns:{" "}
+                <pre>
+                  brand (brand name, will be lowercased) name (name of the
+                  piece) type (BAG, SHOE, JACKET, PANT, SHIRT, LAYER, EXTRA)
+                  year (A number) size (a string) sale (URL to grailed or
+                  whatever)
+                </pre>
+                <h3>Upload Dialog Goes Here</h3>
+              </p>
             </form>
           </div>
           <style jsx>{`

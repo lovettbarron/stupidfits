@@ -1,7 +1,13 @@
 import InstagramBasicDisplayApi from "instagram-basic-display";
+import { PrismaClient } from "@prisma/client";
+import { getSession, session } from "next-auth/client";
+
+const prisma = new PrismaClient();
 
 export default async function handle(req, res) {
   let ig;
+  const session = await getSession({ req });
+  // Generate the client
   try {
     ig = await new InstagramBasicDisplayApi({
       appId: process.env.INSTAGRAM_CLIENT_ID,
@@ -12,21 +18,21 @@ export default async function handle(req, res) {
     console.log(err);
   }
 
-  console.log(ig.authorizationUrl);
-  // -> generates a user-code after successfull authorization
-
-  const code = ig.authorizationUrl;
-
-  // Temp
-  // IGQVJVUnBtT21HNUlheVBXQTZAIYlZAaNkFVcUlMUThTRV9tTjQxVmtUZAkp5d3RidEpaZAmNvYkRtWDdXT3hpMWdnbkZAqNjkzaHRkZA0lqZAXFrS0pOWUVqb3dENDBielBZAZAHBzRHhqanpoREgtUVUzYkl0RgZDZD
+  const code = res.query.code;
+  console.log("Insta return",res.query)
 
   ig.retrieveToken(code).then((data) => {
-    const token =
-      "IGQVJVUnBtT21HNUlheVBXQTZAIYlZAaNkFVcUlMUThTRV9tTjQxVmtUZAkp5d3RidEpaZAmNvYkRtWDdXT3hpMWdnbkZAqNjkzaHRkZA0lqZAXFrS0pOWUVqb3dENDBielBZAZAHBzRHhqanpoREgtUVUzYkl0RgZDZD";
+    const token = res.data.token;
 
-    ig.retrieveUserNode(token).then((data) => {
-      console.log(data);
-      res.json(data);
-    });
+      ig.retrieveLongLivedToken(token).then((d)=> {
+        const instaUpdate = await prisma.user.update({
+          where: { email: session.user.email },
+          data: {
+            instagramlong: d.access_token
+          }
+        });
+
+      })
+
   });
 }

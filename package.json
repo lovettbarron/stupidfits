@@ -24,6 +24,7 @@
     "baseui": "^9.97.0",
     "cloudinary-react": "^1.6.6",
     "fabric": "^4.1.0",
+    "fast-csv": "^4.3.2",
     "instagram-basic-display": "github:stupidsystems/instagram-basic-display#master",
     "instagram-private-api": "^1.41.0",
     "instagram-web-api": "^2.2.2",
