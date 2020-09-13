@@ -1,5 +1,4 @@
 import fs from "fs";
-import path from "path";
 import csv from "fast-csv";
 
 import { PrismaClient } from "@prisma/client";
@@ -7,7 +6,7 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 export default async function handle(req, res) {
-  res.json("Unfinished endpoint");
+  // res.json("Unfinished endpoint");
 
   const rows = [];
   const batched = [];
