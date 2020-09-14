@@ -18,11 +18,12 @@ export default async function handle(req, res) {
     console.log(err);
   }
 
-  console.log("Insta return", res.query);
-  const code = res.query.code;
+  console.log("Insta return", req.query);
+  const code = req.query.code;
 
   ig.retrieveToken(code).then((data) => {
-    const token = res.data.token;
+    const token = req.data.token;
+    console.log("Get ")
 
     ig.retrieveLongLivedToken(token).then((d) => {
       const instaUpdate = prisma.user
@@ -33,7 +34,12 @@ export default async function handle(req, res) {
           },
         })
         .then((u) => {
-          res.json(u);
+          // res.json(u);
+          // Redirect to Feed
+          res.writeHead(302, {
+            'Location': '/feed'
+          });
+          res.end();
         });
     });
   });
