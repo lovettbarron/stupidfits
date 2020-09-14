@@ -40,7 +40,11 @@ export default async function handle(req, res) {
             'Location': '/feed'
           });
           res.end();
-        });
+        }).catch(err => {
+      res.json("error",err)
+    });;
+    }).catch(err => {
+      res.json("error",err)
     });
   });
 }
