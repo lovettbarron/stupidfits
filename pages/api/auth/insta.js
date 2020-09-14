@@ -18,8 +18,8 @@ export default async function handle(req, res) {
     console.log(err);
   }
 
-  const code = res.query.code;
   console.log("Insta return", res.query);
+  const code = res.query.code;
 
   ig.retrieveToken(code).then((data) => {
     const token = res.data.token;
