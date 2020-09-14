@@ -18,20 +18,29 @@ export default async function handle(req, res) {
     console.log(err);
   }
 
-  console.log("Insta return", req.query);
+  // const instaurl = `https://api.instagram.com/oauth/`
+
+
+  
+  //   const token = await fetch(
+  //     `${instaurl}/`
+  //   );
+  //   insta = await res.json();
+  //   // console.log("insta", insta);
+
+
+  // console.log("Insta return", req.query);
   const code = req.query.code; // Auth code
+try {
 
-  ig.retrieveToken(code).then((data) => {
-    const token = req.data.token; // Access Token
-    console.log("Get token",token)
+  const {token} = await ig.retrieveToken(code);
+  const { access_token} = await  ig.retrieveLongLivedToken(token)
 
-    ig.retrieveLongLivedToken(token).then((d) => {
-      console.log("Got Long token", d.access_token)
-      const instaUpdate = prisma.user
+  const instaUpdate = prisma.user
         .update({
           where: { email: session.user.email },
           data: {
-            instagramlong: d.access_token,
+            instagramlong: access_token,
           },
         })
         .then((u) => {
@@ -41,13 +50,40 @@ export default async function handle(req, res) {
             'Location': '/feed'
           });
           res.end();
-        }).catch(err => {
-      res.json("error saving user",err)
-    });;
-    }).catch(err => {
-      res.json("error long token",err)
-    });
-  }).catch(err => {
+        })
+
+      } catch(err => {
       res.json("error getting token",err)
     });;
+
+
+  // ig.retrieveToken(code).then((data) => {
+  //   const token = data.token; // Access Token
+  //   console.log("Get token",token)
+
+  //   ig.retrieveLongLivedToken(token).then((d) => {
+  //     console.log("Got Long token", d.access_token)
+  //     const instaUpdate = prisma.user
+  //       .update({
+  //         where: { email: session.user.email },
+  //         data: {
+  //           instagramlong: d.access_token,
+  //         },
+  //       })
+  //       .then((u) => {
+  //         // res.json(u);
+  //         // Redirect to Feed
+  //         res.writeHead(302, {
+  //           'Location': '/feed'
+  //         });
+  //         res.end();
+  //       }).catch(err => {
+  //     res.json("error saving user",err)
+  //   });;
+  //   }).catch(err => {
+  //     res.json("error long token",err)
+  //   });
+  // }).catch(err => {
+  //     res.json("error getting token",err)
+  //   });;
 }
