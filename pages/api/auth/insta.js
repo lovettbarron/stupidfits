@@ -19,14 +19,14 @@ export default async function handle(req, res) {
   }
 
   console.log("Insta return", req.query);
-  const code = req.query.code;
+  const code = req.query.code; // Auth code
 
   ig.retrieveToken(code).then((data) => {
-    const token = req.data.token;
-    console.log("Get ")
+    const token = req.data.token; // Access Token
+    console.log("Get token",token)
 
     ig.retrieveLongLivedToken(token).then((d) => {
-      c
+      console.log("Got Long token", d.access_token)
       const instaUpdate = prisma.user
         .update({
           where: { email: session.user.email },
