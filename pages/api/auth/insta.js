@@ -20,38 +20,32 @@ export default async function handle(req, res) {
 
   // const instaurl = `https://api.instagram.com/oauth/`
 
-
-  
   //   const token = await fetch(
   //     `${instaurl}/`
   //   );
   //   insta = await res.json();
   //   // console.log("insta", insta);
 
-
   // console.log("Insta return", req.query);
   const code = req.query.code; // Auth code
-try {
 
-  const {token} = await ig.retrieveToken(code);
-  const { access_token} = await  ig.retrieveLongLivedToken(token)
+  const { token } = await ig.retrieveToken(code);
+  const { access_token } = await ig.retrieveLongLivedToken(token);
+  try {
+    const instaUpdate = await prisma.user.update({
+      where: { email: session.user.email },
+      data: {
+        instagramlong: access_token,
+      },
+    });
 
-  const instaUpdate = await prisma.user.update({
-          where: { email: session.user.email },
-          data: {
-            instagramlong: access_token,
-          },
-        })
-      
-        res.writeHead(302, {
-          'Location': '/feed'
-        });
-        res.end();
-
-      } catch (err) {
-      res.json("error getting token",err)
-    };
-
+    res.writeHead(302, {
+      Location: "/feed",
+    });
+    res.end();
+  } catch (err) {
+    res.json("error getting token", err);
+  }
 
   // ig.retrieveToken(code).then((data) => {
   //   const token = data.token; // Access Token
