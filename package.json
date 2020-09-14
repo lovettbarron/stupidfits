@@ -9,7 +9,7 @@
   "scripts": {
     "dev": "next",
     "build": "next build",
-    "heroku-postbuild ": "next start -p $PORT",
+    "heroku-postbuild ": "next build",
     "start": "next start -p $PORT",
     "prismastage": "npx prisma generate && npx prisma migrate save  -n 'up' --experimental && npx prisma migrate up --experimental",
     "prismaprod": "npx prisma generate && npx prisma migrate save -n 'up' --experimental && npx prisma migrate up --experimental",
