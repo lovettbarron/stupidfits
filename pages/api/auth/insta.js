@@ -36,25 +36,21 @@ try {
   const {token} = await ig.retrieveToken(code);
   const { access_token} = await  ig.retrieveLongLivedToken(token)
 
-  const instaUpdate = prisma.user
-        .update({
+  const instaUpdate = await prisma.user.update({
           where: { email: session.user.email },
           data: {
             instagramlong: access_token,
           },
         })
-        .then((u) => {
-          // res.json(u);
-          // Redirect to Feed
-          res.writeHead(302, {
-            'Location': '/feed'
-          });
-          res.end();
-        })
+      
+        res.writeHead(302, {
+          'Location': '/feed'
+        });
+        res.end();
 
-      } catch(err => {
+      } catch (err) {
       res.json("error getting token",err)
-    });;
+    };
 
 
   // ig.retrieveToken(code).then((data) => {
