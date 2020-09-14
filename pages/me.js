@@ -42,7 +42,7 @@ const Me = (props) => {
   };
 
   const AuthWithInstagram = async () => {
-    const appid = process.env.INSTAGRAM_CLIENT_ID;
+    const appid = `${process.env.INSTAGRAM_CLIENT_ID || '325074402038126'}`;
     const uri = `${process.env.HOST}/api/auth/insta`;
     const scope = `user_profile,user_media`;
 
@@ -123,9 +123,9 @@ const Me = (props) => {
               <p>
                 Basically, if you have a CSV file with the following columns:{" "}
                 <pre>
-                  brand (brand name, will be lowercased) name (name of the
-                  piece) type (BAG, SHOE, JACKET, PANT, SHIRT, LAYER, EXTRA)
-                  year (A number) size (a string) sale (URL to grailed or
+                  brand (brand name, will be lowercased)<br/>name (name of the
+                  piece) <br/>type (BAG, SHOE, JACKET, PANT, SHIRT, LAYER, EXTRA)
+                  <br/>year (A number) <br/>size (a string) <br/>sale (URL to grailed or
                   whatever)
                 </pre>
                 <h3>Upload Dialog Goes Here</h3>
@@ -136,9 +136,20 @@ const Me = (props) => {
             .page {
               padding: 3rem;
               display: flex;
+              max-width: 600px;
               justify-content: center;
               align-items: center;
             }
+
+          .auth img {
+          max-width: 20rem;
+          transition: all 0.4s;
+        }
+        .auth img:hover {
+          -webkit-filter: invert(1);
+          filter: invert(1);
+          background: black;
+        }
 
             input[type="text"],
             textarea {
