@@ -26,6 +26,7 @@ export default async function handle(req, res) {
     console.log("Get ")
 
     ig.retrieveLongLivedToken(token).then((d) => {
+      c
       const instaUpdate = prisma.user
         .update({
           where: { email: session.user.email },
@@ -41,10 +42,12 @@ export default async function handle(req, res) {
           });
           res.end();
         }).catch(err => {
-      res.json("error",err)
+      res.json("error saving user",err)
     });;
     }).catch(err => {
-      res.json("error",err)
+      res.json("error long token",err)
     });
-  });
+  }).catch(err => {
+      res.json("error getting token",err)
+    });;
 }
