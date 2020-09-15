@@ -42,7 +42,7 @@ const Me = (props) => {
   };
 
   const AuthWithInstagram = async () => {
-    const appid = `${process.env.INSTAGRAM_CLIENT_ID || '325074402038126'}`;
+    const appid = `${process.env.INSTAGRAM_CLIENT_ID || "325074402038126"}`;
     const uri = `${process.env.HOST}/api/auth/insta`;
     const scope = `user_profile,user_media`;
 
@@ -65,12 +65,6 @@ const Me = (props) => {
                 We need your instagram handle to pull in your fits. You can then
                 select which ones you want to annotate on Stupid Fits.
               </p>
-
-              <>
-                <a className="auth" onClick={AuthWithInstagram}>
-                  <img src={`/img/instagram.png`} />
-                </a>
-              </>
 
               <input
                 autoFocus
@@ -108,7 +102,19 @@ const Me = (props) => {
                 value="Update"
               />
               <hr />
-              <h2>Import Closet CSV</h2>
+              <hr />
+              <hr />
+              <hr />
+              <hr />
+              <h1>The following features are coming, but don't work yet</h1>
+              <h3>Sync with Private Instagram Account</h3>
+
+              <a className="auth" onClick={AuthWithInstagram}>
+                <img src={`/img/instagram.png`} />
+              </a>
+
+              <hr />
+              <h3>Import Closet CSV</h3>
               <p>
                 This project started with my{" "}
                 <a
@@ -123,10 +129,14 @@ const Me = (props) => {
               <p>
                 Basically, if you have a CSV file with the following columns:{" "}
                 <pre>
-                  brand (brand name, will be lowercased)<br/>name (name of the
-                  piece) <br/>type (BAG, SHOE, JACKET, PANT, SHIRT, LAYER, EXTRA)
-                  <br/>year (A number) <br/>size (a string) <br/>sale (URL to grailed or
-                  whatever)
+                  brand (brand name, will be lowercased)
+                  <br />
+                  name (name of the piece) <br />
+                  type (BAG, SHOE, JACKET, PANT, SHIRT, LAYER, EXTRA)
+                  <br />
+                  year (A number) <br />
+                  size (a string) <br />
+                  sale (URL to grailed or whatever)
                 </pre>
                 <h3>Upload Dialog Goes Here</h3>
               </p>
@@ -141,15 +151,15 @@ const Me = (props) => {
               align-items: center;
             }
 
-          .auth img {
-          max-width: 20rem;
-          transition: all 0.4s;
-        }
-        .auth img:hover {
-          -webkit-filter: invert(1);
-          filter: invert(1);
-          background: black;
-        }
+            .auth img {
+              max-width: 20rem;
+              transition: all 0.4s;
+            }
+            .auth img:hover {
+              -webkit-filter: invert(1);
+              filter: invert(1);
+              background: black;
+            }
 
             input[type="text"],
             textarea {

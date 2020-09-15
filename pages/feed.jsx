@@ -68,7 +68,6 @@ export const getServerSideProps = async (context) => {
       `${process.env.HOST}/api/insta/user?id=${user.instagram}`
     );
     insta = await res.json();
-    // console.log("insta", insta);
   }
 
   // Fetch fits for this user and check against existing instagram
