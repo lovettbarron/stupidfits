@@ -45,7 +45,8 @@ class InstagramBasicDisplayApi {
     return axios
       .post(`${INSTAGRAM_GRAPH_BASE_URL}/access_token`, form, {
         headers: {
-          "Content-Type": "multipart/form-data",
+          // "Content-Type": "multipart/form-data",
+          "content-type": "application/x-www-form-urlencoded",
         },
       })
       .then((res) => res.data);
@@ -164,34 +165,4 @@ export default async function handle(req, res) {
       res.json("error getting token", err);
     }
   }
-
-  // ig.retrieveToken(code).then((data) => {
-  //   const token = data.token; // Access Token
-  //   console.log("Get token",token)
-
-  //   ig.retrieveLongLivedToken(token).then((d) => {
-  //     console.log("Got Long token", d.access_token)
-  //     const instaUpdate = prisma.user
-  //       .update({
-  //         where: { email: session.user.email },
-  //         data: {
-  //           instagramlong: d.access_token,
-  //         },
-  //       })
-  //       .then((u) => {
-  //         // res.json(u);
-  //         // Redirect to Feed
-  //         res.writeHead(302, {
-  //           'Location': '/feed'
-  //         });
-  //         res.end();
-  //       }).catch(err => {
-  //     res.json("error saving user",err)
-  //   });;
-  //   }).catch(err => {
-  //     res.json("error long token",err)
-  //   });
-  // }).catch(err => {
-  //     res.json("error getting token",err)
-  //   });;
 }
