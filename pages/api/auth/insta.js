@@ -145,11 +145,8 @@ export default async function handle(req, res) {
   // Are we consuming a response from the initial query?
   if (req.query.code) {
     const code = req.query.code; // Auth code
-    ig.retrieveToken(code);
-    res.json(null);
-    // Or the token query?
-  } else if (req.query.token) {
-    const long = await ig.retrieveLongLivedToken(req.query.access_token);
+    const token = ig.retrieveToken(code);
+    const long = await ig.retrieveLongLivedToken(token.access_token);
     console.log("Long Token", long.access_token);
     try {
       const instaUpdate = await prisma.user.update({
