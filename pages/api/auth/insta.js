@@ -145,7 +145,7 @@ export default async function handle(req, res) {
   // Are we consuming a response from the initial query?
   if (req.query.code) {
     const code = req.query.code; // Auth code
-    const token = ig.retrieveToken(code);
+    const token = await ig.retrieveToken(code);
     const long = await ig.retrieveLongLivedToken(token.access_token);
     console.log("Long Token", long.access_token);
     try {
