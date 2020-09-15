@@ -23,7 +23,7 @@ const Blog = (props) => {
         {!session && (
           <>
             <a className="auth" onClick={signin}>
-              <img src={`/img/instagram.png`} />
+              <img src={`/img/login.png`} />
             </a>
           </>
         )}
