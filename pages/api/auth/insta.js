@@ -2,7 +2,7 @@ import { PrismaClient } from "@prisma/client";
 import { getSession, session } from "next-auth/client";
 const axios = require("axios");
 const querystring = require("querystring");
-
+const FormData = require("form-data");
 const prisma = new PrismaClient();
 
 const INSTAGRAM_OAUTH_BASE_URL = "https://api.instagram.com/oauth";
@@ -29,13 +29,12 @@ class InstagramBasicDisplayApi {
   }
 
   retrieveToken(userCode) {
-    const requestData = {
-      client_id: this._appId,
-      client_secret: this._appSecret,
-      grant_type: "authorization_code",
-      redirect_uri: this._redirectUri,
-      code: userCode.replace("#_", ""),
-    };
+    const form = new FormData();
+    form.append("client_id", this._appId);
+    form.append("client_secret", this._appSecret);
+    form.append("grant_type", "authorization_code");
+    form.append("redirect_uri", this._redirectUri);
+    form.append("code", userCode.replace("#_", ""));
 
     console.log(
       "Token Request",
@@ -44,7 +43,11 @@ class InstagramBasicDisplayApi {
     );
 
     return axios
-      .post(`${INSTAGRAM_GRAPH_BASE_URL}/access_token`, requestData)
+      .post(`${INSTAGRAM_GRAPH_BASE_URL}/access_token`, form, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
       .then((res) => res.data);
   }
 
