@@ -36,6 +36,13 @@ class InstagramBasicDisplayApi {
       redirect_uri: this._redirectUri,
       code: userCode,
     };
+
+    console.log(
+      "Token Request",
+      `${INSTAGRAM_GRAPH_BASE_URL}/access_token`,
+      querystring.stringify(requestData)
+    );
+
     return axios
       .post(
         `${INSTAGRAM_GRAPH_BASE_URL}/access_token`,
@@ -50,6 +57,13 @@ class InstagramBasicDisplayApi {
       client_secret: this._appSecret,
       access_token: accessToken,
     };
+
+    console.log(
+      "Long Token Request",
+      `${INSTAGRAM_GRAPH_BASE_URL}/access_token?${querystring.stringify(
+        requestData
+      )}`
+    );
 
     return axios
       .get(
