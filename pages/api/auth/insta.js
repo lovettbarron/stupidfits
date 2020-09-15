@@ -44,10 +44,7 @@ class InstagramBasicDisplayApi {
     );
 
     return axios
-      .post(
-        `${INSTAGRAM_GRAPH_BASE_URL}/access_token`,
-        querystring.stringify(requestData)
-      )
+      .post(`${INSTAGRAM_GRAPH_BASE_URL}/access_token`, requestData)
       .then((res) => res.data);
   }
 
