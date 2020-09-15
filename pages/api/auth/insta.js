@@ -34,13 +34,13 @@ class InstagramBasicDisplayApi {
       client_secret: this._appSecret,
       grant_type: "authorization_code",
       redirect_uri: this._redirectUri,
-      code: userCode,
+      code: userCode.replace("#_", ""),
     };
 
     console.log(
       "Token Request",
       `${INSTAGRAM_GRAPH_BASE_URL}/access_token`,
-      querystring.stringify(requestData)
+      requestData
     );
 
     return axios
