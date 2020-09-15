@@ -31,12 +31,14 @@ class InstagramBasicDisplayApi {
   }
 
   retrieveToken(userCode) {
+    console.log(String(this._redirectUri));
+
     var data = qs.stringify({
-      client_id: this._appId,
-      client_secret: this._appSecret,
+      client_id: String(this._appId),
+      client_secret: String(this._appSecret),
       grant_type: "authorization_code",
-      redirect_uri: this._redirectUri,
-      code: userCode.replace("#_", ""),
+      redirect_uri: "https://stage.stupidfits.com/api/auth/insta", //String(this._redirectUri),
+      code: String(userCode.replace("#_", "")),
     });
     var config = {
       method: "post",
