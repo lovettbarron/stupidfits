@@ -39,7 +39,7 @@ class InstagramBasicDisplayApi {
     console.log(
       "Token Request",
       `${INSTAGRAM_GRAPH_BASE_URL}/access_token`,
-      requestData
+      form
     );
 
     return axios
