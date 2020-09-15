@@ -42,14 +42,21 @@ class InstagramBasicDisplayApi {
       form
     );
 
-    return axios
-      .post(`${INSTAGRAM_GRAPH_BASE_URL}/access_token`, form, {
-        headers: {
-          // "Content-Type": "multipart/form-data",
-          "content-type": "application/x-www-form-urlencoded",
-        },
-      })
-      .then((res) => res.data);
+    const config = {
+      method: "post",
+      url: `${INSTAGRAM_GRAPH_BASE_URL}/access_token`,
+      headers: {
+        ...form.getHeaders(),
+      },
+      data: form,
+    };
+    return axios(config).then((res) => res.data);
+    // .post(`${INSTAGRAM_GRAPH_BASE_URL}/access_token`, form, {
+    //   headers: {
+    //     // "Content-Type": "multipart/form-data",
+    //     "content-type": "application/x-www-form-urlencoded",
+    //   },
+    // })
   }
 
   retrieveLongLivedToken(accessToken) {
