@@ -150,11 +150,20 @@ export default async function handle(req, res) {
   // Are we consuming a response from the initial query?
   if (req.query.code) {
     const code = req.query.code; // Auth code
+      try {
     const token = await ig.retrieveToken(code);
     console.log(token);
+  } catch (err) {
+    console.log("Error retrieving Temp Token",err);
+  }
+  try {
     if (!token) res.json("error fetching token");
     const long = await ig.retrieveLongLivedToken(token.access_token);
     console.log("Long Token", long.access_token);
+  } catch (err) {
+    console.log("Error retrieving Long Token",err);
+  }
+
     try {
       const instaUpdate = await prisma.user.update({
         where: { email: session.user.email },
