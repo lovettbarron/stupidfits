@@ -147,7 +147,7 @@ export const getServerSideProps = async (context) => {
       cookie: context.req.headers.cookie,
     },
   });
-  let feed;
+  let feed = [];
   try {
     feed = await res.json();
   } catch (e) {

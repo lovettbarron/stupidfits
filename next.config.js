@@ -1,4 +1,5 @@
 module.exports = {
+  poweredByHeader: false,
   webpack: function (config) {
     config.externals = config.externals || {};
     config.externals["styletron-server"] = "styletron-server";
