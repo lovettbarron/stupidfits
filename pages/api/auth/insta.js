@@ -165,34 +165,46 @@ export default async function handle(req, res) {
   // Are we consuming a response from the initial query?
   if (req.query.code) {
     const code = req.query.code; // Auth code
-    try {
-      const token = await ig.retrieveToken(code);
-      console.log(token);
-    } catch (err) {
-      console.log("Error retrieving Temp Token", err);
+    let token = null;
+    let long = null;
+    if (code) {
+      try {
+        token = await ig.retrieveToken(code);
+        console.log("Got Short Token", token);
+      } catch (err) {
+        console.log("Error retrieving Short Token", err);
+      }
+    } else {
+      res.redirect("/me");
     }
-    try {
-      if (!token) res.json("error fetching token");
-      const long = await ig.retrieveLongLivedToken(token.access_token);
-      console.log("Long Token", long.access_token);
-    } catch (err) {
-      console.log("Error retrieving Long Token", err);
+    if (token) {
+      try {
+        if (!token) res.json("error fetching token");
+        const long = await ig.retrieveLongLivedToken(token.access_token);
+        console.log("Long Token", long.access_token);
+      } catch (err) {
+        console.log("Error retrieving Long Token", err);
+      }
+    } else {
+      res.redirect("/me");
     }
 
-    try {
-      const instaUpdate = await prisma.user.update({
-        where: { email: session.user.email },
-        data: {
-          instagramlong: long.access_token,
-        },
-      });
+    if (long) {
+      try {
+        const instaUpdate = await prisma.user.update({
+          where: { email: session.user.email },
+          data: {
+            instagramlong: long.access_token,
+          },
+        });
 
-      res.writeHead(302, {
-        Location: "/feed",
-      });
-      res.end();
-    } catch (err) {
-      res.json("error getting token", err);
+        res.writeHead(302, {
+          Location: "/feed",
+        });
+        res.end();
+      } catch (err) {
+        res.redirect("/me");
+      }
     }
   }
 }
