@@ -4,7 +4,7 @@ import axios from "axios";
 import querystring from "querystring";
 import FormData from "form-data";
 import request from "request";
-import qs from "qs";
+import qs from "querystring";
 const prisma = new PrismaClient();
 
 const INSTAGRAM_OAUTH_BASE_URL = "https://api.instagram.com/oauth";
