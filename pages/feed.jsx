@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import fetch from "isomorphic-unfetch";
 import Layout from "../components/Layout";
 import Gram from "../components/Gram";
@@ -7,8 +7,27 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { useSession, getSession } from "next-auth/client";
 
 const Feed = (props) => {
-  const [posts, usePosts] = useState(props.insta.posts);
+  const [posts, setPosts] = useState([]);
+  const [insta, setInsta] = useState([]);
   const fetchData = () => {};
+
+  const fetchInitial = async () => {
+    if (props.user && props.user.instagram) {
+      const res = await fetch(
+        `${process.env.HOST}/api/insta/user?id=${props.user.instagram}`
+      );
+      const payload = await res.json();
+      // console.log("Got inst", payload);
+      console.log("Fetching insta", payload.username, payload.postsCount);
+      setInsta(payload);
+      setPosts(payload.posts);
+    }
+  };
+
+  useEffect(() => {
+    fetchInitial();
+  });
+
   return (
     <Layout>
       <div className="page">
@@ -17,7 +36,7 @@ const Feed = (props) => {
         {props.error && <p>There was an Error: {props.error} </p>}
         <main>
           <InfiniteScroll
-            dataLength={props.insta.postsCount} //This is important field to render the next data
+            dataLength={insta.postsCount || 0} //This is important field to render the next data
             next={fetchData}
             hasMore={true}
             loader={<h4>Loading...</h4>}
@@ -26,20 +45,20 @@ const Feed = (props) => {
                 <b>Yay! You have seen it all</b>
               </p>
             }
-            // // below props only if you need pull down functionality
-            // refreshFunction={this.refresh}
-            // pullDownToRefresh
-            // pullDownToRefreshThreshold={20}
-            // pullDownToRefreshContent={
-            //   <h3 style={{ textAlign: "center" }}>
-            //     &#8595; Pull down to refresh
-            //   </h3>
-            // }
-            // releaseToRefreshContent={
-            //   <h3 style={{ textAlign: "center" }}>
-            //     &#8593; Release to refresh
-            //   </h3>
-            // }
+            // below props only if you need pull down functionality
+            refreshFunction={fetchInitial}
+            pullDownToRefresh
+            pullDownToRefreshThreshold={20}
+            pullDownToRefreshContent={
+              <h3 style={{ textAlign: "center" }}>
+                &#8595; Pull down to refresh
+              </h3>
+            }
+            releaseToRefreshContent={
+              <h3 style={{ textAlign: "center" }}>
+                &#8593; Release to refresh
+              </h3>
+            }
           >
             {posts.map((fit) => (
               <Gram
@@ -52,7 +71,7 @@ const Feed = (props) => {
                     )) ||
                   null
                 }
-                username={props.insta.username}
+                username={insta.username}
               />
             ))}
           </InfiniteScroll>
@@ -84,6 +103,7 @@ export const getServerSideProps = async (context) => {
   const session = await getSession(context);
   let error = null;
   let insta;
+  let user;
   try {
     // Get user and instagram username
     const res = await fetch(`${process.env.HOST}/api/user`, {
@@ -93,15 +113,15 @@ export const getServerSideProps = async (context) => {
         cookie: context.req.headers.cookie,
       },
     });
-    const user = await res.json();
+    user = await res.json();
 
     // Fetch Instagram Feed
-    if (user && user.instagram) {
-      const res = await fetch(
-        `${process.env.HOST}/api/insta/user?id=${user.instagram}`
-      );
-      insta = await res.json();
-    }
+    // if (user && user.instagram) {
+    //   const res = await fetch(
+    //     `${process.env.HOST}/api/insta/user?id=${user.instagram}`
+    //   );
+    //   insta = await res.json();
+    // }
   } catch (e) {
     error = e;
   }
@@ -122,7 +142,7 @@ export const getServerSideProps = async (context) => {
   }
 
   return {
-    props: { insta: insta, fits: fits, error: error },
+    props: { user: user, fits: fits, error: error },
   };
 };
 
