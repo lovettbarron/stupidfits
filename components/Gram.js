@@ -9,7 +9,7 @@ const Gram = (props) => {
   const [session, loading] = useSession();
   const [fit, setFit] = useState(props.fit);
 
-  console.log("Fit?", props.fit);
+  // console.log("Fit?", props.fit);
   const addFit = async (e) => {
     e.preventDefault();
     console.log("Adding fit", `${process.env.HOST}/api/insta/{props.id}`);

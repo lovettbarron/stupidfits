@@ -16,6 +16,17 @@ class InstagramBasicDisplayApi {
     this._redirectUri = config.redirectUri;
     this._appSecret = config.appSecret;
 
+    this.instance = axios.create({
+      httpsAgent: new https.Agent({
+        rejectUnauthorized: false,
+      }),
+    });
+
+    // At request level
+    this.agent = new https.Agent({
+      rejectUnauthorized: false,
+    });
+
     this._authorizationUrl = `${INSTAGRAM_OAUTH_BASE_URL}/authorize?${querystring.stringify(
       {
         client_id: this._appId,
@@ -74,7 +85,8 @@ class InstagramBasicDisplayApi {
       .get(
         `${INSTAGRAM_GRAPH_BASE_URL}/access_token?${querystring.stringify(
           requestData
-        )}`
+        )}`,
+        { httpsAgent: this.agent }
       )
       .then((res) => res.data);
   }
@@ -90,7 +102,8 @@ class InstagramBasicDisplayApi {
 
     return axios
       .get(
-        `${INSTAGRAM_GRAPH_BASE_URL}/me?${querystring.stringify(requestData)}`
+        `${INSTAGRAM_GRAPH_BASE_URL}/me?${querystring.stringify(requestData)}`,
+        { httpsAgent: this.agent }
       )
       .then((res) => res.data);
   }
@@ -110,7 +123,8 @@ class InstagramBasicDisplayApi {
       .get(
         `${INSTAGRAM_GRAPH_BASE_URL}/me/media?${querystring.stringify(
           requestData
-        )}`
+        )}`,
+        { httpsAgent: this.agent }
       )
       .then((res) => res.data);
   }
@@ -128,7 +142,8 @@ class InstagramBasicDisplayApi {
     return axios.get(
       `${INSTAGRAM_GRAPH_BASE_URL}/${mediaId}?${querystring.stringify(
         requestData
-      )}`
+      )}`,
+      { httpsAgent: this.agent }
     );
   }
 }
@@ -150,19 +165,19 @@ export default async function handle(req, res) {
   // Are we consuming a response from the initial query?
   if (req.query.code) {
     const code = req.query.code; // Auth code
-      try {
-    const token = await ig.retrieveToken(code);
-    console.log(token);
-  } catch (err) {
-    console.log("Error retrieving Temp Token",err);
-  }
-  try {
-    if (!token) res.json("error fetching token");
-    const long = await ig.retrieveLongLivedToken(token.access_token);
-    console.log("Long Token", long.access_token);
-  } catch (err) {
-    console.log("Error retrieving Long Token",err);
-  }
+    try {
+      const token = await ig.retrieveToken(code);
+      console.log(token);
+    } catch (err) {
+      console.log("Error retrieving Temp Token", err);
+    }
+    try {
+      if (!token) res.json("error fetching token");
+      const long = await ig.retrieveLongLivedToken(token.access_token);
+      console.log("Long Token", long.access_token);
+    } catch (err) {
+      console.log("Error retrieving Long Token", err);
+    }
 
     try {
       const instaUpdate = await prisma.user.update({

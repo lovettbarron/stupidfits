@@ -42,18 +42,18 @@ export default async function handle(req, res) {
     res.json(posts);
   } else {
     const posts = await prisma.fit
-    .findMany({
-      where: {},
-      include: {
-        media: true,
-        components: { include: { brand: true } },
-      },
-    })
-    .finally(async () => {
-      await prisma.$disconnect();
-    });
-  // console.log(posts);
-  res.json(posts);
+      .findMany({
+        where: {},
+        include: {
+          media: true,
+          components: { include: { brand: true } },
+        },
+      })
+      .finally(async () => {
+        await prisma.$disconnect();
+      });
+    // console.log(posts);
+    res.json(posts);
     // res.send([]);
   }
 }

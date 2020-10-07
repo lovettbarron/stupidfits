@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import fetch from "isomorphic-unfetch";
 import Layout from "../components/Layout";
 import Router from "next/router";
+import { FileUploader } from "baseui/file-uploader";
 import { useSession, getSession } from "next-auth/client";
 
 const Me = (props) => {
@@ -11,6 +12,8 @@ const Me = (props) => {
   const [email, setEmail] = useState(props.user.email);
   const [username, setUsername] = useState(props.user.username);
   const [instagramData, setInstagramData] = useState("");
+  const [uploadSuccess, setUploadSuccess] = useState(false);
+  const [uploadError, setUploadError] = useState(false);
 
   const submitData = async (e) => {
     e.preventDefault();
@@ -26,6 +29,29 @@ const Me = (props) => {
       await Router.push("/feed");
     } catch (error) {
       console.error(error);
+    }
+  };
+
+  const uploadCSV = async (acceptedFiles, rejectedFiles) => {
+    console.log("Upload", acceptedFiles, rejectedFiles);
+    const sendFile = await fetch(`${props.url}/api/import`, {
+      method: "POST",
+      body: acceptedFiles,
+    })
+      .then(
+        (response) => response.json() // if the response is a JSON object
+      )
+      .then(
+        (success) => console.log(success) // Handle the success response object
+      )
+      .catch(
+        (error) => console.log(error) // Handle the error response object
+      );
+    try {
+      setUploadError(null);
+    } catch (error) {
+      console.error(error);
+      setUploadError(error);
     }
   };
 
@@ -138,7 +164,7 @@ const Me = (props) => {
                   size (a string) <br />
                   sale (URL to grailed or whatever)
                 </pre>
-                <h3>Upload Dialog Goes Here</h3>
+                <FileUploader errorMessage={uploadError} onDrop={uploadCSV} />
               </p>
             </form>
           </div>
@@ -214,7 +240,7 @@ export async function getServerSideProps(context) {
   });
 
   let user = null;
-  console.log("Res", res);
+  // console.log("Res", res);
   try {
     user = await res.json();
   } catch (e) {
