@@ -15,13 +15,6 @@ class InstagramBasicDisplayApi {
     this._appId = config.appId;
     this._redirectUri = config.redirectUri;
     this._appSecret = config.appSecret;
-
-    this.instance = axios.create({
-      httpsAgent: new https.Agent({
-        rejectUnauthorized: false,
-      }),
-    });
-
     this._authorizationUrl = `${INSTAGRAM_OAUTH_BASE_URL}/authorize?${querystring.stringify(
       {
         client_id: this._appId,
