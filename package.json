@@ -23,6 +23,7 @@
     "baseui": "^9.97.0",
     "cloudinary": "^1.23.0",
     "cloudinary-react": "^1.6.6",
+    "deepmerge": "^4.2.2",
     "fabric": "^4.1.0",
     "fast-csv": "^4.3.2",
     "formidable": "^1.2.2",
