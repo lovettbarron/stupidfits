@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+ { PrismaClient } from "@prisma/client";
 import { getSession, session } from "next-auth/client";
 import axios from "axios";
 import querystring from "querystring";
@@ -22,10 +22,6 @@ class InstagramBasicDisplayApi {
       }),
     });
 
-    // At request level
-    this.agent = new https.Agent({
-      rejectUnauthorized: false,
-    });
 
     this._authorizationUrl = `${INSTAGRAM_OAUTH_BASE_URL}/authorize?${querystring.stringify(
       {
@@ -85,8 +81,7 @@ class InstagramBasicDisplayApi {
       .get(
         `${INSTAGRAM_OAUTH_BASE_URL}/access_token?${querystring.stringify(
           requestData
-        )}`,
-        { httpsAgent: this.agent }
+        )}`
       )
       .then((res) => res.data);
   }
@@ -102,8 +97,7 @@ class InstagramBasicDisplayApi {
 
     return axios
       .get(
-        `${INSTAGRAM_GRAPH_BASE_URL}/me?${querystring.stringify(requestData)}`,
-        { httpsAgent: this.agent }
+        `${INSTAGRAM_GRAPH_BASE_URL}/me?${querystring.stringify(requestData)}`
       )
       .then((res) => res.data);
   }
@@ -123,8 +117,7 @@ class InstagramBasicDisplayApi {
       .get(
         `${INSTAGRAM_GRAPH_BASE_URL}/me/media?${querystring.stringify(
           requestData
-        )}`,
-        { httpsAgent: this.agent }
+        )}`
       )
       .then((res) => res.data);
   }
@@ -142,8 +135,7 @@ class InstagramBasicDisplayApi {
     return axios.get(
       `${INSTAGRAM_GRAPH_BASE_URL}/${mediaId}?${querystring.stringify(
         requestData
-      )}`,
-      { httpsAgent: this.agent }
+      )}`
     );
   }
 }
