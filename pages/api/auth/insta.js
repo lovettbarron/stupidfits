@@ -176,7 +176,7 @@ export default async function handle(req, res) {
     if (long) {
       let user = null;
       try {
-        user = retrieveUserNode(long.access_token);
+        user = await ig.retrieveUserNode(long.access_token);
         console.log("Got user", user);
       } catch (err) {
         console.log("Unable to fetch user media");
