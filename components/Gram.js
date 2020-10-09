@@ -40,11 +40,11 @@ const Gram = (props) => {
 
   return (
     <div className="fitbox">
-      <img src={props.imageUrl || props.media.image} />
+      <img src={props.media_url || props.media.image} />
 
       <div className={fit && `description`}>
         <div>
-          <a href={props.url || props.media.url}>Post Link</a>
+          <a href={props.permalink || props.media.url}>Post Link</a>
         </div>
         <br />
 

@@ -8,11 +8,14 @@ import { Instagram, Media } from "../../../lib/insta";
 
 export default async function handle(req, res) {
   const { id, page } = req.query;
-
   const session = await getSession({ req });
-  console.log("Saving media", req.body);
+  const user = await prisma.user.findOne({
+    where: { email: session.user.email },
+  });
 
-  var instagram = new Instagram("VALID_TOKEN");
-  const user = await getUserData(id);
-  res.json(user);
+  console.log("Fetching instagram posts with token", user.instagramlong);
+  var instagram = new Instagram(user.instagramlong);
+  const posts = await instagram.fetchMedia();
+  // console.log("Found Posts", posts);
+  res.json(posts);
 }

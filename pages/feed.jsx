@@ -13,14 +13,16 @@ const Feed = (props) => {
 
   const fetchInitial = async () => {
     if (props.user && props.user.instagram) {
-      const res = await fetch(
-        `${process.env.HOST}/api/insta/user?id=${props.user.instagram}`
-      );
-      const payload = await res.json();
-      // console.log("Got inst", payload);
-      console.log("Fetching insta", payload.username, payload.postsCount);
-      setInsta(payload);
-      setPosts(payload.posts);
+      const posts = await fetch(`${process.env.HOST}/api/insta/posts`);
+      const payload = await posts.json();
+      setPosts(payload.data);
+
+      const userobj = await fetch(`${process.env.HOST}/api/insta/user`);
+      const userpayload = await userobj.json();
+      console.log("Blarg", userpayload);
+      setInsta({
+        userpayload,
+      });
     }
   };
 
@@ -34,7 +36,7 @@ const Feed = (props) => {
         <h1>All The Fits</h1>
         <p>Pick your fits from your instagram, share the details.</p>
         {props.error && <p>There was an Error: {props.error} </p>}
-        {posts && (
+        {posts && Array.isArray(posts) && (
           <main>
             <InfiniteScroll
               dataLength={insta.postsCount || 0} //This is important field to render the next data
