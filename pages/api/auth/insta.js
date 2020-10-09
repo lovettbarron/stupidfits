@@ -53,7 +53,7 @@ class InstagramBasicDisplayApi {
     });
     var config = {
       method: "post",
-      url: `${INSTAGRAM_GRAPH_BASE_URL}/access_token`,
+      url: `${INSTAGRAM_OAUTH_BASE_URL}/access_token`,
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
       },
@@ -76,14 +76,14 @@ class InstagramBasicDisplayApi {
 
     console.log(
       "Long Token Request",
-      `${INSTAGRAM_GRAPH_BASE_URL}/access_token?${querystring.stringify(
+      `${INSTAGRAM_OAUTH_BASE_URL}/access_token?${querystring.stringify(
         requestData
       )}`
     );
 
     return axios
       .get(
-        `${INSTAGRAM_GRAPH_BASE_URL}/access_token?${querystring.stringify(
+        `${INSTAGRAM_OAUTH_BASE_URL}/access_token?${querystring.stringify(
           requestData
         )}`,
         { httpsAgent: this.agent }
