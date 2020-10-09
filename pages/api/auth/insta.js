@@ -1,4 +1,4 @@
- { PrismaClient } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 import { getSession, session } from "next-auth/client";
 import axios from "axios";
 import querystring from "querystring";
@@ -21,7 +21,6 @@ class InstagramBasicDisplayApi {
         rejectUnauthorized: false,
       }),
     });
-
 
     this._authorizationUrl = `${INSTAGRAM_OAUTH_BASE_URL}/authorize?${querystring.stringify(
       {
