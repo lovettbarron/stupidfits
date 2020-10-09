@@ -75,7 +75,10 @@ class InstagramBasicDisplayApi {
           requestData
         )}`
       )
-      .then((res) => res.data);
+      .then((res) => res.data)
+      .catch(function (error) {
+        console.log(error);
+      });
   }
 
   retrieveUserNode(
@@ -86,12 +89,18 @@ class InstagramBasicDisplayApi {
       fields,
       access_token: accessToken,
     };
-
+    console.log(
+      "fetch user node",
+      `${INSTAGRAM_GRAPH_BASE_URL}/me?${querystring.stringify(requestData)}`
+    );
     return axios
       .get(
         `${INSTAGRAM_GRAPH_BASE_URL}/me?${querystring.stringify(requestData)}`
       )
-      .then((res) => res.data);
+      .then((res) => res.data)
+      .catch(function (error) {
+        console.log(error);
+      });
   }
 
   retrieveUserMedia(
@@ -164,7 +173,7 @@ export default async function handle(req, res) {
     if (token) {
       try {
         if (!token) res.json("error fetching token");
-        const long = await ig.retrieveLongLivedToken(token.access_token);
+        long = await ig.retrieveLongLivedToken(token.access_token);
         console.log("Long Token", long.access_token);
       } catch (err) {
         console.log("Error retrieving Long Token", err);
