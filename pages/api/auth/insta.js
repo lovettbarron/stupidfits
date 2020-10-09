@@ -64,14 +64,14 @@ class InstagramBasicDisplayApi {
 
     console.log(
       "Long Token Request",
-      `${INSTAGRAM_OAUTH_BASE_URL}/access_token?${querystring.stringify(
+      `${INSTAGRAM_GRAPH_BASE_URL}/access_token?${querystring.stringify(
         requestData
       )}`
     );
 
     return axios
       .get(
-        `${INSTAGRAM_OAUTH_BASE_URL}/access_token?${querystring.stringify(
+        `${INSTAGRAM_GRAPH_BASE_URL}/access_token?${querystring.stringify(
           requestData
         )}`
       )
