@@ -77,10 +77,12 @@ const FitBox = (props) => {
         .fitbox ul {
           display: flex;
           flex-wrap: wrap;
+          list-style: none;
         }
 
         .fitbox li {
           margin: 0 1rem;
+          list-style: none !important;
         }
 
         .description {

@@ -9,8 +9,8 @@
   "scripts": {
     "dev": "next",
     "build": "next build",
-    "heroku-postbuild ": "next build",
     "start": "next start -p $PORT",
+    "heroku-postbuild ": "next build",
     "prismastage": "npx prisma generate && npx prisma migrate save  -n 'up' --experimental && npx prisma migrate up --experimental",
     "prismaprod": "npx prisma generate && npx prisma migrate save -n 'up' --experimental && npx prisma migrate up --experimental",
     "db": "npx prisma studio --experimental"
@@ -21,6 +21,7 @@
   "dependencies": {
     "@prisma/client": "2.5.1",
     "baseui": "^9.97.0",
+    "cloudinary": "^1.23.0",
     "cloudinary-react": "^1.6.6",
     "fabric": "^4.1.0",
     "fast-csv": "^4.3.2",

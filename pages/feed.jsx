@@ -7,7 +7,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { useSession, getSession } from "next-auth/client";
 
 const Feed = (props) => {
-  const [posts, setPosts] = useState([]);
+  const [posts, setPosts] = useState(null);
   const [insta, setInsta] = useState([]);
   const fetchData = () => {};
 
@@ -25,7 +25,7 @@ const Feed = (props) => {
   };
 
   useEffect(() => {
-    fetchInitial();
+    if (!posts) fetchInitial();
   });
 
   return (
@@ -34,48 +34,50 @@ const Feed = (props) => {
         <h1>All The Fits</h1>
         <p>Pick your fits from your instagram, share the details.</p>
         {props.error && <p>There was an Error: {props.error} </p>}
-        <main>
-          <InfiniteScroll
-            dataLength={insta.postsCount || 0} //This is important field to render the next data
-            next={fetchData}
-            hasMore={true}
-            loader={<h4>Loading...</h4>}
-            endMessage={
-              <p style={{ textAlign: "center" }}>
-                <b>Yay! You have seen it all</b>
-              </p>
-            }
-            // below props only if you need pull down functionality
-            refreshFunction={fetchInitial}
-            pullDownToRefresh
-            pullDownToRefreshThreshold={20}
-            pullDownToRefreshContent={
-              <h3 style={{ textAlign: "center" }}>
-                &#8595; Pull down to refresh
-              </h3>
-            }
-            releaseToRefreshContent={
-              <h3 style={{ textAlign: "center" }}>
-                &#8593; Release to refresh
-              </h3>
-            }
-          >
-            {posts.map((fit) => (
-              <Gram
-                {...fit}
-                fit={
-                  (props.fits &&
-                    props.fits.length > 0 &&
-                    props.fits.find(
-                      (t) => fit.shortCode === t.media.shortcode
-                    )) ||
-                  null
-                }
-                username={insta.username}
-              />
-            ))}
-          </InfiniteScroll>
-        </main>
+        {posts && (
+          <main>
+            <InfiniteScroll
+              dataLength={insta.postsCount || 0} //This is important field to render the next data
+              next={fetchData}
+              hasMore={true}
+              loader={<h4>Loading...</h4>}
+              endMessage={
+                <p style={{ textAlign: "center" }}>
+                  <b>Yay! You have seen it all</b>
+                </p>
+              }
+              // below props only if you need pull down functionality
+              refreshFunction={fetchInitial}
+              pullDownToRefresh
+              pullDownToRefreshThreshold={20}
+              pullDownToRefreshContent={
+                <h3 style={{ textAlign: "center" }}>
+                  &#8595; Pull down to refresh
+                </h3>
+              }
+              releaseToRefreshContent={
+                <h3 style={{ textAlign: "center" }}>
+                  &#8593; Release to refresh
+                </h3>
+              }
+            >
+              {posts.map((fit) => (
+                <Gram
+                  {...fit}
+                  fit={
+                    (props.fits &&
+                      props.fits.length > 0 &&
+                      props.fits.find(
+                        (t) => fit.shortCode === t.media.shortcode
+                      )) ||
+                    null
+                  }
+                  username={insta.username}
+                />
+              ))}
+            </InfiniteScroll>
+          </main>
+        )}
       </div>
       <style jsx>{`
         main {

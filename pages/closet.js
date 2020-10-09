@@ -170,7 +170,7 @@ const Blog = (props) => {
 
         li {
           margin: 1rem;
-          list-style: none;
+          list-style: none !important;
         }
 
         .hover {

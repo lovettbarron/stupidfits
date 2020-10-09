@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import { getSession, session } from "next-auth/client";
 import { PostsInsightsFeed } from "instagram-private-api";
-
+import cloudinary from "cloudinary";
 const prisma = new PrismaClient();
 
 export default async function handle(req, res) {
@@ -48,6 +48,20 @@ async function handlePOST(req, res) {
   const id = req.query.id;
   const session = await getSession({ req });
   console.log("Saving media", req.body);
+
+  // TODO Upload image to cloudinary
+  // https://res.cloudinary.com/<your Cloudinary account's cloud name>/<resource_type>/upload/<mapped upload folder prefix>/<partial path of remote resource>
+
+  const uploadpath = req.body.imageUrl;
+  // const image = await fetch(`https://res.cloudinary.com/${process.env.CLOUDINARY_ACCOUNT}/image/upload/stupidfits/${uploadpath}`, {
+  //   method: "GET",
+  //   headers: { "Content-Type": "application/json" },
+  //   body: JSON.stringify(body),
+  // });
+
+  // cloudinary.imageTag(uploadpath, {type: "fetch"}).toHtml();
+
+  // Set path
   const media = await prisma.fit.create({
     data: {
       user: {
@@ -79,3 +93,8 @@ async function handleDELETE(req, res) {
   // });
   res.json(post);
 }
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+};
