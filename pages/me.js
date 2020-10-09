@@ -86,11 +86,16 @@ const Me = (props) => {
             <form onSubmit={submitData}>
               <h1>My Settings</h1>
               <h3>{email}</h3>
-              <h2>Your Instagram Handle</h2>
+              <h2>Sync with your Instagram Account</h2>
               <p>
-                We need your instagram handle to pull in your fits. You can then
-                select which ones you want to annotate on Stupid Fits.
+                We use the instagram api to pull in your fits. Only the images
+                you select will be part of stupidfits, and the ones you select
+                can be annotated on Stupid Fits.
               </p>
+
+              <a className="auth" onClick={AuthWithInstagram}>
+                <img src={`/img/instagram.png`} />
+              </a>
 
               <input
                 autoFocus
@@ -133,11 +138,6 @@ const Me = (props) => {
               <hr />
               <hr />
               <h1>The following features are coming, but don't work yet</h1>
-              <h3>Sync with Private Instagram Account</h3>
-
-              <a className="auth" onClick={AuthWithInstagram}>
-                <img src={`/img/instagram.png`} />
-              </a>
 
               <hr />
               <h3>Import Closet CSV</h3>

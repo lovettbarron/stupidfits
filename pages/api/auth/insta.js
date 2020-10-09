@@ -174,11 +174,20 @@ export default async function handle(req, res) {
     }
 
     if (long) {
+      let user = null;
+      try {
+        user = retrieveUserNode(long.access_token);
+        console.log("Got user", user);
+      } catch (err) {
+        console.log("Unable to fetch user media");
+        res.redirect("/me");
+      }
       try {
         const instaUpdate = await prisma.user.update({
           where: { email: session.user.email },
           data: {
             instagramlong: long.access_token,
+            instagram: user.username,
           },
         });
 

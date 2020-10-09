@@ -37,7 +37,7 @@ async function handlePOST(req, res) {
   const user = await prisma.user.update({
     where: { email: session.user.email },
     data: {
-      instagram: req.body.instagram,
+      // instagram: req.body.instagram,
       username: req.body.username,
     },
   });
