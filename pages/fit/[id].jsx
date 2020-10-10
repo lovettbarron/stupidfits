@@ -229,7 +229,7 @@ export const getServerSideProps = async (context) => {
   //   console.log("error:", e.message);
   // }  items: items
 
-  console.log("components", data);
+  // console.log("components", data);
 
   return {
     props: { ...data, url: process.env.HOST },
