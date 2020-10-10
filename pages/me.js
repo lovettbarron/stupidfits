@@ -20,7 +20,7 @@ const Me = (props) => {
   const [insta, setInsta] = useState();
 
   const submitData = async (e) => {
-    e.preventDefault();
+    if (e) e.preventDefault();
     try {
       const body = {
         instagram,
@@ -36,7 +36,7 @@ const Me = (props) => {
       });
       const data = await res.json();
       // checkInstagram(instagram);
-      await Router.push("/feed");
+      if (e) await Router.push("/feed");
     } catch (error) {
       console.error(error);
     }
@@ -99,6 +99,11 @@ const Me = (props) => {
 
   useEffect(() => {
     if (!insta) checkInstagram();
+    if (
+      props.user.profilepage !== profilepage ||
+      props.user.public !== publicprofile
+    )
+      submitData();
   });
 
   // checkInstagram();
@@ -110,6 +115,16 @@ const Me = (props) => {
             <form onSubmit={submitData}>
               <h1>My Settings</h1>
               <h3>{email}</h3>
+
+              <h3>Your Stupidfits Username</h3>
+              <input
+                style={{ textAlign: "center" }}
+                onChange={(e) => setUsername(e.target.value)}
+                placeholder="Username"
+                type="text"
+                value={username}
+              />
+
               <h2>Sync with your Instagram Account</h2>
               <p>
                 We use the instagram api to pull in your fits. Only the images
@@ -131,8 +146,8 @@ const Me = (props) => {
               <h2>Sharing Your Fits</h2>
               <Checkbox
                 checked={publicprofile}
-                checkmarkType={STYLE_TYPE.toggle}
-                labelPlacement={LABEL_PLACEMENT.bottom}
+                checkmarkType={STYLE_TYPE.toggle_round}
+                labelPlacement={LABEL_PLACEMENT.right}
                 onChange={() => setPublicprofile(!publicprofile)}
               >
                 Make my fits visible on the Stupid Fits global feed.
@@ -144,22 +159,16 @@ const Me = (props) => {
                 can wrap their minds around your revolutionary genius fit
                 combinitronics.
               </p>
+
               <Checkbox
                 checked={profilepage}
                 onChange={() => setProfilepage(!profilepage)}
-                checkmarkType={STYLE_TYPE.toggle}
-                labelPlacement={LABEL_PLACEMENT.bottom}
+                checkmarkType={STYLE_TYPE.toggle_round}
+                labelPlacement={LABEL_PLACEMENT.right}
               >
                 Make my Profile Page visible
               </Checkbox>
-              <h3>Your Stupidfits Username</h3>
-              <input
-                style={{ textAlign: "center" }}
-                onChange={(e) => setUsername(e.target.value)}
-                placeholder="Username"
-                type="text"
-                value={username}
-              />
+
               {profilepage && (
                 <>
                   <h4>Your public page is</h4>
@@ -178,10 +187,7 @@ const Me = (props) => {
                 type="submit"
                 value="Update"
               />
-              <hr />
-              <hr />
-              <hr />
-              <hr />
+              <hr style={{ marginTop: "100px" }} />
               <hr />
               <h1>The following features are coming, but don't work yet</h1>
 
@@ -200,7 +206,7 @@ const Me = (props) => {
               </p>
               <p>
                 Basically, if you have a CSV file with the following columns:{" "}
-                <pre>
+                <p>
                   brand (brand name, will be lowercased)
                   <br />
                   name (name of the piece) <br />
@@ -209,18 +215,22 @@ const Me = (props) => {
                   year (A number) <br />
                   size (a string) <br />
                   sale (URL to grailed or whatever)
-                </pre>
+                </p>
                 <FileUploader errorMessage={uploadError} onDrop={uploadCSV} />
               </p>
             </form>
           </div>
           <style jsx>{`
             .page {
-              padding: 3rem;
+              padding: 1rem;
               display: flex;
               max-width: 600px;
               justify-content: center;
               align-items: center;
+            }
+
+            form {
+              width: 100%;
             }
 
             .auth img {
@@ -233,9 +243,18 @@ const Me = (props) => {
               background: black;
             }
 
+            h2 {
+              margin-top: 8rem;
+            }
+
+            label {
+              width: 50%;
+              margin: 0 auto;
+            }
+
             input[type="text"],
             textarea {
-              width: 100%;
+              width: 50%;
               padding: 0.5rem;
               margin: 0.5rem 0;
               border: 0 solid #ffffff;

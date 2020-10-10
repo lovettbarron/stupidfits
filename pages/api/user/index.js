@@ -34,15 +34,19 @@ async function handleGET(req, res) {
 async function handlePOST(req, res) {
   const session = await getSession({ req });
   console.log("Update", session.user.email, req.body);
-  const user = await prisma.user.update({
-    where: { email: session.user.email },
-    data: {
-      // instagram: req.body.instagram,
-      username: req.body.username,
-      public: req.body.public,
-      profilepage: req.body.profilepage,
-    },
-  });
+  const user = await prisma.user
+    .update({
+      where: { email: session.user.email },
+      data: {
+        // instagram: req.body.instagram,
+        username: req.body.username,
+        public: req.body.public,
+        profilepage: req.body.profilepage,
+      },
+    })
+    .finally(async () => {
+      await prisma.$disconnect();
+    });
   res.json(user);
 }
 
