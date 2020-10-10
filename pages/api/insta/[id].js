@@ -76,7 +76,7 @@ async function handlePOST(req, res) {
           timestamp: Math.floor(d.getTime() / 1000),
           image: req.body.media_url,
           url: req.body.permalink,
-          description: req.body.caption,
+          description: req.body.caption || "",
         },
       },
     },
