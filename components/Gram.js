@@ -17,7 +17,6 @@ const Gram = (props) => {
       const body = {
         id: props.id,
         username: props.username,
-        shortcode: props.shortCode,
         timestamp: props.timestamp,
         media_url: props.media_url,
         permalink: props.permalink,

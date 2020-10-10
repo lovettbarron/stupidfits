@@ -60,7 +60,7 @@ async function handlePOST(req, res) {
 
   // cloudinary.imageTag(uploadpath, {type: "fetch"}).toHtml();
 
-  const d = new Date(req.body.timestamp);
+  const d = new Date(Date.parse(req.body.timestamp));
   // Set path
   const media = await prisma.fit.create({
     data: {
@@ -73,8 +73,7 @@ async function handlePOST(req, res) {
         create: {
           insta_id: req.body.id,
           username: req.body.username,
-          shortcode: req.body.shortCode,
-          timestamp: d.toISOString(),
+          timestamp: Math.floor(d.getTime() / 1000),
           image: req.body.media_url,
           url: req.body.permalink,
           description: req.body.caption,
