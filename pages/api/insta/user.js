@@ -12,7 +12,7 @@ export default async function handle(req, res) {
     where: { email: session.user.email },
   });
 
-  console.log("Fetching instagram user with token", user.instagramlong);
+  // console.log("Fetching instagram user with token", user.instagramlong);
   var instagram = new Instagram(user.instagramlong);
   const usero = await instagram.fetchSelf();
   console.log("Found User", usero);

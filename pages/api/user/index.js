@@ -26,7 +26,7 @@ async function handleGET(req, res) {
   const user = await prisma.user.findOne({
     where: { email: session.user.email },
   });
-  console.log("Fetched user", user);
+  // console.log("Fetched user", user);
   res.json(user);
 }
 

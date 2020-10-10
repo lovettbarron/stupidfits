@@ -71,6 +71,7 @@ const FitBox = (props) => {
         <div className="components">
           {props.components && <Anatomy components={props.components} />}
         </div>
+        {props.desc && <p>{props.desc}</p>}
       </div>
 
       <style jsx>{`

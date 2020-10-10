@@ -13,7 +13,7 @@ export default async function handle(req, res) {
     where: { email: session.user.email },
   });
 
-  console.log("Fetching instagram posts with token", user.instagramlong);
+  // console.log("Fetching instagram posts with token", user.instagramlong);
   var instagram = new Instagram(user.instagramlong);
   const posts = await instagram.fetchMedia();
   // console.log("Found Posts", posts);
