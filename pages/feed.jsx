@@ -66,6 +66,7 @@ const Feed = (props) => {
               {posts.map((fit) => (
                 <Gram
                   {...fit}
+                  username={insta.username}
                   fit={
                     (props.fits &&
                       props.fits.length > 0 &&

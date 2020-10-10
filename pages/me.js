@@ -4,6 +4,7 @@ import Layout from "../components/Layout";
 import Router from "next/router";
 import { FileUploader } from "baseui/file-uploader";
 import { useSession, getSession } from "next-auth/client";
+import { Checkbox, LABEL_PLACEMENT, STYLE_TYPE } from "baseui/checkbox";
 
 const Me = (props) => {
   const [session, loading] = useSession();
@@ -11,6 +12,8 @@ const Me = (props) => {
   const [instagram, setInstagram] = useState(props.user.instagram);
   const [email, setEmail] = useState(props.user.email);
   const [username, setUsername] = useState(props.user.username);
+  const [publicprofile, setPublicprofile] = useState(props.user.public);
+  const [profilepage, setProfilepage] = useState(props.user.profilepage);
   const [instagramData, setInstagramData] = useState("");
   const [uploadSuccess, setUploadSuccess] = useState(false);
   const [uploadError, setUploadError] = useState(false);
@@ -67,6 +70,17 @@ const Me = (props) => {
     }
   };
 
+  const DisconnectInstagram = async () => {
+    try {
+      const userobj = await fetch(`${process.env.HOST}/api/insta/disconnect`);
+      const userpayload = await userobj.json();
+      console.log("found user", userpayload);
+      setInsta(null);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const AuthWithInstagram = async () => {
     const appid = `${process.env.INSTAGRAM_CLIENT_ID || "325074402038126"}`;
     const uri = `${process.env.HOST}/api/auth/insta`;
@@ -96,32 +110,58 @@ const Me = (props) => {
                 you select will be part of stupidfits, and the ones you select
                 can be annotated on Stupid Fits.
               </p>
-              {(insta && <p>Synced with {insta.username}</p>) || (
+              {(insta && (
+                <>
+                  <p>Synced with {insta.username}</p>
+                  <a className="auth" onClick={DisconnectInstagram}>
+                    <img src={`/img/instagram-disconnect.png`} />
+                  </a>
+                </>
+              )) || (
                 <a className="auth" onClick={AuthWithInstagram}>
                   <img src={`/img/instagram.png`} />
                 </a>
               )}
+              <h2>Sharing Your Fits</h2>
+              <Checkbox
+                checked={publicprofile}
+                checkmarkType={STYLE_TYPE.toggle}
+                labelPlacement={LABEL_PLACEMENT.bottom}
+                onChange={(e) => setPublicprofile(e.target.publicprofile)}
+              >
+                Make my fits visible on the Stupid Fits global feed.
+              </Checkbox>
               <br />
-              <h2>Your Stupidfits Username</h2>
               <p>
                 We give you a custom landing page for your fits. Drop this in
                 your instagram URL, or on Imgur, or Reddit, or wherever so folk
                 can wrap their minds around your revolutionary genius fit
                 combinitronics.
               </p>
-              <h4>Your StupidFits Username</h4>
+              <Checkbox
+                checked={profilepage}
+                onChange={(e) => setProfilepage(e.target.profilepage)}
+                checkmarkType={STYLE_TYPE.toggle}
+                labelPlacement={LABEL_PLACEMENT.bottom}
+              >
+                Make my Profile Page visible
+              </Checkbox>
+              <h3>Your Stupidfits Username</h3>
               <input
+                style={{ textAlign: "center" }}
                 onChange={(e) => setUsername(e.target.value)}
                 placeholder="Username"
                 type="text"
                 value={username}
               />
-              <p>
-                <small>Your public page is</small>
-                <br /> {process.env.HOST}
-                <br />
-                /u/{username}
-              </p>
+              {profilepage && (
+                <>
+                  <small>Your public page is</small>
+                  <br /> {process.env.HOST}
+                  <br />
+                  /u/{username}
+                </>
+              )}
 
               <input
                 disabled={!instagram || !email || !username}
