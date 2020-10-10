@@ -52,7 +52,7 @@ async function handlePOST(req, res) {
   // TODO Upload image to cloudinary
   // https://res.cloudinary.com/<your Cloudinary account's cloud name>/<resource_type>/upload/<mapped upload folder prefix>/<partial path of remote resource>
 
-  const uploadpath = req.body.imageUrl;
+  const uploadpath = req.body.media_url;
   // const image = await fetch(`https://res.cloudinary.com/${process.env.CLOUDINARY_ACCOUNT}/image/upload/stupidfits/${uploadpath}`, {
   //   method: "GET",
   //   headers: { "Content-Type": "application/json" },

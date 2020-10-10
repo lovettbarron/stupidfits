@@ -12,10 +12,10 @@ const Gram = (props) => {
   // console.log("Fit?", props.fit);
   const addFit = async (e) => {
     e.preventDefault();
-    console.log("Adding fit", `${process.env.HOST}/api/insta/{props.id}`);
+    console.log("Adding fit", `${process.env.HOST}/api/insta/${props.id}`);
     try {
-      const body = { ...props };
-      const res = await fetch(`${process.env.HOST}/api/insta/{props.id}`, {
+      const body = props;
+      const res = await fetch(`${process.env.HOST}/api/insta/${props.id}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),

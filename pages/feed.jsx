@@ -20,9 +20,7 @@ const Feed = (props) => {
       const userobj = await fetch(`${process.env.HOST}/api/insta/user`);
       const userpayload = await userobj.json();
       console.log("Blarg", userpayload);
-      setInsta({
-        userpayload,
-      });
+      setInsta(userpayload);
     }
   };
 
@@ -66,7 +64,6 @@ const Feed = (props) => {
               {posts.map((fit) => (
                 <Gram
                   {...fit}
-                  username={insta.username}
                   fit={
                     (props.fits &&
                       props.fits.length > 0 &&
