@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import fetch from "isomorphic-unfetch";
 import Layout from "../components/Layout";
 import Router from "next/router";
@@ -14,6 +14,7 @@ const Me = (props) => {
   const [instagramData, setInstagramData] = useState("");
   const [uploadSuccess, setUploadSuccess] = useState(false);
   const [uploadError, setUploadError] = useState(false);
+  const [insta, setInsta] = useState();
 
   const submitData = async (e) => {
     e.preventDefault();
@@ -55,13 +56,12 @@ const Me = (props) => {
     }
   };
 
-  const checkInstagram = async (id) => {
+  const checkInstagram = async () => {
     try {
-      const body = { instagram, email, username };
-      const res = await fetch(`${props.url}/api/insta/user?id=${id}`);
-      const data = await res.json();
-      // console.log("Instagram check", data);
-      setInstagramData(data);
+      const userobj = await fetch(`${process.env.HOST}/api/insta/user`);
+      const userpayload = await userobj.json();
+      console.log("found user", userpayload);
+      setInsta(userpayload);
     } catch (error) {
       console.error(error);
     }
@@ -77,7 +77,11 @@ const Me = (props) => {
     window.open(url);
   };
 
-  // checkInstagram(instagram);
+  useEffect(() => {
+    if (!insta) checkInstagram();
+  });
+
+  // checkInstagram();
   return (
     <>
       {(session && (
@@ -92,19 +96,11 @@ const Me = (props) => {
                 you select will be part of stupidfits, and the ones you select
                 can be annotated on Stupid Fits.
               </p>
-
-              <a className="auth" onClick={AuthWithInstagram}>
-                <img src={`/img/instagram.png`} />
-              </a>
-
-              <input
-                autoFocus
-                onChange={(e) => setInstagram(e.target.value)}
-                placeholder="Instagram ID"
-                type="text"
-                value={instagram}
-              />
-              {instagramData && <>verified</>}
+              {(insta && <p>Synced with {insta.username}</p>) || (
+                <a className="auth" onClick={AuthWithInstagram}>
+                  <img src={`/img/instagram.png`} />
+                </a>
+              )}
               <br />
               <h2>Your Stupidfits Username</h2>
               <p>
