@@ -67,7 +67,7 @@ const Item = (props) => {
   };
 
   const fetchBrand = async () => {
-    console.log("Fetch Branding");
+    // console.log("Fetch Branding");
     const b = await fetch(`${process.env.HOST}/api/brand`, {
       method: "GET",
       headers: {

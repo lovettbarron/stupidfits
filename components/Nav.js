@@ -41,6 +41,9 @@ export default (props) => {
             <Link href="/closet">
               <a data-active={isActive("/closet")}>Closet</a>
             </Link>
+            <Link href="/global">
+              <a data-active={isActive("/closet")}>Others' Fits</a>
+            </Link>
             <Link href="/me">
               <a data-active={isActive("/me")}>Setting</a>
             </Link>
