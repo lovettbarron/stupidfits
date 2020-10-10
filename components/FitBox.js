@@ -54,7 +54,13 @@ const FitBox = (props) => {
 
       <div className="description">
         <div>
-          <h3>{props.username || props.media.username}</h3>
+          <h3>
+            {(props.user && (
+              <Link href={`/u/${props.user.username}`}>
+                <a>{props.user.username || props.media.username}</a>
+              </Link>
+            )) || <>{props.username || props.media.username}</>}
+          </h3>
           <br />
           <a href={props.url || props.media.url}>Post Link</a>
           {session && (

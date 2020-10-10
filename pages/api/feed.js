@@ -17,6 +17,7 @@ export default async function handle(req, res) {
         },
         include: {
           media: true,
+          user: true,
           components: { include: { brand: true } },
         },
       })
@@ -33,7 +34,11 @@ export default async function handle(req, res) {
             instagram: req.query.id,
           },
         },
-        include: { media: true, components: { include: { brand: true } } },
+        include: {
+          media: true,
+          user: true,
+          components: { include: { brand: true } },
+        },
       })
       .finally(async () => {
         await prisma.$disconnect();
@@ -50,6 +55,7 @@ export default async function handle(req, res) {
         },
         include: {
           media: true,
+          user: true,
           components: { include: { brand: true } },
         },
       })
