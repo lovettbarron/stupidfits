@@ -36,7 +36,7 @@ class InstagramBasicDisplayApi {
       client_id: String(this._appId),
       client_secret: String(this._appSecret),
       grant_type: "authorization_code",
-      redirect_uri: "https://stage.stupidfits.com/api/auth/insta", //String(this._redirectUri),
+      redirect_uri: `${process.env.HOST}/api/auth/insta`, //String(this._redirectUri),
       code: String(userCode.replace("#_", "")),
     });
     var config = {
