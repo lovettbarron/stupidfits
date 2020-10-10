@@ -26,19 +26,21 @@ async function handleGET(req, res) {
   const user = await prisma.user.findOne({
     where: { email: session.user.email },
   });
-  // console.log("Fetched user", user);
+  console.log("Fetched user", user);
   res.json(user);
 }
 
 // POST /api/user/:id
 async function handlePOST(req, res) {
   const session = await getSession({ req });
-  // console.log("Update", req.query.user, req.body);
+  console.log("Update", session.user.email, req.body);
   const user = await prisma.user.update({
     where: { email: session.user.email },
     data: {
       // instagram: req.body.instagram,
       username: req.body.username,
+      public: req.body.public,
+      profilepage: req.body.profilepage,
     },
   });
   res.json(user);

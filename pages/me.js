@@ -12,12 +12,8 @@ const Me = (props) => {
   const [instagram, setInstagram] = useState(props.user.instagram);
   const [email, setEmail] = useState(props.user.email);
   const [username, setUsername] = useState(props.user.username);
-  const [publicprofile, setPublicprofile] = useState(
-    !!props.user.public || true
-  );
-  const [profilepage, setProfilepage] = useState(
-    !!props.user.profilepage || true
-  );
+  const [publicprofile, setPublicprofile] = useState(props.user.public);
+  const [profilepage, setProfilepage] = useState(props.user.profilepage);
   const [instagramData, setInstagramData] = useState("");
   const [uploadSuccess, setUploadSuccess] = useState(false);
   const [uploadError, setUploadError] = useState(false);
@@ -166,10 +162,14 @@ const Me = (props) => {
               />
               {profilepage && (
                 <>
-                  <small>Your public page is</small>
-                  <br /> {process.env.HOST}
+                  <h4>Your public page is</h4>
+                  <p>
+                    <br /> {process.env.HOST}
+                    <br />
+                    /u/{username}
+                  </p>
                   <br />
-                  /u/{username}
+                  <br />
                 </>
               )}
 
