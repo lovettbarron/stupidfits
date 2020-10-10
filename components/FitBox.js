@@ -7,7 +7,7 @@ import Anatomy from "./Anatomy";
 const FitBox = (props) => {
   const router = useRouter();
   const [session, loading] = useSession();
-  const [fit, setFit] = useState(false);
+  const [fit, setFit] = useState(props.fit || false);
 
   const addFit = async (e) => {
     e.preventDefault();
@@ -57,12 +57,16 @@ const FitBox = (props) => {
           <h3>{props.username || props.media.username}</h3>
           <br />
           <a href={props.url || props.media.url}>Post Link</a>
+          {fit && (
+            <>
+              <br />
+              <button onClick={editFit}>Edit Fit</button>
+            </>
+          )}
         </div>
         <br />
         {props.caption || props.media.description}
         {!props.media && !fit && <button onClick={addFit}>Add Fit</button>}
-
-        {fit && <button onClick={editFit}>Edit Fit</button>}
 
         <div className="components">
           {props.components && <Anatomy components={props.components} />}
@@ -72,6 +76,11 @@ const FitBox = (props) => {
       <style jsx>{`
         .fitbox {
           margin: 2rem 0;
+        }
+
+        button {
+          padding: 5px;
+          margin: 5px;
         }
 
         .fitbox ul {

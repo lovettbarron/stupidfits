@@ -36,7 +36,7 @@ const Anatomy = (props) => {
       )}
       {props.components.find((c) => c.type === "PANT") && (
         <>
-          <h4>Pants</h4>
+          <h4>Bottoms</h4>
           <ul>
             {props.components
               .filter((c) => c.type === "PANT")

@@ -9,7 +9,7 @@ import { useSession, signin, signout } from "next-auth/client";
 const Blog = (props) => {
   const [session, loading] = useSession();
   const [instagram, setInstagram] = useState("");
-  console.log("session", props.user);
+  // console.log("session", props.user);
   return (
     <Layout>
       <div className="page">
@@ -30,15 +30,25 @@ const Blog = (props) => {
         {session && (
           <>
             <h3>Hej {props.user.username}</h3>
-            <p>
-              Your public page is
-              <br />
-              <Link href={`${process.env.HOST}/u/${props.user.instagram}`}>
-                <a>
-                  {process.env.HOST}/u/{props.user.instagram}
-                </a>
-              </Link>
-            </p>
+            {(props.user.username && (
+              <p>
+                Your public page is
+                <br />
+                <Link href={`${process.env.HOST}/u/${props.user.username}`}>
+                  <a>
+                    {process.env.HOST}/u/{props.user.username}
+                  </a>
+                </Link>
+              </p>
+            )) || (
+              <p>
+                Create a public page by adding a username
+                <br />
+                <Link href={"/me"}>
+                  <a>Go to your Settings page</a>
+                </Link>
+              </p>
+            )}
           </>
         )}
 
@@ -56,7 +66,7 @@ const Blog = (props) => {
               return b.media.timestamp - a.media.timestamp;
             })
             .map((fit) => (
-              <FitBox {...fit} />
+              <FitBox {...fit} fit={fit.id} />
             ))}
         </main>
         <footer>

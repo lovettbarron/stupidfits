@@ -39,6 +39,11 @@ const Feed = (props) => {
             <InfiniteScroll
               dataLength={insta.postsCount || 0} //This is important field to render the next data
               next={fetchData}
+              style={{
+                display: "flex",
+                flexWrap: "wrap",
+                justifyContent: "center",
+              }}
               hasMore={true}
               loader={<h4>Loading...</h4>}
               endMessage={

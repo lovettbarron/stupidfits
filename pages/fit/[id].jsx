@@ -17,6 +17,15 @@ import {
   ROLE,
 } from "baseui/modal";
 
+const itemToOptions = (items) => {
+  return (
+    items.map((c) => ({
+      label: `${c.brand.name} ${c.model} ${c.year > 0 ? c.year : ""}`,
+      id: c.id,
+    })) || []
+  );
+};
+
 const Fit = (props) => {
   const [session, loading] = useSession();
   const [desc, setDesc] = useState("");
@@ -26,15 +35,6 @@ const Fit = (props) => {
   );
 
   const [isOpen, setIsOpen] = React.useState(false);
-
-  const itemToOptions = (items) => {
-    return (
-      items.map((c) => ({
-        label: `${c.brand.name} ${c.model} ${c.year}`,
-        id: c.id,
-      })) || []
-    );
-  };
 
   const submitData = async (e) => {
     e.preventDefault();
@@ -104,7 +104,7 @@ const Fit = (props) => {
             options={
               items &&
               items.map((i) => ({
-                label: `${i.brand.name} ${i.model} ${i.year}`,
+                label: `${i.brand.name} ${i.model} ${i.year > 0 ? i.year : ""}`,
                 id: i.id,
               }))
             }
@@ -146,6 +146,7 @@ const Fit = (props) => {
             fetchItems();
           }}
           closeable
+          focusLock
           isOpen={isOpen}
           animate
           autoFocus
@@ -163,9 +164,6 @@ const Fit = (props) => {
               />
             )}
           </ModalBody>
-          <ModalFooter>
-            <ModalButton onClick={setIsOpen}>Finished</ModalButton>
-          </ModalFooter>
         </Modal>
       </div>
       <style jsx>{`
@@ -230,6 +228,8 @@ export const getServerSideProps = async (context) => {
   // } catch (e) {
   //   console.log("error:", e.message);
   // }  items: items
+
+  console.log("components", data);
 
   return {
     props: { ...data, url: process.env.HOST },

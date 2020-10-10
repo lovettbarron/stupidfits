@@ -26,7 +26,7 @@ async function handleGET(req, res) {
   const fit = await prisma.fit
     .findOne({
       where: { id: Number(id) },
-      include: { media: true },
+      include: { media: true, components: { include: { brand: true } } },
     })
     .finally(async () => {
       await prisma.$disconnect();

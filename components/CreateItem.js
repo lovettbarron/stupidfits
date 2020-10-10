@@ -11,7 +11,7 @@ const types = [
   { label: "Carry", id: "BAG" },
   { label: "Shoe", id: "SHOE" },
   { label: "Outerwear", id: "JACKET" },
-  { label: "Pants", id: "PANT" },
+  { label: "Bottom", id: "PANT" },
   { label: "Shirt", id: "SHIRT" },
   { label: "Layers", id: "LAYER" },
   { label: "Extras", id: "EXTRA" },
@@ -96,20 +96,20 @@ const Item = (props) => {
     <>
       <div className="page">
         <form onSubmit={submitData}>
-        <label>
-        <h3>What is it?</h3>
-          <Select
-            options={types}
-            value={type}
-            required
-            startOpen
-            placeholder="What is it?"
-            onChange={(params) => setType(params.value)}
-          />
+          <label>
+            <h3>What is it?</h3>
+            <Select
+              options={types}
+              value={type}
+              required
+              startOpen
+              placeholder="What is it?"
+              onChange={(params) => setType(params.value)}
+            />
           </label>
           <label>
             <br />
-                        <h3>What's the brand?</h3>
+            <h3>What's the brand?</h3>
 
             <Select
               creatable
@@ -117,24 +117,26 @@ const Item = (props) => {
               value={brand}
               isLoading={!brandList}
               multi
+              required
               placeholder="Brand"
               onChange={(params) => setBrand(params.value)}
             />
           </label>
           <label>
             <br />
-                        <h3>Model name or description</h3>
+            <h3>Model name or description</h3>
 
             <Input
               value={model}
               onChange={(e) => setModel(e.target.value)}
               placeholder="Model"
               clearOnEscape
+              required
             />
           </label>
           <label>
             <br />
-                        <h3>Is it from a specific year?</h3>
+            <h3>Is it from a specific year?</h3>
 
             <Input
               value={year}
@@ -145,7 +147,7 @@ const Item = (props) => {
             />
           </label>
           <br />
-                    <h3>Upload a photo (doesn't work yet)</h3>
+          <h3>Upload a photo (doesn't work yet)</h3>
 
           <FileUploader
             errorMessage={errorMessage}
