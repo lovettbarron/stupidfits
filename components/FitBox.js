@@ -57,7 +57,7 @@ const FitBox = (props) => {
           <h3>{props.username || props.media.username}</h3>
           <br />
           <a href={props.url || props.media.url}>Post Link</a>
-          {fit && (
+          {session && (
             <>
               <br />
               <button onClick={editFit}>Edit Fit</button>

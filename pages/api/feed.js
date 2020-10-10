@@ -43,7 +43,11 @@ export default async function handle(req, res) {
   } else {
     const posts = await prisma.fit
       .findMany({
-        where: {},
+        where: {
+          user: {
+            public: true,
+          },
+        },
         include: {
           media: true,
           components: { include: { brand: true } },
