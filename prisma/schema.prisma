@@ -77,7 +77,6 @@ model Media {
   id          Int     @id @default(autoincrement())
   insta_id    String  @unique
   username    String?
-  shortcode   String  @unique
   timestamp   Int
   image       String
   url         String
