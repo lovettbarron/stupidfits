@@ -12,8 +12,12 @@ const Me = (props) => {
   const [instagram, setInstagram] = useState(props.user.instagram);
   const [email, setEmail] = useState(props.user.email);
   const [username, setUsername] = useState(props.user.username);
-  const [publicprofile, setPublicprofile] = useState(props.user.public);
-  const [profilepage, setProfilepage] = useState(props.user.profilepage);
+  const [publicprofile, setPublicprofile] = useState(
+    !!props.user.public || true
+  );
+  const [profilepage, setProfilepage] = useState(
+    !!props.user.profilepage || true
+  );
   const [instagramData, setInstagramData] = useState("");
   const [uploadSuccess, setUploadSuccess] = useState(false);
   const [uploadError, setUploadError] = useState(false);
@@ -22,7 +26,13 @@ const Me = (props) => {
   const submitData = async (e) => {
     e.preventDefault();
     try {
-      const body = { instagram, email, username };
+      const body = {
+        instagram,
+        email,
+        username,
+        profilepage,
+        public: publicprofile,
+      };
       const res = await fetch(`${props.url}/api/user`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -127,7 +137,7 @@ const Me = (props) => {
                 checked={publicprofile}
                 checkmarkType={STYLE_TYPE.toggle}
                 labelPlacement={LABEL_PLACEMENT.bottom}
-                onChange={(e) => setPublicprofile(e.target.publicprofile)}
+                onChange={() => setPublicprofile(!publicprofile)}
               >
                 Make my fits visible on the Stupid Fits global feed.
               </Checkbox>
@@ -140,7 +150,7 @@ const Me = (props) => {
               </p>
               <Checkbox
                 checked={profilepage}
-                onChange={(e) => setProfilepage(e.target.profilepage)}
+                onChange={() => setProfilepage(!profilepage)}
                 checkmarkType={STYLE_TYPE.toggle}
                 labelPlacement={LABEL_PLACEMENT.bottom}
               >

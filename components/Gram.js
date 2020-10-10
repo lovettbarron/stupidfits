@@ -14,7 +14,16 @@ const Gram = (props) => {
     e.preventDefault();
     console.log("Adding fit", `${process.env.HOST}/api/insta/${props.id}`);
     try {
-      const body = props;
+      const body = {
+        id: props.id,
+        username: props.username,
+        shortcode: props.shortCode,
+        timestamp: props.timestamp,
+        media_url: props.media_url,
+        permalink: props.permalink,
+        caption: props.caption,
+      };
+      console.log(body);
       const res = await fetch(`${process.env.HOST}/api/insta/${props.id}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
