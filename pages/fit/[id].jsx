@@ -5,7 +5,7 @@ import Router from "next/router";
 import { Select } from "baseui/select";
 import FitBox from "../../components/FitBox";
 import CreateItem from "../../components/CreateItem";
-import { useSession } from "next-auth/client";
+import { getSession, useSession } from "next-auth/client";
 
 import {
   Modal,
@@ -28,7 +28,7 @@ const itemToOptions = (items) => {
 
 const Fit = (props) => {
   const [session, loading] = useSession();
-  const [desc, setDesc] = useState("");
+  const [desc, setDesc] = useState(props.desc);
   const [items, setItems] = useState(null);
   const [components, setComponents] = React.useState(
     props.components && itemToOptions(props.components)
@@ -87,124 +87,134 @@ const Fit = (props) => {
     return () => {};
   }, [session]);
 
-  return (
-    <Layout>
-      <div className="page">
-        <form onSubmit={submitData}>
-          <h1>Describe your fit</h1>
-          <FitBox
-            {...props}
-            components={
-              items &&
-              components &&
-              items.filter((i) => components.find((c) => c.id === i.id))
-            }
-          />
-          <Select
-            options={
-              items &&
-              items.map((i) => ({
-                label: `${i.brand.name} ${i.model} ${i.year > 0 ? i.year : ""}`,
-                id: i.id,
-              }))
-            }
-            value={components}
-            isLoading={!items}
-            multi
-            placeholder="Fit Anatomy"
-            onChange={(params) => setComponents(params.value)}
-          />
-          <br />
-          Don't see your stuff?{" "}
-          <a className="modal" onClick={setIsOpen}>
-            Add an item
-          </a>
-          <br />
-          <br />
-          <textarea
-            cols={50}
-            onChange={(e) => setDesc(e.target.value)}
-            placeholder="Fit Description"
-            rows={8}
-            value={desc}
-          />
-          <button
-            disabled={!components || components.length < 1}
-            type="submit"
-            onClick={submitData}
+  if (props.c)
+    return (
+      <Layout>
+        <h1>You don't have access to this page</h1>
+      </Layout>
+    );
+  else
+    return (
+      <Layout>
+        <div className="page">
+          <form onSubmit={submitData}>
+            <h1>Describe your fit</h1>
+            <FitBox
+              {...props}
+              components={
+                items &&
+                components &&
+                items.filter((i) => components.find((c) => c.id === i.id))
+              }
+            />
+            <Select
+              options={
+                items &&
+                items.map((i) => ({
+                  label: `${i.brand.name} ${i.model} ${
+                    i.year > 0 ? i.year : ""
+                  }`,
+                  id: i.id,
+                }))
+              }
+              value={components}
+              isLoading={!items}
+              multi
+              placeholder="Fit Anatomy"
+              onChange={(params) => setComponents(params.value)}
+            />
+            <br />
+            Don't see your stuff?{" "}
+            <a className="modal" onClick={setIsOpen}>
+              Add an item
+            </a>
+            <br />
+            <br />
+            <textarea
+              cols={50}
+              onChange={(e) => setDesc(e.target.value)}
+              placeholder="Fit Description"
+              rows={8}
+              value={desc}
+            />
+            <button
+              disabled={!components || components.length < 1}
+              type="submit"
+              onClick={submitData}
+            >
+              Update Fit
+            </button>
+            <a className="back" href="#" onClick={() => Router.push("/")}>
+              or Cancel
+            </a>
+          </form>
+
+          <Modal
+            onClose={() => {
+              setIsOpen(false);
+              fetchItems();
+            }}
+            closeable
+            focusLock
+            isOpen={isOpen}
+            animate
+            autoFocus
+            size={SIZE.default}
+            role={ROLE.dialog}
           >
-            Update Fit
-          </button>
-          <a className="back" href="#" onClick={() => Router.push("/")}>
-            or Cancel
-          </a>
-        </form>
+            <ModalHeader>Add To Your Closet</ModalHeader>
+            <ModalBody>
+              {isOpen && (
+                <CreateItem
+                  handler={() => {
+                    setIsOpen();
+                    fetchItems();
+                  }}
+                />
+              )}
+            </ModalBody>
+          </Modal>
+        </div>
+        <style jsx>{`
+          .page {
+            padding: 3rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+          }
+          a.modal {
+            border: 1px solid white;
+            border-radius: 0.25rem;
+            padding: 0.5rem;
+            margin: 1rem;
+            cursor: pointer;
+          }
 
-        <Modal
-          onClose={() => {
-            setIsOpen(false);
-            fetchItems();
-          }}
-          closeable
-          focusLock
-          isOpen={isOpen}
-          animate
-          autoFocus
-          size={SIZE.default}
-          role={ROLE.dialog}
-        >
-          <ModalHeader>Add To Your Closet</ModalHeader>
-          <ModalBody>
-            {isOpen && (
-              <CreateItem
-                handler={() => {
-                  setIsOpen();
-                  fetchItems();
-                }}
-              />
-            )}
-          </ModalBody>
-        </Modal>
-      </div>
-      <style jsx>{`
-        .page {
-          padding: 3rem;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-        }
-        a.modal {
-          border: 1px solid white;
-          border-radius: 0.25rem;
-          padding: 0.5rem;
-          margin: 1rem;
-          cursor: pointer;
-        }
+          input[type="text"],
+          textarea {
+            width: 100%;
+            padding: 0.5rem;
+            margin: 0.5rem 0;
+            border-radius: 0.25rem;
+            border: 0.125rem solid rgba(0, 0, 0, 0.2);
+          }
 
-        input[type="text"],
-        textarea {
-          width: 100%;
-          padding: 0.5rem;
-          margin: 0.5rem 0;
-          border-radius: 0.25rem;
-          border: 0.125rem solid rgba(0, 0, 0, 0.2);
-        }
+          input[type="submit"] {
+            background: #ececec;
+            border: 0;
+            padding: 1rem 2rem;
+          }
 
-        input[type="submit"] {
-          background: #ececec;
-          border: 0;
-          padding: 1rem 2rem;
-        }
-
-        .back {
-          margin-left: 1rem;
-        }
-      `}</style>
-    </Layout>
-  );
+          .back {
+            margin-left: 1rem;
+          }
+        `}</style>
+      </Layout>
+    );
 };
 
 export const getServerSideProps = async (context) => {
+  const session = await getSession(context);
   // Get Fit
   const res = await fetch(`${process.env.HOST}/api/fits/${context.params.id}`);
   let data;
@@ -214,25 +224,11 @@ export const getServerSideProps = async (context) => {
     console.log("error:", e.message);
   }
 
-  // Get Items
-  // const b = await fetch(`${process.env.HOST}/api/item`, {
-  //   method: "GET",
-  //   headers: {
-  //     "Content-Type": "application/json",
-  //     cookie: context.req.headers.cookie,
-  //   },
-  // });
-  // let items;
-  // try {
-  //   items = await b.json();
-  // } catch (e) {
-  //   console.log("error:", e.message);
-  // }  items: items
-
-  // console.log("components", data);
+  // console.log(data.user.email, session.user.email);
+  const c = data.user.email !== session.user.email;
 
   return {
-    props: { ...data, url: process.env.HOST },
+    props: { ...data, c: c, url: process.env.HOST },
   };
 };
 
