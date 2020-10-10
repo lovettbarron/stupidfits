@@ -7,7 +7,7 @@ export default async function handle(req, res) {
   const session = await getSession({ req });
   // console.log("Session", session);
 
-  if (session || !req.query.global) {
+  if (session && !req.query.global) {
     const posts = await prisma.fit
       .findMany({
         where: {
