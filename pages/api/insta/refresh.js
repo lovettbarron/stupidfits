@@ -31,7 +31,7 @@ export default async function handle(req, res) {
 
   const refresh = await axios
     .get(
-      `${INSTAGRAM_GRAPH_BASE_URL}/access_token?${querystring.stringify(
+      `https://graph.instagram.com/refresh_access_token?${querystring.stringify(
         requestData
       )}`
     )
