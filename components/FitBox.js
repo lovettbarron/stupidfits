@@ -50,7 +50,7 @@ const FitBox = (props) => {
 
   return (
     <div className="fitbox">
-      <img src={props.imageUrl || props.media.image} />
+      <img src={props.imageUrl || `${props.media.url}media/?size=l`} />
 
       <div className="description">
         <div>
