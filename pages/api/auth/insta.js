@@ -144,6 +144,13 @@ class InstagramBasicDisplayApi {
 export default async function handle(req, res) {
   let ig;
   const session = await getSession({ req });
+
+  const u = await prisma.user.findOne({
+    where: {
+      email: session.user.email,
+    },
+  });
+
   // Generate the client
   try {
     ig = await new InstagramBasicDisplayApi({
@@ -191,12 +198,16 @@ export default async function handle(req, res) {
         console.log("Unable to fetch user media");
         res.redirect("/me");
       }
+
+      const defaultUsername =
+
       try {
         const instaUpdate = await prisma.user.update({
           where: { email: session.user.email },
           data: {
             instagramlong: long.access_token,
             instagram: user.username,
+            username: u.username || user.username,
           },
         });
 

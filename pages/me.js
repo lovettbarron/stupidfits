@@ -183,7 +183,7 @@ const Me = (props) => {
               )}
 
               <input
-                disabled={!instagram || !email || !username}
+                disabled={!email || !username}
                 type="submit"
                 value="Update"
               />
