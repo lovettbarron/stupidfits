@@ -1,0 +1,50 @@
+{
+  "version": "0.3.14-fixed",
+  "steps": [
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Brand",
+          "field": "name"
+        },
+        "directive": "unique"
+      }
+    },
+    {
+      "tag": "CreateField",
+      "model": "Item",
+      "field": "archive",
+      "type": "Boolean",
+      "arity": "Optional"
+    },
+    {
+      "tag": "DeleteField",
+      "model": "Item",
+      "field": "qual"
+    },
+    {
+      "tag": "DeleteField",
+      "model": "Item",
+      "field": "grail"
+    },
+    {
+      "tag": "DeleteField",
+      "model": "Item",
+      "field": "grailId"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "Item",
+      "field": "closet",
+      "arity": "List"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "Item",
+      "field": "fit",
+      "arity": "List"
+    }
+  ]
+}

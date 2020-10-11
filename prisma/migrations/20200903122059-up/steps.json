@@ -1,0 +1,31 @@
+{
+  "version": "0.3.14-fixed",
+  "steps": [
+    {
+      "tag": "CreateField",
+      "model": "Media",
+      "field": "fitId",
+      "type": "Int",
+      "arity": "Optional"
+    },
+    {
+      "tag": "DeleteField",
+      "model": "Media",
+      "field": "mediaId"
+    },
+    {
+      "tag": "UpdateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Media",
+          "field": "fit"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "newValue": "[fitId]"
+    }
+  ]
+}

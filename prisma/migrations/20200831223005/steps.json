@@ -1,0 +1,29 @@
+{
+  "version": "0.3.14-fixed",
+  "steps": [
+    {
+      "tag": "DeleteModel",
+      "model": "Social"
+    },
+    {
+      "tag": "DeleteField",
+      "model": "User",
+      "field": "social"
+    },
+    {
+      "tag": "DeleteField",
+      "model": "User",
+      "field": "sessions"
+    },
+    {
+      "tag": "DeleteField",
+      "model": "User",
+      "field": "accounts"
+    },
+    {
+      "tag": "DeleteField",
+      "model": "Post",
+      "field": "social"
+    }
+  ]
+}

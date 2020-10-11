@@ -1,0 +1,21 @@
+{
+  "version": "0.3.14-fixed",
+  "steps": [
+    {
+      "tag": "UpdateField",
+      "model": "Fit",
+      "field": "temp",
+      "type": "String"
+    },
+    {
+      "tag": "DeleteField",
+      "model": "Media",
+      "field": "fit"
+    },
+    {
+      "tag": "DeleteField",
+      "model": "Media",
+      "field": "fitId"
+    }
+  ]
+}
