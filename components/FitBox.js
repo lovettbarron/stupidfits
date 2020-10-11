@@ -49,56 +49,49 @@ const FitBox = (props) => {
   }, [session]);
 
   return (
-    <div className="fitbox">
-      <img src={props.imageUrl || `${props.media.url}media/?size=l`} />
+    <>
+      <div className="fitbox">
+        <img src={props.imageUrl || `${props.media.url}media/?size=l`} />
 
-      <div className="description">
-        <div>
-          <h3>
-            {(props.user && (
-              <Link href={`/u/${props.user.username}`}>
-                <a>{props.user.username || props.media.username}</a>
-              </Link>
-            )) || <>{props.username || props.media.username}</>}
-          </h3>
-          <br />
-          <a href={props.url || props.media.url}>Post Link</a>
-          {session && (
-            <>
-              <br />
-              <button onClick={editFit}>Edit Fit</button>
-            </>
-          )}
+        <div className="description">
+          <div>
+            <h3>
+              {(props.user && (
+                <Link href={`/u/${props.user.username}`}>
+                  <a>{props.user.username || props.media.username}</a>
+                </Link>
+              )) || <>{props.username || props.media.username}</>}
+            </h3>
+            <br />
+            <a href={props.url || props.media.url}>Post Link</a>
+            {session && (
+              <>
+                <br />
+                <button onClick={editFit}>Edit Fit</button>
+              </>
+            )}
+          </div>
         </div>
         <br />
         {props.caption || props.media.description}
         {!props.media && !fit && <button onClick={addFit}>Add Fit</button>}
-
         <div className="components">
           {props.components && <Anatomy components={props.components} />}
         </div>
+        <br />
         {props.desc && <p>{props.desc}</p>}
       </div>
 
       <style jsx>{`
         .fitbox {
           margin: 2rem 0;
+          background: #6f6f6f;
+          border-radius: 0 0 5px 5px;
         }
 
         button {
           padding: 5px;
           margin: 5px;
-        }
-
-        .fitbox ul {
-          display: flex;
-          flex-wrap: wrap;
-          list-style: none;
-        }
-
-        .fitbox li {
-          margin: 0 1rem;
-          list-style: none !important;
         }
 
         .description {
@@ -107,8 +100,6 @@ const FitBox = (props) => {
           justify-content: center;
           padding: 1rem 2rem;
           align-items: center;
-          background: #6f6f6f;
-          border-radius: 0 0 5px 5px;
         }
 
         .components {
@@ -139,7 +130,7 @@ const FitBox = (props) => {
           margin-left: 1rem;
         }
       `}</style>
-    </div>
+    </>
   );
 };
 
