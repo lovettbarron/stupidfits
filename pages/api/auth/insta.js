@@ -199,8 +199,6 @@ export default async function handle(req, res) {
         res.redirect("/me");
       }
 
-      const defaultUsername =
-
       try {
         const instaUpdate = await prisma.user.update({
           where: { email: session.user.email },
