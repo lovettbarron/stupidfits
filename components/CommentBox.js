@@ -17,12 +17,12 @@ const CommentBox = (props) => {
   const [comments, setComments] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  const addComment = async (e) => {
-    e.preventDefault();
+  const addComment = async () => {
     setIsLoading(true);
+    console.log("Setting comment for", props.id, comment);
     try {
       const body = {
-        comment: props.caption,
+        comment,
       };
 
       const res = await fetch(`${process.env.HOST}/api/comment/${props.id}`, {
@@ -39,43 +39,28 @@ const CommentBox = (props) => {
       }
     } catch (error) {
       console.error(error);
+      setIsLoading(false);
     }
   };
 
   const fetchComments = async () => {
-    const b = await fetch(`${process.env.HOST}/api/comments/${props.id}`, {
+    const b = await fetch(`${process.env.HOST}/api/comment/${props.id}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
       },
     });
     let it;
-    if (first) {
-      it = await b.json();
-      setComments(it);
-    }
+
+    it = await b.json();
+    setComments(it);
   };
 
   useEffect(() => {
-    // component is used for both displaying instagram images that aren't yet in the db, and fits that are currently in the db. It probably shouldn't, but this just prevent weird api request
+    fetchComments();
 
     return () => {};
   }, [session]);
-
-  // const comments = [
-  //   {
-  //     comment: "Testing",
-  //     user: {
-  //       username: "stupidfits",
-  //     },
-  //   },
-  //   {
-  //     comment: "Testing a larger comment, maybe this can work out ookay",
-  //     user: {
-  //       username: "stupidfits",
-  //     },
-  //   },
-  // ];
 
   return (
     <>
@@ -104,7 +89,7 @@ const CommentBox = (props) => {
               />
               <Button
                 className="left"
-                onClick={() => alert("click")}
+                onClick={() => addComment()}
                 size={SIZE.mini}
                 isLoading={isLoading}
                 disabled={comment.length < 3}

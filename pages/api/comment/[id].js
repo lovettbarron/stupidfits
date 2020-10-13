@@ -24,9 +24,11 @@ export default async function handle(req, res) {
 async function handleGET(req, res) {
   const id = req.query.id;
   const comments = await prisma.comment
-    .find({
-      where: { fit: {
-        id: Number(id) }
+    .findMany({
+      where: {
+        fit: {
+          id: Number(id),
+        },
       },
       include: {
         fit: true,
@@ -43,20 +45,20 @@ async function handleGET(req, res) {
 async function handlePOST(req, res) {
   const id = req.query.id;
   const session = await getSession({ req });
-  if(!session) return null
-  if(!req.body.comment) return "No comment found"
+  if (!session) return null;
+  if (!req.body.comment) return "No comment found";
 
   const comment = await prisma.comment.create({
     data: {
       user: {
         connect: {
-          email: session.user.email
-        }
+          email: session.user.email,
+        },
       },
       fit: {
         connect: {
-          id:
-        }
+          id: Number(id),
+        },
       },
       comment: req.body.comment || "",
     },
