@@ -7,6 +7,7 @@ import { Select } from "baseui/select";
 import FitBox from "../../components/FitBox";
 import CreateItem from "../../components/CreateItem";
 import { getSession, useSession } from "next-auth/client";
+import { NextSeo } from "next-seo";
 
 import {
   Modal,
@@ -29,6 +30,29 @@ const Fit = (props) => {
 
   return (
     <Layout>
+      <NextSeo
+        title={`${props.user.username}'s Fit on Stupid Fits`}
+        description="Ingredient List for your Fit Pics"
+        openGraph={{
+          images: [
+            {
+              url: "https://www.example.ie/og-image-01.jpg",
+              width: 800,
+              height: 600,
+              alt: "Og Image Alt",
+            },
+            {
+              url: "https://www.example.ie/og-image-02.jpg",
+              width: 900,
+              height: 800,
+              alt: "Og Image Alt Second",
+            },
+            { url: "https://www.example.ie/og-image-03.jpg" },
+            { url: "https://www.example.ie/og-image-04.jpg" },
+          ],
+          site_name: "SiteName",
+        }}
+      />
       <div className="page">
         <Link href={`/u/${props.user.username}`}>
           <a>

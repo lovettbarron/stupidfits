@@ -5,13 +5,38 @@ import Post from "../components/Post";
 import FitBox from "../components/FitBox";
 import Link from "next/link";
 import { useSession, signin, signout } from "next-auth/client";
+import { NextSeo } from "next-seo";
 
 const Blog = (props) => {
   const [session, loading] = useSession();
   const [instagram, setInstagram] = useState("");
+
   // console.log("session", props.user);
   return (
     <Layout>
+      <NextSeo
+        title="Stupid Fits"
+        description="Ingredient List for your Fit Pics"
+        openGraph={{
+          images: [
+            {
+              url: "https://www.example.ie/og-image-01.jpg",
+              width: 800,
+              height: 600,
+              alt: "Og Image Alt",
+            },
+            {
+              url: "https://www.example.ie/og-image-02.jpg",
+              width: 900,
+              height: 800,
+              alt: "Og Image Alt Second",
+            },
+            { url: "https://www.example.ie/og-image-03.jpg" },
+            { url: "https://www.example.ie/og-image-04.jpg" },
+          ],
+          site_name: "SiteName",
+        }}
+      />
       <div className="page">
         <header>
           <h1>Stupid Fits</h1>

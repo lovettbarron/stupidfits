@@ -1,4 +1,5 @@
 import fetch from "isomorphic-unfetch";
+import { NextSeo } from "next-seo";
 import Layout from "../../components/Layout";
 import FitBox from "../../components/FitBox";
 import { useSession, getSession } from "next-auth/client";
@@ -9,9 +10,28 @@ import Anatomy from "../../components/Anatomy";
 const UserProfile = (props) => {
   const [activeKey, setActiveKey] = React.useState("0");
 
+  const seourl =  props.fits.length > 0 &&
+  `http://res.cloudinary.com/stupidsystems/image/upload/${props.fits[0].media.cloudinary}`,
+
   if (!props.insta.profilepage) {
     return (
       <Layout>
+        <NextSeo
+          title={`${props.insta.username}'s Fits on Stupid Fits`}
+          description={`All the fits that ${props.insta.username} has to offer`}
+          openGraph={{
+            images: [
+              {
+                url:
+                seourl,
+                width: 800,
+                height: 600,
+                alt: "Og Image Alt",
+              },
+            ],
+            site_name: "Stupid Fits",
+          }}
+        />
         <div className="page">
           <main>
             <div className="top">
