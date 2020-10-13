@@ -82,7 +82,11 @@ const FitBox = (props) => {
             </>
           )}
           {props.components && (
-            <Anatomy id={props.id} components={props.components} />
+            <Anatomy
+              id={props.id}
+              nocomment={props.nocomment || false}
+              components={props.components}
+            />
           )}
         </div>
         <br />
