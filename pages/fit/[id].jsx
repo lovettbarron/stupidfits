@@ -125,7 +125,11 @@ const Fit = (props) => {
             />
             <br />
             Don't see your stuff?{" "}
-            <a className="modal" onClick={setIsOpen}>
+            <a
+              className="modal"
+              style={{ wordWrap: "none", display: "inline-block" }}
+              onClick={setIsOpen}
+            >
               Add an item
             </a>
             <br />
