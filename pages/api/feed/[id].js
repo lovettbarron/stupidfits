@@ -5,9 +5,31 @@ const prisma = new PrismaClient();
 
 export default async function handle(req, res) {
   const session = await getSession({ req });
-  // console.log("Session", session);
 
-  if (session && !req.query.global) {
+  console.log("Feed Query", req.query);
+
+  // If user is logged in and this isn't global
+  if (req.query.id) {
+    // If there is a feed id
+    const posts = await prisma.fit
+      .findMany({
+        where: {
+          user: {
+            username: req.query.id,
+          },
+        },
+        include: {
+          media: true,
+          user: true,
+          components: { include: { brand: true } },
+        },
+      })
+      .finally(async () => {
+        await prisma.$disconnect();
+      });
+    // console.log(posts);
+    res.json(posts);
+  } else if (session) {
     const posts = await prisma.fit
       .findMany({
         where: {
@@ -26,44 +48,5 @@ export default async function handle(req, res) {
       });
     // console.log(posts);
     res.json(posts);
-  } else if (req.query.id) {
-    const posts = await prisma.fit
-      .findMany({
-        where: {
-          user: {
-            instagram: req.query.id,
-          },
-        },
-        include: {
-          media: true,
-          user: true,
-          components: { include: { brand: true } },
-        },
-      })
-      .finally(async () => {
-        await prisma.$disconnect();
-      });
-    // console.log(posts);
-    res.json(posts);
-  } else {
-    const posts = await prisma.fit
-      .findMany({
-        where: {
-          user: {
-            public: true,
-          },
-        },
-        include: {
-          media: true,
-          user: true,
-          components: { include: { brand: true } },
-        },
-      })
-      .finally(async () => {
-        await prisma.$disconnect();
-      });
-    // console.log(posts);
-    res.json(posts);
-    // res.send([]);
   }
 }

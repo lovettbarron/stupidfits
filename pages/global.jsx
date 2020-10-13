@@ -119,7 +119,7 @@ export const getServerSideProps = async (context) => {
     console.log("error:", e.message);
   }
 
-  const res = await fetch(`${process.env.HOST}/api/feed?global=true`, {
+  const res = await fetch(`${process.env.HOST}/api/feed`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",

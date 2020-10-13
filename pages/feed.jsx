@@ -119,14 +119,6 @@ export const getServerSideProps = async (context) => {
       },
     });
     user = await res.json();
-
-    // Fetch Instagram Feed
-    // if (user && user.instagram) {
-    //   const res = await fetch(
-    //     `${process.env.HOST}/api/insta/user?id=${user.instagram}`
-    //   );
-    //   insta = await res.json();
-    // }
   } catch (e) {
     error = e;
   }

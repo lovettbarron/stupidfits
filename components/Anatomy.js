@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Router, { useRouter } from "next/router";
+import { Tabs, Tab, FILL } from "baseui/tabs-motion";
+import CommentBox from "./CommentBox";
 
 const Cap = (brand) => {
   const words = brand.split(" ");
@@ -12,10 +14,31 @@ const Cap = (brand) => {
   return words.join(" ");
 };
 
+const WithComments = (props) => {
+  const [activeKey, setActiveKey] = React.useState("0");
+
+  if (props.disable) return <>{props.children}</>;
+  return (
+    <Tabs
+      activeKey={activeKey}
+      fill={FILL.fixed}
+      onChange={({ activeKey }) => {
+        setActiveKey(activeKey);
+      }}
+      activateOnFocus
+    >
+      <Tab title="Anatomy">{props.children}</Tab>
+      <Tab title="Comments">
+        <CommentBox id={props.id} />
+      </Tab>
+    </Tabs>
+  );
+};
+
 const Anatomy = (props) => {
   if (!props.components || props.components.length < 1) return null;
   return (
-    <>
+    <WithComments id={props.id} disable={props.nocomment}>
       <div>
         {props.components.find((c) => c.type === "JACKET") && (
           <>
@@ -130,7 +153,7 @@ const Anatomy = (props) => {
           }
         `}
       </style>
-    </>
+    </WithComments>
   );
 };
 export default Anatomy;

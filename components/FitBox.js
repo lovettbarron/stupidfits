@@ -76,7 +76,9 @@ const FitBox = (props) => {
         {props.caption || props.media.description}
         {!props.media && !fit && <button onClick={addFit}>Add Fit</button>}
         <div className="components">
-          {props.components && <Anatomy components={props.components} />}
+          {props.components && (
+            <Anatomy id={props.id} components={props.components} />
+          )}
         </div>
         <br />
         {props.desc && <p>{props.desc}</p>}

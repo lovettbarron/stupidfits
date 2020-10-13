@@ -78,7 +78,7 @@ const UserProfile = (props) => {
                 {" "}
                 {props.closet && (
                   <div className="closet">
-                    <Anatomy components={props.closet} />
+                    <Anatomy nocomment={true} components={props.closet} />
                   </div>
                 )}
               </Tab>
@@ -183,19 +183,11 @@ export const getServerSideProps = async (context) => {
   });
   const user = await res.json();
 
-  // // Fetch Instagram Feed
-  // let insta;
-  // // if (user && user.instagram) {
-  //   const res = await fetch(`${process.env.HOST}/api/user/${user.instagram}`, {
-  //     method: "GET",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //       cookie: context.req.headers.cookie,
-  //     },
-  //   });
-  //   insta = await res.json();
-  //   // console.log("insta", insta);
-  // }
+  if (!user) {
+    res.statusCode = 302;
+    res.setHeader("Location", `/`); // Replace <link> with your url link
+    return { props: {} };
+  }
 
   // Get User's Items
   const resc = await fetch(`${process.env.HOST}/api/item?id=${user.username}`, {
@@ -213,16 +205,13 @@ export const getServerSideProps = async (context) => {
   }
 
   // Fetch fits for this user and check against existing instagram
-  const fitres = await fetch(
-    `${process.env.HOST}/api/feed/?id=${user.instagram}`,
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        cookie: context.req.headers.cookie,
-      },
-    }
-  );
+  const fitres = await fetch(`${process.env.HOST}/api/feed/${user.username}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      cookie: context.req.headers.cookie,
+    },
+  });
   let fits = null;
   try {
     fits = await fitres.json();

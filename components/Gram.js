@@ -61,7 +61,9 @@ const Gram = (props) => {
         {fit && <button onClick={editFit}>Edit Fit</button>}
 
         <div className="components">
-          {props.components && <Anatomy components={props.components} />}
+          {props.components && (
+            <Anatomy id={props.id} components={props.components} />
+          )}
         </div>
       </div>
 
