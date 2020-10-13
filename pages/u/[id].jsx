@@ -10,8 +10,9 @@ import Anatomy from "../../components/Anatomy";
 const UserProfile = (props) => {
   const [activeKey, setActiveKey] = React.useState("0");
 
-  const seourl =  props.fits.length > 0 &&
-  `http://res.cloudinary.com/stupidsystems/image/upload/${props.fits[0].media.cloudinary}`,
+  const seourl =
+    props.fits.length > 0 &&
+    `http://res.cloudinary.com/stupidsystems/image/upload/${props.fits[0].media.cloudinary}`;
 
   if (!props.insta.profilepage) {
     return (
@@ -22,8 +23,7 @@ const UserProfile = (props) => {
           openGraph={{
             images: [
               {
-                url:
-                seourl,
+                url: seourl,
                 width: 800,
                 height: 600,
                 alt: "Og Image Alt",
