@@ -14,6 +14,7 @@ import { Button } from "baseui/button";
 const CommentBox = (props) => {
   const [session, loading] = useSession();
   const [comment, setComment] = useState("");
+  const [comments, setComments] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
   const addComment = async (e) => {
@@ -31,9 +32,27 @@ const CommentBox = (props) => {
       });
       const data = await res.json();
       console.log("Added fit!", data);
-      if (data) Router.push(`/fit/${data.id}`);
+      if (data) {
+        setIsLoading(false);
+        setComment("");
+        fetchComments();
+      }
     } catch (error) {
       console.error(error);
+    }
+  };
+
+  const fetchComments = async () => {
+    const b = await fetch(`${process.env.HOST}/api/comments/${props.id}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    let it;
+    if (first) {
+      it = await b.json();
+      setComments(it);
     }
   };
 
@@ -43,34 +62,36 @@ const CommentBox = (props) => {
     return () => {};
   }, [session]);
 
-  const comments = [
-    {
-      comment: "Testing",
-      user: {
-        username: "stupidfits",
-      },
-    },
-    {
-      comment: "Testing a larger comment, maybe this can work out ookay",
-      user: {
-        username: "stupidfits",
-      },
-    },
-  ];
+  // const comments = [
+  //   {
+  //     comment: "Testing",
+  //     user: {
+  //       username: "stupidfits",
+  //     },
+  //   },
+  //   {
+  //     comment: "Testing a larger comment, maybe this can work out ookay",
+  //     user: {
+  //       username: "stupidfits",
+  //     },
+  //   },
+  // ];
 
   return (
     <>
       <div className="commentbox">
-        {comments.map((c) => (
-          <div className="comment">
-            <div className="user">
-              <Link href={`/u/${c.user.username}`}>
-                <a>{c.user.username}</a>
-              </Link>
+        {(comments &&
+          comments.length > 0 &&
+          comments.map((c) => (
+            <div className="comment">
+              <div className="user">
+                <Link href={`/u/${c.user.username}`}>
+                  <a>{c.user.username}</a>
+                </Link>
+              </div>
+              <div className="c">{c.comment}</div>
             </div>
-            <div className="c">{c.comment}</div>
-          </div>
-        ))}
+          ))) || <div className="comment">No Comments yet</div>}
         <>
           {session && (
             <>
