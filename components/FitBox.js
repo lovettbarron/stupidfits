@@ -54,7 +54,7 @@ const FitBox = (props) => {
         <img src={props.imageUrl || `${props.media.url}media/?size=l`} />
 
         <div className="description">
-          <div>
+          <div className="header">
             <h3>
               {(props.user && (
                 <Link href={`/u/${props.user.username}`}>
@@ -62,20 +62,24 @@ const FitBox = (props) => {
                 </Link>
               )) || <>{props.username || props.media.username}</>}
             </h3>
-            <br />
-            <a href={props.url || props.media.url}>Post Link</a>
-            {session && (
-              <>
-                <br />
-                <button onClick={editFit}>Edit Fit</button>
-              </>
-            )}
+            <div>
+              <a href={props.url || props.media.url}>Instagram</a>
+              <Link href={`/f/${props.id}`}>
+                <a>Permalink</a>
+              </Link>
+            </div>
           </div>
         </div>
         <br />
         {props.caption || props.media.description}
         {!props.media && !fit && <button onClick={addFit}>Add Fit</button>}
         <div className="components">
+          {session && (
+            <>
+              <br />
+              <button onClick={editFit}>Edit Fit</button>
+            </>
+          )}
           {props.components && (
             <Anatomy id={props.id} components={props.components} />
           )}
@@ -94,6 +98,13 @@ const FitBox = (props) => {
         button {
           padding: 5px;
           margin: 5px;
+        }
+
+        .header {
+          width: 100%;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
         }
 
         .description {
