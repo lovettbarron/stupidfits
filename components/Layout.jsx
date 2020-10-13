@@ -67,6 +67,7 @@ const Layout = (props) => (
 
       a {
         color: white;
+        word-wrap: break-word;
       }
 
       input,

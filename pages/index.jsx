@@ -36,7 +36,9 @@ const Blog = (props) => {
                 <br />
                 <Link href={`${process.env.HOST}/u/${props.user.username}`}>
                   <a>
-                    {process.env.HOST}/u/{props.user.username}
+                    {process.env.HOST}
+                    <br />
+                    /u/{props.user.username}
                   </a>
                 </Link>
               </p>

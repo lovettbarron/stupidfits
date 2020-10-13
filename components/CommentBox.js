@@ -71,23 +71,29 @@ const CommentBox = (props) => {
             <div className="c">{c.comment}</div>
           </div>
         ))}
-        <Textarea
-          value={comment}
-          onChange={(e) => setComment(e.target.value)}
-          size={SIZE.mini}
-          placeholder="Controlled Input"
-          clearOnEscape
-        />
+        <>
+          {session && (
+            <>
+              <Textarea
+                value={comment}
+                onChange={(e) => setComment(e.target.value)}
+                size={SIZE.mini}
+                placeholder="Controlled Input"
+                clearOnEscape
+              />
+              <Button
+                className="left"
+                onClick={() => alert("click")}
+                size={SIZE.mini}
+                isLoading={isLoading}
+                disabled={comment.length < 3}
+              >
+                Submit Comment
+              </Button>
+            </>
+          )}
+        </>
       </div>
-      <Button
-        className="left"
-        onClick={() => alert("click")}
-        size={SIZE.mini}
-        isLoading={isLoading}
-        disabled={comment.length < 3}
-      >
-        Submit Comment
-      </Button>
       <style jsx>{`
         .comment {
           margin: 0.5rem;
