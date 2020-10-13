@@ -29,7 +29,7 @@ const FitBox = (props) => {
   };
 
   const editFit = async (e) => {
-    Router.push(`/fit/${fit}`);
+    Router.push(`/fit/${fit || props.id}`);
   };
 
   const checkIfExists = async () => {
