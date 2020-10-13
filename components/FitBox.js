@@ -63,7 +63,7 @@ const FitBox = (props) => {
               )) || <>{props.username || props.media.username}</>}
             </h3>
             <div>
-              <a href={props.url || props.media.url}>Instagram</a>
+              <a href={props.media.url || props.url}>Instagram</a>
               <Link href={`/f/${props.id}`}>
                 <a>Permalink</a>
               </Link>

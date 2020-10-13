@@ -14,7 +14,7 @@ import { Button } from "baseui/button";
 const CommentBox = (props) => {
   const [session, loading] = useSession();
   const [comment, setComment] = useState("");
-  const [comments, setComments] = useState([]);
+  const [comments, setComments] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
   const addComment = async () => {
@@ -50,7 +50,7 @@ const CommentBox = (props) => {
         "Content-Type": "application/json",
       },
     });
-    let it;
+    let it = [];
 
     it = await b.json();
     setComments(it);
@@ -66,7 +66,6 @@ const CommentBox = (props) => {
     <>
       <div className="commentbox">
         {(comments &&
-          comments.length > 0 &&
           comments.map((c) => (
             <div className="comment">
               <div className="user">
@@ -76,7 +75,7 @@ const CommentBox = (props) => {
               </div>
               <div className="c">{c.comment}</div>
             </div>
-          ))) || <div className="comment">No Comments yet</div>}
+          ))) || <div className="comment">Loading comments</div>}
         <>
           {session && (
             <>
