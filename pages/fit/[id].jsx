@@ -182,7 +182,6 @@ const Fit = (props) => {
         </div>
         <style jsx>{`
           .page {
-            padding: 3rem;
             display: flex;
             justify-content: center;
             align-items: center;
