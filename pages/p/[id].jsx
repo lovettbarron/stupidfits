@@ -4,31 +4,25 @@ import Layout from "../../components/Layout";
 import { useSession } from "next-auth/client";
 import { Button } from "baseui/button";
 import { fabric } from "fabric";
+import { Radio, RadioGroup } from "baseui/radio";
+
 const FitImage = (props) => {
   const [session, loading] = useSession();
+  const [value, setValue] = React.useState("1");
 
   let canvas = null;
   let text_iter = 0;
 
-  function handleResize() {
-    var w = window.innerWidth - 2; // -2 accounts for the border
-    var h = window.innerHeight - 2;
-    canvas.width = w;
-    canvas.height = h;
-    //
-    var ratio = 100 / 100; // 100 is the width and height of the circle content.
-    var windowRatio = w / h;
-    var scale = w / 100;
-    if (windowRatio > ratio) {
-      scale = h / 100;
+  const Formatted = (c) => {
+    switch (value) {
+      case 1:
+        return `${c.brand.name} ${c.model}`;
+      case 2:
+        return `${c.brand.name}`;
+      default:
+        return `${c.brand.name}`;
     }
-    // Scale up to fit width or height
-    fitImage.scaleX = c.scaleY = scale;
-
-    // Center the shape
-    fitImage.x = w / 2;
-    fitImage.y = h / 2;
-  }
+  };
 
   const addImage = () => {
     var clipPath = new fabric.Rect({
@@ -65,8 +59,8 @@ const FitImage = (props) => {
 
   const addElement = (text, iter) => {
     // Load text onto canvas
-    const offset = 1080 / props.components.length;
-    const textbox = new fabric.Textbox(text, {
+    const offset = 640;
+    const textbox = new fabric.Textbox(Formatted(text), {
       left: 0,
       top: iter * offset,
       width: 320,
@@ -85,7 +79,7 @@ const FitImage = (props) => {
     console.log("Added", text, iter);
   };
 
-  const addLogo = (text, iter) => {
+  const addLogo = () => {
     // Load text onto canvas
     const offset = 640;
     const textbox = new fabric.Textbox("stupidfits.com", {
@@ -105,7 +99,6 @@ const FitImage = (props) => {
     // textbox.setShadow("0px 0px 10px rgba(0, 0, 0, 1)");
     canvas.add(textbox);
     text_iter += 1;
-    console.log("Added", text, iter);
   };
 
   // Pul all canvas code in a function so we can call it after google fonts have loaded
@@ -187,13 +180,13 @@ const FitImage = (props) => {
       addImage();
       addLogo();
       RenderControls(true);
-    }
-    if (text_iter === 0) {
       props.components &&
         props.components.map((c) => {
-          addElement(c.model, text_iter);
+          addElement(c, text_iter);
         });
     }
+    console.log("Props", props);
+
     return () => {};
   }, []);
 
@@ -205,7 +198,19 @@ const FitImage = (props) => {
           Export your fitpics with annotations for an easy upload to instagram
           stories (or wherever)
         </p>
-
+        <RadioGroup
+          align="horizontal"
+          name="horizontal"
+          onChange={(e) => {
+            setValue(e.target.value);
+            canvas.renderAll();
+          }}
+          value={value}
+        >
+          <Radio value="1">Outfit</Radio>
+          <Radio value="2">Brand Only</Radio>
+          <Radio value="3">Nothing</Radio>
+        </RadioGroup>
         <canvas id="c" width={360} height={640} style={{ zoom: "100%" }} />
         <br />
         <div className="save">

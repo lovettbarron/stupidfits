@@ -71,3 +71,8 @@ async function handleDELETE(req, res) {
   });
   res.json(post);
 }
+export const config = {
+  api: {
+    externalResolver: true,
+  },
+};
