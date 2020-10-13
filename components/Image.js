@@ -10,6 +10,7 @@ const Pic = ({ media, url }) => {
             cloudName={process.env.CLOUDINARY_CLOUD_NAME || "stupidsystems"}
             publicId={media.cloudinary}
             style={{ width: "100%" }}
+            secure={true}
           />
         )) || <img src={url || `${media.url}media/?size=l`} />}
       </div>

@@ -12,7 +12,7 @@ const UserProfile = (props) => {
 
   const seourl =
     props.fits.length > 0 &&
-    `http://res.cloudinary.com/stupidsystems/image/upload/${props.fits[0].media.cloudinary}`;
+    `https://res.cloudinary.com/stupidsystems/image/upload/${props.fits[0].media.cloudinary}`;
 
   if (!props.insta.profilepage) {
     return (
