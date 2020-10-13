@@ -107,9 +107,10 @@ const Me = (props) => {
   });
 
   // checkInstagram();
+  if (!props.user) return <Layout>No user data found</Layout>;
   return (
     <>
-      {(session && (
+      {(session && session.user && (
         <Layout>
           <div className="page">
             <form onSubmit={submitData}>

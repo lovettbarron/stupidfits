@@ -3,6 +3,8 @@ import { BaseProvider, DarkTheme } from "baseui";
 import { Provider as StyletronProvider } from "styletron-react";
 import { Client as Styletron } from "styletron-engine-atomic";
 import { Provider } from "next-auth/client";
+import * as Sentry from "@sentry/react";
+import { Integrations } from "@sentry/tracing";
 
 function App({ Component, pageProps }) {
   const [engine, setEngine] = useState(null);
@@ -16,6 +18,16 @@ function App({ Component, pageProps }) {
       setEngine(clientEngine);
     });
   }, []);
+
+  // Sentry.init({
+  //   dsn:
+  //     "https://e54eb37c1dba4eb2b24f48c4dfdf004d@o210816.ingest.sentry.io/5462595",
+  //   integrations: [new Integrations.BrowserTracing()],
+  //   enabled: process.env.NODE_ENV === "production",
+  //   // We recommend adjusting this value in production, or using tracesSampler
+  //   // for finer control
+  //   tracesSampleRate: 1.0,
+  // });
 
   if (!engine) return null;
   return (

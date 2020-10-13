@@ -49,35 +49,6 @@ async function handlePOST(req, res) {
       }))) ||
     null;
 
-  // const c = {
-  //   connect: items,
-  //   disconnect: null,
-  // };
-
-  // const existing = await prisma.fit.findOne({
-  //   where: { id: Number(id) },
-  //   include: {
-  //     components: true,
-  //   },
-  // });
-
-  // if (!existing) res.json(null);
-
-  // const disconnect = existing.components
-  //   .map((c) => {
-  //     const check = items.find((i) => c.id === i.id);
-  //     if (check) return null;
-  //     else
-  //       return {
-  //         id: c.id,
-  //       };
-  //   })
-  //   .filter((i) => i !== null);
-
-  // c.disconnect = disconnect;
-
-  // console.log("Connect setup", c);
-
   const fit = await prisma.fit.update({
     where: { id: Number(id) },
     data: {

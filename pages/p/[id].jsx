@@ -1,134 +1,126 @@
 import React, { useEffect, useState } from "react";
 import fetch from "isomorphic-unfetch";
 import Layout from "../../components/Layout";
-import Router from "next/router";
-import { Select } from "baseui/select";
-import FitBox from "../../components/FitBox";
-import CreateItem from "../../components/CreateItem";
 import { useSession } from "next-auth/client";
+import { Button } from "baseui/button";
 import { fabric } from "fabric";
-
-import {
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  ModalButton,
-  SIZE,
-  ROLE,
-} from "baseui/modal";
-import Fit from "../create";
-
 const FitImage = (props) => {
   const [session, loading] = useSession();
-  const [desc, setDesc] = useState("");
-  const [items, setItems] = useState(null);
-  const [components, setComponents] = useState(
-    props.components && itemToOptions(props.components)
-  );
 
-  const canvas = null;
+  let canvas = null;
+  let text_iter = 0;
 
-  const [isOpen, setIsOpen] = React.useState(false);
-  const addElement = (type, text) => {
-    textbox.setShadow("0px 0px 10px rgba(0, 0, 0, 1)");
-    canvas.add(textbox);
-  };
+  function handleResize() {
+    var w = window.innerWidth - 2; // -2 accounts for the border
+    var h = window.innerHeight - 2;
+    canvas.width = w;
+    canvas.height = h;
+    //
+    var ratio = 100 / 100; // 100 is the width and height of the circle content.
+    var windowRatio = w / h;
+    var scale = w / 100;
+    if (windowRatio > ratio) {
+      scale = h / 100;
+    }
+    // Scale up to fit width or height
+    fitImage.scaleX = c.scaleY = scale;
 
-  // Pul all canvas code in a function so we can call it after google fonts have loaded
-  const template1 = () => {
-    // Make canvas a fabric canvas
-    canvas = new fabric.Canvas("c", {
-      preserveObjectStacking: true,
+    // Center the shape
+    fitImage.x = w / 2;
+    fitImage.y = h / 2;
+  }
+
+  const addImage = () => {
+    var clipPath = new fabric.Rect({
+      width: 1080,
+      height: 1960,
+      top: 0,
+      left: 0,
+      absolutePositioned: true,
     });
-    canvas.backgroundColor = "rgb(140,140,140)";
-    canvas.clipTo = function (ctx) {
-      ctx.rect(220, 80, 360, 640);
-    };
-    canvas.controlsAboveOverlay = true;
-    canvas.setOverlayImage(
-      "img/overlay-bg.png",
-      canvas.renderAll.bind(canvas),
+
+    fabric.util.loadImage(
+      props.media.image,
+      function (url) {
+        var img = new fabric.Image(url);
+        img.clipPath = clipPath;
+        img.scaleToWidth(1080 / 3);
+        canvas.add(img);
+        canvas.sendToBack(img);
+        // canvas.add(img);
+      },
+      null,
       {
-        opacity: 0.5,
-        angle: 0,
-        left: 0,
-        top: 0,
-        originX: "left",
-        originY: "top",
         crossOrigin: "anonymous",
       }
     );
 
-    // Loading image onto canvas
-    var tempImg = "img/birdbox.jpg";
-
-    var birdbox;
-    var birdboxImg = new Image();
-    birdboxImg.onload = function (img) {
-      birdbox = new fabric.Image(birdboxImg, {
-        angle: 0,
-        width: 1171,
-        height: 1950,
-        left: 200,
-        top: 80,
-        scaleX: 0.33,
-        scaleY: 0.33,
-        selectable: true,
-        borderColor: "red",
-        cornerColor: "green",
-        cornerSize: 12,
-        transparentCorners: false,
-      });
-      canvas.add(birdbox);
-      // This is like z-index, this keeps the image behind the text
-      canvas.moveTo(birdbox, 0);
-    };
-    birdboxImg.src = tempImg;
-
-    // Load text onto canvas
-    var textbox = new fabric.Textbox(
-      "Caption goes here - you can resize the text with the handles",
-      {
-        left: 240,
-        top: 455,
-        width: 320,
-        fontSize: 28,
-        fill: "#fff",
-        fontFamily: "Open Sans",
-        fontWeight: 800,
-        textAlign: "center",
-        borderColor: "red",
-        cornerColor: "green",
-        cornerSize: 12,
-        transparentCorners: false,
-      }
-    );
-    // Add shadow to the textbox with this line
-
-    // Function to update image src - timout added to fix image loading bug
-    function addImage(img) {
-      birdbox.setSrc(img);
-      setTimeout(function () {
-        canvas.renderAll();
-      }, 1);
-    }
-
-    // Pick new background image
-    var bgpicker = document.querySelector("#backgroundpick");
-    bgpicker.onchange = function (e) {
-      var file = e.target.files[0];
-      var reader = new FileReader();
-      reader.onload = function (file) {
-        addImage(file.target.result);
-      };
-      reader.readAsDataURL(file);
-    };
+    // fabric.Image.fromURL(props.media.image, function (img) {
+    //   img.clipPath = clipPath;
+    //   img.scaleToWidth(1080 / 3);
+    //   canvas.add(img);
+    //   canvas.sendToBack(img);
+    // });
   };
 
+  const addElement = (text, iter) => {
+    // Load text onto canvas
+    const offset = 1080 / props.components.length;
+    const textbox = new fabric.Textbox(text, {
+      left: 0,
+      top: iter * offset,
+      width: 320,
+      fontSize: 28,
+      fill: "#fff",
+      fontFamily: "Apercu",
+      fontWeight: 800,
+      textAlign: "center",
+      cornerSize: 12,
+      transparentCorners: false,
+    });
+
+    // textbox.setShadow("0px 0px 10px rgba(0, 0, 0, 1)");
+    canvas.add(textbox);
+    text_iter += 1;
+    console.log("Added", text, iter);
+  };
+
+  const addLogo = (text, iter) => {
+    // Load text onto canvas
+    const offset = 640;
+    const textbox = new fabric.Textbox("stupidfits.com", {
+      left: 0,
+      top: 0.9 * offset,
+      width: 360,
+      fontSize: 12,
+      fill: "#fff",
+      textBackgroundColor: "#151515",
+      fontFamily: "Apercu",
+      fontWeight: 800,
+      textAlign: "center",
+      cornerSize: 12,
+      transparentCorners: false,
+    });
+
+    // textbox.setShadow("0px 0px 10px rgba(0, 0, 0, 1)");
+    canvas.add(textbox);
+    text_iter += 1;
+    console.log("Added", text, iter);
+  };
+
+  // Pul all canvas code in a function so we can call it after google fonts have loaded
+  const initCanvas = () => {
+    // Make canvas a fabric canvas
+    canvas = new fabric.Canvas("c", {
+      preserveObjectStacking: true,
+    });
+
+    canvas.backgroundColor = "rgb(21,21,21)";
+    canvas.controlsAboveOverlay = true;
+  };
   // dataURLtoBlob function for saving
   const dataURLtoBlob = (dataurl) => {
-    var arr = dataurl.split(","),
+    let arr = dataurl.split(","),
       mime = arr[0].match(/:(.*?);/)[1],
       bstr = atob(arr[1]),
       n = bstr.length,
@@ -139,8 +131,7 @@ const FitImage = (props) => {
     return new Blob([u8arr], { type: mime });
   };
 
-  const bindEvents = () => {
-    // Save image
+  const RenderControls = () => {
     const link = document.getElementById("saveimage");
     link.addEventListener(
       "click",
@@ -151,70 +142,93 @@ const FitImage = (props) => {
         // Remove canvas clipping so export the image
         canvas.clipTo = null;
         // Export the canvas to dataurl at 3 times the size and crop to the active area
-        var imgData = canvas.toDataURL({
+        const imgData = canvas.toDataURL({
           format: "jpeg",
           quality: 1,
           multiplier: 3,
-          left: 220,
-          top: 80,
+          left: 0,
+          top: 0,
           width: 360,
           height: 640,
         });
 
-        var strDataURI = imgData.substr(22, imgData.length);
+        const strDataURI = imgData.substr(22, imgData.length);
 
-        var blob = dataURLtoBlob(imgData);
+        const blob = dataURLtoBlob(imgData);
 
-        var objurl = URL.createObjectURL(blob);
-        link.download = "story.jpg";
+        const objurl = URL.createObjectURL(blob);
+        link.download = `${props.id}.jpg`;
         link.href = objurl;
         // Reset the clipping path to what it was
         canvas.clipTo = function (ctx) {
           ctx.rect(220, 80, 360, 640);
         };
-        // Reset overlay image
-        canvas.setOverlayImage(
-          props.media.image,
-          canvas.renderAll.bind(canvas),
-          {
-            opacity: 0.5,
-            angle: 0,
-            left: 0,
-            top: 0,
-            originX: "left",
-            originY: "top",
-            crossOrigin: "anonymous",
-          }
-        );
+
         canvas.renderAll();
       },
       false
     );
+
+    canvas.on("mouse:wheel", function (opt) {
+      var delta = opt.e.deltaY;
+      var zoom = canvas.getZoom();
+      zoom *= 0.999 ** delta;
+      if (zoom > 20) zoom = 20;
+      if (zoom < 0.01) zoom = 0.01;
+      canvas.zoomToPoint({ x: opt.e.offsetX, y: opt.e.offsetY }, zoom);
+      opt.e.preventDefault();
+      opt.e.stopPropagation();
+    });
   };
 
   useEffect(() => {
-    bindEvents(true);
+    if (!canvas) {
+      initCanvas();
+      addImage();
+      addLogo();
+      RenderControls(true);
+    }
+    if (text_iter === 0) {
+      props.components &&
+        props.components.map((c) => {
+          addElement(c.model, text_iter);
+        });
+    }
     return () => {};
-  }, [session]);
+  }, []);
 
   return (
     <Layout>
       <div className="page">
         <h1>Export Anatomy</h1>
+        <p>
+          Export your fitpics with annotations for an easy upload to instagram
+          stories (or wherever)
+        </p>
 
-        <main id="main-area">
-          <canvas id="c" width="1080" height="1920" style={{ zoom: "50%" }} />
-          <img class="gui" src={props.media.image} />
-          <a id="saveimage">Save Image</a>
-        </main>
+        <canvas id="c" width={360} height={640} style={{ zoom: "100%" }} />
+        <br />
+        <div className="save">
+          <a id="saveimage">
+            <Button>Save Image</Button>
+          </a>
+        </div>
       </div>
       <style jsx>{`
         .page {
-          padding: 3rem;
+          padding: 0;
           display: flex;
           flex-wrap: wrap;
           justify-content: center;
           align-items: center;
+        }
+
+        .save {
+          width: 100%;
+        }
+
+        canvas {
+          overflow: hidden;
         }
 
         input[type="text"],
@@ -251,7 +265,7 @@ export const getServerSideProps = async (context) => {
   }
 
   return {
-    props: { ...data, url: process.env.HOST },
+    props: { ...data },
   };
 };
 

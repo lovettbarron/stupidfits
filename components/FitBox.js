@@ -32,6 +32,10 @@ const FitBox = (props) => {
     Router.push(`/fit/${fit || props.id}`);
   };
 
+  const exportFit = async (e) => {
+    Router.push(`/p/${fit || props.id}`);
+  };
+
   const checkIfExists = async () => {
     const res = await fetch(`${process.env.HOST}/api/insta/${props.id}`);
     try {
@@ -79,6 +83,7 @@ const FitBox = (props) => {
             <>
               <br />
               <button onClick={editFit}>Edit Fit</button>
+              <button onClick={exportFit}>Export image</button>
             </>
           )}
           {props.components && (
