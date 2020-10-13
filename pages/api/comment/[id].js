@@ -38,7 +38,7 @@ async function handleGET(req, res) {
     .finally(async () => {
       await prisma.$disconnect();
     });
-  res.json(comments);
+  res.json(comments || []);
 }
 
 // POST /api/post/:id

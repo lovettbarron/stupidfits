@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import { getSession, session } from "next-auth/client";
-// import cloudinary from "cloudinary";
+import * as cloudinary from "cloudinary";
 
 const prisma = new PrismaClient();
 
@@ -48,17 +48,17 @@ async function handlePOST(req, res) {
   const session = await getSession({ req });
   console.log("Update", session.user.email, req.body);
 
-  // TODO Upload image to cloudinary
-  // https://res.cloudinary.com/<your Cloudinary account's cloud name>/<resource_type>/upload/<mapped upload folder prefix>/<partial path of remote resource>
-
   const uploadpath = req.body.media_url;
-  // const image = await fetch(`https://res.cloudinary.com/${process.env.CLOUDINARY_ACCOUNT}/image/upload/stupidfits/${uploadpath}`, {
-  //   method: "GET",
-  //   headers: { "Content-Type": "application/json" },
-  //   body: JSON.stringify(body),
-  // });
 
-  // cloudinary.imageTag(uploadpath, {type: "fetch"}).toHtml();
+  cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+  });
+
+  const cloudurl = await cloudinary.uploader.upload(uploadpath, {
+    public_id: `stupidfits/instagram/${req.body.id}`,
+  });
 
   const d = new Date(Date.parse(req.body.timestamp));
   // Set path
@@ -74,6 +74,7 @@ async function handlePOST(req, res) {
           insta_id: req.body.id,
           username: req.body.username,
           timestamp: Math.floor(d.getTime() / 1000),
+          cloudinary: (cloudurl && cloudurl.public_id) || null,
           image: req.body.media_url,
           url: req.body.permalink,
           description: req.body.caption || "",

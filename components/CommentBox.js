@@ -1,11 +1,6 @@
 import React, { useEffect, useState } from "react";
 import fetch from "isomorphic-unfetch";
-import Router from "next/router";
 import Link from "next/link";
-import { Select } from "baseui/select";
-import { Input } from "baseui/input";
-import { FileUploader } from "baseui/file-uploader";
-import { useUpload } from "use-cloudinary";
 import { useSession } from "next-auth/client";
 import { Textarea } from "baseui/textarea";
 import { SIZE } from "baseui/input";
@@ -39,6 +34,7 @@ const CommentBox = (props) => {
       }
     } catch (error) {
       console.error(error);
+      setComments([]);
       setIsLoading(false);
     }
   };
@@ -57,7 +53,7 @@ const CommentBox = (props) => {
   };
 
   useEffect(() => {
-    fetchComments();
+    if (Array.isArray(comments)) fetchComments();
 
     return () => {};
   }, [session]);

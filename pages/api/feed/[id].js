@@ -46,6 +46,7 @@ export default async function handle(req, res) {
       .finally(async () => {
         await prisma.$disconnect();
       });
+
     // console.log(posts);
     res.json(posts);
   }

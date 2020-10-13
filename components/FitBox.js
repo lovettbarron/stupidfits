@@ -3,6 +3,7 @@ import Link from "next/link";
 import Router, { useRouter } from "next/router";
 import { useSession } from "next-auth/client";
 import Anatomy from "./Anatomy";
+import Image from "./Image";
 
 const FitBox = (props) => {
   const router = useRouter();
@@ -51,7 +52,7 @@ const FitBox = (props) => {
   return (
     <>
       <div className="fitbox">
-        <img src={props.imageUrl || `${props.media.url}media/?size=l`} />
+        <Image url={props.imageUrl} media={props.media} />
 
         <div className="description">
           <div className="header">
