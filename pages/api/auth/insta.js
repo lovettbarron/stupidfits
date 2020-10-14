@@ -199,16 +199,16 @@ export default async function handle(req, res) {
         res.redirect("/me");
       }
 
-      const t = new Date();
-      const refreshtime =
-        t.setSeconds(t.getSeconds() + long.expires_in) || null;
+      // const t = new Date();
+      // const refreshtime =
+      //   t.setSeconds(t.getSeconds() + long.expires_in) || null;
 
       try {
         const instaUpdate = await prisma.user.update({
           where: { email: session.user.email },
           data: {
             instagramlong: long.access_token,
-            instagramrefresh: refreshtime.getTime(),
+            // instagramrefresh: refreshtime.getTime(),
             instagram: user.username,
             username: u.username || user.username,
           },
