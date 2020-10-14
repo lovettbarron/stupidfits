@@ -81,19 +81,22 @@ const FitImage = (props) => {
   const addLogo = () => {
     // Load text onto canvas
     const height = 640;
-    const textbox = new fabric.Textbox("stupidfits.com", {
-      left: 0,
-      top: 0.9 * height,
-      width: 360,
-      fontSize: 12,
-      fill: "#fff",
-      textBackgroundColor: "#151515",
-      fontFamily: "Apercu",
-      fontWeight: 800,
-      textAlign: "center",
-      cornerSize: 12,
-      transparentCorners: false,
-    });
+    const textbox = new fabric.Textbox(
+      `stupidfits.com/f/${props.id}\nstupidfits.com/u/${props.user.username}`,
+      {
+        left: 0,
+        top: 0.9 * height,
+        width: 360,
+        fontSize: 12,
+        fill: "#fff",
+        textBackgroundColor: "#151515",
+        fontFamily: "Apercu",
+        fontWeight: 800,
+        textAlign: "center",
+        cornerSize: 12,
+        transparentCorners: false,
+      }
+    );
     canvas.add(textbox);
   };
 
@@ -176,6 +179,7 @@ const FitImage = (props) => {
         const objurl = URL.createObjectURL(blob);
         link.download = `${props.id}.jpg`;
         link.href = objurl;
+
         // Reset the clipping path to what it was
         canvas.clipTo = function (ctx) {
           ctx.rect(220, 80, 360, 640);
