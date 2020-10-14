@@ -208,7 +208,7 @@ export default async function handle(req, res) {
           where: { email: session.user.email },
           data: {
             instagramlong: long.access_token,
-            instagramrefresh: refreshtime,
+            instagramrefresh: refreshtime.getTime(),
             instagram: user.username,
             username: u.username || user.username,
           },
