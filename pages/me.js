@@ -297,14 +297,6 @@ export async function getServerSideProps(context) {
     },
   });
 
-  const b = await fetch(`${process.env.HOST}/api/item`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      cookie: context.req.headers.cookie,
-    },
-  });
-
   let user = null;
   // console.log("Res", res);
   try {
