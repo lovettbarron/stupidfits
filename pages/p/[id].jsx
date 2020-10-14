@@ -8,19 +8,21 @@ import { Radio, RadioGroup } from "baseui/radio";
 
 const FitImage = (props) => {
   const [session, loading] = useSession();
-  const [value, setValue] = React.useState("1");
+  const [value, setValue] = React.useState("0");
 
   let canvas = null;
+
+  let img = null;
   let text_iter = 0;
 
   const Formatted = (c) => {
     switch (value) {
-      case 1:
+      case "0":
         return `${c.brand.name} ${c.model}`;
-      case 2:
+      case "1":
         return `${c.brand.name}`;
       default:
-        return `${c.brand.name}`;
+        return ``;
     }
   };
 
@@ -29,16 +31,17 @@ const FitImage = (props) => {
       width: 1080,
       height: 1960,
       top: 0,
-      left: 0,
+      left: -100,
       absolutePositioned: true,
     });
 
-    fabric.util.loadImage(
+    img = fabric.util.loadImage(
       props.media.image,
       function (url) {
         var img = new fabric.Image(url);
         img.clipPath = clipPath;
-        img.scaleToWidth(1080 / 3);
+        // img.scaleToWidth(1080 / 3);
+        img.scaleToHeight(1980 / 3);
         canvas.add(img);
         canvas.sendToBack(img);
         // canvas.add(img);
@@ -48,43 +51,38 @@ const FitImage = (props) => {
         crossOrigin: "anonymous",
       }
     );
-
-    // fabric.Image.fromURL(props.media.image, function (img) {
-    //   img.clipPath = clipPath;
-    //   img.scaleToWidth(1080 / 3);
-    //   canvas.add(img);
-    //   canvas.sendToBack(img);
-    // });
   };
 
   const addElement = (text, iter) => {
     // Load text onto canvas
-    const offset = 640;
+    const height = 640;
+    const offset = (iter / props.components.length) * height;
     const textbox = new fabric.Textbox(Formatted(text), {
+      id: "text" + iter,
       left: 0,
-      top: iter * offset,
-      width: 320,
-      fontSize: 28,
+      top: offset,
+      width: 360,
+      fontSize: 22,
       fill: "#fff",
+      textBackgroundColor: "#151515",
       fontFamily: "Apercu",
       fontWeight: 800,
       textAlign: "center",
       cornerSize: 12,
       transparentCorners: false,
     });
-
-    // textbox.setShadow("0px 0px 10px rgba(0, 0, 0, 1)");
     canvas.add(textbox);
+    canvas.bringToFront(textbox);
+    console.log("Added", Formatted(text), iter, offset);
     text_iter += 1;
-    console.log("Added", text, iter);
   };
 
   const addLogo = () => {
     // Load text onto canvas
-    const offset = 640;
+    const height = 640;
     const textbox = new fabric.Textbox("stupidfits.com", {
       left: 0,
-      top: 0.9 * offset,
+      top: 0.9 * height,
       width: 360,
       fontSize: 12,
       fill: "#fff",
@@ -95,10 +93,7 @@ const FitImage = (props) => {
       cornerSize: 12,
       transparentCorners: false,
     });
-
-    // textbox.setShadow("0px 0px 10px rgba(0, 0, 0, 1)");
     canvas.add(textbox);
-    text_iter += 1;
   };
 
   // Pul all canvas code in a function so we can call it after google fonts have loaded
@@ -125,6 +120,23 @@ const FitImage = (props) => {
   };
 
   const RenderControls = () => {
+    const radio = document.getElementById("radio");
+    radio.addEventListener(
+      "change",
+      function () {
+        let i = 0;
+        const objs = canvas.getObjects();
+        objs.forEach(function (obj, iter) {
+          if (obj && obj.id && obj.id.includes("text")) {
+            obj.set({ text: Formatted(props.components[i]) });
+            canvas.renderAll();
+            i += 1;
+          }
+        });
+      },
+      false
+    );
+
     const link = document.getElementById("saveimage");
     link.addEventListener(
       "click",
@@ -176,14 +188,16 @@ const FitImage = (props) => {
 
   useEffect(() => {
     if (!canvas) {
-      initCanvas();
-      addImage();
-      addLogo();
-      RenderControls(true);
-      props.components &&
-        props.components.map((c) => {
-          addElement(c, text_iter);
-        });
+      setTimeout(() => {
+        initCanvas();
+        addImage();
+        addLogo();
+        RenderControls(true);
+        props.components &&
+          props.components.map((c) => {
+            addElement(c, text_iter);
+          });
+      }, 1000);
     }
     console.log("Props", props);
 
@@ -199,16 +213,16 @@ const FitImage = (props) => {
           stories (or wherever)
         </p>
         <RadioGroup
+          id={`radio`}
           align="horizontal"
           name="horizontal"
           onChange={(e) => {
             setValue(e.target.value);
-            canvas.renderAll();
           }}
           value={value}
         >
           <Radio value="1">Outfit</Radio>
-          <Radio value="2">Brand Only</Radio>
+          <Radio value="2">Brands Only</Radio>
           <Radio value="3">Nothing</Radio>
         </RadioGroup>
         <canvas id="c" width={360} height={640} style={{ zoom: "100%" }} />
