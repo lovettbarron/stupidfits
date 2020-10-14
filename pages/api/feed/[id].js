@@ -6,7 +6,7 @@ const prisma = new PrismaClient();
 export default async function handle(req, res) {
   const session = await getSession({ req });
 
-  console.log("Feed Query", req.query);
+  console.log("Feed", req.query);
 
   // If user is logged in and this isn't global
   if (req.query.id) {
@@ -15,7 +15,7 @@ export default async function handle(req, res) {
       .findMany({
         where: {
           user: {
-            username: req.query.id,
+            id: Number(req.query.id),
           },
         },
         include: {

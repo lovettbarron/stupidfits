@@ -98,6 +98,12 @@ const Layout = (props) => (
         text-align: center;
       }
 
+      .alert {
+        padding: 1rem;
+        border: 1px solid #ffffff;
+        border-radius: 5px;
+      }
+
       @keyframes shake {
         0% {
           transform: translate(1px, 1px) rotate(0deg);

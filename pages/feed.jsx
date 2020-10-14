@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
+import Link from "next/link";
 import fetch from "isomorphic-unfetch";
 import Layout from "../components/Layout";
 import Gram from "../components/Gram";
 import InfiniteScroll from "react-infinite-scroll-component";
-
 import { useSession, getSession } from "next-auth/client";
 
 const Feed = (props) => {
@@ -33,6 +33,24 @@ const Feed = (props) => {
       <div className="page">
         <h1>All The Fits</h1>
         <p>Pick your fits from your instagram, share the details.</p>
+
+        {!props.user.instagramlong && (
+          <div className="alert">
+            <p>
+              You'll need to sync your instagram before being able to really use
+              StupidFits. The plan is to support direct image uploading later as
+              well, but for now Instagram is required!
+            </p>
+            <p>
+              Visit your{" "}
+              <Link href="/me">
+                <a>Settings Page</a>
+              </Link>{" "}
+              to sync your instagram
+            </p>
+          </div>
+        )}
+
         {props.error && <p>There was an Error: {props.error} </p>}
         {posts && Array.isArray(posts) && (
           <main>
@@ -108,6 +126,7 @@ export const getServerSideProps = async (context) => {
   const session = await getSession(context);
   let error = null;
   let insta;
+
   let user;
   try {
     // Get user and instagram username
@@ -124,13 +143,16 @@ export const getServerSideProps = async (context) => {
   }
 
   // Fetch fits for this user and check against existing instagram
-  const fitres = await fetch(`${process.env.HOST}/api/feed`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      cookie: context.req.headers.cookie,
-    },
-  });
+  const fitres = await fetch(
+    `${process.env.HOST}/api/feed/${(user && user.id) || null}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        cookie: context.req.headers.cookie,
+      },
+    }
+  );
   let fits = null;
   try {
     fits = await fitres.json();

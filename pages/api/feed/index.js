@@ -5,7 +5,7 @@ const prisma = new PrismaClient();
 
 export default async function handle(req, res) {
   const session = await getSession({ req });
-
+  console.log("Fetching global feed");
   const posts = await prisma.fit
     .findMany({
       where: {

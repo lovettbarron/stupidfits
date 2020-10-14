@@ -169,13 +169,16 @@ export const getServerSideProps = async (context) => {
     console.log("error:", e.message);
   }
 
-  const res = await fetch(`${process.env.HOST}/api/feed`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      cookie: context.req.headers.cookie,
-    },
-  });
+  const res = await fetch(
+    `${process.env.HOST}/api/feed/${(user && user.id) || ""}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        cookie: context.req.headers.cookie,
+      },
+    }
+  );
   let feed = [];
   try {
     feed = await res.json();
