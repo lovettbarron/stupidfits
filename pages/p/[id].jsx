@@ -5,22 +5,23 @@ import { useSession } from "next-auth/client";
 import { Button } from "baseui/button";
 import { fabric } from "fabric";
 import { Radio, RadioGroup } from "baseui/radio";
-
+import { Cap } from "../../components/Anatomy";
 const FitImage = (props) => {
   const [session, loading] = useSession();
-  const [value, setValue] = React.useState("0");
+  const [value, setValue] = React.useState("1");
 
   let canvas = null;
 
   let img = null;
   let text_iter = 0;
 
-  const Formatted = (c) => {
-    switch (value) {
-      case "0":
-        return `${c.brand.name} ${c.model}`;
+  const Formatted = (c, v) => {
+    console.log("Value", v);
+    switch (v) {
       case "1":
-        return `${c.brand.name}`;
+        return `${Cap(c.brand.name)} ${c.model}`;
+      case "2":
+        return `${Cap(c.brand.name)}`;
       default:
         return ``;
     }
@@ -57,7 +58,7 @@ const FitImage = (props) => {
     // Load text onto canvas
     const height = 640;
     const offset = (iter / props.components.length) * height;
-    const textbox = new fabric.Textbox(Formatted(text), {
+    const textbox = new fabric.Textbox(Formatted(text, value), {
       id: "text" + iter,
       left: 0,
       top: offset,
@@ -73,7 +74,7 @@ const FitImage = (props) => {
     });
     canvas.add(textbox);
     canvas.bringToFront(textbox);
-    console.log("Added", Formatted(text), iter, offset);
+    console.log("Added", Formatted(text, value), iter, offset);
     text_iter += 1;
   };
 
@@ -123,14 +124,25 @@ const FitImage = (props) => {
     const radio = document.getElementById("radio");
     radio.addEventListener(
       "change",
-      function () {
+      (e) => {
+        console.log("Changed fired", e.target.value);
+        const value = String(e.target.value);
         let i = 0;
         const objs = canvas.getObjects();
-        objs.forEach(function (obj, iter) {
-          if (obj && obj.id && obj.id.includes("text")) {
-            obj.set({ text: Formatted(props.components[i]) });
+
+        objs.forEach((o) => {
+          if (!o.id) return null;
+          else if (o.id && !!(String(o.id).indexOf("text") >= 0)) {
+            console.log(
+              "Changing to ",
+              Formatted(props.components[o.id.split("text")[1]], value)
+            );
+            o.set(
+              "text",
+              Formatted(props.components[o.id.split("text")[1]], value)
+            );
+            // console.log("Updating", o);
             canvas.renderAll();
-            i += 1;
           }
         });
       },
@@ -217,13 +229,14 @@ const FitImage = (props) => {
           align="horizontal"
           name="horizontal"
           onChange={(e) => {
-            setValue(e.target.value);
+            console.log("Change the value", e.target.value);
+            setValue(String(e.target.value));
           }}
           value={value}
         >
-          <Radio value="1">Outfit</Radio>
-          <Radio value="2">Brands Only</Radio>
-          <Radio value="3">Nothing</Radio>
+          <Radio value={"1"}>Outfit</Radio>
+          <Radio value={"2"}>Brands Only</Radio>
+          <Radio value={"3"}>Nothing</Radio>
         </RadioGroup>
         <canvas id="c" width={360} height={640} style={{ zoom: "100%" }} />
         <br />

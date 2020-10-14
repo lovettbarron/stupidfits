@@ -22,7 +22,7 @@
     "@prisma/client": "2.5.1",
     "@sentry/react": "^5.26.0",
     "@sentry/tracing": "^5.26.0",
-    "baseui": "^9.97.0",
+    "baseui": "^9.102.0",
     "cloudinary": "^1.23.0",
     "cloudinary-core": "^2.11.3",
     "cloudinary-react": "^1.6.7",

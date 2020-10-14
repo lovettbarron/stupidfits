@@ -4,7 +4,7 @@ import Router, { useRouter } from "next/router";
 import { Tabs, Tab, FILL } from "baseui/tabs-motion";
 import CommentBox from "./CommentBox";
 
-const Cap = (brand) => {
+export const Cap = (brand) => {
   const words = brand.split(" ");
 
   for (let i = 0; i < words.length; i++) {
