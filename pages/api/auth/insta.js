@@ -200,14 +200,15 @@ export default async function handle(req, res) {
       }
 
       const t = new Date();
+      const refreshtime =
+        t.setSeconds(t.getSeconds() + long.expires_in) || null;
 
       try {
         const instaUpdate = await prisma.user.update({
           where: { email: session.user.email },
           data: {
             instagramlong: long.access_token,
-            instagramrefresh:
-              Number(t.setSeconds(t.getSeconds() + long.expires_in)) || 0,
+            instagramrefresh: refreshtime,
             instagram: user.username,
             username: u.username || user.username,
           },
@@ -218,6 +219,7 @@ export default async function handle(req, res) {
         });
         res.end();
       } catch (err) {
+        console.log(err);
         res.redirect("/me");
       }
     }
