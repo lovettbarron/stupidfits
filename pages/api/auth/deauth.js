@@ -38,5 +38,7 @@ export default async function handle(req, res) {
   // Decode Request
   // Search for user based off of request
   // Delete Instagram auth tokens
-  res.status(200);
+  res
+    .status(200)
+    .json({ url: "https://stupidfits.com/u/", confirmation_code: "<code>" });
 }

@@ -41,9 +41,11 @@ export default async function handle(req, res) {
   // Delete user
   // Delete posts
   // Send verification
-console.log("Delete Req",req)
-console.log("Delete Body",req.body)
-console.log("Delete Query",req.query)
+  console.log("Delete Req", req);
+  console.log("Delete Body", req.body);
+  console.log("Delete Query", req.query);
 
-  res.status(200).json({ url: 'https://stupidfits.com/u/', confirmation_code: '<code>' };
+  res
+    .status(200)
+    .json({ url: "https://stupidfits.com/u/", confirmation_code: "<code>" });
 }
