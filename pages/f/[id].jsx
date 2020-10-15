@@ -36,19 +36,11 @@ const Fit = (props) => {
         openGraph={{
           images: [
             {
-              url: "https://www.example.ie/og-image-01.jpg",
+              url: props.media && props.media.cloudinary,
               width: 800,
               height: 600,
               alt: "Og Image Alt",
             },
-            {
-              url: "https://www.example.ie/og-image-02.jpg",
-              width: 900,
-              height: 800,
-              alt: "Og Image Alt Second",
-            },
-            { url: "https://www.example.ie/og-image-03.jpg" },
-            { url: "https://www.example.ie/og-image-04.jpg" },
           ],
           site_name: "SiteName",
         }}

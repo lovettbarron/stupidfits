@@ -56,7 +56,7 @@ const CommentBox = (props) => {
     if (Array.isArray(comments)) fetchComments();
 
     return () => {};
-  }, [session]);
+  }, []);
 
   return (
     <>

@@ -5,6 +5,8 @@ import { Client as Styletron } from "styletron-engine-atomic";
 import { Provider } from "next-auth/client";
 import * as Sentry from "@sentry/react";
 import { Integrations } from "@sentry/tracing";
+import { DefaultSeo } from "next-seo";
+import SEO from "../next-seo.config";
 
 function App({ Component, pageProps }) {
   const [engine, setEngine] = useState(null);
@@ -35,6 +37,7 @@ function App({ Component, pageProps }) {
     <Provider options={{ site: process.env.HOST }} session={pageProps.session}>
       <StyletronProvider value={engine}>
         <BaseProvider theme={DarkTheme}>
+          <DefaultSeo {...SEO} />
           <Component {...pageProps} url={process.env.HOST} />
         </BaseProvider>
       </StyletronProvider>

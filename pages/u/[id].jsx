@@ -11,8 +11,10 @@ const UserProfile = (props) => {
   const [activeKey, setActiveKey] = React.useState("0");
 
   const seourl =
-    props.fits.length > 0 &&
-    `https://res.cloudinary.com/stupidsystems/image/upload/${props.fits[0].media.cloudinary}`;
+    (Array.isArray(props.fits) &&
+      props.fits.length > 0 &&
+      `https://res.cloudinary.com/stupidsystems/image/upload/${props.fits[0].media.cloudinary}`) ||
+    "";
 
   if (!props.insta.profilepage) {
     return (
@@ -225,7 +227,7 @@ export const getServerSideProps = async (context) => {
   }
 
   // Fetch fits for this user and check against existing instagram
-  const fitres = await fetch(`${process.env.HOST}/api/feed/${user.username}`, {
+  const fitres = await fetch(`${process.env.HOST}/api/feed/${user.id}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
