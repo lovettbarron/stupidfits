@@ -48,7 +48,9 @@ export default (props) => {
               <a data-active={isActive("/me")}>Setting</a>
             </Link>
             <hr />
-            <a href={signout}>Sign out</a>
+
+            <a onClick={signin}>Sign out</a>
+
             <footer>
               <ul>
                 <li>
