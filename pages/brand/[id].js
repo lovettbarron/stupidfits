@@ -56,6 +56,12 @@ const BrandProfile = (props) => {
               </Link>
             </h1>
             <p>{Cap(props.brand.name)} fits on Stupidfits.</p>
+            <small>
+              {" "}
+              <Link href="/brand">
+                <a>View all brands</a>
+              </Link>
+            </small>
           </div>
           <Tabs
             activeKey={activeKey}
@@ -68,27 +74,46 @@ const BrandProfile = (props) => {
             <Tab title="All">
               <BrandFilter items={props.brand.items} />
             </Tab>
-            <Tab title="Carry">
-              <BrandFilter items={props.brand.items} filter={"CARRY"} />
-            </Tab>
-            <Tab title="Outerwear">
-              <BrandFilter items={props.brand.items} filter={"JACKET"} />
-            </Tab>
-            <Tab title="Layer">
-              <BrandFilter items={props.brand.items} filter={"LAYER"} />
-            </Tab>
-            <Tab title="Shirt">
-              <BrandFilter items={props.brand.items} filter={"SHIRT"} />
-            </Tab>
-            <Tab title="Bottom">
-              <BrandFilter items={props.brand.items} filter={"PANT"} />
-            </Tab>
-            <Tab title="Shoe">
-              <BrandFilter items={props.brand.items} filter={"SHOE"} />
-            </Tab>
-            <Tab title="Extra">
-              <BrandFilter items={props.brand.items} filter={"EXTRA"} />
-            </Tab>
+            {props.brand.items.filter((t) => t.type === "CARRY").length >=
+              1 && (
+              <Tab title="Carry">
+                <BrandFilter items={props.brand.items} filter={"CARRY"} />
+              </Tab>
+            )}
+            {props.brand.items.filter((t) => t.type === "JACKET").length >=
+              1 && (
+              <Tab title="Outerwear">
+                <BrandFilter items={props.brand.items} filter={"JACKET"} />
+              </Tab>
+            )}
+            {props.brand.items.filter((t) => t.type === "LAYER").length >=
+              1 && (
+              <Tab title="Layer">
+                <BrandFilter items={props.brand.items} filter={"LAYER"} />
+              </Tab>
+            )}
+            {props.brand.items.filter((t) => t.type === "SHIRT").length >=
+              1 && (
+              <Tab title="Shirt">
+                <BrandFilter items={props.brand.items} filter={"SHIRT"} />
+              </Tab>
+            )}
+            {props.brand.items.filter((t) => t.type === "PANT").length >= 1 && (
+              <Tab title="Bottom">
+                <BrandFilter items={props.brand.items} filter={"PANT"} />
+              </Tab>
+            )}
+            {props.brand.items.filter((t) => t.type === "SHOE").length >= 1 && (
+              <Tab title="Shoe">
+                <BrandFilter items={props.brand.items} filter={"SHOE"} />
+              </Tab>
+            )}
+            {props.brand.items.filter((t) => t.type === "EXTRA").length >=
+              1 && (
+              <Tab title="Extra">
+                <BrandFilter items={props.brand.items} filter={"EXTRA"} />
+              </Tab>
+            )}
           </Tabs>
           <ul>
             {props.brand.items.map((i) => (
