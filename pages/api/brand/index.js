@@ -9,6 +9,7 @@ export default async function handle(req, res) {
   if (req.method === "GET") {
     const posts = await prisma.brand.findMany({
       where: {},
+      orderBy: { name: "asc" },
     });
     // console.log("Returning brands", posts);
     res.json(posts);

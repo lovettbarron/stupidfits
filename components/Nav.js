@@ -41,42 +41,59 @@ export default (props) => {
             <Link href="/closet">
               <a data-active={isActive("/closet")}>Closet</a>
             </Link>
+            <Link href="/brand">
+              <a data-active={isActive("/brand")}>Brands</a>
+            </Link>
             <Link href="/global">
-              <a data-active={isActive("/closet")}>Others' Fits</a>
+              <a data-active={isActive("/global")}>Others' Fits</a>
             </Link>
             <Link href="/me">
               <a data-active={isActive("/me")}>Setting</a>
             </Link>
             <hr />
 
-            <a onClick={signin}>Sign out</a>
-
-            <footer>
-              <ul>
-                <li>
-                  <Link href="/wtf">
-                    <a>WTF is this?</a>
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/privacy">
-                    <a>Privacy</a>
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/tos">
-                    <a>Terms</a>
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/cookie">
-                    <a>Cookies</a>
-                  </Link>
-                </li>
-              </ul>
-            </footer>
+            <a onClick={signout}>Sign out</a>
           </div>
-        )) || <h3>You're not logged in.</h3>}
+        )) || (
+          <div className="nav">
+            <h3>You're not logged in.</h3>
+            <hr />
+            <a className="auth" onClick={signin}>
+              <img src={`/img/login.png`} />
+            </a>
+            <Link href="/global">
+              <a data-active={isActive("/global")}>Public Fits</a>
+            </Link>
+            <Link href="/brand">
+              <a data-active={isActive("/brand")}>Brands</a>
+            </Link>
+          </div>
+        )}
+
+        <footer>
+          <ul>
+            <li>
+              <Link href="/wtf">
+                <a>WTF is this?</a>
+              </Link>
+            </li>
+            <li>
+              <Link href="/privacy">
+                <a>Privacy</a>
+              </Link>
+            </li>
+            <li>
+              <Link href="/tos">
+                <a>Terms</a>
+              </Link>
+            </li>
+            <li>
+              <Link href="/cookie">
+                <a>Cookies</a>
+              </Link>
+            </li>
+          </ul>
+        </footer>
       </Drawer>
       <style jsx>{`
         .navigation {
@@ -91,6 +108,16 @@ export default (props) => {
         }
 
         .navigation a {
+        }
+
+        .auth img {
+          max-width: 20rem;
+          transition: all 0.4s;
+        }
+        .auth img:hover {
+          -webkit-filter: invert(1);
+          filter: invert(1);
+          background: black;
         }
 
         footer ul {
