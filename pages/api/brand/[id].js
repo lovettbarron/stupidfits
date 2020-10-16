@@ -36,6 +36,11 @@ async function handleGET(req, res) {
     },
     include: {
       fit: {
+        where: {
+          user: {
+            public: true,
+          },
+        },
         include: {
           media: true,
           user: true,
