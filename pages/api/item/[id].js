@@ -51,6 +51,7 @@ async function handlePOST(req, res) {
     data: {
       model: req.body.model,
       year: Number(req.body.year),
+      sale: req.body.sale || null,
       brand: {
         connectOrCreate: brand.length < 2 ? brand[0] : brand,
       },

@@ -3,6 +3,7 @@ import fetch from "isomorphic-unfetch";
 import Router from "next/router";
 import { Select } from "baseui/select";
 import { Input } from "baseui/input";
+
 import { FileUploader } from "baseui/file-uploader";
 import { useUpload } from "use-cloudinary";
 import { useSession } from "next-auth/client";
@@ -25,6 +26,7 @@ const Item = (props) => {
   const [session, loading] = useSession();
   const [brand, setBrand] = useState([]);
   const [model, setModel] = useState("");
+  const [sale, setSale] = useState("");
   const [year, setYear] = useState("");
   const [photo, setPhoto] = useState("");
   const [type, setType] = React.useState(props.type || "");
@@ -46,7 +48,7 @@ const Item = (props) => {
   const submitData = async (e) => {
     e.preventDefault();
     try {
-      const body = { brand, model, year, type };
+      const body = { brand, model, year, type, sale };
       const res = await fetch(`${process.env.HOST}/api/item`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -144,6 +146,17 @@ const Item = (props) => {
               placeholder="Year or Season"
               clearOnEscape
               type="Number"
+            />
+          </label>
+          <label>
+            <br />
+            <h3>Want to include an external link?</h3>
+            <p>This might be to grailed or your own store.</p>
+            <Input
+              value={sale}
+              onChange={(e) => setSale(e.target.value)}
+              placeholder="Grailed or something"
+              clearOnEscape
             />
           </label>
           <br />

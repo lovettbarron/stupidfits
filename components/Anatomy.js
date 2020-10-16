@@ -3,6 +3,7 @@ import Link from "next/link";
 import Router, { useRouter } from "next/router";
 import { Tabs, Tab, FILL } from "baseui/tabs-motion";
 import CommentBox from "./CommentBox";
+import Clicker from "./Clicker";
 
 export const Cap = (brand) => {
   const words = brand.split(" ");
@@ -61,9 +62,13 @@ const Anatomy = (props) => {
               {props.components
                 .filter((c) => c.type === "LAYER")
                 .map((c) => (
-                  <li key={c.id}>{`${c.brand.name} ${c.model} ${
-                    c.year > 0 ? c.year : ""
-                  }`}</li>
+                  <li key={c.id}>
+                    <Clicker {...c}>
+                      {`${Cap(c.brand.name)} ${c.model} ${
+                        c.year > 0 ? c.year : ""
+                      }`}
+                    </Clicker>
+                  </li>
                 ))}
             </ul>
           </>
@@ -75,9 +80,13 @@ const Anatomy = (props) => {
               {props.components
                 .filter((c) => c.type === "PANT")
                 .map((c) => (
-                  <li key={c.id}>{`${c.brand.name} ${c.model} ${
-                    c.year > 0 ? c.year : ""
-                  }`}</li>
+                  <li key={c.id}>
+                    <Clicker {...c}>
+                      {`${Cap(c.brand.name)} ${c.model} ${
+                        c.year > 0 ? c.year : ""
+                      }`}
+                    </Clicker>
+                  </li>
                 ))}
             </ul>
           </>
@@ -89,9 +98,11 @@ const Anatomy = (props) => {
               {props.components
                 .filter((c) => c.type === "BAG")
                 .map((c) => (
-                  <li key={c.id}>{`${c.brand.name} ${c.model} ${
-                    c.year > 0 ? c.year : ""
-                  }`}</li>
+                  <Clicker {...c}>
+                    <li key={c.id}>{`${Cap(c.brand.name)} ${c.model} ${
+                      c.year > 0 ? c.year : ""
+                    }`}</li>
+                  </Clicker>
                 ))}
             </ul>
           </>
@@ -103,9 +114,11 @@ const Anatomy = (props) => {
               {props.components
                 .filter((c) => c.type === "SHOE")
                 .map((c) => (
-                  <li key={c.id}>{`${c.brand.name} ${c.model} ${
-                    c.year > 0 ? c.year : ""
-                  }`}</li>
+                  <Clicker {...c}>
+                    <li key={c.id}>{`${Cap(c.brand.name)} ${c.model} ${
+                      c.year > 0 ? c.year : ""
+                    }`}</li>
+                  </Clicker>
                 ))}
             </ul>
           </>
@@ -117,9 +130,11 @@ const Anatomy = (props) => {
               {props.components
                 .filter((c) => c.type === "EXTRA")
                 .map((c) => (
-                  <li key={c.id}>{`${c.brand.name} ${c.model} ${
-                    c.year > 0 ? c.year : ""
-                  }`}</li>
+                  <Clicker {...c}>
+                    <li key={c.id}>{`${Cap(c.brand.name)} ${c.model} ${
+                      c.year > 0 ? c.year : ""
+                    }`}</li>
+                  </Clicker>
                 ))}
             </ul>
           </>

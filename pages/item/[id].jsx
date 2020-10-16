@@ -36,6 +36,7 @@ const Item = (props) => {
   );
   const [year, setYear] = useState(props.year);
   const [photo, setPhoto] = useState("");
+  const [sale, setSale] = useState(props.sale);
   const [errorMessage, setErrorMessage] = React.useState("");
 
   const { upload, data, isLoading, isError, error } = useUpload({
@@ -49,7 +50,7 @@ const Item = (props) => {
     e.preventDefault();
     console.log("Submitting data");
     try {
-      const body = { brand, model, type, year };
+      const body = { brand, model, type, sale, year };
       const res = await fetch(`${process.env.HOST}/api/item/${props.id}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -67,6 +68,7 @@ const Item = (props) => {
       <div className="page">
         <form onSubmit={submitData}>
           <h1>Describe your gear</h1>
+          <h3>What is it?</h3>
           <Select
             options={types}
             value={type}
@@ -76,6 +78,8 @@ const Item = (props) => {
           />
           <label>
             <br />
+            <h3>What's the brand?</h3>
+
             <Select
               creatable
               options={props.brands}
@@ -88,6 +92,8 @@ const Item = (props) => {
           </label>
           <label>
             <br />
+            <h3>Model name or description</h3>
+
             <Input
               value={model}
               onChange={(e) => setModel(e.target.value)}
@@ -97,6 +103,7 @@ const Item = (props) => {
           </label>
           <label>
             <br />
+            <h3>Is it from a specific year?</h3>
             <Input
               value={year}
               onChange={(e) => setYear(e.target.value)}
@@ -104,6 +111,18 @@ const Item = (props) => {
               clearOnEscape
             />
           </label>
+          <label>
+            <br />
+            <h3>Want to include an external link?</h3>
+            <p>This might be to grailed or your own store.</p>
+            <Input
+              value={sale}
+              onChange={(e) => setSale(e.target.value)}
+              placeholder="Grailed or something"
+              clearOnEscape
+            />
+          </label>
+          <br />
           <br />
           <FileUploader
             errorMessage={errorMessage}
@@ -149,6 +168,10 @@ const Item = (props) => {
           margin: 0.5rem 0;
           border-radius: 0.25rem;
           border: 0.125rem solid rgba(0, 0, 0, 0.2);
+        }
+
+        p {
+          font-size: 1rem;
         }
 
         input[type="submit"] {
