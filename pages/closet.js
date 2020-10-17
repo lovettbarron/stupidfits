@@ -68,6 +68,26 @@ const Blog = (props) => {
                 </li>
               ))}
           </ul>
+          <h2>Shirts</h2>
+          <ul>
+            {props.items
+              .filter((c) => c.type === "SHIRT")
+              .map((c) => (
+                <li>
+                  {`${c.brand.name} ${c.model} ${c.year > 0 ? c.year : ""}`}{" "}
+                  <br />
+                  <div className="hover">
+                    <Link href={`/item/${c.id}`}>
+                      <a>Edit</a>
+                    </Link>{" "}
+                    ·{" "}
+                    <Link href="/">
+                      <a>Delete</a>
+                    </Link>
+                  </div>
+                </li>
+              ))}
+          </ul>
           <h2>Pants</h2>
           <ul>
             {props.items

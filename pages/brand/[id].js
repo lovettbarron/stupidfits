@@ -26,7 +26,7 @@ const BrandFilter = ({ items, filter }) => {
 
   return (
     <>
-      {items.map((i) => (
+      {filtered.map((i) => (
         <>
           <h3>{i.name}</h3>
           {i.fit && i.fit.map((f) => <FitBox {...f} fit={f.id} />)}

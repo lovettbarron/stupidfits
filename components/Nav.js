@@ -15,11 +15,9 @@ export default (props) => {
   return (
     <>
       <div className="navigation">
-        <Link href="/">
-          <a onClick={toggleTrueFalse}>
-            <img src="/img/menu.png" />
-          </a>
-        </Link>
+        <a onClick={toggleTrueFalse}>
+          <img src="/img/menu.png" />
+        </a>
       </div>
       <Drawer
         isOpen={isOpen}
@@ -99,6 +97,7 @@ export default (props) => {
         .navigation {
           margin-left: auto;
           position: fixed;
+          cursor: pointer;
           top: 1rem;
           right: 1rem;
         }

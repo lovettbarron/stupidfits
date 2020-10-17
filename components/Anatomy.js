@@ -73,6 +73,24 @@ const Anatomy = (props) => {
             </ul>
           </>
         )}
+        {props.components.find((c) => c.type === "SHIRT") && (
+          <>
+            <h4>Shirts</h4>
+            <ul>
+              {props.components
+                .filter((c) => c.type === "SHIRT")
+                .map((c) => (
+                  <li key={c.id}>
+                    <Clicker {...c}>
+                      {`${Cap(c.brand.name)} ${c.model} ${
+                        c.year > 0 ? c.year : ""
+                      }`}
+                    </Clicker>
+                  </li>
+                ))}
+            </ul>
+          </>
+        )}
         {props.components.find((c) => c.type === "PANT") && (
           <>
             <h4>Bottoms</h4>
