@@ -126,6 +126,12 @@ const Me = (props) => {
                 value={username}
               />
 
+              <input
+                disabled={!email || !username}
+                type="submit"
+                value="Update"
+              />
+
               <h2>Sync with your Instagram Account</h2>
               <p>
                 We use the instagram api to pull in your fits. Only the images
