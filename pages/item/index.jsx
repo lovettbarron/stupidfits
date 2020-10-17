@@ -2,12 +2,12 @@ import React, { useState } from "react";
 import fetch from "isomorphic-unfetch";
 import Layout from "../../components/Layout";
 import Router from "next/router";
+import Link from "next/link";
 import { Select } from "baseui/select";
 import { Input } from "baseui/input";
 import { FileUploader } from "baseui/file-uploader";
 import FitBox from "../../components/FitBox";
 import { useUpload } from "use-cloudinary";
-
 const types = [
   { label: "Carry", id: "BAG" },
   { label: "Shoe", id: "SHOE" },
@@ -125,9 +125,9 @@ const Item = (props) => {
             Save Item
           </button>
           <br />
-          <a className="back" href="#" onClick={() => Router.push("/")}>
-            or Cancel
-          </a>
+          <Link href="/closet">
+            <a>or Cancel</a>
+          </Link>
         </form>
       </div>
       <style jsx>{`

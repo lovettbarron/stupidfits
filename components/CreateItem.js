@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import fetch from "isomorphic-unfetch";
-import Router from "next/router";
+import Link from "next/link";
 import { Select } from "baseui/select";
 import { Input } from "baseui/input";
 
@@ -62,7 +62,6 @@ const Item = (props) => {
       } catch (e) {
         console.log("error:", e.message);
       }
-      // await Router.push("/drafts");
     } catch (error) {
       console.error(error);
     }
@@ -181,9 +180,9 @@ const Item = (props) => {
             Set Item
           </button>
           <br />
-          <a className="back" href="#" onClick={() => Router.push("/")}>
-            or Cancel
-          </a>
+          <Link href="/closet">
+            <a>or return to Closet</a>
+          </Link>
         </form>
       </div>
       <style jsx>{`

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import fetch from "isomorphic-unfetch";
 import Layout from "../components/Layout";
-import Router from "next/router";
+import Link from "next/link";
 import { Select } from "baseui/select";
 
 const Fit = () => {
@@ -70,9 +70,9 @@ const Fit = () => {
             type="submit"
             value="Create"
           />
-          <a className="back" href="#" onClick={() => Router.push("/")}>
-            or Cancel
-          </a>
+          <Link href="/">
+            <a>or Cancel</a>
+          </Link>
         </form>
       </div>
       <style jsx>{`

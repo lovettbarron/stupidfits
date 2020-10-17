@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import fetch from "isomorphic-unfetch";
 import Layout from "../../components/Layout";
 import Router from "next/router";
+import Link from "next/link";
 import { Select } from "baseui/select";
 import FitBox from "../../components/FitBox";
 import CreateItem from "../../components/CreateItem";
@@ -149,9 +150,9 @@ const Fit = (props) => {
             >
               Update Fit
             </button>
-            <a className="back" href="#" onClick={() => Router.push("/")}>
-              or Cancel
-            </a>
+            <Link href="/feed">
+              <a>or Cancel</a>
+            </Link>
           </form>
 
           <Modal
