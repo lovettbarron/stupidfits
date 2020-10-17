@@ -72,6 +72,7 @@ const Blog = (props) => {
         .auth img {
           max-width: 20rem;
           transition: all 0.4s;
+          cursor: pointer;
         }
         .auth img:hover {
           -webkit-filter: invert(1);
