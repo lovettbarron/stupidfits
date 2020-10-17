@@ -45,6 +45,12 @@ const BrandProfile = (props) => {
       `https://res.cloudinary.com/stupidsystems/image/upload/${props.fits[0].media.cloudinary}`) ||
     "";
 
+  // <ul>
+  //         {props.brand.items.map((i) => (
+  //           <li>{i.model}</li>
+  //         ))}
+  //       </ul>
+
   return (
     <Layout>
       <div className="page">
@@ -63,6 +69,7 @@ const BrandProfile = (props) => {
               </Link>
             </small>
           </div>
+
           <Tabs
             activeKey={activeKey}
             fill={FILL.fixed}
@@ -115,17 +122,10 @@ const BrandProfile = (props) => {
               </Tab>
             )}
           </Tabs>
-          <ul>
-            {props.brand.items.map((i) => (
-              <li>{i.model}</li>
-            ))}
-          </ul>
         </main>
       </div>
       <style jsx>{`
         main {
-          display: flex;
-          flex-wrap: wrap;
           justify-content: center;
           min-width: 20rem;
           width: 100%;
