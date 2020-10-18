@@ -19,7 +19,7 @@ if (process.env.NODE_ENV === "production") {
 
 const options = {
   site: process.env.HOST,
-  debug: true,
+  debug: false,
   providers: [
     // Providers.Credentials({
     //   // The name to display on the sign in form (e.g. 'Sign in with...')
