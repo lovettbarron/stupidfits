@@ -19,7 +19,7 @@ if (process.env.NODE_ENV === "production") {
 
 const options = {
   site: process.env.HOST,
-  debug: false,
+  debug: true,
   providers: [
     // Providers.Credentials({
     //   // The name to display on the sign in form (e.g. 'Sign in with...')
@@ -84,7 +84,7 @@ const options = {
   pages: {
     // signIn: "/api/auth/signin", // Displays signin buttons
     // signOut: '/api/auth/signout', // Displays form with sign out button
-    error: "/api/auth/error", // Error code passed in query string as ?error=
+    // error: "/api/auth/error", // Error code passed in query string as ?error=
     // verifyRequest: '/api/auth/verify-request', // Used for check email page
     newUser: "/me", // If set, new users will be directed here on first sign in
   },

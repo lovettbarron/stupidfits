@@ -80,6 +80,10 @@ export default ({ baseUrl, basePath, error, res }) => {
 
   res.status(statusCode);
 
+  const AuthError = (props) => {
+    return (
+
+    )}
   return render(
     <div className="error">
       {heading}
@@ -87,3 +91,4 @@ export default ({ baseUrl, basePath, error, res }) => {
     </div>
   );
 };
+export default AuthError
