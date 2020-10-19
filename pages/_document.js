@@ -12,6 +12,9 @@ export default class MyDocument extends Document {
             async
             src={`https://www.googletagmanager.com/gtag/js?id=${GA_TRACKING_ID}`}
           />
+          {process.env.HOST !== "https://stupdifits.com" && (
+            <meta name="robots" content="noindex" />
+          )}
           <meta property="og:title" content="Stupid Fits" />
           <meta property="og:url" content={process.env.HOST} />
           <meta property="og:type" content="website" />
