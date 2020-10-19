@@ -37,7 +37,7 @@
     "next": "^9.3.3",
     "next-absolute-url": "^1.2.2",
     "next-auth": "github:stupidsystems/next-auth",
-    "next-seo": "^4.11.0",
+    "next-seo": "^4.13.0",
     "postmark": "^2.5.5",
     "psl": "^1.8.0",
     "react": "^16.13.1",

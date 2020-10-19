@@ -34,7 +34,7 @@ export default (props) => {
               </a>
             </Link>
             <Link href="/feed">
-              <a data-active={isActive("/feed")}>Gram</a>
+              <a data-active={isActive("/feed")}>Add Fits</a>
             </Link>
             <Link href="/closet">
               <a data-active={isActive("/closet")}>Closet</a>

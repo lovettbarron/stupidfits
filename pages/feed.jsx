@@ -3,12 +3,17 @@ import Link from "next/link";
 import fetch from "isomorphic-unfetch";
 import Layout from "../components/Layout";
 import Gram from "../components/Gram";
+import { Button, SIZE } from "baseui/button";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useSession, getSession } from "next-auth/client";
+import { FileUploader } from "baseui/file-uploader";
 
 const Feed = (props) => {
   const [posts, setPosts] = useState(null);
   const [insta, setInsta] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [photo, setPhoto] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const fetchData = () => {};
 
   const fetchInitial = async () => {
@@ -24,6 +29,8 @@ const Feed = (props) => {
     }
   };
 
+  const addNewFit = async () => {};
+
   useEffect(() => {
     if (!posts) fetchInitial();
   });
@@ -32,14 +39,41 @@ const Feed = (props) => {
     <Layout>
       <div className="page">
         <h1>All The Fits</h1>
-        <p>Pick your fits from your instagram, share the details.</p>
+        <p>Upload or pick your fits from your instagram.</p>
+        <FileUploader
+          errorMessage={errorMessage}
+          size={SIZE.mini}
+          disabled
+          onChange={() => {
+            upload({
+              file,
+              uploadOptions,
+            });
+          }}
+        />
+        {photo && <img src={data.url} />}
+        <br />
+        <br />
+        <Button
+          className="left"
+          onClick={() => addNewFit()}
+          size={SIZE.mini}
+          isLoading={isLoading}
+        >
+          Upload Fit Manually
+        </Button>
+        <br />
+        <br />
+        <h3>Or add from Instagram</h3>
 
         {!props.user.instagramlong && (
           <div className="alert">
             <p>
-              You'll need to sync your instagram before being able to really use
-              StupidFits. The plan is to support direct image uploading later as
-              well, but for now Instagram is required!
+              To make the best use of Stupidfits, we suggest connecting your
+              instagram. It'll let you pull in posts easily and sync them with
+              your closet. There are additional privacy settings as well to
+              control your public profile and how your posts show up on our
+              feed.
             </p>
             <p>
               Visit your{" "}

@@ -35,13 +35,13 @@ function App({ Component, pageProps }) {
   return (
     // <Provider session={pageProps.session}>
     <>
-      <DefaultSeo {...SEO} />
       <Provider
         options={{ site: process.env.HOST }}
         session={pageProps.session}
       >
         <StyletronProvider value={engine}>
           <BaseProvider theme={DarkTheme}>
+            <DefaultSeo {...SEO} />
             <Component {...pageProps} url={process.env.HOST} />
           </BaseProvider>
         </StyletronProvider>
