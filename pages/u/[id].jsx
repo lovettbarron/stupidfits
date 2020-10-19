@@ -1,3 +1,4 @@
+import Head from "next/head";
 import fetch from "isomorphic-unfetch";
 import { NextSeo } from "next-seo";
 import Layout from "../../components/Layout";
@@ -19,21 +20,14 @@ const UserProfile = (props) => {
   if (!props.insta.profilepage) {
     return (
       <Layout>
-        <NextSeo
-          title={`${props.insta.username}'s Fits on Stupid Fits`}
-          description={`All the fits that ${props.insta.username} has to offer`}
-          openGraph={{
-            images: [
-              {
-                url: seourl,
-                width: 800,
-                height: 600,
-                alt: "Og Image Alt",
-              },
-            ],
-            site_name: "Stupid Fits",
-          }}
-        />
+        <Head>
+          <meta
+            property="og:title"
+            content={`${props.insta.username}'s Fits on Stupid Fits`}
+          />
+          <meta property="og:image" content={seourl} />
+        </Head>
+
         <div className="page">
           <main>
             <div className="top">

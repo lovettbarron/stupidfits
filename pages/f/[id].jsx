@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import Head from "next/head";
 import fetch from "isomorphic-unfetch";
 import Layout from "../../components/Layout";
 import Link from "next/link";
@@ -30,21 +31,17 @@ const Fit = (props) => {
 
   return (
     <Layout>
-      <NextSeo
-        title={`${props.user.username}'s Fit on Stupid Fits`}
-        description="Ingredient List for your Fit Pics"
-        openGraph={{
-          images: [
-            {
-              url: props.media && props.media.cloudinary,
-              width: 800,
-              height: 600,
-              alt: "Og Image Alt",
-            },
-          ],
-          site_name: "SiteName",
-        }}
-      />
+      <Head>
+        <meta
+          property="og:title"
+          content={`${props.insta.username}'s Fits on Stupid Fits`}
+        />
+        <meta
+          property="og:image"
+          content={props.media && props.media.cloudinary}
+        />
+      </Head>
+
       <div className="page">
         <Link href={`/u/${props.user.username}`}>
           <a>

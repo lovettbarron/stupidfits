@@ -1,8 +1,6 @@
 import Document, { Html, Head, Main, NextScript } from "next/document";
 
 import { GA_TRACKING_ID } from "../lib/gtag";
-import { NextSeo, DefaultSeo } from "next-seo";
-import SEO from "../next-seo.config";
 
 export default class MyDocument extends Document {
   render() {
