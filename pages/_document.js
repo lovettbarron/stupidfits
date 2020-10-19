@@ -14,34 +14,24 @@ export default class MyDocument extends Document {
             async
             src={`https://www.googletagmanager.com/gtag/js?id=${GA_TRACKING_ID}`}
           />
-          <NextSeo
-            title="Using More of Config"
-            description="This example uses more of the available config options."
-            canonical="https://www.canonical.ie/"
-            openGraph={{
-              type: "website",
-              locale: "en_US",
-              url: "https://stupidfits.com",
-              site_name: "Stupid Fits",
-              description: "All the fits instagram has to offer",
-              images: [
-                {
-                  url: "https://stupidfits.com/img/appicon.png",
-                  width: 1024,
-                  height: 1024,
-                  alt: "Og Image Alt",
-                },
-              ],
-            }}
-            facebook={{
-              appId: "2742481926027884",
-            }}
-            twitter={{
-              handle: "@readywater",
-              site: "@stupid_systems",
-              cardType: "summary_large_image",
-            }}
+          <meta property="og:title" content="Stupid Fits" />
+          <meta property="og:url" content={process.env.HOST} />
+          <meta
+            property="og:description"
+            content="Digital Fit Library for all your Fabrics"
           />
+          <meta property="og:site_name" content="Stupid Fits" />
+          <meta property="og:locale" content="en_US" />
+
+          <meta property="og:locale:alternate" content="en_DK" />
+          <meta property="og:locale:alternate" content="cn_CN" />
+          <meta
+            property="og:image"
+            content="https://stupidfits.com/img/appicon.png"
+          />
+          <meta property="og:image:width" content="1024" />
+          <meta property="og:image:height" content="1024" />
+
           <script
             dangerouslySetInnerHTML={{
               __html: `
