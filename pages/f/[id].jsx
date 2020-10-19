@@ -32,6 +32,7 @@ const Fit = (props) => {
   return (
     <Layout>
       <Head>
+        <title>{props.username}'s Fits on Stupid Fits</title>
         <meta
           property="og:title"
           content={`${props.username}'s Fits on Stupid Fits`}

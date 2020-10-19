@@ -21,6 +21,7 @@ const UserProfile = (props) => {
     return (
       <Layout>
         <Head>
+          <title>{props.insta.username}'s Fits on Stupid Fits</title>
           <meta
             property="og:title"
             content={`${props.insta.username}'s Fits on Stupid Fits`}
