@@ -41,7 +41,6 @@ function App({ Component, pageProps }) {
       >
         <StyletronProvider value={engine}>
           <BaseProvider theme={DarkTheme}>
-            <DefaultSeo {...SEO} />
             <Component {...pageProps} url={process.env.HOST} />
           </BaseProvider>
         </StyletronProvider>

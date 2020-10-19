@@ -1,6 +1,8 @@
 import Document, { Html, Head, Main, NextScript } from "next/document";
 
 import { GA_TRACKING_ID } from "../lib/gtag";
+import { DefaultSeo } from "next-seo";
+import SEO from "../next-seo.config";
 
 export default class MyDocument extends Document {
   render() {
@@ -12,6 +14,7 @@ export default class MyDocument extends Document {
             async
             src={`https://www.googletagmanager.com/gtag/js?id=${GA_TRACKING_ID}`}
           />
+          <DefaultSeo {...SEO} />
           <script
             dangerouslySetInnerHTML={{
               __html: `

@@ -1,11 +1,11 @@
 import React, { useState } from "react";
+import { NextSeo } from "next-seo";
 import Layout from "../components/Layout";
 import fetch from "isomorphic-unfetch";
 import Post from "../components/Post";
 import FitBox from "../components/FitBox";
 import Link from "next/link";
 import { useSession, signin, signout } from "next-auth/client";
-import { NextSeo } from "next-seo";
 
 const Blog = (props) => {
   const [session, loading] = useSession();
