@@ -5,7 +5,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url = "***"
 }
 
 model Account {
@@ -103,7 +103,7 @@ model Fit {
   user       User?     @relation("FitRelation", fields: [userId], references: [id])
   userId     Int?
   Comment    Comment[]
-  style      Style[]   @relation("FitStyle")
+  style      Style[]
 }
 
 model Closet {
@@ -121,7 +121,7 @@ model Brand {
   logo  String?
   desc  String?
   Item  Item[]
-  style Style[] @relation("BrandStyle")
+  trend Style[]
 }
 
 model Item {
@@ -131,6 +131,7 @@ model Item {
   type      ItemType
   photo     String?
   brand     Brand    @relation(fields: [brandId], references: [id])
+  brandId   Int
   model     String
   year      Int?
   size      String?
@@ -145,7 +146,6 @@ model Item {
   user      User?    @relation("ItemRelation", fields: [userId], references: [id])
   userId    Int?
   Closet    Closet?  @relation("ClosetGrails", fields: [closetId], references: [id])
-  brandId   Int
 }
 
 model Comment {
