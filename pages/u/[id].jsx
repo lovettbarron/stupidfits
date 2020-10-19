@@ -25,10 +25,11 @@ const UserProfile = (props) => {
           <meta
             property="og:title"
             content={`${props.insta.username}'s Fits on Stupid Fits`}
+            key="title"
           />
           <meta property="og:type" content="profile" />
           <meta property="profile:username" content={props.insta.username} />
-          <meta property="og:image" content={seourl} />
+          <meta property="og:image" content={seourl} key="mainimg" />
         </Head>
 
         <div className="page">

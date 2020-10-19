@@ -36,6 +36,7 @@ const Fit = (props) => {
         <meta
           property="og:title"
           content={`${props.username}'s Fits on Stupid Fits`}
+          key="title"
         />
         <meta property="og:type" content="article" />
         <meta property="article:author" content={props.username} />
@@ -43,6 +44,7 @@ const Fit = (props) => {
         <meta
           property="og:image"
           content={props.media && props.media.cloudinary}
+          key="mainimg"
         />
       </Head>
 

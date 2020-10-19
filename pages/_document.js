@@ -8,6 +8,7 @@ export default class MyDocument extends Document {
       <Html>
         <Head>
           {/* Global Site Tag (gtag.js) - Google Analytics */}
+          <title>Stupid Fits | Digital Fit Library for all your Fabrics</title>
           <script
             async
             src={`https://www.googletagmanager.com/gtag/js?id=${GA_TRACKING_ID}`}
@@ -15,7 +16,7 @@ export default class MyDocument extends Document {
           {process.env.HOST !== "https://stupdifits.com" && (
             <meta name="robots" content="noindex" />
           )}
-          <meta property="og:title" content="Stupid Fits" />
+          <meta property="og:title" content="Stupid Fits" key="title" />
           <meta property="og:url" content={process.env.HOST} />
           <meta property="og:type" content="website" />
           <meta
@@ -36,6 +37,7 @@ export default class MyDocument extends Document {
           <meta
             property="og:image"
             content="https://stupidfits.com/img/appicon.png"
+            key="mainimg"
           />
           <meta property="og:image:width" content="1024" />
           <meta property="og:image:height" content="1024" />
