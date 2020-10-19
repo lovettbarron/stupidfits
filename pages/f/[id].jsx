@@ -34,7 +34,7 @@ const Fit = (props) => {
       <Head>
         <meta
           property="og:title"
-          content={`${props.insta.username}'s Fits on Stupid Fits`}
+          content={`${props.username}'s Fits on Stupid Fits`}
         />
         <meta
           property="og:image"

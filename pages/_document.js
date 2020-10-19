@@ -14,6 +14,13 @@ export default class MyDocument extends Document {
           />
           <meta property="og:title" content="Stupid Fits" />
           <meta property="og:url" content={process.env.HOST} />
+          <meta property="og:type" content="website" />
+          <meta
+            name="keywords"
+            content="fitpics, outfits, techwear, clueless, closet, fits"
+          />
+          <meta property="fb:app_id" content={process.env.FACEBOOK_CLIENT_ID} />
+
           <meta
             property="og:description"
             content="Digital Fit Library for all your Fabrics"
