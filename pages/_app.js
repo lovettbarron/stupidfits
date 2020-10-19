@@ -37,6 +37,7 @@ function App({ Component, pageProps }) {
     // <Provider session={pageProps.session}>
     <>
       <Head>
+        {/* Global Site Tag (gtag.js) - Google Analytics */}
         <title>Stupid Fits | Digital Fit Library for all your Fabrics</title>
         {process.env.HOST !== "https://stupdifits.com" && (
           <meta name="robots" content="noindex" />
