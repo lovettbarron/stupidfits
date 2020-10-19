@@ -30,9 +30,9 @@ const Fit = (props) => {
   }, [session]);
 
   return (
-    <Layout>
+    <>
       <Head>
-        <title>{props.username}'s Fits on Stupid Fits</title>
+        <title>{props.user.username}'s Fits on Stupid Fits</title>
         <meta
           property="og:title"
           content={`${props.username}'s Fits on Stupid Fits`}
@@ -43,8 +43,8 @@ const Fit = (props) => {
           content={`${process.env.HOST}/f/${props.id}`}
           key="url"
         />
-        <meta property="og:type" content="article" />
-        <meta property="article:author" content={props.username} />
+        <meta property="og:type" content="article" key="type" />
+        <meta property="article:author" content={props.user.username} />
 
         <meta
           property="og:image"
@@ -52,6 +52,7 @@ const Fit = (props) => {
           key="mainimg"
         />
       </Head>
+    <Layout>
 
       <div className="page">
         <Link href={`/u/${props.user.username}`}>
@@ -93,6 +94,7 @@ const Fit = (props) => {
         }
       `}</style>
     </Layout>
+    </>
   );
 };
 

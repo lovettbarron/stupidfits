@@ -7,6 +7,7 @@ import * as Sentry from "@sentry/react";
 import { Integrations } from "@sentry/tracing";
 import { DefaultSeo } from "next-seo";
 import SEO from "../next-seo.config";
+import Head from 'next/head'
 
 function App({ Component, pageProps }) {
   const [engine, setEngine] = useState(null);
@@ -35,6 +36,38 @@ function App({ Component, pageProps }) {
   return (
     // <Provider session={pageProps.session}>
     <>
+    <Head>
+      <title>Stupid Fits | Digital Fit Library for all your Fabrics</title>
+      {process.env.HOST !== "https://stupdifits.com" && (
+            <meta name="robots" content="noindex" />
+          )}
+          <meta property="og:title" content="Stupid Fits" key="title" />
+          <meta property="og:url" content={process.env.HOST} key="url" />
+          <meta property="og:type" content="website" key="type" />
+          <meta
+            name="keywords"
+            content="fitpics, outfits, techwear, clueless, closet, fits"
+          />
+          <meta property="fb:app_id" content={process.env.FACEBOOK_CLIENT_ID} />
+
+          <meta
+            property="og:description"
+            content="Digital Fit Library for all your Fabrics"
+          />
+          <meta property="og:site_name" content="Stupid Fits" />
+          <meta property="og:locale" content="en_US" />
+
+          <meta property="og:locale:alternate" content="en_DK" />
+          <meta property="og:locale:alternate" content="cn_CN" />
+          <meta
+            property="og:image"
+            content="https://stupidfits.com/img/appicon.png"
+            key="mainimg"
+          />
+          <meta property="og:image:width" content="1024" />
+          <meta property="og:image:height" content="1024" />
+
+    </Head>
       <Provider
         options={{ site: process.env.HOST }}
         session={pageProps.session}

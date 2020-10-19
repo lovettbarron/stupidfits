@@ -20,7 +20,7 @@ const UserProfile = (props) => {
   if (!props.insta.profilepage) {
     return (
       <Layout>
-        <Head>
+<Head>
           <title>{props.insta.username}'s Fits on Stupid Fits</title>
           <meta
             property="og:title"
@@ -34,7 +34,6 @@ const UserProfile = (props) => {
           />
           <meta property="og:type" content="profile" />
           <meta property="profile:username" content={props.insta.username} />
-          <meta property="og:image" content={seourl} key="mainimg" />
         </Head>
 
         <div className="page">
@@ -65,6 +64,23 @@ const UserProfile = (props) => {
   } else
     return (
       <Layout>
+        <Head>
+          <title>{props.insta.username}'s Fits on Stupid Fits</title>
+          <meta
+            property="og:title"
+            content={`${props.insta.username}'s Fits on Stupid Fits`}
+            key="title"
+          />
+          <meta
+            property="og:url"
+            content={`${process.env.HOST}/u/${props.insta.username}`}
+            key="url"
+          />
+          <meta property="og:type" content="profile" key="type" />
+          <meta property="profile:username" content={props.insta.username} />
+          <meta property="og:image" content={seourl} key="mainimg" />
+        </Head>
+
         <div className="page">
           <main>
             <div className="top">
