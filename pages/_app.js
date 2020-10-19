@@ -66,7 +66,6 @@ function App({ Component, pageProps }) {
           />
           <meta property="og:image:width" content="1024" />
           <meta property="og:image:height" content="1024" />
-
     </Head>
       <Provider
         options={{ site: process.env.HOST }}
