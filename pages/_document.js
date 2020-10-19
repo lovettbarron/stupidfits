@@ -1,7 +1,7 @@
 import Document, { Html, Head, Main, NextScript } from "next/document";
 
 import { GA_TRACKING_ID } from "../lib/gtag";
-import { DefaultSeo } from "next-seo";
+import { NextSeo, DefaultSeo } from "next-seo";
 import SEO from "../next-seo.config";
 
 export default class MyDocument extends Document {
@@ -14,34 +14,33 @@ export default class MyDocument extends Document {
             async
             src={`https://www.googletagmanager.com/gtag/js?id=${GA_TRACKING_ID}`}
           />
-          <DefaultSeo
-            {...{
-              openGraph: {
-                type: "website",
-                locale: "en_US",
-                url: "https://stupidfits.com",
-                site_name: "Stupid Fits",
-                description: "All the fits instagram has to offer",
-                images: [
-                  {
-                    url: "https://stupidfits.com/img/appicon.png",
-                    width: 1024,
-                    height: 1024,
-                    alt: "Og Image Alt",
-                  },
-                ],
-              },
-              facebook: {
-                appId: "2742481926027884",
-              },
-              twitter: {
-                handle: "@readywater",
-                site: "@stupid_systems",
-                cardType: "summary_large_image",
-              },
+          <NextSeo
+            title="Using More of Config"
+            description="This example uses more of the available config options."
+            canonical="https://www.canonical.ie/"
+            openGraph={{
+              type: "website",
+              locale: "en_US",
+              url: "https://stupidfits.com",
+              site_name: "Stupid Fits",
+              description: "All the fits instagram has to offer",
+              images: [
+                {
+                  url: "https://stupidfits.com/img/appicon.png",
+                  width: 1024,
+                  height: 1024,
+                  alt: "Og Image Alt",
+                },
+              ],
             }}
-            title="Stupid Fits"
-            description="All the fits"
+            facebook={{
+              appId: "2742481926027884",
+            }}
+            twitter={{
+              handle: "@readywater",
+              site: "@stupid_systems",
+              cardType: "summary_large_image",
+            }}
           />
           <script
             dangerouslySetInnerHTML={{
