@@ -48,7 +48,7 @@ const Fit = (props) => {
 
         <meta
           property="og:image"
-          content={props.media && props.media.cloudinary}
+          content={props.media && `https://res.cloudinary.com/stupidsystems/image/upload/${props.media.cloudinary}`}
           key="mainimg"
         />
       </Head>
