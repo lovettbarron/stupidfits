@@ -40,7 +40,7 @@ const FitBox = (props) => {
     const res = await fetch(`${process.env.HOST}/api/insta/${props.id}`);
     try {
       const fit = await res.json();
-      console.log("Got media for ", props.id, media.id);
+      // console.log("Got media for ", props.id, media.id);
       setFit(fit.id ? true : false);
     } catch (e) {
       console.log("error:", e.message);

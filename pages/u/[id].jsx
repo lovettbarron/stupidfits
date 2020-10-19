@@ -20,7 +20,7 @@ const UserProfile = (props) => {
   if (!props.insta.profilepage) {
     return (
       <Layout>
-<Head>
+        <Head>
           <title>{props.insta.username}'s Fits on Stupid Fits</title>
           <meta
             property="og:title"
@@ -211,7 +211,8 @@ const UserProfile = (props) => {
     );
 };
 
-export const getServerSideProps = async (context) => {
+// export const getServerSideProps = async (context) => {
+export async function getServerSideProps(context) {
   const session = await getSession(context);
 
   // Get user and instagram username
@@ -263,6 +264,6 @@ export const getServerSideProps = async (context) => {
   return {
     props: { insta: user, fits: fits, closet: closet },
   };
-};
+}
 
 export default UserProfile;
