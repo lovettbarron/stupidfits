@@ -27,6 +27,11 @@ const UserProfile = (props) => {
             content={`${props.insta.username}'s Fits on Stupid Fits`}
             key="title"
           />
+          <meta
+            property="og:url"
+            content={`${process.env.HOST}/u/${props.insta.username}`}
+            key="url"
+          />
           <meta property="og:type" content="profile" />
           <meta property="profile:username" content={props.insta.username} />
           <meta property="og:image" content={seourl} key="mainimg" />

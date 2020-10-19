@@ -38,6 +38,11 @@ const Fit = (props) => {
           content={`${props.username}'s Fits on Stupid Fits`}
           key="title"
         />
+        <meta
+          property="og:url"
+          content={`${process.env.HOST}/f/${props.id}`}
+          key="url"
+        />
         <meta property="og:type" content="article" />
         <meta property="article:author" content={props.username} />
 
