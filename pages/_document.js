@@ -17,7 +17,6 @@ export default class MyDocument extends Document {
             <meta name="robots" content="noindex" />
           )}
           <meta property="og:title" content="Stupid Fits" key="title" />
-          <meta property="og:url" content={process.env.HOST} key="url" />
           <meta property="og:type" content="website" />
           <meta
             name="keywords"
