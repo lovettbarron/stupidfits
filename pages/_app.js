@@ -8,8 +8,9 @@ import { Integrations } from "@sentry/tracing";
 // import { DefaultSeo } from "next-seo";
 // import SEO from "../next-seo.config";
 import Head from "next/head";
+import Transition from "../components/Transition";
 
-function App({ Component, pageProps }) {
+function App({ Component, pageProps, router }) {
   const [engine, setEngine] = useState(null);
   useEffect(() => {
     // Load the `styletron-engine-atomic` package dynamically.
@@ -58,7 +59,13 @@ function App({ Component, pageProps }) {
       >
         <StyletronProvider value={engine}>
           <BaseProvider theme={DarkTheme}>
-            <Component {...pageProps} url={process.env.HOST} />
+            <Transition location={router.pathname}>
+              <Component
+                {...pageProps}
+                url={process.env.HOST}
+                key={router.route}
+              />
+            </Transition>
           </BaseProvider>
         </StyletronProvider>
       </Provider>

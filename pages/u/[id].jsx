@@ -21,7 +21,7 @@ const UserProfile = (props) => {
   if (!props.insta.profilepage) {
     return (
       <Layout>
-        <Helmet>
+        <Head>
           <title>{props.insta.username}'s Fits on Stupid Fits</title>
           <meta
             property="og:title"
@@ -35,7 +35,7 @@ const UserProfile = (props) => {
           />
           <meta property="og:type" content="profile" />
           <meta property="profile:username" content={props.insta.username} />
-        </Helmet>
+        </Head>
 
         <div className="page">
           <main>
@@ -65,7 +65,7 @@ const UserProfile = (props) => {
   } else
     return (
       <Layout>
-        <Helmet>
+        <Head>
           <title>{props.insta.username}'s Fits on Stupid Fits</title>
           <meta
             property="og:title"
@@ -80,7 +80,7 @@ const UserProfile = (props) => {
           <meta property="og:type" content="profile" key="type" />
           <meta property="profile:username" content={props.insta.username} />
           <meta property="og:image" content={seourl} key="mainimg" />
-        </Helmet>
+        </Head>
 
         <div className="page">
           <main>
@@ -113,7 +113,11 @@ const UserProfile = (props) => {
                     return b.media.timestamp - a.media.timestamp;
                   })
                   .map((fit) => (
-                    <FitBox {...fit} username={props.insta.username} />
+                    <FitBox
+                      key={fit.id}
+                      {...fit}
+                      username={props.insta.username}
+                    />
                   ))}
               </Tab>
               <Tab title="Closet">

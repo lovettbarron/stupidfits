@@ -46,6 +46,7 @@
     "react-infinite-scroll-component": "^5.1.0",
     "react-instagram-login": "^1.4.0",
     "react-markdown": "^4.3.1",
+    "react-transition-group": "^4.4.1",
     "styletron-engine-atomic": "^1.4.6",
     "styletron-react": "^5.2.7",
     "use-cloudinary": "^3.1.6",
