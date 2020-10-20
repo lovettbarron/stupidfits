@@ -6,10 +6,43 @@ import fetch from "isomorphic-unfetch";
 import Post from "../components/Post";
 import FitBox from "../components/FitBox";
 
+import { Tabs, Tab, FILL } from "baseui/tabs-motion";
+import { Cap } from "../components/Anatomy";
+
 import { useSession } from "next-auth/client";
 
-const Blog = (props) => {
+const Filter = ({ items, filter }) => {
+  if (!filter)
+    return (
+      <>
+        {items.map((i) => (
+          <>
+            <h3>{i.model}</h3>
+            {i.fit && i.fit.map((f) => <FitBox {...f} fit={f.id} />)}
+          </>
+        ))}
+      </>
+    );
+
+  const filtered = items.filter((f) => f.type === filter);
+
+  if (filtered.length <= 0) return <div>Nothing yet</div>;
+
+  return (
+    <>
+      {filtered.map((i) => (
+        <>
+          <h3>{i.model}</h3>
+          {i.fit && i.fit.map((f) => <FitBox {...f} fit={f.id} />)}
+        </>
+      ))}
+    </>
+  );
+};
+
+const Closet = (props) => {
   const [session, loading] = useSession();
+  const [activeKey, setActiveKey] = React.useState("0");
 
   const editItem = (id) => {};
 
@@ -28,146 +61,179 @@ const Blog = (props) => {
               <button>Add an item</button>
             </a>
           </Link>
-          <h2>Outerwear</h2>
-          <ul>
-            {props.items
-              .filter((c) => c.type === "JACKET")
-              .map((c) => (
-                <li onClick={() => editItem(c.id)}>
-                  {`${c.brand.name} ${c.model} ${c.year > 0 ? c.year : ""}`}
-                  <br />
-                  <div className="hover">
-                    <Link href={`/item/${c.id}`}>
-                      <a>Edit</a>
-                    </Link>{" "}
-                    ·{" "}
-                    <Link href="/">
-                      <a>Delete</a>
-                    </Link>
-                  </div>
-                </li>
-              ))}
-          </ul>
-          <h2>Layers</h2>
-          <ul>
-            {props.items
-              .filter((c) => c.type === "LAYER")
-              .map((c) => (
-                <li>
-                  {`${c.brand.name} ${c.model} ${c.year > 0 ? c.year : ""}`}{" "}
-                  <br />
-                  <div className="hover">
-                    <Link href={`/item/${c.id}`}>
-                      <a>Edit</a>
-                    </Link>{" "}
-                    ·{" "}
-                    <Link href="/">
-                      <a>Delete</a>
-                    </Link>
-                  </div>
-                </li>
-              ))}
-          </ul>
-          <h2>Shirts</h2>
-          <ul>
-            {props.items
-              .filter((c) => c.type === "SHIRT")
-              .map((c) => (
-                <li>
-                  {`${c.brand.name} ${c.model} ${c.year > 0 ? c.year : ""}`}{" "}
-                  <br />
-                  <div className="hover">
-                    <Link href={`/item/${c.id}`}>
-                      <a>Edit</a>
-                    </Link>{" "}
-                    ·{" "}
-                    <Link href="/">
-                      <a>Delete</a>
-                    </Link>
-                  </div>
-                </li>
-              ))}
-          </ul>
-          <h2>Pants</h2>
-          <ul>
-            {props.items
-              .filter((c) => c.type === "PANT")
-              .map((c) => (
-                <li>
-                  {`${c.brand.name} ${c.model} ${c.year > 0 ? c.year : ""}`}{" "}
-                  <br />
-                  <div className="hover">
-                    <Link href={`/item/${c.id}`}>
-                      <a>Edit</a>
-                    </Link>{" "}
-                    ·{" "}
-                    <Link href="/">
-                      <a>Delete</a>
-                    </Link>
-                  </div>
-                </li>
-              ))}
-          </ul>
-          <h2>Carry</h2>
-          <ul>
-            {props.items
-              .filter((c) => c.type === "BAG")
-              .map((c) => (
-                <li>
-                  {`${c.brand.name} ${c.model} ${c.year > 0 ? c.year : ""}`}{" "}
-                  <br />
-                  <div className="hover">
-                    <Link href={`/item/${c.id}`}>
-                      <a>Edit</a>
-                    </Link>{" "}
-                    ·{" "}
-                    <Link href="/">
-                      <a>Delete</a>
-                    </Link>
-                  </div>
-                </li>
-              ))}
-          </ul>
-          <h2>Shoes</h2>
-          <ul>
-            {props.items
-              .filter((c) => c.type === "SHOE")
-              .map((c) => (
-                <li>
-                  {`${c.brand.name} ${c.model} ${c.year > 0 ? c.year : ""}`}{" "}
-                  <br />
-                  <div className="hover">
-                    <Link href={`/item/${c.id}`}>
-                      <a>Edit</a>
-                    </Link>{" "}
-                    ·{" "}
-                    <Link href="/">
-                      <a>Delete</a>
-                    </Link>
-                  </div>
-                </li>
-              ))}
-          </ul>
-          <h2>Extra</h2>
-          <ul>
-            {props.items
-              .filter((c) => c.type === "EXTRA")
-              .map((c) => (
-                <li>
-                  {`${c.brand.name} ${c.model} ${c.year > 0 ? c.year : ""}`}{" "}
-                  <br />
-                  <div className="hover">
-                    <Link href={`/item/${c.id}`}>
-                      <a>Edit</a>
-                    </Link>{" "}
-                    ·{" "}
-                    <Link href="/">
-                      <a>Delete</a>
-                    </Link>
-                  </div>
-                </li>
-              ))}
-          </ul>
+          <Tabs
+            activeKey={activeKey}
+            fill={FILL.fixed}
+            onChange={({ activeKey }) => {
+              setActiveKey(activeKey);
+            }}
+            activateOnFocus
+          >
+            <Tab title="Outerwear">
+              <ul>
+                {props.items
+                  .filter((c) => c.type === "JACKET")
+                  .map((c) => (
+                    <li onClick={() => editItem(c.id)}>
+                      {`${Cap(c.brand.name)} ${c.model} ${
+                        c.year > 0 ? c.year : ""
+                      }`}
+                      <br />
+                      <div className="hover">
+                        <Link href={`/item/${c.id}`}>
+                          <a>Edit</a>
+                        </Link>{" "}
+                        ·{" "}
+                        <Link href="/">
+                          <a>Delete</a>
+                        </Link>
+                      </div>
+                    </li>
+                  ))}
+              </ul>
+            </Tab>
+
+            <Tab title="Layers">
+              <ul>
+                {props.items
+                  .filter((c) => c.type === "LAYER")
+                  .map((c) => (
+                    <li>
+                      {`${Cap(c.brand.name)} ${c.model} ${
+                        c.year > 0 ? c.year : ""
+                      }`}{" "}
+                      <br />
+                      <div className="hover">
+                        <Link href={`/item/${c.id}`}>
+                          <a>Edit</a>
+                        </Link>{" "}
+                        ·{" "}
+                        <Link href="/">
+                          <a>Delete</a>
+                        </Link>
+                      </div>
+                    </li>
+                  ))}
+              </ul>
+            </Tab>
+
+            <Tab title="Shirts">
+              <ul>
+                {props.items
+                  .filter((c) => c.type === "SHIRT")
+                  .map((c) => (
+                    <li>
+                      {`${Cap(c.brand.name)} ${c.model} ${
+                        c.year > 0 ? c.year : ""
+                      }`}{" "}
+                      <br />
+                      <div className="hover">
+                        <Link href={`/item/${c.id}`}>
+                          <a>Edit</a>
+                        </Link>{" "}
+                        ·{" "}
+                        <Link href="/">
+                          <a>Delete</a>
+                        </Link>
+                      </div>
+                    </li>
+                  ))}
+              </ul>
+            </Tab>
+
+            <Tab title="Bottoms">
+              <ul>
+                {props.items
+                  .filter((c) => c.type === "PANT")
+                  .map((c) => (
+                    <li>
+                      {`${Cap(c.brand.name)} ${c.model} ${
+                        c.year > 0 ? c.year : ""
+                      }`}{" "}
+                      <br />
+                      <div className="hover">
+                        <Link href={`/item/${c.id}`}>
+                          <a>Edit</a>
+                        </Link>{" "}
+                        ·{" "}
+                        <Link href="/">
+                          <a>Delete</a>
+                        </Link>
+                      </div>
+                    </li>
+                  ))}
+              </ul>
+            </Tab>
+            <Tab title="Carry">
+              <ul>
+                {props.items
+                  .filter((c) => c.type === "BAG")
+                  .map((c) => (
+                    <li>
+                      {`${Cap(c.brand.name)} ${c.model} ${
+                        c.year > 0 ? c.year : ""
+                      }`}{" "}
+                      <br />
+                      <div className="hover">
+                        <Link href={`/item/${c.id}`}>
+                          <a>Edit</a>
+                        </Link>{" "}
+                        ·{" "}
+                        <Link href="/">
+                          <a>Delete</a>
+                        </Link>
+                      </div>
+                    </li>
+                  ))}
+              </ul>
+            </Tab>
+            <Tab title="Shoes">
+              <ul>
+                {props.items
+                  .filter((c) => c.type === "SHOE")
+                  .map((c) => (
+                    <li>
+                      {`${Cap(c.brand.name)} ${c.model} ${
+                        c.year > 0 ? c.year : ""
+                      }`}{" "}
+                      <br />
+                      <div className="hover">
+                        <Link href={`/item/${c.id}`}>
+                          <a>Edit</a>
+                        </Link>{" "}
+                        ·{" "}
+                        <Link href="/">
+                          <a>Delete</a>
+                        </Link>
+                      </div>
+                    </li>
+                  ))}
+              </ul>
+            </Tab>
+            <Tab title="Extra">
+              <ul>
+                {props.items
+                  .filter((c) => c.type === "EXTRA")
+                  .map((c) => (
+                    <li>
+                      {`${Cap(c.brand.name)} ${c.model} ${
+                        c.year > 0 ? c.year : ""
+                      }`}{" "}
+                      <br />
+                      <div className="hover">
+                        <Link href={`/item/${c.id}`}>
+                          <a>Edit</a>
+                        </Link>{" "}
+                        ·{" "}
+                        <Link href="/">
+                          <a>Delete</a>
+                        </Link>
+                      </div>
+                    </li>
+                  ))}
+              </ul>
+            </Tab>
+          </Tabs>
         </main>
       </div>
       <style jsx>{`
@@ -225,4 +291,4 @@ export const getServerSideProps = async (context) => {
   };
 };
 
-export default Blog;
+export default Closet;
