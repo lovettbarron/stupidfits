@@ -62,7 +62,7 @@ const FitImage = (props) => {
       id: "text" + iter,
       left: 0,
       top: offset,
-      width: 200,
+      width: 150,
       fontSize: 14,
       fill: "#fff",
       textBackgroundColor: "#151515",
