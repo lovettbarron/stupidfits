@@ -65,7 +65,7 @@ const UserProfile = (props) => {
   } else
     return (
       <Layout>
-        <Head>
+        <Helmet>
           <title>{props.insta.username}'s Fits on Stupid Fits</title>
           <meta
             property="og:title"
@@ -80,7 +80,7 @@ const UserProfile = (props) => {
           <meta property="og:type" content="profile" key="type" />
           <meta property="profile:username" content={props.insta.username} />
           <meta property="og:image" content={seourl} key="mainimg" />
-        </Head>
+        </Helmet>
 
         <div className="page">
           <main>
@@ -92,7 +92,7 @@ const UserProfile = (props) => {
               </h1>
               <p>Welcome to {props.insta.username}'s closet.</p>
               <p>
-                <a href={`https://instagram.com/u/${props.insta.instagram}`}>
+                <a href={`https://instagram.com/${props.insta.instagram}`}>
                   Instagram
                 </a>
               </p>
