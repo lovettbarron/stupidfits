@@ -118,7 +118,7 @@ const Nav = (props) => {
           cursor: pointer;
           top: 1rem;
           right: 1rem;
-          z-index: 1;
+          z-index: 120;
         }
 
         .navigation img {
@@ -157,7 +157,7 @@ const Nav = (props) => {
         .nav a {
           display: block;
           line-height: 4rem;
-          margin: 4rem;
+          margin: 3rem auto;
           font-size: 3rem;
           align-items: center;
           color: #ffffff;
