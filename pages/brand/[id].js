@@ -14,7 +14,7 @@ const BrandFilter = ({ items, filter }) => {
         {items.map((i) => (
           <>
             <h3>{i.model}</h3>
-            {i.fit && i.fit.map((f) => <FitBox {...f} fit={f.id} />)}
+            {i.fit && i.fit.map((f) => <FitBox key={f.id} {...f} fit={f.id} />)}
           </>
         ))}
       </>
@@ -29,7 +29,7 @@ const BrandFilter = ({ items, filter }) => {
       {filtered.map((i) => (
         <>
           <h3>{i.model}</h3>
-          {i.fit && i.fit.map((f) => <FitBox {...f} fit={f.id} />)}
+          {i.fit && i.fit.map((f) => <FitBox key={f.id} {...f} fit={f.id} />)}
         </>
       ))}
     </>

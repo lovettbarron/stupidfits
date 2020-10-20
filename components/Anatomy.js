@@ -179,6 +179,7 @@ const Anatomy = (props) => {
             list-style-type: none !important;
             text-align: center;
             justify-contents: center;
+            padding: 0;
           }
 
           li {
@@ -186,7 +187,7 @@ const Anatomy = (props) => {
             width: 100%;
             text-align: center;
             padding: 0;
-            margin: 0 1rem;
+            margin: 0 1rem 0.5rem 0;
             list-style: none !important;
             list-style-type: none !important;
           }

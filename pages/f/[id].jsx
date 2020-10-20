@@ -56,6 +56,7 @@ const Fit = (props) => {
         <style jsx>{`
           .page {
             padding: 0rem;
+            margin: 0 auto;
           }
           a.modal {
             border: 1px solid white;

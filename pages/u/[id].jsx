@@ -148,10 +148,17 @@ const UserProfile = (props) => {
 
           .closet {
             font-size: 2rem;
+            padding: 0;
           }
 
           .closet ul {
             list-style: none;
+            padding: 0;
+          }
+
+          .closet li {
+            padding: 0;
+            margin: 0;
           }
 
           h1 > a {

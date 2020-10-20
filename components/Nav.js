@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { Drawer, SIZE, ANCHOR } from "baseui/drawer";
@@ -7,12 +7,26 @@ import { useSession, signin, signout } from "next-auth/client";
 
 export default (props) => {
   const router = useRouter();
-  const [isOpen, setIsOpen] = React.useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const isActive = (pathname) => {
     router.pathname === pathname;
   };
   const toggleTrueFalse = () => setIsOpen(!isOpen);
   const [session, loading] = useSession();
+
+  useEffect(() => {
+    router.events.on("routeChangeStart", () => {
+      setIsLoading(true);
+    });
+
+    router.events.on("routeChangeComplete", () => {
+      setIsLoading(false);
+      setIsOpen(false);
+      console.log("Close nav");
+    });
+    return () => {};
+  }, []);
 
   return (
     <>
@@ -104,6 +118,7 @@ export default (props) => {
           cursor: pointer;
           top: 1rem;
           right: 1rem;
+          z-index: 1;
         }
 
         .navigation img {

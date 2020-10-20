@@ -41,6 +41,8 @@ export default class MyDocument extends Document {
           />
           <meta property="og:image:width" content="1024" />
           <meta property="og:image:height" content="1024" />
+          <meta name="viewport" content="width=device-width, initial-scale=1" />
+
           <script
             data-ad-client="ca-pub-9045265332202021"
             async
