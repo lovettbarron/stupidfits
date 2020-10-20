@@ -120,7 +120,10 @@ const Me = (props) => {
               <h3>Your Stupidfits Username</h3>
               <input
                 style={{ textAlign: "center" }}
-                onChange={(e) => setUsername(e.target.value)}
+                onChange={(e) => {
+                  const v = e.target.value.replace(" ", "").toLowerCase();
+                  setUsername(v);
+                }}
                 placeholder="Username"
                 type="text"
                 value={username}
