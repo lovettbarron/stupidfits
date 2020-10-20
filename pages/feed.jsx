@@ -43,6 +43,7 @@ const Feed = (props) => {
       <div className="page">
         <h1>All The Fits</h1>
         <p>Upload or pick your fits from your instagram.</p>
+        {/* {
         <FileUploader
           errorMessage={errorMessage}
           size={SIZE.mini}
@@ -62,12 +63,14 @@ const Feed = (props) => {
           onClick={() => addNewFit()}
           size={SIZE.mini}
           isLoading={isLoading}
+          disabled={true}
         >
           Upload Fit Manually
         </Button>
         <br />
         <br />
-        <h3>Or add from Instagram</h3>
+        <h3>Or}  */}
+        <h3>add from Instagram</h3>
 
         {!props.user.instagramlong && (
           <div className="alert">
