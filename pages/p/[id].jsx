@@ -63,7 +63,7 @@ const FitImage = (props) => {
       left: 0,
       top: offset,
       width: 200,
-      fontSize: 18,
+      fontSize: 14,
       fill: "#fff",
       textBackgroundColor: "#151515",
       fontFamily: "Apercu",
@@ -209,6 +209,7 @@ const FitImage = (props) => {
         addImage();
         addLogo();
         RenderControls(true);
+
         props.components &&
           props.components.map((c) => {
             addElement(c, text_iter);
@@ -299,6 +300,20 @@ export const getServerSideProps = async (context) => {
   } catch (e) {
     console.log("error:", e.message);
   }
+
+  const order = {
+    BAG: 5,
+    SHOE: 7,
+    JACKET: 2,
+    PANT: 6,
+    SHIRT: 4,
+    LAYER: 3,
+    EXTRA: 1,
+  };
+
+  data.components.sort((a, b) => {
+    return order[a.type] - order[b.type];
+  });
 
   return {
     props: { ...data },
