@@ -55,6 +55,11 @@ const BrandList = (props) => {
 
         ul {
           list-style: none;
+          padding: 0;
+        }
+
+        li {
+          margin: 0 auto 1rem auto;
         }
 
         h1 > a {
