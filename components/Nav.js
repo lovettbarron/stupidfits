@@ -5,7 +5,7 @@ import { Drawer, SIZE, ANCHOR } from "baseui/drawer";
 
 import { useSession, signin, signout } from "next-auth/client";
 
-export default (props) => {
+const Nav = (props) => {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -167,3 +167,4 @@ export default (props) => {
     </>
   );
 };
+export default Nav;
