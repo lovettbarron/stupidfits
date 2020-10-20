@@ -8,7 +8,9 @@ import { useSession, signin, signout } from "next-auth/client";
 export default (props) => {
   const router = useRouter();
   const [isOpen, setIsOpen] = React.useState(false);
-  const isActive = (pathname) => router.pathname === pathname;
+  const isActive = (pathname) => {
+    router.pathname === pathname;
+  };
   const toggleTrueFalse = () => setIsOpen(!isOpen);
   const [session, loading] = useSession();
 
@@ -24,6 +26,8 @@ export default (props) => {
         autoFocus
         onClose={() => setIsOpen(false)}
         size={SIZE.full}
+        onEscapeKeyDown={() => setIsOpen(false)}
+        animate={true}
         anchor={ANCHOR.right}
       >
         {(session && (
