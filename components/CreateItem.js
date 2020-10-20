@@ -8,7 +8,7 @@ import { FileUploader } from "baseui/file-uploader";
 import { useUpload } from "use-cloudinary";
 import { useSession } from "next-auth/client";
 
-const types = [
+export const types = [
   { label: "Carry", id: "BAG" },
   { label: "Shoe", id: "SHOE" },
   { label: "Outerwear", id: "JACKET" },
@@ -22,7 +22,7 @@ const colour = [];
 
 const qual = [];
 
-const Item = (props) => {
+const CreateItem = (props) => {
   const [session, loading] = useSession();
   const [brand, setBrand] = useState([]);
   const [model, setModel] = useState("");
@@ -221,4 +221,4 @@ const Item = (props) => {
   );
 };
 
-export default Item;
+export default CreateItem;

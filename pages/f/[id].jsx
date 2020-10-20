@@ -6,19 +6,8 @@ import Link from "next/link";
 import Router from "next/router";
 import { Select } from "baseui/select";
 import FitBox from "../../components/FitBox";
-import CreateItem from "../../components/CreateItem";
-import { getSession, useSession } from "next-auth/client";
-// import { NextSeo } from "next-seo";
 
-import {
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  ModalButton,
-  SIZE,
-  ROLE,
-} from "baseui/modal";
+import { getSession, useSession } from "next-auth/client";
 
 const Fit = (props) => {
   const [session, loading] = useSession();

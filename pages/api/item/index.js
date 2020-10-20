@@ -47,22 +47,14 @@ export default async function handle(req, res) {
     // CREATE NEW ITEM
     //
 
-    const brand = req.body.brand
-      .map((b) => ({
-        where: { name: (b.label || "").toLowerCase() },
-        create: { name: (b.label || "").toLowerCase() },
-      }))
-      .finally(async () => {
-        await prisma.$disconnect();
-      });
+    const brand = req.body.brand.map((b) => ({
+      where: { name: (b.label || "").toLowerCase() },
+      create: { name: (b.label || "").toLowerCase() },
+    }));
 
-    const brandChecker = req.body.brand
-      .map((b) => ({
-        where: { name: (b.label || "").toLowerCase() },
-      }))
-      .finally(async () => {
-        await prisma.$disconnect();
-      });
+    const brandChecker = req.body.brand.map((b) => ({
+      where: { name: (b.label || "").toLowerCase() },
+    }));
 
     // Check if this combo exists
     const exists = await prisma.item
