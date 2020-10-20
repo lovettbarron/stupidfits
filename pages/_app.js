@@ -9,6 +9,7 @@ import { Integrations } from "@sentry/tracing";
 // import SEO from "../next-seo.config";
 import Head from "next/head";
 import Transition from "../components/Transition";
+import Header from "../components/Header";
 
 function App({ Component, pageProps, router }) {
   const [engine, setEngine] = useState(null);
@@ -59,6 +60,7 @@ function App({ Component, pageProps, router }) {
       >
         <StyletronProvider value={engine}>
           <BaseProvider theme={DarkTheme}>
+            <Header />
             <Transition location={router.pathname}>
               <Component
                 {...pageProps}

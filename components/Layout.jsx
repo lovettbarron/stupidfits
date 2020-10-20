@@ -1,4 +1,3 @@
-import Header from "./Header";
 import Transition from "../components/Transition";
 import { useRouter } from "next/router";
 
@@ -7,8 +6,6 @@ const Layout = (props) => {
 
   return (
     <div>
-      <Header />
-
       <div className="layout">{props.children}</div>
 
       <style jsx global>{`
