@@ -41,21 +41,21 @@ export default class MyDocument extends Document {
           />
           <meta property="og:image:width" content="1024" />
           <meta property="og:image:height" content="1024" />
-          {/* {<script
+          <script
             data-ad-client="ca-pub-9045265332202021"
             async
             src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"
-          ></script>} */}
+          ></script>
         </Head>
         <body>
           <Main />
           <NextScript />
         </body>
-        <script
+        {/* <script
           data-ad-client={"ca-pub-9045265332202021"}
           async
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"
-        />
+        /> */}
         <script
           async
           src={`https://www.googletagmanager.com/gtag/js?id=${GA_TRACKING_ID}`}
