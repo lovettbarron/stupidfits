@@ -7,6 +7,7 @@ import { useSession, getSession } from "next-auth/client";
 import Link from "next/link";
 import { Tabs, Tab, FILL } from "baseui/tabs-motion";
 import Anatomy from "../../components/Anatomy";
+import { Helmet } from "react-helmet";
 
 const UserProfile = (props) => {
   const [activeKey, setActiveKey] = React.useState("0");
@@ -20,7 +21,7 @@ const UserProfile = (props) => {
   if (!props.insta.profilepage) {
     return (
       <Layout>
-        <Head>
+        <Helmet>
           <title>{props.insta.username}'s Fits on Stupid Fits</title>
           <meta
             property="og:title"
@@ -34,7 +35,7 @@ const UserProfile = (props) => {
           />
           <meta property="og:type" content="profile" />
           <meta property="profile:username" content={props.insta.username} />
-        </Head>
+        </Helmet>
 
         <div className="page">
           <main>
