@@ -179,8 +179,8 @@ export const getServerSideProps = async (context) => {
     error = e;
   }
 
-  const res = await User();
-  user = await res.json();
+  // const res = await User();
+  // user = await res.json();
 
   // Fetch fits for this user and check against existing instagram
   const fitres = await fetch(
