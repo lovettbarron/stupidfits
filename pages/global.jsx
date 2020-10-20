@@ -35,7 +35,7 @@ const Blog = (props) => {
               return b.media.timestamp - a.media.timestamp;
             })
             .map((fit) => (
-              <FitBox {...fit} fit={fit.id} />
+              <FitBox key={fit.id} {...fit} fit={fit.id} />
             ))}
         </main>
         <footer>

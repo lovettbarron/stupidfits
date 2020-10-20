@@ -126,6 +126,7 @@ const Feed = (props) => {
             >
               {posts.map((fit) => (
                 <Gram
+                  key={fit.id}
                   {...fit}
                   fit={
                     (props.fits &&

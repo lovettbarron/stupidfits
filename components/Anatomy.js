@@ -116,11 +116,13 @@ const Anatomy = (props) => {
               {props.components
                 .filter((c) => c.type === "BAG")
                 .map((c) => (
-                  <Clicker {...c}>
-                    <li key={c.id}>{`${Cap(c.brand.name)} ${c.model} ${
-                      c.year > 0 ? c.year : ""
-                    }`}</li>
-                  </Clicker>
+                  <li key={c.id}>
+                    <Clicker {...c}>
+                      {`${Cap(c.brand.name)} ${c.model} ${
+                        c.year > 0 ? c.year : ""
+                      }`}
+                    </Clicker>
+                  </li>
                 ))}
             </ul>
           </>
@@ -132,11 +134,13 @@ const Anatomy = (props) => {
               {props.components
                 .filter((c) => c.type === "SHOE")
                 .map((c) => (
-                  <Clicker {...c}>
-                    <li key={c.id}>{`${Cap(c.brand.name)} ${c.model} ${
-                      c.year > 0 ? c.year : ""
-                    }`}</li>
-                  </Clicker>
+                  <li key={c.id}>
+                    <Clicker {...c}>
+                      {`${Cap(c.brand.name)} ${c.model} ${
+                        c.year > 0 ? c.year : ""
+                      }`}
+                    </Clicker>
+                  </li>
                 ))}
             </ul>
           </>
@@ -148,11 +152,13 @@ const Anatomy = (props) => {
               {props.components
                 .filter((c) => c.type === "EXTRA")
                 .map((c) => (
-                  <Clicker {...c}>
-                    <li key={c.id}>{`${Cap(c.brand.name)} ${c.model} ${
-                      c.year > 0 ? c.year : ""
-                    }`}</li>
-                  </Clicker>
+                  <li key={c.id}>
+                    <Clicker {...c}>
+                      {`${Cap(c.brand.name)} ${c.model} ${
+                        c.year > 0 ? c.year : ""
+                      }`}
+                    </Clicker>
+                  </li>
                 ))}
             </ul>
           </>

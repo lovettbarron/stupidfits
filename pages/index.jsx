@@ -7,7 +7,7 @@ import FitBox from "../components/FitBox";
 import Link from "next/link";
 import { useSession, signin, signout } from "next-auth/client";
 
-const Blog = (props) => {
+const Main = (props) => {
   const [session, loading] = useSession();
   const [instagram, setInstagram] = useState("");
 
@@ -73,7 +73,7 @@ const Blog = (props) => {
                 .sort((a, b) => {
                   return b.media.timestamp - a.media.timestamp;
                 })
-                .map((fit) => <FitBox {...fit} fit={fit.id} />)}
+                .map((fit) => <FitBox key={fit.id} {...fit} fit={fit.id} />)}
           </main>
           <footer>
             <ul>
@@ -178,4 +178,4 @@ export const getServerSideProps = async (context) => {
   };
 };
 
-export default Blog;
+export default Main;

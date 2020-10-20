@@ -18,7 +18,7 @@ const Filter = ({ items, filter }) => {
         {items.map((i) => (
           <>
             <h3>{i.model}</h3>
-            {i.fit && i.fit.map((f) => <FitBox {...f} fit={f.id} />)}
+            {i.fit && i.fit.map((f) => <FitBox key={f.id} {...f} fit={f.id} />)}
           </>
         ))}
       </>
@@ -33,7 +33,7 @@ const Filter = ({ items, filter }) => {
       {filtered.map((i) => (
         <>
           <h3>{i.model}</h3>
-          {i.fit && i.fit.map((f) => <FitBox {...f} fit={f.id} />)}
+          {i.fit && i.fit.map((f) => <FitBox key={f.id} {...f} fit={f.id} />)}
         </>
       ))}
     </>
@@ -74,7 +74,7 @@ const Closet = (props) => {
                 {props.items
                   .filter((c) => c.type === "JACKET")
                   .map((c) => (
-                    <li onClick={() => editItem(c.id)}>
+                    <li key={c.id} onClick={() => editItem(c.id)}>
                       {`${Cap(c.brand.name)} ${c.model} ${
                         c.year > 0 ? c.year : ""
                       }`}
@@ -98,7 +98,7 @@ const Closet = (props) => {
                 {props.items
                   .filter((c) => c.type === "LAYER")
                   .map((c) => (
-                    <li>
+                    <li key={c.id}>
                       {`${Cap(c.brand.name)} ${c.model} ${
                         c.year > 0 ? c.year : ""
                       }`}{" "}
@@ -122,7 +122,7 @@ const Closet = (props) => {
                 {props.items
                   .filter((c) => c.type === "SHIRT")
                   .map((c) => (
-                    <li>
+                    <li key={c.id}>
                       {`${Cap(c.brand.name)} ${c.model} ${
                         c.year > 0 ? c.year : ""
                       }`}{" "}
@@ -146,7 +146,7 @@ const Closet = (props) => {
                 {props.items
                   .filter((c) => c.type === "PANT")
                   .map((c) => (
-                    <li>
+                    <li key={c.id}>
                       {`${Cap(c.brand.name)} ${c.model} ${
                         c.year > 0 ? c.year : ""
                       }`}{" "}
@@ -169,7 +169,7 @@ const Closet = (props) => {
                 {props.items
                   .filter((c) => c.type === "BAG")
                   .map((c) => (
-                    <li>
+                    <li key={c.id}>
                       {`${Cap(c.brand.name)} ${c.model} ${
                         c.year > 0 ? c.year : ""
                       }`}{" "}
@@ -192,7 +192,7 @@ const Closet = (props) => {
                 {props.items
                   .filter((c) => c.type === "SHOE")
                   .map((c) => (
-                    <li>
+                    <li key={c.id}>
                       {`${Cap(c.brand.name)} ${c.model} ${
                         c.year > 0 ? c.year : ""
                       }`}{" "}
@@ -215,7 +215,7 @@ const Closet = (props) => {
                 {props.items
                   .filter((c) => c.type === "EXTRA")
                   .map((c) => (
-                    <li>
+                    <li key={c.id}>
                       {`${Cap(c.brand.name)} ${c.model} ${
                         c.year > 0 ? c.year : ""
                       }`}{" "}

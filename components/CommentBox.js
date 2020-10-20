@@ -63,7 +63,7 @@ const CommentBox = (props) => {
       <div className="commentbox">
         {(comments &&
           comments.map((c) => (
-            <div className="comment">
+            <div className="comment" key={c.id}>
               <div className="user">
                 <Link href={`/u/${c.user.username}`}>
                   <a>{c.user.username}</a>
