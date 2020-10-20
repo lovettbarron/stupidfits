@@ -14,21 +14,6 @@ const Blog = (props) => {
   // console.log("session", props.user);
   return (
     <>
-      <NextSeo
-        title="Stupid Fits"
-        description="Ingredient List for your Fit Pics"
-        openGraph={{
-          images: [
-            {
-              url: "https://stupidfits.com/img/appicon.png",
-              width: 800,
-              height: 600,
-              alt: "Og Image Alt",
-            },
-          ],
-          site_name: "Stupid Fits",
-        }}
-      />
       <Layout>
         <div className="page">
           <header>

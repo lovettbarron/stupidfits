@@ -12,10 +12,6 @@ const BrandList = (props) => {
 
   return (
     <Layout>
-      <NextSeo
-        title={`Brands List on Stupid Fits`}
-        description={`All the brands`}
-      />
       <div className="page">
         <main>
           <div className="top">
