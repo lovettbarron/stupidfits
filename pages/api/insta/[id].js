@@ -37,7 +37,10 @@ async function handleGET(req, res) {
         email: session.user.email,
       },
     })
-    .fit({ include: { media: true } });
+    .fit({ include: { media: true } })
+    .finally(async () => {
+      await prisma.$disconnect();
+    });
   await prisma.$disconnect();
   // console.log("Returned media", id, post, media);
   res.json((post && post.find((p) => p.media.insta_id === id)) || false);

@@ -48,21 +48,25 @@ async function handlePOST(req, res) {
   if (!session) return null;
   if (!req.body.comment) return "No comment found";
 
-  const comment = await prisma.comment.create({
-    data: {
-      user: {
-        connect: {
-          email: session.user.email,
+  const comment = await prisma.comment
+    .create({
+      data: {
+        user: {
+          connect: {
+            email: session.user.email,
+          },
         },
-      },
-      fit: {
-        connect: {
-          id: Number(id),
+        fit: {
+          connect: {
+            id: Number(id),
+          },
         },
+        comment: req.body.comment || "",
       },
-      comment: req.body.comment || "",
-    },
-  });
+    })
+    .finally(async () => {
+      await prisma.$disconnect();
+    });
 
   console.log("Created Comment", comment);
   res.json(comment);

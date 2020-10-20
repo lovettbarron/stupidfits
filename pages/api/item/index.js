@@ -47,23 +47,35 @@ export default async function handle(req, res) {
     // CREATE NEW ITEM
     //
 
-    const brand = req.body.brand.map((b) => ({
-      where: { name: (b.label || "").toLowerCase() },
-      create: { name: (b.label || "").toLowerCase() },
-    }));
+    const brand = req.body.brand
+      .map((b) => ({
+        where: { name: (b.label || "").toLowerCase() },
+        create: { name: (b.label || "").toLowerCase() },
+      }))
+      .finally(async () => {
+        await prisma.$disconnect();
+      });
 
-    const brandChecker = req.body.brand.map((b) => ({
-      where: { name: (b.label || "").toLowerCase() },
-    }));
+    const brandChecker = req.body.brand
+      .map((b) => ({
+        where: { name: (b.label || "").toLowerCase() },
+      }))
+      .finally(async () => {
+        await prisma.$disconnect();
+      });
 
     // Check if this combo exists
-    const exists = await prisma.item.findMany({
-      where: {
-        user: {
-          email: session.user.email,
+    const exists = await prisma.item
+      .findMany({
+        where: {
+          user: {
+            email: session.user.email,
+          },
         },
-      },
-    });
+      })
+      .finally(async () => {
+        await prisma.$disconnect();
+      });
 
     // TODO add brand filter
     const filtered = exists.filter(
@@ -78,26 +90,30 @@ export default async function handle(req, res) {
     if (filtered && filtered.length > 0) res.json(exists);
     else {
       console.log("Making new item");
-      const result = await prisma.item.create({
-        data: {
-          user: {
-            connect: {
-              email: session.user.email,
+      const result = await prisma.item
+        .create({
+          data: {
+            user: {
+              connect: {
+                email: session.user.email,
+              },
             },
-          },
-          fit: req.body.fitid && {
-            connect: {
-              id: req.body.fitid,
+            fit: req.body.fitid && {
+              connect: {
+                id: req.body.fitid,
+              },
             },
+            model: req.body.model,
+            year: Number(req.body.year),
+            brand: {
+              connectOrCreate: brand.length < 2 ? brand[0] : brand,
+            },
+            type: req.body.type[0].id,
           },
-          model: req.body.model,
-          year: Number(req.body.year),
-          brand: {
-            connectOrCreate: brand.length < 2 ? brand[0] : brand,
-          },
-          type: req.body.type[0].id,
-        },
-      });
+        })
+        .finally(async () => {
+          await prisma.$disconnect();
+        });
       res.json(result);
     }
   } else {

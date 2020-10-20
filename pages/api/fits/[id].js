@@ -49,15 +49,19 @@ async function handlePOST(req, res) {
       }))) ||
     null;
 
-  const fit = await prisma.fit.update({
-    where: { id: Number(id) },
-    data: {
-      components: {
-        set: items,
+  const fit = await prisma.fit
+    .update({
+      where: { id: Number(id) },
+      data: {
+        components: {
+          set: items,
+        },
+        desc: req.body.desc || "",
       },
-      desc: req.body.desc || "",
-    },
-  });
+    })
+    .finally(async () => {
+      await prisma.$disconnect();
+    });
 
   // console.log("Updated fit", fit);
   res.json(fit);

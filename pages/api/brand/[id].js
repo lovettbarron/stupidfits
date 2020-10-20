@@ -28,31 +28,35 @@ async function handleGET(req, res) {
     where: { name: id },
   });
 
-  const items = await prisma.item.findMany({
-    where: {
-      brand: {
-        name: id,
-      },
-    },
-    include: {
-      fit: {
-        where: {
-          user: {
-            public: true,
-          },
+  const items = await prisma.item
+    .findMany({
+      where: {
+        brand: {
+          name: id,
         },
-        include: {
-          media: true,
-          user: true,
-          components: {
-            include: {
-              brand: true,
+      },
+      include: {
+        fit: {
+          where: {
+            user: {
+              public: true,
+            },
+          },
+          include: {
+            media: true,
+            user: true,
+            components: {
+              include: {
+                brand: true,
+              },
             },
           },
         },
       },
-    },
-  });
+    })
+    .finally(async () => {
+      await prisma.$disconnect();
+    });
 
   brand.items = items;
 

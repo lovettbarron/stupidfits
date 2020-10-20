@@ -8,9 +8,13 @@ import { Instagram, Media } from "../../../lib/insta";
 export default async function handle(req, res) {
   const { id, page } = req.query;
   const session = await getSession({ req });
-  const user = await prisma.user.findOne({
-    where: { email: session.user.email },
-  });
+  const user = await prisma.user
+    .findOne({
+      where: { email: session.user.email },
+    })
+    .finally(async () => {
+      await prisma.$disconnect();
+    });
 
   // console.log("Fetching instagram user with token", user.instagramlong);
   var instagram = new Instagram(user.instagramlong);

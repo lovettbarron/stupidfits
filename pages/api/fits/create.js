@@ -22,25 +22,29 @@ export default async function handle(req, res) {
 
   const d = new Date(Date.parse(req.body.timestamp));
   // Set path
-  const media = await prisma.fit.create({
-    data: {
-      user: {
-        connect: {
-          email: session.user.email,
+  const media = await prisma.fit
+    .create({
+      data: {
+        user: {
+          connect: {
+            email: session.user.email,
+          },
+        },
+        media: {
+          create: {
+            insta_id: req.body.id,
+            username: req.body.username,
+            timestamp: Math.floor(d.getTime() / 1000),
+            cloudinary: (cloudurl && cloudurl.public_id) || null,
+            image: req.body.media_url,
+            url: req.body.permalink,
+            description: req.body.caption || "",
+          },
         },
       },
-      media: {
-        create: {
-          insta_id: req.body.id,
-          username: req.body.username,
-          timestamp: Math.floor(d.getTime() / 1000),
-          cloudinary: (cloudurl && cloudurl.public_id) || null,
-          image: req.body.media_url,
-          url: req.body.permalink,
-          description: req.body.caption || "",
-        },
-      },
-    },
-  });
+    })
+    .finally(async () => {
+      await prisma.$disconnect();
+    });
   res.json(media);
 }
