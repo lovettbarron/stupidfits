@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { NextSeo } from "next-seo";
+// import { NextSeo } from "next-seo";
 import Layout from "../components/Layout";
 import fetch from "isomorphic-unfetch";
 import Post from "../components/Post";
@@ -82,13 +82,13 @@ const Blog = (props) => {
 
           <h3>Your recent fits</h3>
           <main>
-            {props.feed
-              .sort((a, b) => {
-                return b.media.timestamp - a.media.timestamp;
-              })
-              .map((fit) => (
-                <FitBox {...fit} fit={fit.id} />
-              ))}
+            {props.feed &&
+              Array.isArray(props.feed) &&
+              props.feed
+                .sort((a, b) => {
+                  return b.media.timestamp - a.media.timestamp;
+                })
+                .map((fit) => <FitBox {...fit} fit={fit.id} />)}
           </main>
           <footer>
             <ul>

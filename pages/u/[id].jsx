@@ -1,6 +1,6 @@
 import Head from "next/head";
 import fetch from "isomorphic-unfetch";
-import { NextSeo } from "next-seo";
+// import { NextSeo } from "next-seo";
 import Layout from "../../components/Layout";
 import FitBox from "../../components/FitBox";
 import { useSession, getSession } from "next-auth/client";
@@ -211,8 +211,8 @@ const UserProfile = (props) => {
     );
 };
 
-// export const getServerSideProps = async (context) => {
-export async function getServerSideProps(context) {
+export const getServerSideProps = async (context) => {
+  // export async function getServerSideProps(context) {
   const session = await getSession(context);
 
   // Get user and instagram username
@@ -264,6 +264,6 @@ export async function getServerSideProps(context) {
   return {
     props: { insta: user, fits: fits, closet: closet },
   };
-}
+};
 
 export default UserProfile;

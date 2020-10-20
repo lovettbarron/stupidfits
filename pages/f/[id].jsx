@@ -8,7 +8,7 @@ import { Select } from "baseui/select";
 import FitBox from "../../components/FitBox";
 import CreateItem from "../../components/CreateItem";
 import { getSession, useSession } from "next-auth/client";
-import { NextSeo } from "next-seo";
+// import { NextSeo } from "next-seo";
 
 import {
   Modal,
@@ -48,52 +48,54 @@ const Fit = (props) => {
 
         <meta
           property="og:image"
-          content={props.media && `https://res.cloudinary.com/stupidsystems/image/upload/${props.media.cloudinary}`}
+          content={
+            props.media &&
+            `https://res.cloudinary.com/stupidsystems/image/upload/${props.media.cloudinary}`
+          }
           key="mainimg"
         />
       </Head>
-    <Layout>
+      <Layout>
+        <div className="page">
+          <Link href={`/u/${props.user.username}`}>
+            <a>
+              <h1>{props.user.username}</h1>
+            </a>
+          </Link>
+          <FitBox {...props} components={items} />
+        </div>
+        <style jsx>{`
+          .page {
+            padding: 0rem;
+          }
+          a.modal {
+            border: 1px solid white;
+            border-radius: 0.25rem;
+            padding: 0.5rem;
+            margin: 1rem;
+            cursor: pointer;
+          }
 
-      <div className="page">
-        <Link href={`/u/${props.user.username}`}>
-          <a>
-            <h1>{props.user.username}</h1>
-          </a>
-        </Link>
-        <FitBox {...props} components={items} />
-      </div>
-      <style jsx>{`
-        .page {
-          padding: 0rem;
-        }
-        a.modal {
-          border: 1px solid white;
-          border-radius: 0.25rem;
-          padding: 0.5rem;
-          margin: 1rem;
-          cursor: pointer;
-        }
+          input[type="text"],
+          textarea {
+            width: 100%;
+            padding: 0.5rem;
+            margin: 0.5rem 0;
+            border-radius: 0.25rem;
+            border: 0.125rem solid rgba(0, 0, 0, 0.2);
+          }
 
-        input[type="text"],
-        textarea {
-          width: 100%;
-          padding: 0.5rem;
-          margin: 0.5rem 0;
-          border-radius: 0.25rem;
-          border: 0.125rem solid rgba(0, 0, 0, 0.2);
-        }
+          input[type="submit"] {
+            background: #ececec;
+            border: 0;
+            padding: 1rem 2rem;
+          }
 
-        input[type="submit"] {
-          background: #ececec;
-          border: 0;
-          padding: 1rem 2rem;
-        }
-
-        .back {
-          margin-left: 1rem;
-        }
-      `}</style>
-    </Layout>
+          .back {
+            margin-left: 1rem;
+          }
+        `}</style>
+      </Layout>
     </>
   );
 };

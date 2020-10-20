@@ -8,6 +8,9 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { useSession, getSession } from "next-auth/client";
 import { FileUploader } from "baseui/file-uploader";
 
+// import Feed from "./api/feed";
+// import User from "./api/user";
+
 const Feed = (props) => {
   const [posts, setPosts] = useState(null);
   const [insta, setInsta] = useState([]);
@@ -176,6 +179,9 @@ export const getServerSideProps = async (context) => {
     error = e;
   }
 
+  const res = await User();
+  user = await res.json();
+
   // Fetch fits for this user and check against existing instagram
   const fitres = await fetch(
     `${process.env.HOST}/api/feed/${(user && user.id) || null}`,
@@ -187,6 +193,9 @@ export const getServerSideProps = async (context) => {
       },
     }
   );
+
+  // const fitres = await Feed();
+
   let fits = null;
   try {
     fits = await fitres.json();

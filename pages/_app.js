@@ -5,8 +5,8 @@ import { Client as Styletron } from "styletron-engine-atomic";
 import { Provider } from "next-auth/client";
 import * as Sentry from "@sentry/react";
 import { Integrations } from "@sentry/tracing";
-import { DefaultSeo } from "next-seo";
-import SEO from "../next-seo.config";
+// import { DefaultSeo } from "next-seo";
+// import SEO from "../next-seo.config";
 import Head from "next/head";
 
 function App({ Component, pageProps }) {
