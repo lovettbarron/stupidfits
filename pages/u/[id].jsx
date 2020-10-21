@@ -38,42 +38,8 @@ const UserProfile = (props) => {
             profile: {
               username: props.insta.username,
             },
-            images: [
-              {
-                url: seourl,
-                width: 1200,
-                height: 1200,
-                alt: "Og Image",
-              },
-              {
-                url: seourlfb,
-                width: 1200,
-                height: 630,
-                alt: "Og Image Alt Second",
-              },
-            ],
-          }}
-          twitter={{
-            handle: "@handle",
-            site: "@site",
-            cardType: "summary_large_image",
           }}
         />
-        {/* <Head>
-          <title>{props.insta.username}'s Fits on Stupid Fits</title>
-          <meta
-            property="og:title"
-            content={`${props.insta.username}'s Fits on Stupid Fits`}
-            key="title"
-          />
-          <meta
-            property="og:url"
-            content={`${process.env.HOST}/u/${props.insta.username}`}
-            key="url"
-          />
-          <meta property="og:type" content="profile" />
-          <meta property="profile:username" content={props.insta.username} />
-        </Head> */}
 
         <div className="page">
           <main>
@@ -103,22 +69,33 @@ const UserProfile = (props) => {
   } else
     return (
       <Layout>
-        <Head>
-          <title>{props.insta.username}'s Fits on Stupid Fits</title>
-          <meta
-            property="og:title"
-            content={`${props.insta.username}'s Fits on Stupid Fits`}
-            key="title"
-          />
-          <meta
-            property="og:url"
-            content={`${process.env.HOST}/u/${props.insta.username}`}
-            key="url"
-          />
-          <meta property="og:type" content="profile" key="type" />
-          <meta property="profile:username" content={props.insta.username} />
-          <meta property="og:image" content={seourl} key="mainimg" />
-        </Head>
+        <NextSeo
+          title={`${props.insta.username}'s Fits on Stupid Fits`}
+          description={`Check out all of ${props.insta.username}'s fits on Stupid Fits`}
+          openGraph={{
+            url: `${process.env.HOST}/u/${props.insta.username}`,
+            title: `${props.insta.username}'s Fits on Stupid Fits`,
+            description: `Check out all of ${props.insta.username}'s fits on Stupid Fits`,
+            type: "profile",
+            profile: {
+              username: props.insta.username,
+            },
+            images: [
+              {
+                url: seourl,
+                width: 1200,
+                height: 1200,
+                alt: "Og Image",
+              },
+              {
+                url: seourlfb,
+                width: 1200,
+                height: 630,
+                alt: "Og Image Alt Second",
+              },
+            ],
+          }}
+        />
 
         <div className="page">
           <main>

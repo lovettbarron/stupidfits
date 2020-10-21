@@ -8,11 +8,6 @@ import { useSession, getSession } from "next-auth/client";
 const WTF = (props) => {
   return (
     <Layout>
-      <Head>
-        <title>WTF | Stupid Fits</title>
-        <meta property="og:title" content={`WTF Stupid Fits`} key="title" />
-        <meta property="og:url" content={`${process.env.HOST}/wtf`} key="url" />
-      </Head>
       <main>
         <h1>What is Stupid Fits?</h1>
         <h2>Basically...</h2>
