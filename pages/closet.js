@@ -68,6 +68,14 @@ const Closet = (props) => {
               setActiveKey(activeKey);
             }}
             activateOnFocus
+            overrides={{
+              TabList: {
+                style: {
+                  flexWrap: "wrap",
+                },
+              },
+            }}
+            style={{ flexWrap: "wrap" }}
           >
             <Tab title="Outerwear">
               <ul>
