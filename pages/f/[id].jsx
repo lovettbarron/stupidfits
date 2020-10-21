@@ -50,19 +50,20 @@ const Fit = (props) => {
               url: seourlfb,
               width: 1200,
               height: 630,
+              type: "image/png",
               alt: "Primary image",
             },
             {
               url: seourl,
               width: 1200,
               height: 1200,
+              type: "image/png",
               alt: "Og Image",
             },
           ],
         }}
         twitter={{
-          handle: "@handle",
-          site: "@site",
+          image: seourlfb,
           cardType: "summary_large_image",
         }}
       />

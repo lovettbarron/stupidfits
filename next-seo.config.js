@@ -10,13 +10,13 @@ export default {
     keywords: ["fitpics", "outfits", "techwear", "clueless", "closet", "fits"],
     images: [
       {
-        url: "//stupidfits.com/img/appiconwide.png",
+        url: "https://stupidfits.com/img/appiconwide.png",
         width: 1200,
         height: 630,
         alt: "Stupid Fits",
       },
       {
-        url: "//stupidfits.com/img/appicon.png",
+        url: "https://stupidfits.com/img/appicon.png",
         width: 1024,
         height: 1024,
         alt: "Stupid Fits",
@@ -27,6 +27,8 @@ export default {
     appId: "2742481926027884",
   },
   twitter: {
+    image: "https://stupidfits.com/img/appiconwide.png",
+    description: "Digital Fit Library for all your Fabrics",
     handle: "@readywater",
     site: "@stupid_systems",
     cardType: "summary_large_image",

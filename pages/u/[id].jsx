@@ -86,15 +86,21 @@ const UserProfile = (props) => {
                 url: seourlfb,
                 width: 1200,
                 height: 630,
+                type: "image/png",
                 alt: `${props.insta.username}'s Fits on Stupid Fits`,
               },
               {
                 url: seourl,
                 width: 1200,
                 height: 1200,
+                type: "image/png",
                 alt: `${props.insta.username}'s Fits on Stupid Fits`,
               },
             ],
+          }}
+          twitter={{
+            image: seourlfb,
+            cardType: "summary_large_image",
           }}
         />
 
