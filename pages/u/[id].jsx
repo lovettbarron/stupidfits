@@ -12,7 +12,8 @@ import { NextSeo } from "next-seo";
 const UserProfile = (props) => {
   const [activeKey, setActiveKey] = React.useState("0");
 
-  const getTopFit = props.fits.find((f) => media.cloudinary.length > 0);
+  const getTopFit = props.fits.find((f) => f.media.cloudinary.length > 0);
+  console.log("GetTopFit", getTopFit);
 
   const seourl =
     (getTopFit &&
