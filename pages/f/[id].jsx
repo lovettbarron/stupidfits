@@ -71,7 +71,7 @@ const Fit = (props) => {
         <link
           rel="alternate"
           type="application/json+oembed"
-          href={`${process.env.HOST}/api/embed?embed=${process.env.HOST}/f/${props.id}&id=${props.id}`}
+          href={`${process.env.HOST}/api/embed?url=${process.env.HOST}/f/${props.id}`}
           title={`${props.user.username}'s fit on Stupid Fits`}
           key="oembed"
         />

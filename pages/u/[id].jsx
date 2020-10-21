@@ -80,7 +80,7 @@ const UserProfile = (props) => {
           <link
             rel="alternate"
             type="application/json+oembed"
-            href={`${process.env.HOST}/api/embed?embed=${process.env.HOST}/u/${props.insta.username}&username=${props.insta.username}`}
+            href={`${process.env.HOST}/api/embed?url=${process.env.HOST}/u/${props.insta.username}`}
             title={`${props.insta.username}'s fits on Stupid Fits`}
             key="oembed"
           />

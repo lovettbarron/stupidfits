@@ -3,17 +3,23 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 export default async function handle(req, res) {
-  const embed = req.query.embed;
-  const userid = req.query.username;
-  const fitid = Number(req.query.id);
+  const embed = req.query.url;
+
+  const parse = embed.split(`${process.env.HOST}/`)[1];
+
+  const id = parse.split("/")[1];
+
+  // const userid = req.query.username;
+  // const fitid = Number(req.query.id);
 
   let fit;
   let user;
+  let title;
 
-  if (fitid) {
+  if (parse.includes("f/")) {
     fit = await prisma.fit.findOne({
       where: {
-        id: fitid,
+        id: Number(id),
       },
       include: {
         user: true,
@@ -21,10 +27,11 @@ export default async function handle(req, res) {
       },
     });
     user = fit.user;
-  } else if (userid) {
+    title = `${user.username}'s fit on Stupid Fits`;
+  } else if (parse.includes("u/")) {
     user = await prisma.user.findOne({
       where: {
-        username: userid,
+        username: String(id),
       },
       include: {
         fit: {
@@ -39,11 +46,9 @@ export default async function handle(req, res) {
       Array.isArray(user.fit) &&
       user.fit.length > 0 &&
       user.fit[user.fit.length - 1];
-  }
 
-  const title = userid
-    ? `${user.username}'s Fits on Stupid Fits`
-    : `${user.username}'s fit on Stupid Fits`;
+    title = `${user.username}'s Fits on Stupid Fits`;
+  }
 
   const thumb = fit.media.cloudinary;
 
