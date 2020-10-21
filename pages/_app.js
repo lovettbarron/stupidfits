@@ -34,7 +34,10 @@ function App({ Component, pageProps, router }) {
   //   tracesSampleRate: 1.0,
   // });
 
-  if (!engine) return null;
+  if (!engine)
+    return (
+      <Component {...pageProps} url={process.env.HOST} key={router.route} />
+    );
   return (
     // <Provider session={pageProps.session}>
     <>
