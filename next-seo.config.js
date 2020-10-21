@@ -6,7 +6,8 @@ export default {
     locale: "en_US",
     url: "https://stupidfits.com",
     site_name: "Stupid Fits",
-    description: "All the fits instagram has to offer",
+    description: "Digital Fit Library for all your Fabrics",
+    keywords: ["fitpics", "outfits", "techwear", "clueless", "closet", "fits"],
     images: [
       {
         url: "https://stupidfits.com/img/appicon.png",

@@ -1,11 +1,15 @@
 import Document, { Html, Head, Main, NextScript } from "next/document";
 
 import { GA_TRACKING_ID } from "../lib/gtag";
+import { Provider as StyletronProvider } from "styletron-react";
+import { styletron } from "../styletron";
 
 export default class MyDocument extends Document {
   static async getInitialProps(ctx) {
     const initialProps = await Document.getInitialProps(ctx);
-    return { ...initialProps };
+
+    const stylesheets = styletron.getStylesheets() || [];
+    return { ...initialProps, stylesheets };
   }
 
   render() {
@@ -13,6 +17,15 @@ export default class MyDocument extends Document {
       <Html>
         <Head>
           <title>Stupid Fits | Digital Fit Library for all your Fabrics</title>
+          {this.props.stylesheets.map((sheet, i) => (
+            <style
+              className="_styletron_hydrate_"
+              dangerouslySetInnerHTML={{ __html: sheet.css }}
+              media={sheet.attrs.media}
+              data-hydrate={sheet.attrs["data-hydrate"]}
+              key={i}
+            />
+          ))}
           {process.env.HOST !== "https://stupdifits.com" && (
             <meta name="robots" content="noindex" />
           )}

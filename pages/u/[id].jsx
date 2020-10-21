@@ -44,11 +44,9 @@ const UserProfile = (props) => {
               {
                 url: seourlfb,
                 width: 1200,
-                height: 900,
+                height: 630,
                 alt: "Og Image Alt Second",
               },
-              { url: "https://www.example.ie/og-image-03.jpg" },
-              { url: "https://www.example.ie/og-image-04.jpg" },
             ],
           }}
           twitter={{

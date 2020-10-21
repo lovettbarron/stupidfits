@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { BaseProvider, DarkTheme } from "baseui";
 import { Provider as StyletronProvider } from "styletron-react";
-import { Client as Styletron } from "styletron-engine-atomic";
+// import { Client as Styletron } from "styletron-engine-atomic";
+import { Client, Server } from "styletron-engine-atomic";
+
 import { Provider } from "next-auth/client";
 import * as Sentry from "@sentry/react";
 import { Integrations } from "@sentry/tracing";
@@ -11,6 +13,16 @@ import Head from "next/head";
 import Transition from "../components/Transition";
 import Header from "../components/Header";
 
+const getHydrateClass = () =>
+  document.getElementsByClassName("_styletron_hydrate_");
+
+const styletron =
+  typeof window === "undefined"
+    ? new Server()
+    : new Client({
+        hydrate: getHydrateClass(),
+      });
+
 function App({ Component, pageProps, router }) {
   const [engine, setEngine] = useState(null);
   useEffect(() => {
@@ -18,10 +30,10 @@ function App({ Component, pageProps, router }) {
     // Reason: It requires use of `document`, which is not available
     // outside the browser, so we need to wait until it successfully loads.
     // Source: https://www.gatsbyjs.org/docs/debugging-html-builds/
-    import("styletron-engine-atomic").then((styletron) => {
-      const clientEngine = new styletron.Client();
-      setEngine(clientEngine);
-    });
+    // import("styletron-engine-atomic").then((styletron) => {
+    //   const clientEngine = new styletron.Client();
+    //   setEngine(clientEngine);
+    // });
   }, []);
 
   // Sentry.init({
@@ -62,8 +74,8 @@ function App({ Component, pageProps, router }) {
         options={{ site: process.env.HOST }}
         session={pageProps.session}
       >
-        {(!engine && (
-          <>
+        <StyletronProvider value={styletron} debugAfterHydration>
+          <BaseProvider theme={DarkTheme}>
             <Header />
             <Transition location={router.pathname}>
               <Component
@@ -72,21 +84,8 @@ function App({ Component, pageProps, router }) {
                 key={router.route}
               />
             </Transition>
-          </>
-        )) || (
-          <StyletronProvider value={engine}>
-            <BaseProvider theme={DarkTheme}>
-              <Header />
-              <Transition location={router.pathname}>
-                <Component
-                  {...pageProps}
-                  url={process.env.HOST}
-                  key={router.route}
-                />
-              </Transition>
-            </BaseProvider>
-          </StyletronProvider>
-        )}
+          </BaseProvider>
+        </StyletronProvider>
       </Provider>
     </>
   );
