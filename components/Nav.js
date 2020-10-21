@@ -89,6 +89,18 @@ const Nav = (props) => {
         <footer>
           <ul>
             <li>
+              <a href="https://reddit.com/r/stupidfits" target="_blank">
+                /r/stupidfits
+              </a>
+            </li>
+            <li>
+              <a href="https://instagram.com/stupidfits" target="_blank">
+                Instagram
+              </a>
+            </li>
+          </ul>
+          <ul>
+            <li>
               <Link href="/wtf">
                 <a>WTF is this?</a>
               </Link>
@@ -142,7 +154,8 @@ const Nav = (props) => {
           display: flex;
           flex-wrap: wrap;
           justify-content: center;
-          margin: 0;
+          margin: 0 auto 2rem 0;
+          padding: 0;
         }
 
         footer a {

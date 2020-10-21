@@ -76,6 +76,7 @@ const Gram = (props) => {
         .fitbox ul {
           display: flex;
           flex-wrap: wrap;
+          padding: 0;
         }
 
         .fitbox li {
