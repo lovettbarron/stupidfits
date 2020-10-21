@@ -82,16 +82,16 @@ const UserProfile = (props) => {
             },
             images: [
               {
-                url: seourl,
-                width: 1200,
-                height: 1200,
-                alt: "Og Image",
-              },
-              {
                 url: seourlfb,
                 width: 1200,
                 height: 630,
-                alt: "Og Image Alt Second",
+                alt: `${props.insta.username}'s Fits on Stupid Fits`,
+              },
+              {
+                url: seourl,
+                width: 1200,
+                height: 1200,
+                alt: `${props.insta.username}'s Fits on Stupid Fits`,
               },
             ],
           }}
