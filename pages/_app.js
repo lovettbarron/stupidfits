@@ -35,10 +35,8 @@ function App({ Component, pageProps, router }) {
   // });
 
   return (
-    // <Provider session={pageProps.session}>
     <>
       <Head>
-        {/* Global Site Tag (gtag.js) - Google Analytics */}
         <title>Stupid Fits | Digital Fit Library for all your Fabrics</title>
 
         <meta property="og:title" content="Stupid Fits" key="title" />
@@ -49,8 +47,14 @@ function App({ Component, pageProps, router }) {
           content="fitpics, outfits, techwear, clueless, closet, fits"
         />
         <meta
+          property="og:image"
+          content="https://stupidfits.com/img/appicon.png"
+          key="mainimg"
+        />
+        <meta
           property="og:description"
           content="Digital Fit Library for all your Fabrics"
+          key="description"
         />
       </Head>
       <Provider
