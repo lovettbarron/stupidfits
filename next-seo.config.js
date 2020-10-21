@@ -10,7 +10,7 @@ export default {
     keywords: ["fitpics", "outfits", "techwear", "clueless", "closet", "fits"],
     images: [
       {
-        url: "https://stupidfits.com/img/appicon.png",
+        url: "//stupidfits.com/img/appicon.png",
         width: 1024,
         height: 1024,
         alt: "Og Image Alt",

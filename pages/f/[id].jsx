@@ -21,12 +21,12 @@ const Fit = (props) => {
 
   const seourl =
     (props.media.cloudinary &&
-      `https://res.cloudinary.com/stupidsystems/image/upload/${props.media.cloudinary}.png`) ||
+      `//res.cloudinary.com/stupidsystems/image/upload/${props.media.cloudinary}.png`) ||
     "";
 
   const seourlfb =
     (props.media.cloudinary &&
-      `https://res.cloudinary.com/stupidsystems/image/upload/b_rgb:151515,c_lpad,h_630,w_1200/${props.media.cloudinary}.png`) ||
+      `//res.cloudinary.com/stupidsystems/image/upload/b_rgb:151515,c_lpad,h_630,w_1200/${props.media.cloudinary}.png`) ||
     "";
 
   return (
