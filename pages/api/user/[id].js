@@ -29,6 +29,7 @@ async function handleGET(req, res) {
       .finally(async () => {
         await prisma.$disconnect();
       });
+    if (!post) res.status(404);
     res.json(post);
   } else {
     // console.log("Fetching user on session");
@@ -39,6 +40,7 @@ async function handleGET(req, res) {
       .finally(async () => {
         await prisma.$disconnect();
       });
+    if (!post) res.status(404);
     res.json(post);
   }
 }

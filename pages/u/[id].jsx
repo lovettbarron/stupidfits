@@ -12,9 +12,9 @@ import { NextSeo } from "next-seo";
 const UserProfile = (props) => {
   const [activeKey, setActiveKey] = React.useState("0");
 
-  const getTopFit = props.fits.find(
-    (f) => f.media && f.media.cloudinary.length > 0
-  );
+  const getTopFit = props.fits
+    .reverse()
+    .find((f) => f.media && f.media.cloudinary.length > 0);
   // console.log("GetTopFit", getTopFit);
 
   const seourl =
@@ -274,11 +274,14 @@ export const getServerSideProps = async (context) => {
     },
   });
   const user = await res.json();
-
-  if (!user) {
-    res.statusCode = 302;
-    res.setHeader("Location", `/`); // Replace <link> with your url link
-    return { props: {} };
+  if (!res) {
+    res.statusCode = 404;
+    res.end();
+    return {
+      props: {
+        error: "No user",
+      },
+    };
   }
 
   // Get User's Items

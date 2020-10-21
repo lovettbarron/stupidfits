@@ -7,6 +7,7 @@ export default async function handle(req, res) {
 
   const parse = embed.split(`${process.env.HOST}/`)[1];
 
+  if (!parse) res.status(404);
   const id = parse.split("/")[1];
 
   // const userid = req.query.username;
