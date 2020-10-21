@@ -47,6 +47,15 @@ const UserProfile = (props) => {
             },
           }}
         />
+        <Head>
+          <link
+            rel="alternate"
+            type="application/json+oembed"
+            href={`${process.env.HOST}/api/embed?embed=${process.env.HOST}/u/${props.insta.username}&username=${props.insta.username}`}
+            title={`${props.insta.username}'s fits on Stupid Fits`}
+            key="oembed"
+          />
+        </Head>
 
         <div className="page">
           <main>

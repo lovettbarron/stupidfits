@@ -67,6 +67,15 @@ const Fit = (props) => {
           cardType: "summary_large_image",
         }}
       />
+      <Head>
+        <link
+          rel="alternate"
+          type="application/json+oembed"
+          href={`${process.env.HOST}/api/embed?embed=${process.env.HOST}/f/${props.id}&id=${props.id}`}
+          title={`${props.user.username}'s fit on Stupid Fits`}
+          key="oembed"
+        />
+      </Head>
 
       <Layout>
         <div className="page">

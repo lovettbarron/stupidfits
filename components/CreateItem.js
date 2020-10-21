@@ -177,7 +177,7 @@ const CreateItem = (props) => {
             type="submit"
             value="model"
           >
-            Set Item
+            Save Item
           </button>
           <br />
           <Link href="/closet">
