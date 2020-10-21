@@ -47,16 +47,16 @@ const Fit = (props) => {
           },
           images: [
             {
-              url: seourl,
-              width: 1200,
-              height: 1200,
-              alt: "Og Image",
-            },
-            {
               url: seourlfb,
               width: 1200,
               height: 630,
               alt: "Og Image Alt Second",
+            },
+            {
+              url: seourl,
+              width: 1200,
+              height: 1200,
+              alt: "Og Image",
             },
           ],
         }}
@@ -66,30 +66,7 @@ const Fit = (props) => {
           cardType: "summary_large_image",
         }}
       />
-      {/* <Head>
-        <title>{props.user.username}'s Fits on Stupid Fits</title>
-        <meta
-          property="og:title"
-          content={`${props.username}'s Fits on Stupid Fits`}
-          key="title"
-        />
-        <meta
-          property="og:url"
-          content={`${process.env.HOST}/f/${props.id}`}
-          key="url"
-        />
-        <meta property="og:type" content="article" key="type" />
-        <meta property="article:author" content={props.user.username} />
 
-        <meta
-          property="og:image"
-          content={
-            props.media &&
-            `https://res.cloudinary.com/stupidsystems/image/upload/${props.media.cloudinary}`
-          }
-          key="mainimg"
-        />
-      </Head> */}
       <Layout>
         <div className="page">
           <Link href={`/u/${props.user.username}`}>
