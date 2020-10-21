@@ -6,6 +6,7 @@ import Link from "next/link";
 import Router from "next/router";
 import { Select } from "baseui/select";
 import FitBox from "../../components/FitBox";
+import { NextSeo } from "next-seo";
 
 import { getSession, useSession } from "next-auth/client";
 
@@ -18,9 +19,54 @@ const Fit = (props) => {
     return () => {};
   }, [session]);
 
+  const seourl =
+    (props.media.cloudinary &&
+      `https://res.cloudinary.com/stupidsystems/image/upload/${props.media.cloudinary}.png`) ||
+    "";
+
+  const seourlfb =
+    (props.media.cloudinary &&
+      `https://res.cloudinary.com/stupidsystems/image/upload/b_rgb:151515,c_lpad,h_630,w_1200/${props.media.cloudinary}.png`) ||
+    "";
+
   return (
     <>
-      <Head>
+      <NextSeo
+        title={`${props.user.username}'s Fit on Stupid Fits`}
+        description={`Check out all of ${props.user.username}'s fits on Stupid Fits`}
+        openGraph={{
+          url: `${process.env.HOST}/f/${props.id}`,
+          title: `${props.user.username}'s Fit on Stupid Fits`,
+          description: props.desc
+            ? props.desc
+            : `Check out ${props.user.username}'s fit on Stupid Fits`,
+          type: "article",
+          article: {
+            authors: [props.user.username],
+            tags: props.components.map((c) => c.brand.name),
+          },
+          images: [
+            {
+              url: seourl,
+              width: 1200,
+              height: 1200,
+              alt: "Og Image",
+            },
+            {
+              url: seourlfb,
+              width: 1200,
+              height: 630,
+              alt: "Og Image Alt Second",
+            },
+          ],
+        }}
+        twitter={{
+          handle: "@handle",
+          site: "@site",
+          cardType: "summary_large_image",
+        }}
+      />
+      {/* <Head>
         <title>{props.user.username}'s Fits on Stupid Fits</title>
         <meta
           property="og:title"
@@ -43,7 +89,7 @@ const Fit = (props) => {
           }
           key="mainimg"
         />
-      </Head>
+      </Head> */}
       <Layout>
         <div className="page">
           <Link href={`/u/${props.user.username}`}>

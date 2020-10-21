@@ -15,13 +15,13 @@ const UserProfile = (props) => {
   const seourl =
     (Array.isArray(props.fits) &&
       props.fits.length > 0 &&
-      `https://res.cloudinary.com/stupidsystems/image/upload/${props.fits[0].media.cloudinary}`) ||
+      `https://res.cloudinary.com/stupidsystems/image/upload/${props.fits[0].media.cloudinary}.png`) ||
     "";
 
   const seourlfb =
     (Array.isArray(props.fits) &&
       props.fits.length > 0 &&
-      `https://res.cloudinary.com/stupidsystems/image/upload/b_rgb:151515,c_lpad,h_630,w_1200/${props.fits[0].media.cloudinary}`) ||
+      `https://res.cloudinary.com/stupidsystems/image/upload/b_rgb:151515,c_lpad,h_630,w_1200/${props.fits[0].media.cloudinary}.png`) ||
     "";
 
   if (!props.insta.profilepage) {
@@ -34,6 +34,10 @@ const UserProfile = (props) => {
             url: `${process.env.HOST}/u/${props.insta.username}`,
             title: `${props.insta.username}'s Fits on Stupid Fits`,
             description: `Check out all of ${props.insta.username}'s fits on Stupid Fits`,
+            type: "profile",
+            profile: {
+              username: props.insta.username,
+            },
             images: [
               {
                 url: seourl,

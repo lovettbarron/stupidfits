@@ -16,7 +16,6 @@ export default class MyDocument extends Document {
     return (
       <Html>
         <Head>
-          <title>Stupid Fits | Digital Fit Library for all your Fabrics</title>
           {this.props.stylesheets.map((sheet, i) => (
             <style
               className="_styletron_hydrate_"
