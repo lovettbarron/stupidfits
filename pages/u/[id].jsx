@@ -12,17 +12,17 @@ import { NextSeo } from "next-seo";
 const UserProfile = (props) => {
   const [activeKey, setActiveKey] = React.useState("0");
 
+  const getTopFit = props.fits.find((f) => media.cloudinary.length > 0);
+
   const seourl =
-    (Array.isArray(props.fits) &&
-      props.fits.length > 0 &&
-      `https://res.cloudinary.com/stupidsystems/image/upload/${props.fits[0].media.cloudinary}.png`) ||
-    "";
+    (getTopFit &&
+      `https://res.cloudinary.com/stupidsystems/image/upload/${getTopFit.media.cloudinary}.png`) ||
+    "https://stupidfits.com/img/appicon.png";
 
   const seourlfb =
-    (Array.isArray(props.fits) &&
-      props.fits.length > 0 &&
-      `https://res.cloudinary.com/stupidsystems/image/upload/b_rgb:151515,c_lpad,h_630,w_1200/${props.fits[0].media.cloudinary}.png`) ||
-    "";
+    (getTopFit &&
+      `https://res.cloudinary.com/stupidsystems/image/upload/b_rgb:151515,c_lpad,h_630,w_1200/${getTopFit.media.cloudinary}.png`) ||
+    "https://stupidfits.com/img/appicon.png";
 
   if (!props.insta.profilepage) {
     return (
