@@ -5,7 +5,7 @@ const prisma = new PrismaClient();
 export default async function handle(req, res) {
   const embed = req.query.embed;
   const userid = req.query.username;
-  const fitid = req.query.id;
+  const fitid = Number(req.query.id);
 
   let fit;
   let user;
