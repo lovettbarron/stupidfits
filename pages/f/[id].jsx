@@ -21,12 +21,12 @@ const Fit = (props) => {
 
   const seourl =
     (props.media.cloudinary &&
-      `//res.cloudinary.com/stupidsystems/image/upload/${props.media.cloudinary}.png`) ||
+      `https://res.cloudinary.com/stupidsystems/image/upload/${props.media.cloudinary}.png`) ||
     "";
 
   const seourlfb =
     (props.media.cloudinary &&
-      `//res.cloudinary.com/stupidsystems/image/upload/b_rgb:151515,c_lpad,h_630,w_1200/${props.media.cloudinary}.png`) ||
+      `https://res.cloudinary.com/stupidsystems/image/upload/b_rgb:151515,c_lpad,h_630,w_1200/${props.media.cloudinary}.png`) ||
     "";
 
   return (
@@ -50,7 +50,7 @@ const Fit = (props) => {
               url: seourlfb,
               width: 1200,
               height: 630,
-              alt: "Og Image Alt Second",
+              alt: "Primary image",
             },
             {
               url: seourl,

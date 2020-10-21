@@ -13,17 +13,17 @@ const UserProfile = (props) => {
   const [activeKey, setActiveKey] = React.useState("0");
 
   const getTopFit = props.fits.find((f) => f.media.cloudinary.length > 0);
-  console.log("GetTopFit", getTopFit);
+  // console.log("GetTopFit", getTopFit);
 
   const seourl =
     (getTopFit &&
-      `//res.cloudinary.com/stupidsystems/image/upload/${getTopFit.media.cloudinary}.png`) ||
-    "//stupidfits.com/img/appicon.png";
+      `https://res.cloudinary.com/stupidsystems/image/upload/${getTopFit.media.cloudinary}.png`) ||
+    "https://stupidfits.com/img/appicon.png";
 
   const seourlfb =
     (getTopFit &&
-      `//res.cloudinary.com/stupidsystems/image/upload/b_rgb:151515,c_lpad,h_630,w_1200/${getTopFit.media.cloudinary}.png`) ||
-    "//stupidfits.com/img/appicon.png";
+      `https://res.cloudinary.com/stupidsystems/image/upload/b_rgb:151515,c_lpad,h_630,w_1200/${getTopFit.media.cloudinary}.png`) ||
+    "https://stupidfits.com/img/appicon.png";
 
   if (!props.insta.profilepage) {
     return (
