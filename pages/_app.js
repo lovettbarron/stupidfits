@@ -34,10 +34,6 @@ function App({ Component, pageProps, router }) {
   //   tracesSampleRate: 1.0,
   // });
 
-  if (!engine)
-    return (
-      <Component {...pageProps} url={process.env.HOST} key={router.route} />
-    );
   return (
     // <Provider session={pageProps.session}>
     <>
@@ -61,8 +57,8 @@ function App({ Component, pageProps, router }) {
         options={{ site: process.env.HOST }}
         session={pageProps.session}
       >
-        <StyletronProvider value={engine}>
-          <BaseProvider theme={DarkTheme}>
+        {(!engine && (
+          <>
             <Header />
             <Transition location={router.pathname}>
               <Component
@@ -71,8 +67,21 @@ function App({ Component, pageProps, router }) {
                 key={router.route}
               />
             </Transition>
-          </BaseProvider>
-        </StyletronProvider>
+          </>
+        )) || (
+          <StyletronProvider value={engine}>
+            <BaseProvider theme={DarkTheme}>
+              <Header />
+              <Transition location={router.pathname}>
+                <Component
+                  {...pageProps}
+                  url={process.env.HOST}
+                  key={router.route}
+                />
+              </Transition>
+            </BaseProvider>
+          </StyletronProvider>
+        )}
       </Provider>
     </>
   );
