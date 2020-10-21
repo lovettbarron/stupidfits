@@ -5,8 +5,8 @@ import { Client as Styletron } from "styletron-engine-atomic";
 import { Provider } from "next-auth/client";
 import * as Sentry from "@sentry/react";
 import { Integrations } from "@sentry/tracing";
-// import { DefaultSeo } from "next-seo";
-// import SEO from "../next-seo.config";
+import { DefaultSeo } from "next-seo";
+import SEO from "../next-seo.config";
 import Head from "next/head";
 import Transition from "../components/Transition";
 import Header from "../components/Header";
@@ -36,7 +36,8 @@ function App({ Component, pageProps, router }) {
 
   return (
     <>
-      <Head>
+      <DefaultSeo {...SEO} />
+      {/* <Head>
         <title>Stupid Fits | Digital Fit Library for all your Fabrics</title>
 
         <meta property="og:title" content="Stupid Fits" key="title" />
@@ -56,7 +57,7 @@ function App({ Component, pageProps, router }) {
           content="Digital Fit Library for all your Fabrics"
           key="description"
         />
-      </Head>
+      </Head> */}
       <Provider
         options={{ site: process.env.HOST }}
         session={pageProps.session}

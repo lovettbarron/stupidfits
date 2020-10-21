@@ -7,7 +7,7 @@ import { useSession, getSession } from "next-auth/client";
 import Link from "next/link";
 import { Tabs, Tab, FILL } from "baseui/tabs-motion";
 import Anatomy from "../../components/Anatomy";
-import { Helmet } from "react-helmet";
+import { NextSeo } from "next-seo";
 
 const UserProfile = (props) => {
   const [activeKey, setActiveKey] = React.useState("0");
@@ -18,10 +18,46 @@ const UserProfile = (props) => {
       `https://res.cloudinary.com/stupidsystems/image/upload/${props.fits[0].media.cloudinary}`) ||
     "";
 
+  const seourlfb =
+    (Array.isArray(props.fits) &&
+      props.fits.length > 0 &&
+      `https://res.cloudinary.com/stupidsystems/image/upload/b_rgb:151515,c_lpad,h_630,w_1200/${props.fits[0].media.cloudinary}`) ||
+    "";
+
   if (!props.insta.profilepage) {
     return (
       <Layout>
-        <Head>
+        <NextSeo
+          title={`${props.insta.username}'s Fits on Stupid Fits`}
+          description={`Check out all of ${props.insta.username}'s fits on Stupid Fits`}
+          openGraph={{
+            url: `${process.env.HOST}/u/${props.insta.username}`,
+            title: `${props.insta.username}'s Fits on Stupid Fits`,
+            description: `Check out all of ${props.insta.username}'s fits on Stupid Fits`,
+            images: [
+              {
+                url: seourl,
+                width: 1200,
+                height: 1200,
+                alt: "Og Image",
+              },
+              {
+                url: seourlfb,
+                width: 1200,
+                height: 900,
+                alt: "Og Image Alt Second",
+              },
+              { url: "https://www.example.ie/og-image-03.jpg" },
+              { url: "https://www.example.ie/og-image-04.jpg" },
+            ],
+          }}
+          twitter={{
+            handle: "@handle",
+            site: "@site",
+            cardType: "summary_large_image",
+          }}
+        />
+        {/* <Head>
           <title>{props.insta.username}'s Fits on Stupid Fits</title>
           <meta
             property="og:title"
@@ -35,7 +71,7 @@ const UserProfile = (props) => {
           />
           <meta property="og:type" content="profile" />
           <meta property="profile:username" content={props.insta.username} />
-        </Head>
+        </Head> */}
 
         <div className="page">
           <main>
