@@ -17,6 +17,24 @@ const UserProfile = (props) => {
     .find((f) => f.media && f.media.cloudinary.length > 0);
   // console.log("GetTopFit", getTopFit);
 
+  const brandKeywords = props.fits
+    .map((f) => f.components.map((c) => c.brand.name))
+    .flat();
+
+  const getBrandKeywords = (count) => {
+    let o = {};
+    brandKeywords.forEach(function (item) {
+      item in o ? (o[item] += 1) : (o[item] = 1);
+    });
+    const arr = Object.keys(o).sort(function (a, b) {
+      return o[a] < o[b];
+    });
+
+    return arr.slice(0, count);
+  };
+
+  // console.log("Brand count", getBrandKeywords(3));
+
   const seourl =
     (getTopFit &&
       `https://res.cloudinary.com/stupidsystems/image/upload/${
@@ -36,9 +54,14 @@ const UserProfile = (props) => {
       <Layout>
         <NextSeo
           title={`${props.insta.username}'s Fits on Stupid Fits`}
-          description={`Check out all of ${props.insta.username}'s fits on Stupid Fits`}
+          description={`Check out all of ${
+            props.insta.username
+          }'s fits on Stupid Fits from brands like ${getBrandKeywords(5).join(
+            ", "
+          )}`}
           canonical={`${process.env.HOST}/u/${props.insta.username}`}
           openGraph={{
+            keywords: getBrandKeywords(10),
             url: `${process.env.HOST}/u/${props.insta.username}`,
             title: `${props.insta.username}'s Fits on Stupid Fits`,
             description: `Check out all of ${props.insta.username}'s fits on Stupid Fits`,
@@ -77,20 +100,16 @@ const UserProfile = (props) => {
   } else
     return (
       <Layout>
-        <Head>
-          <link
-            rel="alternate"
-            type="application/json+oembed"
-            href={`${process.env.HOST}/api/embed?url=${process.env.HOST}/u/${props.insta.username}`}
-            title={`${props.insta.username}'s fits on Stupid Fits`}
-            key="oembed"
-          />
-        </Head>
-
         <NextSeo
           title={`${props.insta.username}'s Fits on Stupid Fits`}
-          description={`Check out all of ${props.insta.username}'s fits on Stupid Fits`}
+          description={`Check out all of ${
+            props.insta.username
+          }'s fits on Stupid Fits from brands like ${getBrandKeywords(5).join(
+            ", "
+          )}`}
+          canonical={`${process.env.HOST}/u/${props.insta.username}`}
           openGraph={{
+            keywords: getBrandKeywords(10),
             url: `${process.env.HOST}/u/${props.insta.username}`,
             title: `${props.insta.username}'s Fits on Stupid Fits`,
             description: `Check out all of ${props.insta.username}'s fits on Stupid Fits`,
@@ -120,6 +139,15 @@ const UserProfile = (props) => {
             cardType: "summary_large_image",
           }}
         />
+        <Head>
+          <link
+            rel="alternate"
+            type="application/json+oembed"
+            href={`${process.env.HOST}/api/embed?url=${process.env.HOST}/u/${props.insta.username}`}
+            title={`${props.insta.username}'s fits on Stupid Fits`}
+            key="oembed"
+          />
+        </Head>
 
         <div className="page">
           <main>

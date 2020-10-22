@@ -15,6 +15,20 @@ const Fit = (props) => {
   const [desc, setDesc] = useState(props.desc);
   const [items, setItems] = useState(props.components);
 
+  const brandKeywords = props.components.map((c) => c.brand.name);
+
+  const getBrandKeywords = (count) => {
+    let o = {};
+    brandKeywords.forEach(function (item) {
+      item in o ? (o[item] += 1) : (o[item] = 1);
+    });
+    const arr = Object.keys(o).sort(function (a, b) {
+      return o[a] < o[b];
+    });
+
+    return arr.slice(0, count);
+  };
+
   useEffect(() => {
     return () => {};
   }, [session]);
@@ -32,10 +46,13 @@ const Fit = (props) => {
   return (
     <>
       <NextSeo
-        title={`${props.user.username}'s Fit on Stupid Fits`}
-        description={`Check out all of ${props.user.username}'s fits on Stupid Fits`}
+        title={`${props.user.username}'s Fit on Stupid Fits `}
+        description={`${props.user.username}'s fit with ${getBrandKeywords(
+          5
+        ).join(", ")}`}
         canonical={`${process.env.HOST}/f/${props.id}`}
         openGraph={{
+          keywords: getBrandKeywords(5),
           url: `${process.env.HOST}/f/${props.id}`,
           title: `${props.user.username}'s Fit on Stupid Fits`,
           description: props.desc
@@ -44,7 +61,7 @@ const Fit = (props) => {
           type: "article",
           article: {
             authors: [props.user.username],
-            tags: props.components.map((c) => c.brand.name),
+            tags: getBrandKeywords(5),
           },
           images: [
             {
