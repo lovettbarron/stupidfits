@@ -1,5 +1,4 @@
 import fetch from "isomorphic-unfetch";
-// import { NextSeo } from "next-seo";
 import Layout from "../../components/Layout";
 import FitBox from "../../components/FitBox";
 import { useSession, getSession } from "next-auth/client";

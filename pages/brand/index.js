@@ -6,6 +6,7 @@ import { useSession, getSession } from "next-auth/client";
 import Link from "next/link";
 import { Tabs, Tab, FILL } from "baseui/tabs-motion";
 import Anatomy from "../../components/Anatomy";
+import { NextSeo } from "next-seo";
 
 const BrandList = (props) => {
   const [activeKey, setActiveKey] = React.useState("0");

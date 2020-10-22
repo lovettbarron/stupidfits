@@ -122,8 +122,24 @@ const Fit = (props) => {
               value={components}
               isLoading={!items}
               multi
+              closeOnSelect
+              clearable={false}
               placeholder="Fit Anatomy"
-              onChange={(params) => setComponents(params.value)}
+              onChange={(params) => {
+                setComponents(params.value);
+              }}
+              noResultsMsg={
+                <>
+                  Don't see your stuff? <br />
+                  <a
+                    className="modal"
+                    style={{ wordWrap: "none", display: "inline-block" }}
+                    onClick={setIsOpen}
+                  >
+                    Add an item
+                  </a>
+                </>
+              } //"Don't see your stuff? Use the button below"
             />
             <br />
             Don't see your stuff?{" "}
