@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Router, { useRouter } from "next/router";
-import copy from "copy-to-clipboard";
 import { useSession } from "next-auth/client";
 import Anatomy from "./Anatomy";
 import Image from "./Image";
