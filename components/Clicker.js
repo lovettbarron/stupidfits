@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import psl from "psl";
 
-const extractHostname = (url) => {
+export const extractHostname = (url) => {
   let hostname;
   //find & remove protocol (http, ftp, etc.) and get hostname3\
 

@@ -40,6 +40,7 @@ const CommentBox = (props) => {
   };
 
   const fetchComments = async () => {
+    setIsLoading(true);
     const b = await fetch(`${process.env.HOST}/api/comment/${props.id}`, {
       method: "GET",
       headers: {
@@ -50,10 +51,11 @@ const CommentBox = (props) => {
 
     it = await b.json();
     setComments(it);
+    setIsLoading(false);
   };
 
   useEffect(() => {
-    if (Array.isArray(comments)) fetchComments();
+    if (!Array.isArray(comments)) fetchComments();
 
     return () => {};
   }, []);
@@ -71,7 +73,11 @@ const CommentBox = (props) => {
               </div>
               <div className="c">{c.comment}</div>
             </div>
-          ))) || <div className="comment">Loading comments</div>}
+          ))) || (
+          <div className="comment">
+            {isLoading ? `Loading comments` : `No comments yet`}
+          </div>
+        )}
         <>
           {session && (
             <>

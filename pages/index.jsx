@@ -6,6 +6,7 @@ import Post from "../components/Post";
 import FitBox from "../components/FitBox";
 import Link from "next/link";
 import { useSession, signin, signout } from "next-auth/client";
+import { extractHostname } from "../components/Clicker";
 
 const Main = (props) => {
   const [session, loading] = useSession();
@@ -47,8 +48,7 @@ const Main = (props) => {
                   <br />
                   <Link href={`${process.env.HOST}/u/${props.user.username}`}>
                     <a>
-                      {process.env.HOST}
-                      <br />
+                      {extractHostname(process.env.HOST)}
                       /u/{props.user.username}
                     </a>
                   </Link>

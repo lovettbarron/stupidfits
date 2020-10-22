@@ -131,7 +131,7 @@ Details at stupidfits.com/f/${props.id}
           )}
         </div>
         <br />
-        {props.desc && <p>{props.desc}</p>}
+        {props.desc && <div className="des">{props.desc}</div>}
       </div>
 
       <style jsx>{`
@@ -163,6 +163,13 @@ Details at stupidfits.com/f/${props.id}
 
         .components {
           font-size: 1rem;
+        }
+
+        .des {
+          padding: 0.5rem;
+          font-size: 1.2rem;
+          border: 1px solid #151515;
+          border-width: 2px 0 0 0;
         }
 
         img {
