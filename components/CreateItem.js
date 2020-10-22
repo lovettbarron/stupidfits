@@ -3,6 +3,8 @@ import fetch from "isomorphic-unfetch";
 import Link from "next/link";
 import { Select } from "baseui/select";
 import { Input } from "baseui/input";
+import { StatefulButtonGroup, MODE } from "baseui/button-group";
+import { Button } from "baseui/button";
 
 import { FileUploader } from "baseui/file-uploader";
 import { useUpload } from "use-cloudinary";
@@ -85,11 +87,11 @@ const CreateItem = (props) => {
   };
 
   useEffect(() => {
-    console.log("URL check", props.url);
+    // console.log("URL check", props.url);
     fetchBrand();
 
     return () => {
-      console.log("This will be logged on unmount");
+      // console.log("This will be logged on unmount");
     };
   }, [session]);
 
@@ -99,6 +101,25 @@ const CreateItem = (props) => {
         <form onSubmit={submitData}>
           <label>
             <h3>What is it?</h3>
+
+            <StatefulButtonGroup
+              mode={MODE.radio}
+              initialState={{ selected: type }}
+              overrides={{
+                Root: {
+                  style: {
+                    flexWrap: "wrap",
+                    maxWidth: "400px",
+                    justifyContent: "center",
+                  },
+                },
+              }}
+            >
+              {types.map((t, i) => (
+                <Button onClick={() => setType(t.id)}>{t.label}</Button>
+              ))}
+            </StatefulButtonGroup>
+            {/*
             <Select
               options={types}
               value={type}
@@ -106,7 +127,7 @@ const CreateItem = (props) => {
               startOpen
               placeholder="What is it?"
               onChange={(params) => setType(params.value)}
-            />
+            /> */}
           </label>
           <label>
             <br />
@@ -159,9 +180,9 @@ const CreateItem = (props) => {
             />
           </label>
           <br />
-          <h3>Upload a photo (doesn't work yet)</h3>
+          {/* <h3>Upload a photo (doesn't work yet)</h3> */}
 
-          <FileUploader
+          {/* <FileUploader
             errorMessage={errorMessage}
             disabled
             onChange={() => {
@@ -170,7 +191,7 @@ const CreateItem = (props) => {
                 uploadOptions,
               });
             }}
-          />
+          /> */}
           {photo && <img src={data.url} />}
           <button
             disabled={!brand || !model || !type}

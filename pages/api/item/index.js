@@ -74,7 +74,7 @@ export default async function handle(req, res) {
       (e) =>
         e.model == req.body.model &&
         e.year == Number(req.body.year) &&
-        e.type == req.body.type[0].id
+        e.type == req.body.type
     );
     // console.log("f", filtered);
 
@@ -100,7 +100,7 @@ export default async function handle(req, res) {
             brand: {
               connectOrCreate: brand.length < 2 ? brand[0] : brand,
             },
-            type: req.body.type[0].id,
+            type: req.body.type,
           },
         })
         .finally(async () => {
