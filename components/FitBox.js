@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Router, { useRouter } from "next/router";
+import copy from "copy-to-clipboard";
 import { useSession } from "next-auth/client";
 import Anatomy from "./Anatomy";
 import Image from "./Image";
+import { Cap } from "./Anatomy";
 
 const FitBox = (props) => {
   const router = useRouter();
@@ -34,6 +36,40 @@ const FitBox = (props) => {
 
   const exportFit = async (e) => {
     Router.push(`/p/${fit || props.id}`);
+  };
+
+  const copyFit = async () => {
+    const order = {
+      BAG: 6,
+      SHOE: 5,
+      JACKET: 1,
+      PANT: 4,
+      SHIRT: 3,
+      LAYER: 2,
+      EXTRA: 7,
+    };
+
+    const con = props.components.sort((a, b) => {
+      return order[a.type] - order[b.type];
+    });
+
+    const text = `${con
+      .map((c) => `${Cap(c.brand.name)} ${c.model}`)
+      .join("\n\r")}
+
+Details at stupidfits.com/f/${props.id}
+    `;
+
+    if (navigator) {
+      navigator.clipboard.writeText(text).then(
+        function () {
+          alert("Copied text to clipboard");
+        },
+        function () {
+          alert("Something broke");
+        }
+      );
+    }
   };
 
   const checkIfExists = async () => {
@@ -84,6 +120,7 @@ const FitBox = (props) => {
               <br />
               <button onClick={editFit}>Edit Fit</button>
               <button onClick={exportFit}>Export image</button>
+              <button onClick={copyFit}>Copy Fit</button>
             </>
           )}
           {props.components && (
