@@ -25,16 +25,11 @@ export default class MyDocument extends Document {
               key={i}
             />
           ))}
-          {process.env.HOST !== "https://stupdifits.com" && (
-            <meta name="robots" content="noindex" />
-          )}
+
           <meta property="og:title" content="Stupid Fits" key="title" />
           {/* <meta property="og:url" content={process.env.HOST} key="url" /> */}
           {/* <meta property="og:type" content="website" key="type" /> */}
-          <meta
-            name="keywords"
-            content="fitpics, outfits, techwear, clueless, closet, fits"
-          />
+
           <meta property="fb:app_id" content={process.env.FACEBOOK_CLIENT_ID} />
 
           <meta property="og:site_name" content="Stupid Fits" />

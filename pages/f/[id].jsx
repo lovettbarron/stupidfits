@@ -34,6 +34,7 @@ const Fit = (props) => {
       <NextSeo
         title={`${props.user.username}'s Fit on Stupid Fits`}
         description={`Check out all of ${props.user.username}'s fits on Stupid Fits`}
+        canonical={`${process.env.HOST}/f/${props.id}`}
         openGraph={{
           url: `${process.env.HOST}/f/${props.id}`,
           title: `${props.user.username}'s Fit on Stupid Fits`,
