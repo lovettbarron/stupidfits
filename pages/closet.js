@@ -260,6 +260,8 @@ const Closet = (props) => {
           flex-wrap: wrap;
           justify-content: center;
           font-size: 1rem;
+          padding: 0;
+          margin: 0;
         }
 
         li {
