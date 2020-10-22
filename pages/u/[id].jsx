@@ -117,6 +117,11 @@ const UserProfile = (props) => {
             url: `${process.env.HOST}/u/${props.insta.username}`,
             title: `${props.insta.username}'s Fits on Stupid Fits`,
             description: `Check out all of ${props.insta.username}'s fits on Stupid Fits`,
+            description: `Check out all of ${
+              props.insta.username
+            }'s fits on Stupid Fits from brands like ${getBrandKeywords(5).join(
+              ", "
+            )}`,
             type: "profile",
             profile: {
               username: props.insta.username,
