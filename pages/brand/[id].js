@@ -6,6 +6,7 @@ import { useSession, getSession } from "next-auth/client";
 import Link from "next/link";
 import { Tabs, Tab, FILL } from "baseui/tabs-motion";
 import { Cap } from "../../components/Anatomy";
+import { NextSeo } from "next-seo";
 
 const BrandFilter = ({ items, filter }) => {
   if (!filter)
@@ -39,20 +40,59 @@ const BrandFilter = ({ items, filter }) => {
 const BrandProfile = (props) => {
   const [activeKey, setActiveKey] = React.useState("0");
 
-  const seourl =
-    (Array.isArray(props.fits) &&
-      props.fits.length > 0 &&
-      `https://res.cloudinary.com/stupidsystems/image/upload/${props.fits[0].media.cloudinary}`) ||
-    "";
+  const getFits = props.brand.items.map((i) => i.fit).flat();
 
-  // <ul>
-  //         {props.brand.items.map((i) => (
-  //           <li>{i.model}</li>
-  //         ))}
-  //       </ul>
+  const getTopFit = getFits.find(
+    (f) => f.media && f.media.cloudinary.length > 0
+  );
+
+  const seourl =
+    (getTopFit &&
+      `https://res.cloudinary.com/stupidsystems/image/upload/${
+        getTopFit && getTopFit.media.cloudinary
+      }.png`) ||
+    "https://stupidfits.com/img/appicon.png";
+  const seourlfb =
+    (getTopFit &&
+      `https://res.cloudinary.com/stupidsystems/image/upload/b_rgb:151515,c_lpad,h_630,w_1200/${
+        getTopFit && getTopFit.media.cloudinary
+      }.png`) ||
+    "https://stupidfits.com/img/appicon.png";
 
   return (
     <Layout>
+      <NextSeo
+        title={`${Cap(props.brand.name)} fits on Stupidfits.`}
+        description={`All the ${Cap(props.brand.name)} fits on Stupid Fits`}
+        canonical={`${process.env.HOST}/brand/${props.brand.name}`}
+        openGraph={{
+          keywords: props.brand.name,
+          url: `${process.env.HOST}/brand/${props.brand.name}`,
+          title: `${props.brand.name} Fits on Stupid Fits`,
+          description: `All the ${Cap(props.brand.name)} fits on Stupid Fits`,
+          type: "website",
+          images: [
+            {
+              url: seourlfb,
+              width: 1200,
+              height: 630,
+              type: "image/png",
+              alt: `${props.brand.name} Fits on Stupid Fits`,
+            },
+            {
+              url: seourl,
+              width: 1200,
+              height: 1200,
+              type: "image/png",
+              alt: `${props.brand.name} Fits on Stupid Fits`,
+            },
+          ],
+        }}
+        twitter={{
+          image: seourlfb,
+          cardType: "summary_large_image",
+        }}
+      />
       <div className="page">
         <main>
           <div className="top">
