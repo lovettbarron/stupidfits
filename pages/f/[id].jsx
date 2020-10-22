@@ -57,7 +57,9 @@ const Fit = (props) => {
           title: `${props.user.username}'s Fit on Stupid Fits`,
           description: props.desc
             ? props.desc
-            : `Check out ${props.user.username}'s fit on Stupid Fits`,
+            : `Check out ${props.user.username}'s fit with ${getBrandKeywords(
+                5
+              ).join(", ")}`,
           type: "article",
           article: {
             authors: [props.user.username],
