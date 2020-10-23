@@ -4,6 +4,7 @@ import Router, { useRouter } from "next/router";
 import { Tabs, Tab, FILL } from "baseui/tabs-motion";
 import CommentBox from "./CommentBox";
 import Clicker from "./Clicker";
+import { types } from "./CreateItem";
 
 export const Cap = (brand) => {
   const words = brand.split(" ");
@@ -36,133 +37,60 @@ const WithComments = (props) => {
   );
 };
 
+const Filter = ({ items, filter }) => {
+  const header = types.find((i) => i.id === filter).label;
+  let list = null;
+
+  const filtered = items.filter((f) => f.type === filter);
+  if (filtered.length <= 0) return null;
+
+  if (!filter) {
+    list = (
+      <ul className="anatomy">
+        {items.map((i) => (
+          <li key={i.id}>
+            <Link href={`/brand/${i.brand.name}`}>
+              <a>{`${Cap(i.brand.name)}`}</a>
+            </Link>{" "}
+            {`${i.model} ${i.year > 0 ? i.year : ""}`}
+          </li>
+        ))}
+      </ul>
+    );
+  } else {
+    list = (
+      <>
+        <h4>{header}</h4>
+        <ul className="anatomy">
+          {filtered.map((i) => (
+            <li key={i.id}>
+              <Link href={`/brand/${i.brand.name}`}>
+                <a>{`${Cap(i.brand.name)}`}</a>
+              </Link>{" "}
+              {`${i.model} ${i.year > 0 ? i.year : ""}`}
+            </li>
+          ))}
+        </ul>
+      </>
+    );
+  }
+
+  return <>{list}</>;
+};
+
 const Anatomy = (props) => {
   if (!props.components || props.components.length < 1) return null;
   return (
     <WithComments id={props.id} disable={props.nocomment}>
       <div>
-        {props.components.find((c) => c.type === "JACKET") && (
-          <>
-            <h4>Outerwear</h4>
-            <ul>
-              {props.components
-                .filter((c) => c.type === "JACKET")
-                .map((c) => (
-                  <li key={c.id}>{`${Cap(c.brand.name)} ${c.model} ${
-                    c.year > 0 ? c.year : ""
-                  }`}</li>
-                ))}
-            </ul>
-          </>
-        )}
-        {props.components.find((c) => c.type === "LAYER") && (
-          <>
-            <h4>Layers</h4>
-            <ul>
-              {props.components
-                .filter((c) => c.type === "LAYER")
-                .map((c) => (
-                  <li key={c.id}>
-                    <Clicker {...c}>
-                      {`${Cap(c.brand.name)} ${c.model} ${
-                        c.year > 0 ? c.year : ""
-                      }`}
-                    </Clicker>
-                  </li>
-                ))}
-            </ul>
-          </>
-        )}
-        {props.components.find((c) => c.type === "SHIRT") && (
-          <>
-            <h4>Shirts</h4>
-            <ul>
-              {props.components
-                .filter((c) => c.type === "SHIRT")
-                .map((c) => (
-                  <li key={c.id}>
-                    <Clicker {...c}>
-                      {`${Cap(c.brand.name)} ${c.model} ${
-                        c.year > 0 ? c.year : ""
-                      }`}
-                    </Clicker>
-                  </li>
-                ))}
-            </ul>
-          </>
-        )}
-        {props.components.find((c) => c.type === "PANT") && (
-          <>
-            <h4>Bottoms</h4>
-            <ul>
-              {props.components
-                .filter((c) => c.type === "PANT")
-                .map((c) => (
-                  <li key={c.id}>
-                    <Clicker {...c}>
-                      {`${Cap(c.brand.name)} ${c.model} ${
-                        c.year > 0 ? c.year : ""
-                      }`}
-                    </Clicker>
-                  </li>
-                ))}
-            </ul>
-          </>
-        )}
-        {props.components.find((c) => c.type === "BAG") && (
-          <>
-            <h4>Carry</h4>
-            <ul>
-              {props.components
-                .filter((c) => c.type === "BAG")
-                .map((c) => (
-                  <li key={c.id}>
-                    <Clicker {...c}>
-                      {`${Cap(c.brand.name)} ${c.model} ${
-                        c.year > 0 ? c.year : ""
-                      }`}
-                    </Clicker>
-                  </li>
-                ))}
-            </ul>
-          </>
-        )}
-        {props.components.find((c) => c.type === "SHOE") && (
-          <>
-            <h4>Shoes</h4>
-            <ul>
-              {props.components
-                .filter((c) => c.type === "SHOE")
-                .map((c) => (
-                  <li key={c.id}>
-                    <Clicker {...c}>
-                      {`${Cap(c.brand.name)} ${c.model} ${
-                        c.year > 0 ? c.year : ""
-                      }`}
-                    </Clicker>
-                  </li>
-                ))}
-            </ul>
-          </>
-        )}
-        {props.components.find((c) => c.type === "EXTRA") && (
-          <>
-            <h4>Extra</h4>
-            <ul>
-              {props.components
-                .filter((c) => c.type === "EXTRA")
-                .map((c) => (
-                  <li key={c.id}>
-                    <Clicker {...c}>
-                      {`${Cap(c.brand.name)} ${c.model} ${
-                        c.year > 0 ? c.year : ""
-                      }`}
-                    </Clicker>
-                  </li>
-                ))}
-            </ul>
-          </>
-        )}
+        <Filter items={props.components} filter={"JACKET"} />
+        <Filter items={props.components} filter={"LAYER"} />
+        <Filter items={props.components} filter={"SHIRT"} />
+        <Filter items={props.components} filter={"PANT"} />
+        <Filter items={props.components} filter={"BAG"} />
+        <Filter items={props.components} filter={"SHOE"} />
+        <Filter items={props.components} filter={"EXTRA"} />
+
         {props.desc && (
           <>
             <h4>Comment</h4>
@@ -170,9 +98,9 @@ const Anatomy = (props) => {
           </>
         )}
       </div>
-      <style jsx>
+      <style jsx global>
         {`
-          ul {
+          ul.anatomy {
             display: flex;
             flex-wrap: wrap;
             list-style: none !important;
@@ -182,7 +110,7 @@ const Anatomy = (props) => {
             padding: 0;
           }
 
-          li {
+          .anatomy li {
             justify-self: center;
             width: 100%;
             text-align: center;
@@ -196,4 +124,5 @@ const Anatomy = (props) => {
     </WithComments>
   );
 };
+
 export default Anatomy;
