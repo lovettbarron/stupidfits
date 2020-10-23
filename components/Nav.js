@@ -31,7 +31,12 @@ const Nav = (props) => {
   return (
     <>
       <div className="navigation">
-        <a onClick={toggleTrueFalse}>
+        {!session && (
+          <a className="topauth" onClick={signin}>
+            <img src={`/img/login.png`} />
+          </a>
+        )}
+        <a className="main" onClick={toggleTrueFalse}>
           <img src="/img/menu.png" />
         </a>
       </div>
@@ -133,7 +138,12 @@ const Nav = (props) => {
           z-index: 120;
         }
 
-        .navigation img {
+        a.topauth > img {
+          max-width: 150px;
+          margin: 0 2rem 0 0;
+        }
+
+        a.main > img {
           width: 2rem;
         }
 
@@ -167,6 +177,7 @@ const Nav = (props) => {
           margin: 0;
           list-style: none;
         }
+
         .nav a {
           display: block;
           line-height: 4rem;

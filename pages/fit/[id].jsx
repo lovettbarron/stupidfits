@@ -236,8 +236,19 @@ const Fit = (props) => {
 
 export const getServerSideProps = async (context) => {
   const session = await getSession(context);
+
+  const id = parseInt(context.params.id);
+
+  if (!session || !session.user) {
+    if (context.res) {
+      context.res.writeHead(302, { Location: `/f/${id}` });
+      context.res.end();
+    }
+    return {};
+  }
+
   // Get Fit
-  const res = await fetch(`${process.env.HOST}/api/fits/${context.params.id}`);
+  const res = await fetch(`${process.env.HOST}/api/fits/${id}`);
   let data;
   try {
     data = await res.json();

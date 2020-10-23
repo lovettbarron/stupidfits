@@ -17,25 +17,9 @@ export const providers = [
     s: "c_fit",
   },
   { label: "Instagram Post", id: "IGPOST", w: "1200", h: "1200", s: "c_lpad" },
-  { label: "Reddit Post", id: "REDPOST", w: "1600", h: "1200", s: "c_fit" },
-  { label: "Facebook Post", id: "FBPOST", w: "1200", h: "630", s: "c_lpad" },
+  { label: "Reddit Post", id: "REDPOST", w: "1600", h: "1200", s: "c_lpad" },
+  { label: "Facebook Post", id: "FBPOST", w: "1920", h: "900", s: "c_lpad" },
 ];
-
-// const CanvasDom = (props) => {
-//   useEffect(() => {
-//     return () => {};
-//   }, [props.key]);
-
-//   return (
-//     <canvas
-//       id={props.type}
-//       key={props.type}
-//       width={props.w / 3}
-//       height={props.h / 3}
-//       style={{ zoom: "100%" }}
-//     />
-//   );
-// };
 
 const FitImage = (props) => {
   const [session, loading] = useSession();
@@ -124,7 +108,7 @@ const FitImage = (props) => {
       `stupidfits.com/f/${props.id}\nstupidfits.com/u/${props.user.username}`,
       {
         left: 0,
-        top: 0.9 * height,
+        top: height - 30,
         width: 360,
         fontSize: 12,
         fill: "#fff",
