@@ -311,15 +311,18 @@ export const getServerSideProps = async (context) => {
       cookie: context.req.headers.cookie,
     },
   });
-  const user = await res.json();
-  if (!res) {
-    res.statusCode = 404;
-    res.end();
-    return {
-      props: {
-        error: "No user",
-      },
-    };
+
+  let user;
+
+  try {
+    user = await res.json();
+  } catch (e) {
+    console.log("error:", e.message);
+    if (context.res) {
+      context.res.writeHead(302, { Location: `/` });
+      context.res.end();
+    }
+    return {};
   }
 
   // Get User's Items

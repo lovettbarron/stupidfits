@@ -151,6 +151,11 @@ export const getServerSideProps = async (context) => {
     data = await res.json();
   } catch (e) {
     console.log("error:", e.message);
+    if (context.res) {
+      context.res.writeHead(302, { Location: `/` });
+      context.res.end();
+    }
+    return {};
   }
 
   return {
