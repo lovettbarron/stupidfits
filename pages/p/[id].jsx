@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef, useCallback } from "react";
+import { getSession, useSession } from "next-auth/client";
 import fetch from "isomorphic-unfetch";
 import Layout from "../../components/Layout";
-import { useSession } from "next-auth/client";
 import { Button } from "baseui/button";
 import { fabric } from "fabric";
 import { Radio, RadioGroup } from "baseui/radio";
@@ -10,15 +10,59 @@ import { StatefulButtonGroup, MODE } from "baseui/button-group";
 
 export const providers = [
   {
+    label: "4x3 Landscape",
+    id: "LAND",
+    w: "1600",
+    h: "1920",
+    s: "c_fill",
+    ylock: false,
+    xlock: true,
+  },
+  {
+    label: "4x3 Portrait",
+    id: "PORT",
+    w: "1920",
+    h: "1600",
+    s: "c_fit",
+    ylock: true,
+    xlock: false,
+  },
+  {
     label: "Instagram Story",
     id: "IGSTORY",
     w: "1080",
     h: "1960",
     s: "c_fit",
+    ylock: true,
+    xlock: false,
   },
-  { label: "Instagram Post", id: "IGPOST", w: "1200", h: "1200", s: "c_lpad" },
-  { label: "Reddit Post", id: "REDPOST", w: "1600", h: "1200", s: "c_lpad" },
-  { label: "Facebook Post", id: "FBPOST", w: "1920", h: "900", s: "c_lpad" },
+  {
+    label: "Instagram Post",
+    id: "IGPOST",
+    w: "1200",
+    h: "1200",
+    s: "c_lpad",
+    ylock: false,
+    xlock: true,
+  },
+  {
+    label: "Reddit Post",
+    id: "REDPOST",
+    w: "1600",
+    h: "1200",
+    s: "c_lpad",
+    ylock: false,
+    xlock: true,
+  },
+  {
+    label: "Facebook Post",
+    id: "FBPOST",
+    w: "1920",
+    h: "900",
+    s: "c_lpad",
+    ylock: false,
+    xlock: true,
+  },
 ];
 
 const FitImage = (props) => {
@@ -63,8 +107,9 @@ const FitImage = (props) => {
       function (url) {
         var img = new fabric.Image(url);
 
-        img.clipPath = clipPath;
-        img.lockMovementY = true;
+        // img.clipPath = clipPath;
+        img.lockMovementY = getDim().ylock;
+        img.lockMovementX = getDim().xlock;
         // img.scaleToWidth(1080 / 3);
         img.scaleToHeight(getDim().h / 3);
         canvas.current.add(img);
@@ -276,12 +321,12 @@ const FitImage = (props) => {
         <p>Export your fitpics with annotations for easy uploading wherever</p>
         <StatefulButtonGroup
           mode={MODE.radio}
-          initialState={{ selected: type }}
+          initialState={{ selected: getDim().id }}
           overrides={{
             Root: {
               style: {
                 flexWrap: "wrap",
-                maxWidth: "400px",
+                maxWidth: "600px",
                 justifyContent: "center",
               },
             },
@@ -367,13 +412,29 @@ const FitImage = (props) => {
 };
 
 export const getServerSideProps = async (context) => {
-  // Get Fit
-  const res = await fetch(`${process.env.HOST}/api/fits/${context.params.id}`);
+  const session = await getSession(context);
+
+  const id = parseInt(context.params.id);
+
+  if (!session || !session.user) {
+    if (context.res) {
+      context.res.writeHead(302, { Location: `/f/${id}` });
+      context.res.end();
+    }
+    return {};
+  }
+
+  const res = await fetch(`${process.env.HOST}/api/fits/${id}`);
   let data;
   try {
     data = await res.json();
   } catch (e) {
     console.log("error:", e.message);
+    if (context.res) {
+      context.res.writeHead(302, { Location: `/` });
+      context.res.end();
+    }
+    return {};
   }
 
   const order = {

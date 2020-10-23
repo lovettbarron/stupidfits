@@ -263,6 +263,11 @@ export const getServerSideProps = async (context) => {
     b = await brand.json();
   } catch (e) {
     console.log("error:", e.message);
+    if (context.res) {
+      context.res.writeHead(302, { Location: `/brand` });
+      context.res.end();
+    }
+    return {};
   }
 
   return {
