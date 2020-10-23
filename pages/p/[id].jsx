@@ -42,15 +42,14 @@ const FitImage = (props) => {
   const [value, setValue] = useState("1");
   const [type, setType] = useState("IGSTORY");
   // const [canvas, setCanvas] = useState(false);
+  const canvasDom = useRef();
+  let canvas = useRef(); // useRef(null);
+  let img = null;
+  let text_iter = 0;
 
   const getDim = () => {
     return providers.find((p) => p.id === type);
   };
-
-  let canvas = null;
-
-  let img = null;
-  let text_iter = 0;
 
   const Formatted = (c, v) => {
     console.log("Value", v);
@@ -84,8 +83,8 @@ const FitImage = (props) => {
         img.lockMovementY = true;
         // img.scaleToWidth(1080 / 3);
         img.scaleToHeight(getDim().h / 3);
-        canvas.add(img);
-        canvas.sendToBack(img);
+        canvas.current.add(img);
+        canvas.current.sendToBack(img);
       },
       null,
       {
@@ -95,7 +94,7 @@ const FitImage = (props) => {
   };
 
   const addElement = (text, iter) => {
-    // Load text onto canvas
+    // Load text onto canvas.current
     const height = getDim().h / 3;
     const offset = (iter / props.components.length) * height;
     const textbox = new fabric.Textbox(Formatted(text, value), {
@@ -112,14 +111,14 @@ const FitImage = (props) => {
       cornerSize: 12,
       transparentCorners: false,
     });
-    canvas.add(textbox);
-    canvas.bringToFront(textbox);
+    canvas.current.add(textbox);
+    canvas.current.bringToFront(textbox);
     console.log("Added", Formatted(text, value), iter, offset);
     text_iter += 1;
   };
 
   const addLogo = () => {
-    // Load text onto canvas
+    // Load text onto canvas.current
     const height = getDim().h / 3;
     const textbox = new fabric.Textbox(
       `stupidfits.com/f/${props.id}\nstupidfits.com/u/${props.user.username}`,
@@ -137,18 +136,22 @@ const FitImage = (props) => {
         transparentCorners: false,
       }
     );
-    canvas.add(textbox);
+    canvas.current.add(textbox);
   };
 
-  // Pul all canvas code in a function so we can call it after google fonts have loaded
+  // Pul all canvas.current code in a function so we can call it after google fonts have loaded
   const initCanvas = () => {
-    canvas = new fabric.Canvas("c", {
-      preserveObjectStacking: true,
-    });
-    canvas.setWidth(getDim().w / 3);
-    canvas.setHeight(getDim().h / 3);
-    canvas.backgroundColor = "rgb(21,21,21)";
-    canvas.controlsAboveOverlay = true;
+    canvas.current =
+      canvas.current ||
+      new fabric.Canvas(canvasDom.current, {
+        preserveObjectStacking: true,
+        allowTouchScrolling: true,
+      });
+    canvas.current.setDimensions({ width: "100%", height: "100%" });
+    canvas.current.setWidth(getDim().w / 3);
+    canvas.current.setHeight(getDim().h / 3);
+    canvas.current.backgroundColor = "rgb(21,21,21)";
+    canvas.current.controlsAboveOverlay = true;
   };
   // dataURLtoBlob function for saving
   const dataURLtoBlob = (dataurl) => {
@@ -164,14 +167,16 @@ const FitImage = (props) => {
   };
 
   const RenderControls = () => {
+    if (!document) return null;
     const radio = document.getElementById("radio");
+    if (!radio) return null;
     radio.addEventListener(
       "change",
       (e) => {
         console.log("Changed fired", e.target.value);
         const value = String(e.target.value);
         let i = 0;
-        const objs = canvas.getObjects();
+        const objs = canvas.current.getObjects();
 
         objs.forEach((o) => {
           if (!o.id) return null;
@@ -185,7 +190,7 @@ const FitImage = (props) => {
               Formatted(props.components[o.id.split("text")[1]], value)
             );
             // console.log("Updating", o);
-            canvas.renderAll();
+            canvas.current.renderAll();
           }
         });
       },
@@ -197,19 +202,19 @@ const FitImage = (props) => {
       "click",
       function () {
         // Remove overlay image
-        canvas.overlayImage = null;
-        canvas.renderAll.bind(canvas);
-        // Remove canvas clipping so export the image
-        canvas.clipTo = null;
-        // Export the canvas to dataurl at 3 times the size and crop to the active area
-        const imgData = canvas.toDataURL({
-          format: "jpeg",
+        canvas.current.overlayImage = null;
+        canvas.current.renderAll.bind(canvas.current);
+        // Remove canvas.current clipping so export the image
+        canvas.current.clipTo = null;
+        // Export the canvas.current to dataurl at 3 times the size and crop to the active area
+        const imgData = canvas.current.toDataURL({
+          format: "png",
           quality: 1,
           multiplier: 3,
           left: 0,
           top: 0,
-          width: 360,
-          height: 640,
+          width: getDim().w / 3,
+          height: getDim().h / 3,
         });
 
         const strDataURI = imgData.substr(22, imgData.length);
@@ -217,48 +222,50 @@ const FitImage = (props) => {
         const blob = dataURLtoBlob(imgData);
 
         const objurl = URL.createObjectURL(blob);
-        link.download = `${props.id}.jpg`;
+        link.download = `stupidfits-${getDim().label}-${props.id}.png`;
         link.href = objurl;
 
         // Reset the clipping path to what it was
-        canvas.clipTo = function (ctx) {
+        canvas.current.clipTo = function (ctx) {
           ctx.rect(220, 80, 360, 640);
         };
 
-        canvas.renderAll();
+        canvas.current.renderAll();
       },
       false
     );
 
-    canvas.on("mouse:wheel", function (opt) {
-      var delta = opt.e.deltaY;
+    // canvas.current.on("mouse:wheel", function (opt) {
+    //   var delta = opt.e.deltaY;
 
-      // const objs = canvas.getObjects();
-      // const img = objs.find((o) => o.id === "bgimage");
+    //   // const objs = canvas.current.getObjects();
+    //   // const img = objs.find((o) => o.id === "bgimage");
 
-      // img.scaleX += delta;
-      // img.scaleY += delta;
+    //   // img.scaleX += delta;
+    //   // img.scaleY += delta;
 
-      // img.setCoords();
-      // canvas.renderAll();
+    //   // img.setCoords();
+    //   // canvas.current.renderAll();
 
-      // var zoom = canvas.getZoom();
-      // zoom *= 0.999 ** delta;
-      // if (zoom > 20) zoom = 20;
-      // if (zoom < 0.01) zoom = 0.01;
-      // canvas.zoomToPoint({ x: opt.e.offsetX, y: opt.e.offsetY }, zoom);
-      opt.e.preventDefault();
-      opt.e.stopPropagation();
-    });
+    //   // var zoom = canvas.current.getZoom();
+    //   // zoom *= 0.999 ** delta;
+    //   // if (zoom > 20) zoom = 20;
+    //   // if (zoom < 0.01) zoom = 0.01;
+    //   // canvas.current.zoomToPoint({ x: opt.e.offsetX, y: opt.e.offsetY }, zoom);
+    //   opt.e.preventDefault();
+    //   opt.e.stopPropagation();
+    // });
   };
 
   useEffect(() => {
-    console.log("Killing prev canvas");
-    canvas && canvas.dispose();
-    canvas && canvas.clear();
-    // canvas && canvas.remove(canvas.getActiveObject());
-
-    canvas = null;
+    console.log("Killing prev canvas.current");
+    // canvas.current.setWidth(getDim().w / 3);
+    // canvas.current.setHeight(getDim().h / 3);
+    canvas.current && canvas.current.dispose();
+    // canvas.current && canvas.current.clear();
+    // canvas.current && canvas.current.remove(canvas.current.getActiveObject());
+    canvas.current && canvas.current.removeListeners();
+    canvas.current = null;
 
     // if (!canvas) {
     setTimeout(() => {
@@ -271,7 +278,7 @@ const FitImage = (props) => {
         props.components.map((c) => {
           addElement(c, text_iter);
         });
-    }, 1000);
+    }, 200);
     // }
     console.log("Props", props);
 
@@ -297,7 +304,9 @@ const FitImage = (props) => {
           }}
         >
           {providers.map((t, i) => (
-            <Button onClick={() => setType(t.id)}>{t.label}</Button>
+            <Button key={t.id} onClick={() => setType(t.id)}>
+              {t.label}
+            </Button>
           ))}
         </StatefulButtonGroup>
         <RadioGroup
@@ -322,7 +331,7 @@ const FitImage = (props) => {
 
         <canvas
           id="c"
-          key={type}
+          ref={canvasDom}
           width={getDim().w / 3}
           height={getDim().h / 3}
           style={{ zoom: "100%" }}
