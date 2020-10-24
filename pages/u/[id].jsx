@@ -14,7 +14,7 @@ const UserProfile = (props) => {
 
   const getTopFit = props.fits
     .reverse()
-    .find((f) => f.media && f.media.cloudinary.length > 0);
+    .find((f) => f.media[0] && f.media[0].cloudinary.length > 0);
   // console.log("GetTopFit", getTopFit);
 
   const brandKeywords = props.fits
@@ -38,14 +38,14 @@ const UserProfile = (props) => {
   const seourl =
     (getTopFit &&
       `https://res.cloudinary.com/stupidsystems/image/upload/${
-        getTopFit && getTopFit.media.cloudinary
+        getTopFit && getTopFit.media[0].cloudinary
       }.png`) ||
     "https://stupidfits.com/img/appicon.png";
 
   const seourlfb =
     (getTopFit &&
       `https://res.cloudinary.com/stupidsystems/image/upload/b_rgb:151515,c_lpad,h_630,w_1200/${
-        getTopFit && getTopFit.media.cloudinary
+        getTopFit && getTopFit.media[0].cloudinary
       }.png`) ||
     "https://stupidfits.com/img/appicon.png";
 
@@ -186,7 +186,7 @@ const UserProfile = (props) => {
                 {" "}
                 {props.fits
                   .sort((a, b) => {
-                    return b.media.timestamp - a.media.timestamp;
+                    return b.media[0].timestamp - a.media[0].timestamp;
                   })
                   .map((fit) => (
                     <FitBox

@@ -5,14 +5,15 @@ const Pic = ({ media, url }) => {
   return (
     <>
       <div className="holder">
-        {(media && media.cloudinary && (
-          <Image
-            cloudName={process.env.CLOUDINARY_CLOUD_NAME || "stupidsystems"}
-            publicId={media.cloudinary}
-            style={{ width: "100%" }}
-            secure={true}
-          />
-        )) || <img src={url || `${media.url}media/?size=l`} />}
+        {(Array.isArray(media) &&
+          media.map((m) => (
+            <Image
+              cloudName={process.env.CLOUDINARY_CLOUD_NAME || "stupidsystems"}
+              publicId={m.cloudinary}
+              style={{ width: "100%" }}
+              secure={true}
+            />
+          ))) || <img src={url || `${media.url}media/?size=l`} />}
       </div>
       <style jsx>{`
         .holder {

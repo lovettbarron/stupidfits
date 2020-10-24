@@ -32,7 +32,7 @@ const Blog = (props) => {
         <main>
           {props.feed
             .sort((a, b) => {
-              return b.media.timestamp - a.media.timestamp;
+              return b.media[0].timestamp - a.media[0].timestamp;
             })
             .map((fit) => (
               <FitBox key={fit.id} {...fit} fit={fit.id} />

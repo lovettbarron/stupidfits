@@ -131,7 +131,9 @@ const Feed = (props) => {
                   fit={
                     (props.fits &&
                       props.fits.length > 0 &&
-                      props.fits.find((t) => fit.permalink === t.media.url)) ||
+                      props.fits.find(
+                        (t) => fit.permalink === t.media[0].url
+                      )) ||
                     null
                   }
                   username={insta.username}

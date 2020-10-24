@@ -5,7 +5,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url = "***"
 }
 
 model Account {
@@ -57,7 +57,6 @@ model User {
   instagramrefresh DateTime?
   public           Boolean   @default(true)
   profilepage      Boolean   @default(true)
-  defaultStatus    Status    @default(PENDING)
 
 
   Comment Comment[]

@@ -43,7 +43,7 @@ async function handleGET(req, res) {
     });
   await prisma.$disconnect();
   // console.log("Returned media", id, post, media);
-  res.json((post && post.find((p) => p.media.insta_id === id)) || false);
+  res.json((post && post.find((p) => p.media[0].insta_id === id)) || false);
 }
 
 // POST /api/post/:id

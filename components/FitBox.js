@@ -98,12 +98,12 @@ Details at stupidfits.com/f/${props.id}
             <h3>
               {(props.user && (
                 <Link href={`/u/${props.user.username}`}>
-                  <a>{props.user.username || props.media.username}</a>
+                  <a>{props.user.username || props.media[0].username}</a>
                 </Link>
-              )) || <>{props.username || props.media.username}</>}
+              )) || <>{props.username || props.media[0].username}</>}
             </h3>
             <div>
-              <a href={props.media.url || props.url}>Instagram</a>
+              <a href={props.media[0].url || props.url}>Instagram</a>
               <Link href={`/f/${props.id}`}>
                 <a>Permalink</a>
               </Link>
@@ -111,7 +111,7 @@ Details at stupidfits.com/f/${props.id}
           </div>
         </div>
         <br />
-        {props.caption || props.media.description}
+        {props.caption || props.media[0].description}
         {!props.media && !fit && <button onClick={addFit}>Add Fit</button>}
         <div className="components">
           {session && (

@@ -34,13 +34,13 @@ const Fit = (props) => {
   }, [session]);
 
   const seourl =
-    (props.media.cloudinary &&
-      `https://res.cloudinary.com/stupidsystems/image/upload/${props.media.cloudinary}.png`) ||
+    (props.media[0].cloudinary &&
+      `https://res.cloudinary.com/stupidsystems/image/upload/${props.media[0].cloudinary}.png`) ||
     "";
 
   const seourlfb =
-    (props.media.cloudinary &&
-      `https://res.cloudinary.com/stupidsystems/image/upload/b_rgb:151515,c_lpad,h_630,w_1200/${props.media.cloudinary}.png`) ||
+    (props.media[0].cloudinary &&
+      `https://res.cloudinary.com/stupidsystems/image/upload/b_rgb:151515,c_lpad,h_630,w_1200/${props.media[0].cloudinary}.png`) ||
     "";
 
   return (

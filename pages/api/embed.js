@@ -51,7 +51,7 @@ export default async function handle(req, res) {
     title = `${user.username}'s Fits on Stupid Fits`;
   }
 
-  const thumb = fit.media.cloudinary;
+  const thumb = fit.media[0].cloudinary;
 
   res.json({
     version: "1.0",

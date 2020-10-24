@@ -103,7 +103,7 @@ const FitImage = (props) => {
     img = fabric.util.loadImage(
       `https://res.cloudinary.com/stupidsystems/image/upload/b_rgb:151515,${
         getDim().s
-      },h_${getDim().h},w_${getDim().w}/${props.media.cloudinary}.png`,
+      },h_${getDim().h},w_${getDim().w}/${props.media[0].cloudinary}.png`,
       function (url) {
         var img = new fabric.Image(url);
 

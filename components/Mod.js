@@ -3,34 +3,31 @@ import Link from "next/link";
 import Router, { useRouter } from "next/router";
 import { useSession } from "next-auth/client";
 import Anatomy from "./Anatomy";
+import Image from "./Image";
 
-const Gram = (props) => {
+const Mod = (props) => {
   const router = useRouter();
   const [session, loading] = useSession();
-  const [fit, setFit] = useState(props.fit);
+  const [fit, setFit] = useState(props);
 
   // console.log("Fit?", props.fit);
   const addFit = async (e) => {
     e.preventDefault();
-    console.log("Adding fit", `${process.env.HOST}/api/insta/${props.id}`);
+    console.log("Adding fit", `${process.env.HOST}/api/admin/feed/`);
     try {
       const body = {
         id: props.id,
-        username: props.username,
-        timestamp: props.timestamp,
-        media_url: props.media_url,
-        permalink: props.permalink,
-        caption: props.caption,
+        status: props.username,
       };
-      console.log(body);
-      const res = await fetch(`${process.env.HOST}/api/insta/${props.id}`, {
+
+      const res = await fetch(`${process.env.HOST}/api/admin/feed/`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
       });
       const data = await res.json();
-      console.log("Added fit!", data);
-      if (data) Router.push(`/fit/${data.id}`);
+
+      if (data) setFit(null);
     } catch (error) {
       console.error(error);
     }
@@ -41,30 +38,25 @@ const Gram = (props) => {
   };
 
   useEffect(() => {
-    // component is used for both displaying instagram images that aren't yet in the db, and fits that are currently in the db. It probably shouldn't, but this just prevent weird api request
+    // component is used for both displaying instaMod images that aren't yet in the db, and fits that are currently in the db. It probably shouldn't, but this just prevent weird api request
 
     return () => {};
   }, [session]);
-
+  if (!fit) return null;
   return (
     <div className="fitbox">
-      <img src={props.media_url || props.media[0].image} />
+      <Image {...fit} media={fit.media} />
 
       <div className={fit && `description`}>
         <div>
           <a href={props.permalink || props.media[0].url}>Post Link</a>
         </div>
         <br />
+        <h3>{props.status}</h3>
 
-        {!fit && <button onClick={addFit}>Add Fit</button>}
+        {!fit && <button onClick={makePublic}>Add Fit</button>}
 
         {fit && <button onClick={editFit}>Edit Fit</button>}
-
-        <div className="components">
-          {props.components && (
-            <Anatomy id={props.id} components={props.components} />
-          )}
-        </div>
       </div>
 
       <style jsx>{`
@@ -126,4 +118,4 @@ const Gram = (props) => {
   );
 };
 
-export default Gram;
+export default Mod;
