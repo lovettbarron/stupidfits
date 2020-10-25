@@ -68,7 +68,7 @@ export const providers = [
 const FitImage = (props) => {
   const [session, loading] = useSession();
   const [value, setValue] = useState("1");
-  const [type, setType] = useState("IGSTORY");
+  const [type, setType] = useState("LAND");
   // const [canvas, setCanvas] = useState(false);
   const canvasDom = useRef();
   let canvas = useRef(); // useRef(null);
@@ -321,7 +321,7 @@ const FitImage = (props) => {
         <p>Export your fitpics with annotations for easy uploading wherever</p>
         <StatefulButtonGroup
           mode={MODE.radio}
-          initialState={{ selected: getDim().id }}
+          initialState={{ selected: 0 }}
           overrides={{
             Root: {
               style: {
