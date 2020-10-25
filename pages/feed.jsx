@@ -184,10 +184,6 @@ export const getServerSideProps = async (context) => {
   } catch (e) {
     error = e;
   }
-
-  // const res = await User();
-  // user = await res.json();
-
   // Fetch fits for this user and check against existing instagram
   const fitres = await fetch(
     `${process.env.HOST}/api/feed/${(user && user.id) || null}`,

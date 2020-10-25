@@ -12,10 +12,10 @@ const BrandFilter = ({ items, filter }) => {
     return (
       <>
         {items.map((i) => (
-          <>
+          <React.Fragment key={i.id}>
             <h3>{i.model}</h3>
             {i.fit && i.fit.map((f) => <FitBox key={f.id} {...f} fit={f.id} />)}
-          </>
+          </React.Fragment>
         ))}
       </>
     );

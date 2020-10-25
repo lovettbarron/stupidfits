@@ -21,6 +21,7 @@ const Gram = (props) => {
         media_url: props.media_url,
         permalink: props.permalink,
         caption: props.caption,
+        children: props.children ? props.children.data : null,
       };
       console.log(body);
       const res = await fetch(`${process.env.HOST}/api/insta/${props.id}`, {
@@ -46,9 +47,15 @@ const Gram = (props) => {
     return () => {};
   }, [session]);
 
+  if (props.media_type === "CAROUSEL_ALBUM")
+    console.log("Returning carousel", props.children);
+
   return (
     <div className="fitbox">
       <img src={props.media_url || props.media[0].image} />
+      {props.media_type === "CAROUSEL_ALBUM" && props.children && (
+        <>and {props.children.data.length - 1} others</>
+      )}
 
       <div className={fit && `description`}>
         <div>
