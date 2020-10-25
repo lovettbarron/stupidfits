@@ -39,6 +39,7 @@
     "next-seo": "^4.14.0",
     "postmark": "^2.5.5",
     "psl": "^1.8.0",
+    "pure-react-carousel": "^1.27.5",
     "react": "^16.13.1",
     "react-adsense": "^0.1.0",
     "react-alice-carousel": "^2.0.2",
