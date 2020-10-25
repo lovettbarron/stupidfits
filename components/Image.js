@@ -32,7 +32,7 @@ const Pic = ({ media, url }) => {
   return (
     <>
       <div className="holder">
-        {(Array.isArray(media) && (
+        {(media.length > 1 && (
           <CarouselProvider
             totalSlides={media.length}
             visibleSlides={1}
@@ -75,7 +75,15 @@ const Pic = ({ media, url }) => {
               ))}
             </div> */}
           </CarouselProvider>
-        )) || <img src={url || `${media.url}media/?size=l`} />}
+        )) || (
+          <Image
+            cloudName={process.env.CLOUDINARY_CLOUD_NAME || "stupidsystems"}
+            publicId={media[0].cloudinary}
+            style={{ width: "100%" }}
+            secure={true}
+            onDragStart={handleDragStart}
+          />
+        )}
       </div>
       <style jsx>{`
         .holder {
