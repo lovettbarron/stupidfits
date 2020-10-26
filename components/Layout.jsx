@@ -102,6 +102,26 @@ const Layout = (props) => {
           text-align: center;
         }
 
+        ul.anatomy {
+          display: flex;
+          flex-wrap: wrap;
+          list-style: none !important;
+          list-style-type: none !important;
+          text-align: center;
+          justify-contents: center;
+          padding: 0;
+        }
+
+        .anatomy li {
+          justify-self: center;
+          width: 100%;
+          text-align: center;
+          padding: 0;
+          margin: 0 0rem 0.5rem 0;
+          list-style: none !important;
+          list-style-type: none !important;
+        }
+
         .alert {
           padding: 1rem;
           border: 1px solid #ffffff;
