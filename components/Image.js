@@ -37,8 +37,9 @@ const Pic = ({ media, url }) => {
             totalSlides={media.length}
             visibleSlides={1}
             step={1}
-            naturalSlideWidth={400}
-            naturalSlideHeight={400}
+            isIntrinsicHeight={true}
+            // naturalSlideWidth={400}
+            // naturalSlideHeight={400}
             innerClassName={"carousel"}
           >
             <div className="arrows">
