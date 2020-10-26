@@ -96,7 +96,7 @@ async function handlePOST(req, res) {
         cloudinary: cloudurl.public_id,
         image: c.media_url,
         url: c.permalink,
-        description: c.caption || "",
+        description: req.body.caption || "",
       });
     }
   }
