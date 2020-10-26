@@ -10,6 +10,23 @@ import { useSession, getSession } from "next-auth/client";
 import { FileUploader } from "baseui/file-uploader";
 import FormData from "form-data";
 
+const CheckGramAlreadyExists = (ig, fits) => {
+  if (fits && fits.length > 0) {
+    const found = fits.find((t) =>
+      t.media.find((m) => {
+        if (ig.children) {
+          return ig.children.data.find((c) => c.permalink === m.url);
+        } else {
+          return ig.permalink === m.url;
+        }
+      })
+    );
+    return found;
+  } else {
+    return null;
+  }
+};
+
 const Feed = (props) => {
   const [posts, setPosts] = useState(null);
   const [insta, setInsta] = useState([]);
@@ -203,14 +220,7 @@ const Feed = (props) => {
                 <Gram
                   key={fit.id}
                   {...fit}
-                  fit={
-                    (props.fits &&
-                      props.fits.length > 0 &&
-                      props.fits.find(
-                        (t) => fit.permalink === t.media[0].url
-                      )) ||
-                    null
-                  }
+                  fit={CheckGramAlreadyExists(fit, props.fits)}
                   username={insta.username}
                 />
               ))}
@@ -244,6 +254,14 @@ export const getServerSideProps = async (context) => {
   const session = await getSession(context);
   let error = null;
   let insta;
+
+  if (!session || !session.user) {
+    if (context.res) {
+      context.res.writeHead(302, { Location: `/` });
+      context.res.end();
+    }
+    return {};
+  }
 
   let user;
   try {
