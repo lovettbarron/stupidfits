@@ -31,11 +31,31 @@ const Main = (props) => {
               </a>
 
               <ol>
-                <li>Post Fits on Instagram.</li>
-                <li>Link fits with your wardrobe on StupidFits</li>
-                <li>Learn from others; rethink your own.</li>
-                <li>Repeat but better.</li>
+                <li>Sync Fits from Instagram or Upload directly.</li>
+                <li>
+                  Quickly Link fits with your wardrobe (and build a digital
+                  closet over time)
+                </li>
+                <li>
+                  Easily export and Share fits as{" "}
+                  <a href="/export-example.png" target="_blank">
+                    images
+                  </a>
+                  ,{" "}
+                  <a href="https://stupidfits.com/f/16" target="_blank">
+                    posts
+                  </a>
+                  , lists, etc.
+                </li>
+                <li>Private or Public, you decide.</li>
               </ol>
+              <p>
+                Checkout some of{" "}
+                <Link href="/u/stupidfits">
+                  <a>my posts</a>
+                </Link>{" "}
+                below to get started.
+              </p>
               <hr />
             </>
           )}
