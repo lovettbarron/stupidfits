@@ -124,6 +124,18 @@ const Main = (props) => {
           header > h1 {
             margin: 0;
           }
+
+          ol {
+            padding: 0;
+          }
+
+          footer ul {
+            padding: 0;
+          }
+
+          footer li {
+            list-style: none;
+          }
           .post {
           }
           .auth img {

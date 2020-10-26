@@ -16,7 +16,7 @@ export default class MyDocument extends Document {
     return (
       <Html>
         <Head>
-          {this.props.stylesheets.map((sheet, i) => (
+          {/* {this.props.stylesheets.map((sheet, i) => (
             <style
               className="_styletron_hydrate_"
               dangerouslySetInnerHTML={{ __html: sheet.css }}
@@ -24,7 +24,7 @@ export default class MyDocument extends Document {
               data-hydrate={sheet.attrs["data-hydrate"]}
               key={i}
             />
-          ))}
+          ))} */}
 
           <meta property="og:title" content="Stupid Fits" key="title" />
           {/* <meta property="og:url" content={process.env.HOST} key="url" /> */}
