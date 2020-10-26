@@ -38,7 +38,7 @@ const Main = (props) => {
                 </li>
                 <li>
                   Easily export and Share fits as{" "}
-                  <a href="/export-example.png" target="_blank">
+                  <a href="/export.png" target="_blank">
                     images
                   </a>
                   ,{" "}
