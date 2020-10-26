@@ -103,7 +103,9 @@ Details at stupidfits.com/f/${props.id}
               )) || <>{props.username || props.media[0].username}</>}
             </h3>
             <div>
-              <a href={props.media[0].url || props.url}>Instagram</a>
+              {props.media[0].insta_id && (
+                <a href={props.media[0].url || props.url}>Instagram</a>
+              )}
               <Link href={`/f/${props.id}`}>
                 <a>Permalink</a>
               </Link>

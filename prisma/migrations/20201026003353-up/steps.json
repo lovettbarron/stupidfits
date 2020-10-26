@@ -1,0 +1,58 @@
+{
+  "version": "0.3.14-fixed",
+  "steps": [
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "User",
+          "field": "defaultStatus"
+        },
+        "directive": "default"
+      },
+      "argument": "value",
+      "value": "PENDING"
+    },
+    {
+      "tag": "DeleteArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "User",
+          "field": "defaultStatus"
+        },
+        "directive": "default"
+      },
+      "argument": ""
+    },
+    {
+      "tag": "UpdateField",
+      "model": "Media",
+      "field": "image",
+      "arity": "Optional"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "Media",
+      "field": "url",
+      "arity": "Optional"
+    },
+    {
+      "tag": "UpdateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Fit",
+          "field": "status"
+        },
+        "directive": "default"
+      },
+      "argument": "value",
+      "newValue": "PENDING"
+    }
+  ]
+}

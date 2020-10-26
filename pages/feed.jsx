@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import Router from "next/router";
 import Link from "next/link";
 import fetch from "isomorphic-unfetch";
 import Layout from "../components/Layout";
@@ -7,15 +8,16 @@ import { Button, SIZE } from "baseui/button";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useSession, getSession } from "next-auth/client";
 import { FileUploader } from "baseui/file-uploader";
-
-// import Feed from "./api/feed";
-// import User from "./api/user";
+import FormData from "form-data";
 
 const Feed = (props) => {
   const [posts, setPosts] = useState(null);
   const [insta, setInsta] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [photo, setPhoto] = useState("");
+  const [files, setFiles] = useState([]);
+  const [cloud, setCloud] = useState([]);
+
+  const [isUploading, setIsUploading] = React.useState(false);
+
   const [errorMessage, setErrorMessage] = useState("");
   const fetchData = () => {};
 
@@ -32,22 +34,88 @@ const Feed = (props) => {
     }
   };
 
-  const addNewFit = async () => {};
+  const uploadFiles = async (files) => {
+    setIsUploading(true);
+    const url = "https://api.cloudinary.com/v1_1/stupidsystems/image/upload";
+
+    const formData = new FormData();
+    await setFiles(files);
+
+    const requests = [];
+
+    for (let i = 0; i < files.length; i++) {
+      let file = files[i];
+      formData.append("file", file);
+      formData.append("upload_preset", "stupidfits");
+
+      requests[i] = fetch(url, {
+        method: "POST",
+        body: formData,
+      })
+        .then((response) => {
+          return response.json();
+        })
+        .then(async (data) => {
+          console.log("Returned", data);
+          await setCloud((c) => [...c, data.public_id]);
+          return data.public_id;
+        })
+        .catch((e) => {
+          setErrorMessage("Error", e);
+          setIsUploading(false);
+        });
+    }
+    Promise.all(requests).then((reqs) => {
+      console.log("All reqs completed", reqs);
+      addNewFromUpload(reqs);
+    });
+  };
+
+  const addNewFromUpload = async (reqs) => {
+    try {
+      const body = {
+        id: props.id,
+        imgs: reqs,
+      };
+
+      console.log("Adding fit", `${process.env.HOST}/api/fits/create`, body);
+
+      const res = await fetch(`${process.env.HOST}/api/fits/create`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+      const data = await res.json();
+      console.log("Added fit!", data);
+      if (data) Router.push(`/fit/${data.id}`);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   useEffect(() => {
     if (!posts) fetchInitial();
-  });
+    return () => {};
+  }, []);
 
   return (
     <Layout>
       <div className="page">
         <h1>All The Fits</h1>
         <p>Upload or pick your fits from your instagram.</p>
-        {/* {
+
         <FileUploader
           errorMessage={errorMessage}
           size={SIZE.mini}
-          disabled
+          multiple
+          accept="image/*"
+          onDrop={(acceptedFiles, rejectedFiles) => {
+            console.log(acceptedFiles);
+            // setFiles((f) => [...f, ...acceptedFiles]);
+            uploadFiles(acceptedFiles);
+            // startProgress();
+          }}
+          progressMessage={isUploading ? `Uploading... hang tight.` : ""}
           onChange={() => {
             upload({
               file,
@@ -55,8 +123,13 @@ const Feed = (props) => {
             });
           }}
         />
-        {photo && <img src={data.url} />}
+        <small>Jpg, Png, HEIC files only.</small>
         <br />
+        <small>
+          Multiple files are allowed, and will be added to a single fit.
+        </small>
+        {/* {photo && <img src={data.url} />} */}
+        {/* <br />
         <br />
         <Button
           className="left"
@@ -66,10 +139,10 @@ const Feed = (props) => {
           disabled={true}
         >
           Upload Fit Manually
-        </Button>
+        </Button> */}
         <br />
         <br />
-        <h3>Or}  */}
+        <h4>Or</h4>
         <h3>add from Instagram</h3>
 
         {!props.user.instagramlong && (
@@ -77,9 +150,11 @@ const Feed = (props) => {
             <p>
               To make the best use of Stupidfits, we suggest connecting your
               instagram. It'll let you pull in posts easily and sync them with
-              your closet. There are additional privacy settings as well to
-              control your public profile and how your posts show up on our
-              feed.
+              your closet.
+            </p>
+            <p>
+              There are additional privacy settings as well to control your
+              public profile and how your posts show up on our feed.
             </p>
             <p>
               Visit your{" "}
@@ -132,7 +207,7 @@ const Feed = (props) => {
                     (props.fits &&
                       props.fits.length > 0 &&
                       props.fits.find(
-                        (t) => fit.permalink === t.media[0].url
+                        (t) => t.insta_id && fit.permalink === t.media[0].url
                       )) ||
                     null
                   }
