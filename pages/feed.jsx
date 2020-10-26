@@ -207,7 +207,7 @@ const Feed = (props) => {
                     (props.fits &&
                       props.fits.length > 0 &&
                       props.fits.find(
-                        (t) => t.insta_id && fit.permalink === t.media[0].url
+                        (t) => fit.permalink === t.media[0].url
                       )) ||
                     null
                   }
