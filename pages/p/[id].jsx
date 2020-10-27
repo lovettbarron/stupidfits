@@ -451,6 +451,14 @@ export const getServerSideProps = async (context) => {
     return order[a.type] - order[b.type];
   });
 
+  if (session.user.email !== data.user.email) {
+    if (context.res) {
+      context.res.writeHead(302, { Location: `/f/${id}` });
+      context.res.end();
+    }
+    return {};
+  }
+
   return {
     props: { ...data },
   };
