@@ -116,7 +116,7 @@ Details at stupidfits.com/f/${props.id}
         {props.caption || props.media[0].description}
         {!props.media && !fit && <button onClick={addFit}>Add Fit</button>}
         <div className="components">
-          {session && (
+          {session && session.user.email === props.user.email && (
             <>
               <br />
               <button onClick={editFit}>Edit Fit</button>

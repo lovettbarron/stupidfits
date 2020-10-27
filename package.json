@@ -37,6 +37,7 @@
     "next": "^9.5.5",
     "next-auth": "github:stupidsystems/next-auth",
     "next-seo": "^4.14.0",
+    "next-sitemap": "^1.2.10",
     "nextjs-sitemap-generator": "^1.1.0",
     "postmark": "^2.5.5",
     "psl": "^1.8.0",
