@@ -91,38 +91,42 @@ Details at stupidfits.com/f/${props.id}
   return (
     <>
       <div className="fitbox">
-        <Image url={props.imageUrl} media={props.media} />
-
-        <div className="description">
-          <div className="header">
-            <h3>
-              {(props.user && (
-                <Link href={`/u/${props.user.username}`}>
-                  <a>{props.user.username || props.media[0].username}</a>
-                </Link>
-              )) || <>{props.username || props.media[0].username}</>}
-            </h3>
-            <div>
-              {props.media[0].insta_id && (
-                <a href={props.media[0].url || props.url}>Instagram</a>
-              )}
-              <Link href={`/f/${props.id}`}>
-                <a>Permalink</a>
-              </Link>
-            </div>
-          </div>
+        <div className="mediawrap">
+          <Image url={props.imageUrl} media={props.media} />
         </div>
-        <br />
-        {props.caption || props.media[0].description}
-        {!props.media && !fit && <button onClick={addFit}>Add Fit</button>}
         <div className="components">
+          <div className="description">
+            <div className="header">
+              <h3>
+                {(props.user && (
+                  <Link href={`/u/${props.user.username}`}>
+                    <a>{props.user.username || props.media[0].username}</a>
+                  </Link>
+                )) || <>{props.username || props.media[0].username}</>}
+              </h3>
+              <div className="links">
+                {props.media[0].insta_id && (
+                  <a href={props.media[0].url || props.url}>Instagram</a>
+                )}
+                <Link href={`/f/${props.id}`}>
+                  <a>Permalink</a>
+                </Link>
+              </div>
+            </div>
+            <div className="captions">
+              {props.caption || props.media[0].description}
+            </div>
+            {!props.media && !fit && <button onClick={addFit}>Add Fit</button>}
+          </div>
+          <br />
+
           {session && session.user.email === props.user.email && (
-            <>
+            <div className="btns">
               <br />
               <button onClick={editFit}>Edit Fit</button>
               <button onClick={exportFit}>Export image</button>
-              <button onClick={copyFit}>Copy Fit</button>
-            </>
+              <button onClick={copyFit}>Copy Text</button>
+            </div>
           )}
           {props.components && (
             <Anatomy
@@ -131,16 +135,17 @@ Details at stupidfits.com/f/${props.id}
               components={props.components}
             />
           )}
+          {props.desc && <div className="des">{props.desc}</div>}
         </div>
-        <br />
-        {props.desc && <div className="des">{props.desc}</div>}
       </div>
 
       <style jsx>{`
         .fitbox {
           margin: 2rem 0;
-          background: #6f6f6f;
+          background: #2b2b2b;
           border-radius: 0 0 5px 5px;
+          display: flex;
+          flex-wrap: wrap;
         }
 
         button {
@@ -153,6 +158,47 @@ Details at stupidfits.com/f/${props.id}
           display: flex;
           justify-content: space-between;
           align-items: center;
+        }
+
+        .mediawrap {
+          max-width: 600px;
+          padding: 0;
+          margin: 0;
+          width: 50%;
+        }
+
+        .components {
+          width: 50%;
+        }
+
+        .links {
+          font-size: 1rem;
+          text-align: right;
+        }
+
+        .captions {
+          text-align: left;
+          font-size: 0.8rem;
+        }
+
+        .btns {
+          display: flex;
+          justify-content: center;
+        }
+
+        .header h3 {
+          text-align: left;
+        }
+        @media screen and (max-width: 800px) {
+          .mediawrap {
+            width: 100%;
+          }
+          .btns {
+            justify-content: center;
+          }
+          .components {
+            width: 100%;
+          }
         }
 
         .description {

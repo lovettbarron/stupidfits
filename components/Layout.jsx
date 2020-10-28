@@ -36,6 +36,12 @@ const Layout = (props) => {
           box-sizing: inherit;
         }
 
+        @media screen and (max-width: 800) {
+          body {
+            max-width: 600px;
+          }
+        }
+
         body {
           margin: 0;
           padding: 0;
@@ -44,7 +50,7 @@ const Layout = (props) => {
             "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
           background: #151515;
           color: #ffffff;
-          max-width: 600px;
+          max-width: 1200px;
           width: 100%;
           margin: 0 auto;
           text-align: center;
@@ -52,12 +58,14 @@ const Layout = (props) => {
 
         p {
           font-size: 1.4rem;
+          max-width: 600;
         }
 
         h1,
         h2,
         h3,
         h4 {
+          width: 100%;
           font-family: "Futura";
           color: #ffffff;
         }
