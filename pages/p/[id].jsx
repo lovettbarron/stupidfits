@@ -2,11 +2,12 @@ import React, { useEffect, useState, useRef, useCallback } from "react";
 import { getSession, useSession } from "next-auth/client";
 import fetch from "isomorphic-unfetch";
 import Layout from "../../components/Layout";
+import Canvas from "../../components/Canvas";
 import { Button } from "baseui/button";
-import { fabric } from "fabric";
+import { ButtonGroup } from "baseui/button-group";
 import { Radio, RadioGroup } from "baseui/radio";
-import { Cap } from "../../components/Anatomy";
 import { StatefulButtonGroup, MODE } from "baseui/button-group";
+import { Tabs, Tab, FILL } from "baseui/tabs-motion";
 
 export const providers = [
   {
@@ -66,308 +67,90 @@ export const providers = [
 ];
 
 const FitImage = (props) => {
-  const [session, loading] = useSession();
   const [value, setValue] = useState("1");
   const [type, setType] = useState("LAND");
-  // const [canvas, setCanvas] = useState(false);
-  const canvasDom = useRef();
-  let canvas = useRef(); // useRef(null);
-  let img = null;
-  let text_iter = 0;
+  const [media, setMedia] = useState(props.media[0]);
+  const [activeKey, setActiveKey] = React.useState("0");
 
-  const getDim = () => {
-    return providers.find((p) => p.id === type);
-  };
-
-  const Formatted = (c, v) => {
-    console.log("Value", v);
-    switch (v) {
-      case "1":
-        return `${Cap(c.brand.name)} ${c.model}`;
-      case "2":
-        return `${Cap(c.brand.name)}`;
-      default:
-        return ``;
-    }
-  };
-
-  const addImage = () => {
-    var clipPath = new fabric.Rect({
-      width: getDim().w,
-      height: getDim().h,
-      top: 0,
-      left: 0,
-      absolutePositioned: true,
-    });
-
-    img = fabric.util.loadImage(
-      `https://res.cloudinary.com/stupidsystems/image/upload/b_rgb:151515,${
-        getDim().s
-      },h_${getDim().h},w_${getDim().w}/${props.media[0].cloudinary}.png`,
-      function (url) {
-        var img = new fabric.Image(url);
-
-        // img.clipPath = clipPath;
-        img.lockMovementY = getDim().ylock;
-        img.lockMovementX = getDim().xlock;
-        // img.scaleToWidth(1080 / 3);
-        img.scaleToHeight(getDim().h / 3);
-        canvas.current.add(img);
-        canvas.current.sendToBack(img);
-      },
-      null,
-      {
-        crossOrigin: "anonymous",
-      }
-    );
-  };
-
-  const addElement = (text, iter) => {
-    // Load text onto canvas.current
-    const height = getDim().h / 3;
-    const offset = (iter / props.components.length) * height;
-    const textbox = new fabric.Textbox(Formatted(text, value), {
-      id: "text" + iter,
-      left: 0,
-      top: offset,
-      width: 150,
-      fontSize: 14,
-      fill: "#fff",
-      textBackgroundColor: "#151515",
-      fontFamily: "Apercu",
-      fontWeight: 800,
-      textAlign: "center",
-      cornerSize: 12,
-      transparentCorners: false,
-    });
-    canvas.current.add(textbox);
-    canvas.current.bringToFront(textbox);
-    console.log("Added", Formatted(text, value), iter, offset);
-    text_iter += 1;
-  };
-
-  const addLogo = () => {
-    // Load text onto canvas.current
-    const height = getDim().h / 3;
-    const textbox = new fabric.Textbox(
-      `stupidfits.com/f/${props.id}\nstupidfits.com/u/${props.user.username}`,
-      {
-        left: 0,
-        top: height - 30,
-        width: 360,
-        fontSize: 12,
-        fill: "#fff",
-        textBackgroundColor: "#151515",
-        fontFamily: "Apercu",
-        fontWeight: 800,
-        textAlign: "center",
-        cornerSize: 12,
-        transparentCorners: false,
-      }
-    );
-    canvas.current.add(textbox);
-  };
-
-  // Pul all canvas.current code in a function so we can call it after google fonts have loaded
-  const initCanvas = () => {
-    canvas.current =
-      canvas.current ||
-      new fabric.Canvas(canvasDom.current, {
-        preserveObjectStacking: true,
-        allowTouchScrolling: true,
-      });
-    canvas.current.setDimensions({ width: "100%", height: "100%" });
-    canvas.current.setWidth(getDim().w / 3);
-    canvas.current.setHeight(getDim().h / 3);
-    canvas.current.backgroundColor = "rgb(21,21,21)";
-    canvas.current.controlsAboveOverlay = true;
-  };
-  // dataURLtoBlob function for saving
-  const dataURLtoBlob = (dataurl) => {
-    let arr = dataurl.split(","),
-      mime = arr[0].match(/:(.*?);/)[1],
-      bstr = atob(arr[1]),
-      n = bstr.length,
-      u8arr = new Uint8Array(n);
-    while (n--) {
-      u8arr[n] = bstr.charCodeAt(n);
-    }
-    return new Blob([u8arr], { type: mime });
-  };
-
-  const RenderControls = () => {
-    if (!document) return null;
-    const radio = document.getElementById("radio");
-    if (!radio) return null;
-    radio.addEventListener(
-      "change",
-      (e) => {
-        console.log("Changed fired", e.target.value);
-        const value = String(e.target.value);
-        let i = 0;
-        const objs = canvas.current.getObjects();
-
-        objs.forEach((o) => {
-          if (!o.id) return null;
-          else if (o.id && !!(String(o.id).indexOf("text") >= 0)) {
-            console.log(
-              "Changing to ",
-              Formatted(props.components[o.id.split("text")[1]], value)
-            );
-            o.set(
-              "text",
-              Formatted(props.components[o.id.split("text")[1]], value)
-            );
-            // console.log("Updating", o);
-            canvas.current.renderAll();
-          }
-        });
-      },
-      false
-    );
-
-    const link = document.getElementById("saveimage");
-    link.addEventListener(
-      "click",
-      function () {
-        // Remove overlay image
-        canvas.current.overlayImage = null;
-        canvas.current.renderAll.bind(canvas.current);
-        // Remove canvas.current clipping so export the image
-        canvas.current.clipTo = null;
-        // Export the canvas.current to dataurl at 3 times the size and crop to the active area
-        const imgData = canvas.current.toDataURL({
-          format: "png",
-          quality: 1,
-          multiplier: 3,
-          left: 0,
-          top: 0,
-          width: getDim().w / 3,
-          height: getDim().h / 3,
-        });
-
-        const strDataURI = imgData.substr(22, imgData.length);
-
-        const blob = dataURLtoBlob(imgData);
-
-        const objurl = URL.createObjectURL(blob);
-        link.download = `stupidfits-${getDim().label}-${props.id}.png`;
-        link.href = objurl;
-
-        // Reset the clipping path to what it was
-        canvas.current.clipTo = function (ctx) {
-          ctx.rect(220, 80, 360, 640);
-        };
-
-        canvas.current.renderAll();
-      },
-      false
-    );
-
-    // canvas.current.on("mouse:wheel", function (opt) {
-    //   var delta = opt.e.deltaY;
-
-    //   // const objs = canvas.current.getObjects();
-    //   // const img = objs.find((o) => o.id === "bgimage");
-
-    //   // img.scaleX += delta;
-    //   // img.scaleY += delta;
-
-    //   // img.setCoords();
-    //   // canvas.current.renderAll();
-
-    //   // var zoom = canvas.current.getZoom();
-    //   // zoom *= 0.999 ** delta;
-    //   // if (zoom > 20) zoom = 20;
-    //   // if (zoom < 0.01) zoom = 0.01;
-    //   // canvas.current.zoomToPoint({ x: opt.e.offsetX, y: opt.e.offsetY }, zoom);
-    //   opt.e.preventDefault();
-    //   opt.e.stopPropagation();
-    // });
-  };
+  const ref = useRef();
 
   useEffect(() => {
-    console.log("Killing prev canvas.current");
-    // canvas.current.setWidth(getDim().w / 3);
-    // canvas.current.setHeight(getDim().h / 3);
-    canvas.current && canvas.current.dispose();
-    // canvas.current && canvas.current.clear();
-    // canvas.current && canvas.current.remove(canvas.current.getActiveObject());
-    canvas.current && canvas.current.removeListeners();
-    canvas.current = null;
-
-    // if (!canvas) {
-    setTimeout(() => {
-      initCanvas();
-      addImage();
-      addLogo();
-      RenderControls(true);
-
-      props.components &&
-        props.components.map((c) => {
-          addElement(c, text_iter);
-        });
-    }, 200);
-    // }
-    console.log("Props", props);
-
     return () => {};
-  }, [type]);
+  }, [media, type]);
 
   return (
     <Layout>
       <div className="page">
         <h1>Export</h1>
         <p>Export your fitpics with annotations for easy uploading wherever</p>
-        <StatefulButtonGroup
-          mode={MODE.radio}
-          initialState={{ selected: 0 }}
-          overrides={{
-            Root: {
-              style: {
-                flexWrap: "wrap",
-                maxWidth: "600px",
-                justifyContent: "center",
-              },
-            },
+
+        <Tabs
+          activeKey={activeKey}
+          fill={FILL.fixed}
+          onChange={({ activeKey }) => {
+            setActiveKey(activeKey);
           }}
+          activateOnFocus
         >
-          {providers.map((t, i) => (
-            <Button key={t.id} onClick={() => setType(t.id)}>
-              {t.label}
-            </Button>
-          ))}
-        </StatefulButtonGroup>
-        <RadioGroup
-          id={`radio`}
-          align="horizontal"
-          name="horizontal"
-          onChange={(e) => {
-            console.log("Change the value", e.target.value);
-            setValue(String(e.target.value));
-          }}
-          value={value}
-        >
-          <Radio value={"1"}>Outfit</Radio>
-          <Radio value={"2"}>Brands Only</Radio>
-          <Radio value={"3"}>Nothing</Radio>
-        </RadioGroup>
-        <div className="save">
-          <a id="saveimage">
-            <Button>Save Image</Button>
-          </a>
-        </div>
-
-        <canvas
-          id="c"
-          ref={canvasDom}
-          width={getDim().w / 3}
-          height={getDim().h / 3}
-          style={{ zoom: "100%" }}
-        />
-
-        {/* <CanvasDom key={type} type={type} w={getDim().w} h={getDim().h} /> */}
-
+          <Tab title="Image">
+            <div>
+              <Canvas
+                {...props}
+                ref={ref}
+                p={providers.find((p) => p.id === type)}
+                image={media}
+                user={props.user}
+              />
+            </div>
+          </Tab>
+          <Tab title="Settings">
+            <div>
+              <h3>Change Image</h3>
+              <ButtonGroup>
+                {props.media.map((m, i) => (
+                  <Button key={i} onClick={() => setMedia(m)}>
+                    {i}
+                  </Button>
+                ))}
+              </ButtonGroup>
+              <h3>Image Layout</h3>
+              <StatefulButtonGroup
+                mode={MODE.radio}
+                initialState={{ selected: 0 }}
+                overrides={{
+                  Root: {
+                    style: {
+                      flexWrap: "wrap",
+                      maxWidth: "600px",
+                      justifyContent: "center",
+                    },
+                  },
+                }}
+              >
+                {providers.map((t, i) => (
+                  <Button key={t.id} onClick={() => setType(t.id)}>
+                    {t.label}
+                  </Button>
+                ))}
+              </StatefulButtonGroup>
+              <h3>Captions</h3>
+              <RadioGroup
+                id={`radio`}
+                align="horizontal"
+                name="horizontal"
+                onChange={(e) => {
+                  console.log("Change the value", e.target.value);
+                  setValue(String(e.target.value));
+                }}
+                value={value}
+              >
+                <Radio value={"1"}>Outfit</Radio>
+                <Radio value={"2"}>Brands Only</Radio>
+                <Radio value={"3"}>Nothing</Radio>
+              </RadioGroup>
+            </div>
+          </Tab>
+        </Tabs>
         <br />
       </div>
       <style jsx>{`
