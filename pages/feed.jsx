@@ -234,6 +234,11 @@ const Feed = (props) => {
           flex-wrap: wrap;
           justify-content: center;
         }
+
+        p {
+          margin: 1rem auto;
+        }
+
         .post {
           transition: box-shadow 0.1s ease-in;
         }

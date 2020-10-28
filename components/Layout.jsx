@@ -36,10 +36,23 @@ const Layout = (props) => {
           box-sizing: inherit;
         }
 
-        @media screen and (max-width: 800) {
+        @media screen and (max-width: 800px) {
           body {
-            max-width: 600px;
+            max-width: 600px !important;
           }
+
+          .col {
+            width: 100% !important;
+          }
+        }
+
+        .grid {
+          display: flex;
+          flex-wrap: wrap;
+        }
+
+        .col {
+          width: 50%;
         }
 
         body {
@@ -58,7 +71,7 @@ const Layout = (props) => {
 
         p {
           font-size: 1.4rem;
-          max-width: 600;
+          max-width: 600px;
         }
 
         h1,

@@ -26,29 +26,35 @@ const Main = (props) => {
           </header>
           {!session && (
             <>
-              <a className="auth" onClick={signin}>
-                <img src={`/img/login.png`} />
-              </a>
+              <div className="main">
+                <div className="col">
+                  <a className="auth" onClick={signin}>
+                    <img src={`/img/login.png`} />
+                  </a>
+                </div>
+                <div className="col">
+                  <ol>
+                    <li>Sync Fits from Instagram or Upload directly.</li>
+                    <li>
+                      Quickly Link fits with your wardrobe (and build a digital
+                      closet over time)
+                    </li>
+                    <li>
+                      Easily export and Share fits as{" "}
+                      <a href="/export.png" target="_blank">
+                        images
+                      </a>
+                      ,{" "}
+                      <a href="https://stupidfits.com/f/16" target="_blank">
+                        posts
+                      </a>
+                      , lists, etc.
+                    </li>
+                    <li>Private or Public, you decide.</li>
+                  </ol>
+                </div>
+              </div>
 
-              <ol>
-                <li>Sync Fits from Instagram or Upload directly.</li>
-                <li>
-                  Quickly Link fits with your wardrobe (and build a digital
-                  closet over time)
-                </li>
-                <li>
-                  Easily export and Share fits as{" "}
-                  <a href="/export.png" target="_blank">
-                    images
-                  </a>
-                  ,{" "}
-                  <a href="https://stupidfits.com/f/16" target="_blank">
-                    posts
-                  </a>
-                  , lists, etc.
-                </li>
-                <li>Private or Public, you decide.</li>
-              </ol>
               <p>
                 Checkout some of{" "}
                 <Link href="/u/stupidfits">
@@ -127,6 +133,23 @@ const Main = (props) => {
 
           ol {
             padding: 0;
+            text-align: left;
+          }
+
+          .main {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+          }
+
+          .col {
+            width: 50%;
+          }
+
+          @media screen and (max-width: 800px) {
+            .col {
+              width: 100%;
+            }
           }
 
           footer ul {

@@ -116,7 +116,6 @@ const Me = (props) => {
             <form onSubmit={submitData}>
               <h1>My Settings</h1>
               <h3>{email}</h3>
-
               <h3>Your Stupidfits Username</h3>
               <input
                 style={{ textAlign: "center" }}
@@ -134,69 +133,83 @@ const Me = (props) => {
                 type="submit"
                 value="Update"
               />
+              <div className="grid">
+                <div className="col">
+                  {" "}
+                  <h2>Sharing Your Fits</h2>
+                  <Checkbox
+                    checked={publicprofile}
+                    checkmarkType={STYLE_TYPE.toggle_round}
+                    labelPlacement={LABEL_PLACEMENT.right}
+                    onChange={() => setPublicprofile(!publicprofile)}
+                  >
+                    Make my fits visible on the Stupid Fits global feed.
+                  </Checkbox>
+                  <br />
+                  <p>
+                    We give you a custom landing page for your fits. Drop this
+                    in your instagram URL, or on Imgur, or Reddit, or wherever
+                    so folk can wrap their minds around your revolutionary
+                    genius fit combinitronics.
+                  </p>
+                  <Checkbox
+                    checked={profilepage}
+                    onChange={() => setProfilepage(!profilepage)}
+                    checkmarkType={STYLE_TYPE.toggle_round}
+                    labelPlacement={LABEL_PLACEMENT.right}
+                  >
+                    Make my Profile Page visible
+                  </Checkbox>
+                  {profilepage && (
+                    <>
+                      <h4>Your public page is</h4>
+                      <p>
+                        <br /> {process.env.HOST}
+                        <br />
+                        /u/{username}
+                      </p>
+                      <br />
+                      <br />
+                    </>
+                  )}
+                </div>
+                <div className="col">
+                  <h2>Sync with your Instagram Account</h2>
+                  <p>
+                    We use the instagram api to pull in your fits. Only the
+                    images you select will be part of stupidfits, and the ones
+                    you select can be annotated on Stupid Fits.
+                  </p>
+                  {(insta && (
+                    <>
+                      <p>Synced with {insta.username}</p>
+                      <a className="auth" onClick={DisconnectInstagram}>
+                        <img src={`/img/instagram-disconnect.png`} />
+                      </a>
+                    </>
+                  )) || (
+                    <a className="auth" onClick={AuthWithInstagram}>
+                      <img src={`/img/instagram.png`} />
+                    </a>
+                  )}
+                </div>
+              </div>
 
-              <h2>Sync with your Instagram Account</h2>
-              <p>
-                We use the instagram api to pull in your fits. Only the images
-                you select will be part of stupidfits, and the ones you select
-                can be annotated on Stupid Fits.
-              </p>
-              {(insta && (
-                <>
-                  <p>Synced with {insta.username}</p>
-                  <a className="auth" onClick={DisconnectInstagram}>
-                    <img src={`/img/instagram-disconnect.png`} />
-                  </a>
-                </>
-              )) || (
-                <a className="auth" onClick={AuthWithInstagram}>
-                  <img src={`/img/instagram.png`} />
-                </a>
-              )}
-              <h2>Sharing Your Fits</h2>
-              <Checkbox
-                checked={publicprofile}
-                checkmarkType={STYLE_TYPE.toggle_round}
-                labelPlacement={LABEL_PLACEMENT.right}
-                onChange={() => setPublicprofile(!publicprofile)}
-              >
-                Make my fits visible on the Stupid Fits global feed.
-              </Checkbox>
-              <br />
-              <p>
-                We give you a custom landing page for your fits. Drop this in
-                your instagram URL, or on Imgur, or Reddit, or wherever so folk
-                can wrap their minds around your revolutionary genius fit
-                combinitronics.
-              </p>
-
-              <Checkbox
+              {/* <Checkbox
                 checked={profilepage}
                 onChange={() => setProfilepage(!profilepage)}
                 checkmarkType={STYLE_TYPE.toggle_round}
                 labelPlacement={LABEL_PLACEMENT.right}
               >
-                Make my Profile Page visible
+                Try to blur out my face please!
               </Checkbox>
+              <p>we'll try to automagically blur out your face.</p> */}
 
-              {profilepage && (
-                <>
-                  <h4>Your public page is</h4>
-                  <p>
-                    <br /> {process.env.HOST}
-                    <br />
-                    /u/{username}
-                  </p>
-                  <br />
-                  <br />
-                </>
-              )}
-
-              <input
+              {/* <input
                 disabled={!email || !username}
                 type="submit"
                 value="Update"
-              />
+              /> */}
               <hr style={{ marginTop: "100px" }} />
               <hr />
               <h1>The following features are coming, but don't work yet</h1>
@@ -233,14 +246,9 @@ const Me = (props) => {
           <style jsx>{`
             .page {
               padding: 1rem;
-              display: flex;
-              max-width: 600px;
-              justify-content: center;
-              align-items: center;
             }
 
             form {
-              width: 100%;
             }
 
             .auth img {
