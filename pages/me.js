@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import fetch from "isomorphic-unfetch";
 import Layout from "../components/Layout";
 import Router from "next/router";
+import Link from "next/link";
 import { FileUploader } from "baseui/file-uploader";
 import { useSession, getSession } from "next-auth/client";
 import { Checkbox, LABEL_PLACEMENT, STYLE_TYPE } from "baseui/checkbox";
@@ -133,25 +134,46 @@ const Me = (props) => {
         <Layout>
           <div className="page">
             <h1>My Settings</h1>
-            <h3>{email}</h3>
-            <h3>Your Stupidfits Username</h3>
-            <input
-              style={{ textAlign: "center" }}
-              onChange={(e) => {
-                const v = e.target.value.replace(" ", "").toLowerCase();
-                setUsername(v);
-              }}
-              placeholder="Username"
-              type="text"
-              value={username}
-            />
 
-            <input
-              disabled={!email || !username}
-              type="submit"
-              value="Update"
-            />
             <div className="grid">
+              <div className="col">
+                <h2>{email}</h2>
+                <h3>Your Stupidfits Username</h3>
+                <input
+                  style={{ textAlign: "center" }}
+                  onChange={(e) => {
+                    const v = e.target.value.replace(" ", "").toLowerCase();
+                    setUsername(v);
+                  }}
+                  placeholder="Username"
+                  type="text"
+                  value={username}
+                />
+                <Button
+                  disabled={!email || !username}
+                  type="submit"
+                  value="Update"
+                  onClick={submitData}
+                >
+                  Update
+                </Button>
+                <p className="small">
+                  A username is required for your public profile.
+                </p>
+                {profilepage && (
+                  <>
+                    <br />
+                    <h3>Your public page is</h3>
+                    <p>
+                      {process.env.HOST}
+                      <br />
+                      /u/{username}
+                    </p>
+                    <br />
+                    <br />
+                  </>
+                )}
+              </div>
               <div className="col">
                 <h2>Profile Page Info</h2>
                 <h3>What's your style?</h3>
@@ -190,7 +212,7 @@ const Me = (props) => {
                   placeholder="What's your story?"
                 />
                 <Button
-                  disabled={!email || !username}
+                  disabled={!url || !style}
                   type="submit"
                   value="Update"
                   onClick={submitData}
@@ -212,13 +234,14 @@ const Me = (props) => {
                 >
                   Make my fits visible on the Stupid Fits global feed.
                 </Checkbox>
-                <br />
-                <p>
-                  We give you a custom landing page for your fits. Drop this in
-                  your instagram URL, or on Imgur, or Reddit, or wherever so
-                  folk can wrap their minds around your revolutionary genius fit
-                  combinitronics.
+                <p className="small">
+                  The{" "}
+                  <Link href="/global">
+                    <a>global feed</a>
+                  </Link>{" "}
+                  is where everyone's fits go — if they let them. Will you?
                 </p>
+                <br />
                 <Checkbox
                   checked={profilepage}
                   onChange={() => setProfilepage(!profilepage)}
@@ -227,26 +250,15 @@ const Me = (props) => {
                 >
                   Make my Profile Page visible
                 </Checkbox>
-                {profilepage && (
-                  <>
-                    <h4>Your public page is</h4>
-                    <p>
-                      <br /> {process.env.HOST}
-                      <br />
-                      /u/{username}
-                    </p>
-                    <br />
-                    <br />
-                  </>
-                )}
+                <p className="small">
+                  We give you a custom landing page for your fits. Drop this in
+                  your instagram, reddit, or similar so folk can make sense of
+                  your fit genius.
+                </p>
               </div>
               <div className="col">
                 <h2>Sync with your Instagram Account</h2>
-                <p>
-                  We use the instagram api to pull in your fits. Only the images
-                  you select will be part of stupidfits, and the ones you select
-                  can be annotated on Stupid Fits.
-                </p>
+                <p>Only the images you select will be part of stupidfits,</p>
                 {(insta && (
                   <>
                     <p>Synced with {insta.username}</p>
