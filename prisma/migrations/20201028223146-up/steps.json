@@ -1,0 +1,33 @@
+{
+  "version": "0.3.14-fixed",
+  "steps": [
+    {
+      "tag": "CreateField",
+      "model": "User",
+      "field": "url",
+      "type": "String",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateField",
+      "model": "User",
+      "field": "urllabel",
+      "type": "String",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateField",
+      "model": "User",
+      "field": "style",
+      "type": "String",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateField",
+      "model": "User",
+      "field": "description",
+      "type": "String",
+      "arity": "Optional"
+    }
+  ]
+}

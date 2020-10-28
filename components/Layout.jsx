@@ -74,6 +74,10 @@ const Layout = (props) => {
           max-width: 600px;
         }
 
+        p.small {
+          font-size: 1rem;
+        }
+
         h1,
         h2,
         h3,

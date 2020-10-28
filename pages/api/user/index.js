@@ -46,6 +46,10 @@ async function handlePOST(req, res) {
         username: req.body.username,
         public: req.body.public,
         profilepage: req.body.profilepage,
+        description: req.body.description,
+        url: req.body.url,
+        urllabel: req.body.urllabel,
+        style: req.body.style,
       },
     })
     .finally(async () => {

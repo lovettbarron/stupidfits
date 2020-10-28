@@ -5,6 +5,16 @@ import Router from "next/router";
 import { FileUploader } from "baseui/file-uploader";
 import { useSession, getSession } from "next-auth/client";
 import { Checkbox, LABEL_PLACEMENT, STYLE_TYPE } from "baseui/checkbox";
+import { Textarea } from "baseui/textarea";
+import { Input } from "baseui/input";
+import { Button } from "baseui/button";
+
+const styles = [
+  "Goretex Onion Knight",
+  "Salvaged Selvedge",
+  "Take Don't Bother",
+  "Techwear House Cat",
+];
 
 const Me = (props) => {
   const [session, loading] = useSession();
@@ -19,6 +29,11 @@ const Me = (props) => {
   const [uploadError, setUploadError] = useState(false);
   const [insta, setInsta] = useState();
 
+  const [url, setUrl] = useState(props.user.url);
+  const [urllabel, setUrllabel] = useState(props.user.urllabel);
+  const [style, setStyle] = useState(props.user.style);
+  const [description, setDescription] = useState(props.user.description);
+
   const submitData = async (e) => {
     if (e) e.preventDefault();
     try {
@@ -27,6 +42,10 @@ const Me = (props) => {
         email,
         username,
         profilepage,
+        style,
+        url,
+        urllabel,
+        description,
         public: publicprofile,
       };
       const res = await fetch(`${props.url}/api/user`, {
@@ -113,89 +132,137 @@ const Me = (props) => {
       {(session && session.user && (
         <Layout>
           <div className="page">
-            <form onSubmit={submitData}>
-              <h1>My Settings</h1>
-              <h3>{email}</h3>
-              <h3>Your Stupidfits Username</h3>
-              <input
-                style={{ textAlign: "center" }}
-                onChange={(e) => {
-                  const v = e.target.value.replace(" ", "").toLowerCase();
-                  setUsername(v);
-                }}
-                placeholder="Username"
-                type="text"
-                value={username}
-              />
+            <h1>My Settings</h1>
+            <h3>{email}</h3>
+            <h3>Your Stupidfits Username</h3>
+            <input
+              style={{ textAlign: "center" }}
+              onChange={(e) => {
+                const v = e.target.value.replace(" ", "").toLowerCase();
+                setUsername(v);
+              }}
+              placeholder="Username"
+              type="text"
+              value={username}
+            />
 
-              <input
-                disabled={!email || !username}
-                type="submit"
-                value="Update"
-              />
-              <div className="grid">
-                <div className="col">
-                  {" "}
-                  <h2>Sharing Your Fits</h2>
-                  <Checkbox
-                    checked={publicprofile}
-                    checkmarkType={STYLE_TYPE.toggle_round}
-                    labelPlacement={LABEL_PLACEMENT.right}
-                    onChange={() => setPublicprofile(!publicprofile)}
-                  >
-                    Make my fits visible on the Stupid Fits global feed.
-                  </Checkbox>
-                  <br />
-                  <p>
-                    We give you a custom landing page for your fits. Drop this
-                    in your instagram URL, or on Imgur, or Reddit, or wherever
-                    so folk can wrap their minds around your revolutionary
-                    genius fit combinitronics.
-                  </p>
-                  <Checkbox
-                    checked={profilepage}
-                    onChange={() => setProfilepage(!profilepage)}
-                    checkmarkType={STYLE_TYPE.toggle_round}
-                    labelPlacement={LABEL_PLACEMENT.right}
-                  >
-                    Make my Profile Page visible
-                  </Checkbox>
-                  {profilepage && (
-                    <>
-                      <h4>Your public page is</h4>
-                      <p>
-                        <br /> {process.env.HOST}
-                        <br />
-                        /u/{username}
-                      </p>
-                      <br />
-                      <br />
-                    </>
-                  )}
+            <input
+              disabled={!email || !username}
+              type="submit"
+              value="Update"
+            />
+            <div className="grid">
+              <div className="col">
+                <h2>Profile Page Info</h2>
+                <h3>What's your style?</h3>
+                <Input
+                  value={style}
+                  onChange={(e) => setStyle(e.target.value)}
+                  placeholder={
+                    styles[Math.floor(Math.random() * styles.length)]
+                  }
+                  clearOnEscape
+                />
+                <div className="grid">
+                  <div className="col">
+                    <h3>URL</h3>
+                    <Input
+                      value={url}
+                      onChange={(e) => setUrl(e.target.value)}
+                      placeholder="https://stupidfits.com"
+                      clearOnEscape
+                    />
+                  </div>
+                  <div className="col">
+                    <h3>URL label</h3>
+                    <Input
+                      value={urllabel}
+                      onChange={(e) => setUrllabel(e.target.value)}
+                      placeholder="Stupid Fits"
+                      clearOnEscape
+                    />
+                  </div>
                 </div>
-                <div className="col">
-                  <h2>Sync with your Instagram Account</h2>
-                  <p>
-                    We use the instagram api to pull in your fits. Only the
-                    images you select will be part of stupidfits, and the ones
-                    you select can be annotated on Stupid Fits.
-                  </p>
-                  {(insta && (
-                    <>
-                      <p>Synced with {insta.username}</p>
-                      <a className="auth" onClick={DisconnectInstagram}>
-                        <img src={`/img/instagram-disconnect.png`} />
-                      </a>
-                    </>
-                  )) || (
-                    <a className="auth" onClick={AuthWithInstagram}>
-                      <img src={`/img/instagram.png`} />
-                    </a>
-                  )}
-                </div>
+                <h3>What's your story?</h3>
+                <Textarea
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  placeholder="What's your story?"
+                />
+                <Button
+                  disabled={!email || !username}
+                  type="submit"
+                  value="Update"
+                  onClick={submitData}
+                >
+                  Update
+                </Button>
               </div>
+            </div>
 
-              {/* <Checkbox
+            <div className="grid">
+              <div className="col">
+                {" "}
+                <h2>Sharing Your Fits</h2>
+                <Checkbox
+                  checked={publicprofile}
+                  checkmarkType={STYLE_TYPE.toggle_round}
+                  labelPlacement={LABEL_PLACEMENT.right}
+                  onChange={() => setPublicprofile(!publicprofile)}
+                >
+                  Make my fits visible on the Stupid Fits global feed.
+                </Checkbox>
+                <br />
+                <p>
+                  We give you a custom landing page for your fits. Drop this in
+                  your instagram URL, or on Imgur, or Reddit, or wherever so
+                  folk can wrap their minds around your revolutionary genius fit
+                  combinitronics.
+                </p>
+                <Checkbox
+                  checked={profilepage}
+                  onChange={() => setProfilepage(!profilepage)}
+                  checkmarkType={STYLE_TYPE.toggle_round}
+                  labelPlacement={LABEL_PLACEMENT.right}
+                >
+                  Make my Profile Page visible
+                </Checkbox>
+                {profilepage && (
+                  <>
+                    <h4>Your public page is</h4>
+                    <p>
+                      <br /> {process.env.HOST}
+                      <br />
+                      /u/{username}
+                    </p>
+                    <br />
+                    <br />
+                  </>
+                )}
+              </div>
+              <div className="col">
+                <h2>Sync with your Instagram Account</h2>
+                <p>
+                  We use the instagram api to pull in your fits. Only the images
+                  you select will be part of stupidfits, and the ones you select
+                  can be annotated on Stupid Fits.
+                </p>
+                {(insta && (
+                  <>
+                    <p>Synced with {insta.username}</p>
+                    <a className="auth" onClick={DisconnectInstagram}>
+                      <img src={`/img/instagram-disconnect.png`} />
+                    </a>
+                  </>
+                )) || (
+                  <a className="auth" onClick={AuthWithInstagram}>
+                    <img src={`/img/instagram.png`} />
+                  </a>
+                )}
+              </div>
+            </div>
+
+            {/* <Checkbox
                 checked={profilepage}
                 onChange={() => setProfilepage(!profilepage)}
                 checkmarkType={STYLE_TYPE.toggle_round}
@@ -205,43 +272,37 @@ const Me = (props) => {
               </Checkbox>
               <p>we'll try to automagically blur out your face.</p> */}
 
-              {/* <input
-                disabled={!email || !username}
-                type="submit"
-                value="Update"
-              /> */}
-              <hr style={{ marginTop: "100px" }} />
-              <hr />
-              <h1>The following features are coming, but don't work yet</h1>
+            <hr style={{ marginTop: "100px" }} />
+            <hr />
+            <h1>The following features are coming, but don't work yet</h1>
 
-              <hr />
-              <h3>Import Closet CSV</h3>
+            <hr />
+            <h3>Import Closet CSV</h3>
+            <p>
+              This project started with my{" "}
+              <a
+                href="https://andrewlb.com/writing/intentional-wardrobe/"
+                target="_blank"
+              >
+                More Intentional Wardrobe
+              </a>{" "}
+              prototype on Notion. Building this app, I wanted an easy way to
+              import the work I'd already done. So, you can too.
+            </p>
+            <p>
+              Basically, if you have a CSV file with the following columns:{" "}
               <p>
-                This project started with my{" "}
-                <a
-                  href="https://andrewlb.com/writing/intentional-wardrobe/"
-                  target="_blank"
-                >
-                  More Intentional Wardrobe
-                </a>{" "}
-                prototype on Notion. Building this app, I wanted an easy way to
-                import the work I'd already done. So, you can too.
+                brand (brand name, will be lowercased)
+                <br />
+                name (name of the piece) <br />
+                type (BAG, SHOE, JACKET, PANT, SHIRT, LAYER, EXTRA)
+                <br />
+                year (A number) <br />
+                size (a string) <br />
+                sale (URL to grailed or whatever)
               </p>
-              <p>
-                Basically, if you have a CSV file with the following columns:{" "}
-                <p>
-                  brand (brand name, will be lowercased)
-                  <br />
-                  name (name of the piece) <br />
-                  type (BAG, SHOE, JACKET, PANT, SHIRT, LAYER, EXTRA)
-                  <br />
-                  year (A number) <br />
-                  size (a string) <br />
-                  sale (URL to grailed or whatever)
-                </p>
-                <FileUploader errorMessage={uploadError} onDrop={uploadCSV} />
-              </p>
-            </form>
+              <FileUploader errorMessage={uploadError} onDrop={uploadCSV} />
+            </p>
           </div>
           <style jsx>{`
             .page {

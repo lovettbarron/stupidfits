@@ -166,12 +166,34 @@ const UserProfile = (props) => {
                   <a>Stupid Fits</a>
                 </Link>
               </h1>
-              <p>Welcome to {props.insta.username}'s closet.</p>
-              <p>
-                <a href={`https://instagram.com/${props.insta.instagram}`}>
-                  Instagram
-                </a>
-              </p>
+              <div className="grid">
+                <div className="col">
+                  <p>
+                    {props.insta.style ||
+                      `Welcome to ${props.insta.username}'s closet.`}
+                  </p>
+                  {props.insta.description && (
+                    <>
+                      <p className="small">{props.insta.description}</p>
+                    </>
+                  )}
+                </div>
+                <div className="col">
+                  {" "}
+                  <p>
+                    {props.insta.url && (
+                      <a href={props.insta.url}>
+                        {props.insta.urllabel || props.insta.url}
+                      </a>
+                    )}
+                  </p>
+                  <p>
+                    <a href={`https://instagram.com/${props.insta.instagram}`}>
+                      IG: @{props.insta.instagram}
+                    </a>
+                  </p>
+                </div>
+              </div>
             </div>
 
             <Tabs
@@ -215,6 +237,10 @@ const UserProfile = (props) => {
             min-width: 20rem;
             width: 100%;
             margin: 0;
+          }
+
+          p {
+            margin: 1rem auto;
           }
 
           .top {
