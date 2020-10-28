@@ -109,8 +109,9 @@ const CreateItem = (props) => {
                 Root: {
                   style: {
                     flexWrap: "wrap",
-                    maxWidth: "400px",
+                    maxWidth: "600px",
                     justifyContent: "center",
+                    margin: "0 auto",
                   },
                 },
               }}
