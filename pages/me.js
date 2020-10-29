@@ -318,7 +318,7 @@ const Me = (props) => {
           </div>
           <style jsx>{`
             .page {
-              padding: 1rem;
+              padding: 0rem;
             }
 
             form {

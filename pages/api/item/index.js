@@ -18,20 +18,20 @@ export default async function handle(req, res) {
   if (req.method === "GET") {
     const id = req.query.id;
     let posts;
-    if (session && session.user.email) {
+    if (id) {
       posts = await prisma.item
         .findMany({
-          where: { user: { email: session.user.email } },
+          where: { user: { username: id } },
           include: { brand: true },
         })
         .finally(async () => {
           await prisma.$disconnect();
         });
       res.json(posts);
-    } else if (id) {
+    } else if (session && session.user.email) {
       posts = await prisma.item
         .findMany({
-          where: { user: { username: id } },
+          where: { user: { email: session.user.email } },
           include: { brand: true },
         })
         .finally(async () => {
