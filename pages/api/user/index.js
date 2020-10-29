@@ -56,6 +56,7 @@ async function handlePOST(req, res) {
         description: req.body.description,
         url: req.body.url,
         urllabel: req.body.urllabel,
+        hideface: req.body.hideface,
         style: req.body.style,
       },
     })

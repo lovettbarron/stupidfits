@@ -48,6 +48,7 @@ const Me = (props) => {
         url,
         urllabel,
         description,
+        hideface,
         public: publicprofile,
       };
       const res = await fetch(`${props.url}/api/user`, {
@@ -122,7 +123,8 @@ const Me = (props) => {
     if (!insta) checkInstagram();
     if (
       props.user.profilepage !== profilepage ||
-      props.user.public !== publicprofile
+      props.user.public !== publicprofile ||
+      props.user.hideface !== hideface
     )
       submitData();
   });
@@ -231,7 +233,7 @@ const Me = (props) => {
                   checked={hideface}
                   checkmarkType={STYLE_TYPE.toggle_round}
                   labelPlacement={LABEL_PLACEMENT.right}
-                  onChange={() => setHideface(!publicprofile)}
+                  onChange={() => setHideface(!hideface)}
                 >
                   Please (try) to blur my face on any images I upload.
                 </Checkbox>
@@ -392,6 +394,11 @@ const Me = (props) => {
 
 export async function getServerSideProps(context) {
   const session = await getSession(context);
+  if (!session) {
+    context.res.writeHead(302, { Location: `/` });
+    context.res.end();
+  }
+
   const res = await fetch(`${process.env.HOST}/api/user`, {
     method: "GET",
     headers: {

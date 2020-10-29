@@ -51,6 +51,16 @@ const Feed = (props) => {
     }
   };
 
+  const AuthWithInstagram = async () => {
+    const appid = `${process.env.INSTAGRAM_CLIENT_ID || "325074402038126"}`;
+    const uri = `${process.env.HOST}/api/auth/insta`;
+    const scope = `user_profile,user_media`;
+
+    const url = `https://api.instagram.com/oauth/authorize?client_id=${appid}&redirect_uri=${uri}&scope=${scope}&response_type=code`;
+
+    window.open(url);
+  };
+
   const uploadFiles = async (files) => {
     setIsUploading(true);
     const url = "https://api.cloudinary.com/v1_1/stupidsystems/image/upload";
@@ -164,21 +174,27 @@ const Feed = (props) => {
 
         {!props.user.instagramlong && (
           <div className="alert">
+            <p className="small">
+              <a className="auth" onClick={AuthWithInstagram}>
+                <img src={`/img/instagram.png`} />
+              </a>
+            </p>
             <p>
               To make the best use of Stupidfits, we suggest connecting your
               instagram. It'll let you pull in posts easily and sync them with
               your closet.
             </p>
             <p>
-              There are additional privacy settings as well to control your
-              public profile and how your posts show up on our feed.
+              There are additional privacy settings to control your public
+              profile and how your posts show up on our feed.
             </p>
+
             <p>
               Visit your{" "}
               <Link href="/me">
                 <a>Settings Page</a>
               </Link>{" "}
-              to sync your instagram
+              to access those controls.
             </p>
           </div>
         )}
@@ -237,6 +253,21 @@ const Feed = (props) => {
 
         p {
           margin: 1rem auto;
+        }
+
+        p.small {
+          max-width: 600px;
+        }
+
+        .auth img {
+          max-width: 20rem;
+          width: 100%;
+          transition: all 0.4s;
+        }
+        .auth img:hover {
+          -webkit-filter: invert(1);
+          filter: invert(1);
+          background: black;
         }
 
         .post {

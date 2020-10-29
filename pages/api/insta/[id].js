@@ -69,7 +69,8 @@ async function handlePOST(req, res) {
   if (!req.body.children) {
     const uploadpath = req.body.media_url;
     const cloudurl = await cloudinary.uploader.upload(uploadpath, {
-      public_id: `stupidfits/instagram/${req.body.id}`,
+      folder: "stupidfits/instagram/",
+      public_id: c.id,
     });
     MediaArray.push({
       insta_id: req.body.id,
@@ -85,7 +86,8 @@ async function handlePOST(req, res) {
       const uploadpath = c.media_url;
       const cloudurl = await cloudinary.uploader
         .upload(uploadpath, {
-          public_id: `stupidfits/instagram/${c.id}`,
+          folder: "stupidfits/instagram/",
+          public_id: c.id,
         })
         .catch((e) => console.log("Error uploading", e));
 
@@ -93,7 +95,8 @@ async function handlePOST(req, res) {
       if (user.hideFace) {
         hideface = await cloudinary.uploader
           .upload(uploadpath, {
-            public_id: `stupidfits/instagram/${c.id}`,
+            folder: "stupidfits/hideface/",
+            public_id: c.id,
           })
           .catch((e) => console.log("Error uploading", e));
       }
