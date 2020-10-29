@@ -5,7 +5,10 @@ const prisma = new PrismaClient();
 
 export default async function handle(req, res) {
   const session = await getSession({ req });
-  if (!session) res.json(null);
+  if (!session || (session && !session.user)) {
+    res.status(400).json(null);
+    res.end();
+  }
   if (req.method === "GET") {
     handleGET(req, res);
   } else if (req.method === "POST") {
