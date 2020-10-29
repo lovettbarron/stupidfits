@@ -8,11 +8,13 @@ import { useSession, getSession } from "next-auth/client";
 import { Checkbox, LABEL_PLACEMENT, STYLE_TYPE } from "baseui/checkbox";
 import { Button, SIZE } from "baseui/button";
 import Mod from "../../components/Mod";
+import { Tabs, Tab, FILL } from "baseui/tabs-motion";
 
 const Admin = (props) => {
   const [session, loading] = useSession();
   const [terminal, setTerminal] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [activeKey, setActiveKey] = React.useState("0");
 
   const syncCloudinary = async () => {
     setIsLoading(true);
@@ -42,29 +44,66 @@ const Admin = (props) => {
               <Link href="/admin/migrate">
                 <a>Go to Migrations</a>
               </Link>
-              {props.reported && (
-                <>
-                  <h2>Reported</h2>
-                  {(props.reported &&
-                    props.reported.map((f) => <Mod key={f.id} {...f} />)) || (
-                    <p>Alllll doneeee!</p>
-                  )}
-                  <hr />
-                </>
-              )}
-              <h2>Pending</h2>
-              {(props.pending &&
-                props.pending.map((f) => <Mod key={f.id} {...f} />)) || (
-                <p>Alllll doneeee!</p>
-              )}
+              <Tabs
+                activeKey={activeKey}
+                fill={FILL.fixed}
+                onChange={({ activeKey }) => {
+                  setActiveKey(activeKey);
+                }}
+                activateOnFocus
+              >
+                <Tab title="Pending">
+                  <>
+                    {props.reported && props.reported.length > 0 && (
+                      <>
+                        <h2>Reported</h2>
+                        <div className="items">
+                          {(props.reported &&
+                            props.reported.map((f) => (
+                              <Mod key={f.id} {...f} />
+                            ))) || <p>Alllll doneeee!</p>}
+                        </div>
+                        <hr />
+                      </>
+                    )}
+                    <h2>Pending</h2>
+                    <div className="items">
+                      {(props.pending &&
+                        props.pending.map((f) => (
+                          <Mod key={f.id} {...f} />
+                        ))) || <p>Alllll doneeee!</p>}
+                    </div>
+                  </>
+                </Tab>
+                <Tab title="Active">
+                  <h2>Featured</h2>
+                  <div className="items">
+                    {(props.featured &&
+                      props.featured.map((f) => <Mod key={f.id} {...f} />)) || (
+                      <p>Alllll doneeee!</p>
+                    )}
+                  </div>
+                  <h2>Public</h2>
+                  <div className="items">
+                    {(props.public &&
+                      props.public.map((f) => <Mod key={f.id} {...f} />)) || (
+                      <p>Alllll doneeee!</p>
+                    )}
+                  </div>
+                </Tab>
+              </Tabs>
             </div>
             <style jsx>{`
               .page {
                 padding: 1rem;
 
-                max-width: 600px;
                 justify-content: center;
                 align-items: center;
+              }
+
+              .items {
+                display: flex;
+                flex-wrap: wrap;
               }
 
               .console ul {
@@ -160,7 +199,13 @@ export async function getServerSideProps(context) {
     }
   }
   return {
-    props: { r: true, pending: fits.pending, reported: fits.reported },
+    props: {
+      r: true,
+      pending: fits.pending,
+      reported: fits.reported,
+      public: fits.public,
+      featured: fits.featured,
+    },
   };
 }
 export default Admin;

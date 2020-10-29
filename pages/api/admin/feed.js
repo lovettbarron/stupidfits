@@ -30,14 +30,43 @@ export default async function handle(req, res) {
       },
     });
 
-    res.json({ pending, reported });
+    const pp = await prisma.fit.findMany({
+      where: {
+        status: Status.PUBLIC,
+      },
+      include: {
+        media: true,
+        user: true,
+        components: { include: { brand: true } },
+      },
+    });
+
+    const featured = await prisma.fit.findMany({
+      where: {
+        status: Status.FEATURED,
+      },
+      include: {
+        media: true,
+        user: true,
+        components: { include: { brand: true } },
+      },
+    });
+
+    res.json({ pending, reported, public: pp, featured });
   } else if (req.method === "POST") {
+    const stat =
+      req.body.status === "PUBLIC"
+        ? Status.PUBLIC
+        : req.body.status === "FEATURED"
+        ? Status.FEATURED
+        : Status.PENDING;
+    console.log("Setting status", req.body.id, stat);
     const update = await prisma.fit.update({
       where: {
-        id: req.query.id,
+        id: Number(req.body.id),
       },
       data: {
-        status: req.body.status,
+        status: stat,
       },
     });
     res.json(update);

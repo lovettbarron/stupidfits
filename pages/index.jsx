@@ -55,7 +55,7 @@ const Main = (props) => {
                 </div>
               </div>
 
-              <p>
+              <p className="center small">
                 Checkout some of{" "}
                 <Link href="/u/stupidfits">
                   <a>my posts</a>
@@ -91,11 +91,15 @@ const Main = (props) => {
             </>
           )}
 
-          <h3>Your recent fits</h3>
+          <h3>
+            {(session && session.user && "Your recent fits") ||
+              "Recent Featured Fits"}
+          </h3>
           <main>
             {props.feed &&
               Array.isArray(props.feed) &&
               props.feed
+                .filter((f) => f.status === "FEATURED")
                 .sort((a, b) => {
                   return b.media[0].timestamp - a.media[0].timestamp;
                 })
@@ -150,6 +154,10 @@ const Main = (props) => {
             .col {
               width: 100%;
             }
+          }
+
+          p.center {
+            margin: 0 auto;
           }
 
           footer ul {

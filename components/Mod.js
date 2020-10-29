@@ -4,20 +4,20 @@ import Router, { useRouter } from "next/router";
 import { useSession } from "next-auth/client";
 import Anatomy from "./Anatomy";
 import Image from "./Image";
+import { Button } from "baseui/button";
 
 const Mod = (props) => {
   const router = useRouter();
   const [session, loading] = useSession();
   const [fit, setFit] = useState(props);
+  const [changed, setChanged] = useState(false);
 
   // console.log("Fit?", props.fit);
-  const addFit = async (e) => {
-    e.preventDefault();
-    console.log("Adding fit", `${process.env.HOST}/api/admin/feed/`);
+  const approve = async (status) => {
     try {
       const body = {
         id: props.id,
-        status: props.username,
+        status: status,
       };
 
       const res = await fetch(`${process.env.HOST}/api/admin/feed/`, {
@@ -27,14 +27,11 @@ const Mod = (props) => {
       });
       const data = await res.json();
 
-      if (data) setFit(null);
+      if (data.id === props.id) setFit(null);
+      else console.log("Something went wrong");
     } catch (error) {
       console.error(error);
     }
-  };
-
-  const editFit = async (e) => {
-    Router.push(`/fit/${props.fit.id}`);
   };
 
   useEffect(() => {
@@ -54,9 +51,24 @@ const Mod = (props) => {
         <br />
         <h3>{props.status}</h3>
 
-        {!fit && <button onClick={makePublic}>Add Fit</button>}
-
-        {fit && <button onClick={editFit}>Edit Fit</button>}
+        <Button
+          disabled={props.status === "PUBLIC"}
+          onClick={() => approve("PUBLIC")}
+        >
+          Approve
+        </Button>
+        <Button
+          disabled={props.status === "FEATURED"}
+          onClick={() => approve("FEATURED")}
+        >
+          Feature
+        </Button>
+        <Button
+          disabled={props.status === "PENDING"}
+          onClick={() => approve("PENDING")}
+        >
+          Pending
+        </Button>
       </div>
 
       <style jsx>{`
