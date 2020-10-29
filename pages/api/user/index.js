@@ -5,10 +5,7 @@ const prisma = new PrismaClient();
 
 export default async function handle(req, res) {
   const session = await getSession({ req });
-  if (!session || (session && !session.user)) {
-    res.status(400).json(null);
-    res.end();
-  }
+
   if (req.method === "GET") {
     handleGET(req, res);
   } else if (req.method === "POST") {
@@ -25,26 +22,26 @@ export default async function handle(req, res) {
 // GET /api/user/:id
 async function handleGET(req, res) {
   const session = await getSession({ req });
-  console.log("/user Session", session);
   if (!session || (session && !session.user)) {
     res.status(400).json(null);
-    res.end();
+  } else {
+    const user = await prisma.user
+      .findOne({
+        where: { email: session.user.email },
+      })
+      .finally(async () => {
+        await prisma.$disconnect();
+      });
+    // console.log("Fetched user", user);
+    res.json(user);
   }
-  const user = await prisma.user
-    .findOne({
-      where: { email: session.user.email },
-    })
-    .finally(async () => {
-      await prisma.$disconnect();
-    });
-  // console.log("Fetched user", user);
-  res.json(user);
 }
 
 // POST /api/user/:id
 async function handlePOST(req, res) {
   const session = await getSession({ req });
   console.log("Update", session.user.email, req.body);
+  if (!session) return;
   const user = await prisma.user
     .update({
       where: { email: session.user.email },
