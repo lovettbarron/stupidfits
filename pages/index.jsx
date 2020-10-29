@@ -7,6 +7,7 @@ import FitBox from "../components/FitBox";
 import Link from "next/link";
 import { useSession, signin, signout } from "next-auth/client";
 import { extractHostname } from "../components/Clicker";
+import { Button } from "baseui/button";
 
 const Main = (props) => {
   const [session, loading] = useSession();
@@ -76,6 +77,13 @@ const Main = (props) => {
                     <a>
                       {extractHostname(process.env.HOST)}
                       /u/{props.user.username}
+                    </a>
+                  </Link>
+                  <br />
+                  <br />
+                  <Link href="/feed">
+                    <a>
+                      <Button>Add New Fits</Button>
                     </a>
                   </Link>
                 </p>

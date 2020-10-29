@@ -5,17 +5,20 @@ const prisma = new PrismaClient();
 
 export default async function handle(req, res) {
   const session = await getSession({ req });
-
-  if (req.method === "GET") {
-    handleGET(req, res);
-  } else if (req.method === "POST") {
-    handlePOST(req, res);
-  } else if (req.method === "DELETE") {
-    handleDELETE(req, res);
-  } else {
-    throw new Error(
-      `The HTTP ${req.method} method is not supported at this route.`
-    );
+  try {
+    if (req.method === "GET") {
+      handleGET(req, res);
+    } else if (req.method === "POST") {
+      handlePOST(req, res);
+    } else if (req.method === "DELETE") {
+      handleDELETE(req, res);
+    } else {
+      throw new Error(
+        `The HTTP ${req.method} method is not supported at this route.`
+      );
+    }
+  } catch (e) {
+    console.log("Error /user", e);
   }
 }
 

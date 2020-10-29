@@ -35,6 +35,7 @@ const Blog = (props) => {
               return b.media[0].timestamp - a.media[0].timestamp;
             })
             .filter((f) => ["FEATURED", "PUBLIC"].includes(f.status))
+            .filter((f) => f.components.length > 0)
             .map((fit) => (
               <FitBox key={fit.id} {...fit} fit={fit.id} />
             ))}

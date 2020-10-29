@@ -57,11 +57,13 @@ model User {
   instagramrefresh DateTime?
   public           Boolean   @default(true)
   profilepage      Boolean   @default(true)
+  hideface         Boolean   @default(false)
   defaultStatus    Status    @default(value: PENDING)
   url              String?
   urllabel         String?
   style            String?
   description      String?
+
 
 
 
@@ -91,6 +93,8 @@ model Media {
   timestamp   Int
   image       String?
   cloudinary  String   @default("")
+  export      String?
+  censor      String?
   url         String?
   description String
   fit         Fit?     @relation("MediaRelationship", fields: [fitId], references: [id])
