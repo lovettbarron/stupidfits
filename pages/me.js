@@ -25,6 +25,7 @@ const Me = (props) => {
   const [username, setUsername] = useState(props.user.username);
   const [publicprofile, setPublicprofile] = useState(props.user.public);
   const [profilepage, setProfilepage] = useState(props.user.profilepage);
+  const [hideface, setHideface] = useState(props.user.hideface);
   const [instagramData, setInstagramData] = useState("");
   const [uploadSuccess, setUploadSuccess] = useState(false);
   const [uploadError, setUploadError] = useState(false);
@@ -225,7 +226,19 @@ const Me = (props) => {
             <div className="grid">
               <div className="col">
                 {" "}
-                <h2>Sharing Your Fits</h2>
+                <h2>Privacy & Sharing</h2>
+                <Checkbox
+                  checked={hideface}
+                  checkmarkType={STYLE_TYPE.toggle_round}
+                  labelPlacement={LABEL_PLACEMENT.right}
+                  onChange={() => setHideface(!publicprofile)}
+                >
+                  Please (try) to blur my face on any images I upload.
+                </Checkbox>
+                <p className="small">
+                  Just a note that this feature is experimental and might become
+                  paid in the future. It only applies to uploads going further.
+                </p>
                 <Checkbox
                   checked={publicprofile}
                   checkmarkType={STYLE_TYPE.toggle_round}
