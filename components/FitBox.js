@@ -92,7 +92,7 @@ Details at stupidfits.com/f/${props.id}
     <>
       <div className="fitbox">
         <div className="mediawrap">
-          <Image url={props.imageUrl} media={props.media} />
+          <Image url={props.imageUrl} media={props.media} user={props.user} />
         </div>
         <div className="components">
           <div className="description">

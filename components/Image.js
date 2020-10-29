@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import { Image } from "cloudinary-react";
+import { Image, Transformation } from "cloudinary-react";
 import {
   CarouselProvider,
   Slider,
@@ -14,7 +14,7 @@ import "pure-react-carousel/dist/react-carousel.es.css";
 
 import { ArrowLeft, ArrowRight } from "baseui/icon";
 
-const Pic = ({ media, url }) => {
+const Pic = ({ media, url, user }) => {
   const handleDragStart = (e) => e.preventDefault();
 
   const mediaArray =
@@ -22,11 +22,13 @@ const Pic = ({ media, url }) => {
     media.map((m) => (
       <Image
         cloudName={process.env.CLOUDINARY_CLOUD_NAME || "stupidsystems"}
-        publicId={m.cloudinary}
+        publicId={m.cloudinary} // {m.censor || m.cloudinary}
         style={{ width: "100%" }}
         secure={true}
         onDragStart={handleDragStart}
-      />
+      >
+        {user.hideface && <Transformation effect="pixelate_faces:15" />}
+      </Image>
     ));
 
   return (
@@ -79,11 +81,13 @@ const Pic = ({ media, url }) => {
         )) || (
           <Image
             cloudName={process.env.CLOUDINARY_CLOUD_NAME || "stupidsystems"}
-            publicId={media[0].cloudinary}
+            publicId={media[0].cloudinary} // {media[0].censor || media[0].cloudinary}
             style={{ width: "100%" }}
             secure={true}
             onDragStart={handleDragStart}
-          />
+          >
+            {user.hideface && <Transformation effect="pixelate_faces:15" />}
+          </Image>
         )}
       </div>
       <style jsx>{`
