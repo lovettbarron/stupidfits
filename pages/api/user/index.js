@@ -26,6 +26,10 @@ export default async function handle(req, res) {
 async function handleGET(req, res) {
   const session = await getSession({ req });
   console.log("/user Session", session);
+  if (!session || (session && !session.user)) {
+    res.status(400).json(null);
+    res.end();
+  }
   const user = await prisma.user
     .findOne({
       where: { email: session.user.email },
