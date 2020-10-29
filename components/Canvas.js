@@ -192,39 +192,6 @@ const Canvas = (props) => {
       ctx.rect(220, 80, 360, 640);
     };
 
-    const saveSVG= () => {
-      // Remove overlay image
-      canvas.current.overlayImage = null;
-      canvas.current.renderAll.bind(canvas.current);
-      // Remove canvas.current clipping so export the image
-      canvas.current.clipTo = null;
-      // Export the canvas.current to dataurl at 3 times the size and crop to the active area
-      const imgData = canvas.current.toDataURL({
-        format: "png",
-        quality: 1,
-        multiplier: 3,
-        left: 0,
-        top: 0,
-        width: props.p.w / 3,
-        height: props.p.h / 3,
-      });
-
-      const strDataURI = imgData.substr(22, imgData.length);
-
-      const blob = dataURLtoBlob(imgData);
-
-      const objurl = URL.createObjectURL(blob);
-      const link = document.getElementById("saveimage");
-      link.download = `stupidfits-${props.p.label.replace(" ", "-")}-${
-        props.id
-      }.png`;
-      link.href = objurl;
-
-      // Reset the clipping path to what it was
-      canvas.current.clipTo = function (ctx) {
-        ctx.rect(220, 80, 360, 640);
-      };
-
     canvas.current.renderAll();
   };
 
