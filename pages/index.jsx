@@ -56,11 +56,11 @@ const Main = (props) => {
               </div>
 
               <p className="center small">
-                Checkout some of{" "}
+                Checkout{" "}
                 <Link href="/u/stupidfits">
-                  <a>my posts</a>
+                  <a>my public profile</a>
                 </Link>{" "}
-                below to get started.
+                or the featured fits below to get started.
               </p>
               <hr />
             </>

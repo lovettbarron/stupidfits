@@ -8,49 +8,65 @@ export default async function handle(req, res) {
   if (session.user.email !== "alb@andrewlb.com") res.status(401).json("");
 
   if (req.method === "GET") {
-    const pending = await prisma.fit.findMany({
-      where: {
-        status: Status.PENDING,
-      },
-      include: {
-        media: true,
-        user: true,
-        components: { include: { brand: true } },
-      },
-    });
+    const pending = await prisma.fit
+      .findMany({
+        where: {
+          status: Status.PENDING,
+        },
+        include: {
+          media: true,
+          user: true,
+          components: { include: { brand: true } },
+        },
+      })
+      .finally(async () => {
+        await prisma.$disconnect();
+      });
 
-    const reported = await prisma.fit.findMany({
-      where: {
-        status: Status.REPORTED,
-      },
-      include: {
-        media: true,
-        user: true,
-        components: { include: { brand: true } },
-      },
-    });
+    const reported = await prisma.fit
+      .findMany({
+        where: {
+          status: Status.REPORTED,
+        },
+        include: {
+          media: true,
+          user: true,
+          components: { include: { brand: true } },
+        },
+      })
+      .finally(async () => {
+        await prisma.$disconnect();
+      });
 
-    const pp = await prisma.fit.findMany({
-      where: {
-        status: Status.PUBLIC,
-      },
-      include: {
-        media: true,
-        user: true,
-        components: { include: { brand: true } },
-      },
-    });
+    const pp = await prisma.fit
+      .findMany({
+        where: {
+          status: Status.PUBLIC,
+        },
+        include: {
+          media: true,
+          user: true,
+          components: { include: { brand: true } },
+        },
+      })
+      .finally(async () => {
+        await prisma.$disconnect();
+      });
 
-    const featured = await prisma.fit.findMany({
-      where: {
-        status: Status.FEATURED,
-      },
-      include: {
-        media: true,
-        user: true,
-        components: { include: { brand: true } },
-      },
-    });
+    const featured = await prisma.fit
+      .findMany({
+        where: {
+          status: Status.FEATURED,
+        },
+        include: {
+          media: true,
+          user: true,
+          components: { include: { brand: true } },
+        },
+      })
+      .finally(async () => {
+        await prisma.$disconnect();
+      });
 
     res.json({ pending, reported, public: pp, featured });
   } else if (req.method === "POST") {
@@ -61,14 +77,18 @@ export default async function handle(req, res) {
         ? Status.FEATURED
         : Status.PENDING;
     console.log("Setting status", req.body.id, stat);
-    const update = await prisma.fit.update({
-      where: {
-        id: Number(req.body.id),
-      },
-      data: {
-        status: stat,
-      },
-    });
+    const update = await prisma.fit
+      .update({
+        where: {
+          id: Number(req.body.id),
+        },
+        data: {
+          status: stat,
+        },
+      })
+      .finally(async () => {
+        await prisma.$disconnect();
+      });
     res.json(update);
   } else if (req.method === "DELETE") {
     console.log("Nothing there yet");
