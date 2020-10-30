@@ -98,7 +98,6 @@ const Anatomy = (props) => {
           </>
         )}
       </div>
-      <style jsx>{``}</style>
     </WithComments>
   );
 };
