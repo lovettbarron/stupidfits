@@ -70,19 +70,19 @@ async function handlePOST(req, res) {
     const uploadpath = req.body.media_url;
     const cloudurl = await cloudinary.uploader.upload(uploadpath, {
       folder: "stupidfits/instagram/",
-      public_id: c.id,
+      public_id: req.body.id,
     });
 
     let hideface = null;
-    if (user.hideface) {
-      hideface = await cloudinary.uploader
-        .upload(uploadpath, {
-          folder: "stupidfits/hideface/",
-          public_id: c.id,
-          effect: "pixelate_faces:15",
-        })
-        .catch((e) => console.log("Error uploading", e));
-    }
+    // if (user.hideface) {
+    //   hideface = await cloudinary.uploader
+    //     .upload(uploadpath, {
+    //       folder: "stupidfits/hideface/",
+    //       public_id: c.id,
+    //       effect: "pixelate_faces:15",
+    //     })
+    //     .catch((e) => console.log("Error uploading", e));
+    // }
 
     MediaArray.push({
       insta_id: req.body.id,
@@ -105,15 +105,15 @@ async function handlePOST(req, res) {
         .catch((e) => console.log("Error uploading", e));
 
       let hideface = null;
-      if (user.hideface) {
-        hideface = await cloudinary.uploader
-          .upload(uploadpath, {
-            folder: "stupidfits/hideface/",
-            public_id: c.id,
-            effect: "pixelate_faces:15",
-          })
-          .catch((e) => console.log("Error uploading", e));
-      }
+      // if (user.hideface) {
+      //   hideface = await cloudinary.uploader
+      //     .upload(uploadpath, {
+      //       folder: "stupidfits/hideface/",
+      //       public_id: c.id,
+      //       effect: "pixelate_faces:15",
+      //     })
+      //     .catch((e) => console.log("Error uploading", e));
+      // }
 
       MediaArray.push({
         insta_id: c.id,
