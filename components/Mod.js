@@ -46,7 +46,7 @@ const Mod = (props) => {
 
       <div className={fit && `description`}>
         <div>
-          <Link href={props.fit.permalink || props.fit.media[0].url}>
+          <Link href={fit.permalink || fit.media[0].url}>
             <a>Post Link</a>
           </Link>
         </div>
