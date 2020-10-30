@@ -189,11 +189,15 @@ const UserProfile = (props) => {
                       </a>
                     )}
                   </p>
-                  <p>
-                    <a href={`https://instagram.com/${props.insta.instagram}`}>
-                      IG: @{props.insta.instagram}
-                    </a>
-                  </p>
+                  {props.insta.instagram && (
+                    <p>
+                      <a
+                        href={`https://instagram.com/${props.insta.instagram}`}
+                      >
+                        IG: @{props.insta.instagram}
+                      </a>
+                    </p>
+                  )}
                 </div>
               </div>
             </div>
