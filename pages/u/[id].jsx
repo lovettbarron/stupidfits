@@ -38,13 +38,15 @@ const UserProfile = (props) => {
   const seourl =
     (getTopFit &&
       `https://res.cloudinary.com/stupidsystems/image/upload/${
-        getTopFit && getTopFit.media[0].cloudinary
-      }.png`) ||
+        props.insta.hideface && `e_pixelate_faces:15/`
+      }${getTopFit && getTopFit.media[0].cloudinary}.png`) ||
     "https://stupidfits.com/img/appicon.png";
 
   const seourlfb =
     (getTopFit &&
-      `https://res.cloudinary.com/stupidsystems/image/upload/b_rgb:151515,c_lpad,h_630,w_1200/${
+      `https://res.cloudinary.com/stupidsystems/image/upload/b_rgb:151515,${
+        props.insta.hideface && `e_pixelate_faces:15,`
+      }c_lpad,h_630,w_1200/${
         getTopFit && getTopFit.media[0].cloudinary
       }.png`) ||
     "https://stupidfits.com/img/appicon.png";

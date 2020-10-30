@@ -35,12 +35,16 @@ const Fit = (props) => {
 
   const seourl =
     (props.media[0].cloudinary &&
-      `https://res.cloudinary.com/stupidsystems/image/upload/${props.media[0].cloudinary}.png`) ||
+      `https://res.cloudinary.com/stupidsystems/image/${
+        props.user.hideface && `e_pixelate_faces:15/`
+      }upload/${props.media[0].cloudinary}.png`) ||
     "";
 
   const seourlfb =
     (props.media[0].cloudinary &&
-      `https://res.cloudinary.com/stupidsystems/image/upload/b_rgb:151515,c_lpad,h_630,w_1200/${props.media[0].cloudinary}.png`) ||
+      `https://res.cloudinary.com/stupidsystems/image/upload/b_rgb:151515,${
+        props.user.hideface && `e_pixelate_faces:15,`
+      }c_lpad,h_630,w_1200/${props.media[0].cloudinary}.png`) ||
     "";
 
   return (

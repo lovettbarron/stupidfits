@@ -85,7 +85,7 @@ const CommentBox = (props) => {
                 value={comment}
                 onChange={(e) => setComment(e.target.value)}
                 size={SIZE.mini}
-                placeholder="Controlled Input"
+                placeholder="Add a comment"
                 clearOnEscape
               />
               <Button
