@@ -51,7 +51,8 @@ const Main = (props) => {
                       </a>
                       , lists, etc.
                     </li>
-                    <li>Private or Public, you decide.</li>
+                    <li>Private or public, you decide.</li>
+                    <li>Option to Auto-hide faces</li>
                   </ol>
                 </div>
               </div>
