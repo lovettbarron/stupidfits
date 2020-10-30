@@ -46,8 +46,8 @@ const Mod = (props) => {
 
       <div className={fit && `description`}>
         <div>
-          <Link href={fit.permalink || fit.media[0].url}>
-            <a>Post Link</a>
+          <Link href={`/f/${props.id}`}>
+            <a>Permalink</a>
           </Link>
         </div>
         <br />
