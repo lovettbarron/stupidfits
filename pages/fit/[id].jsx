@@ -122,7 +122,7 @@ const Fit = (props) => {
                 }))
               }
               value={components}
-              isLoading={!items}
+              isLoading={newItemLoad || !items}
               multi
               type={TYPE.search}
               closeOnSelect
@@ -191,7 +191,7 @@ const Fit = (props) => {
             <ModalBody>
               {isOpen && (
                 <CreateItem
-                  handler={() => {
+                  handler={(data) => {
                     setNewItemLoad(true);
                     setIsOpen();
                     fetchItems();
