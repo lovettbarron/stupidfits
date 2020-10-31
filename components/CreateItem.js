@@ -103,13 +103,11 @@ const CreateItem = (props) => {
       <div className="page">
         <form>
           {" "}
-          //onSubmit={submitData}>
           <label>
             <h3>What is it?</h3>
 
             <StatefulButtonGroup
               mode={MODE.radio}
-              initialState={{ selected: type }}
               overrides={{
                 Root: {
                   style: {
@@ -220,6 +218,7 @@ const CreateItem = (props) => {
           display: flex;
           justify-content: center;
           align-items: center;
+          z-index: 1;
         }
 
         form > * {
