@@ -3,7 +3,7 @@ import fetch from "isomorphic-unfetch";
 import Layout from "../../components/Layout";
 import Router from "next/router";
 import Link from "next/link";
-import { Select } from "baseui/select";
+import { Select, TYPE } from "baseui/select";
 import FitBox from "../../components/FitBox";
 import CreateItem from "../../components/CreateItem";
 import { getSession, useSession } from "next-auth/client";
@@ -35,7 +35,8 @@ const Fit = (props) => {
     props.components && itemToOptions(props.components)
   );
 
-  const [isOpen, setIsOpen] = React.useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [newItemLoad, setNewItemLoad] = useState(false);
 
   const submitData = async (e) => {
     e.preventDefault();
@@ -78,6 +79,7 @@ const Fit = (props) => {
       setItems(it);
       setComponents(components.concat(itemToOptions(diff)));
       console.log("Components after refresh!", components);
+      setNewItemLoad(false);
     } catch (e) {
       console.log("error:", e.message);
     }
@@ -122,6 +124,7 @@ const Fit = (props) => {
               value={components}
               isLoading={!items}
               multi
+              type={TYPE.search}
               closeOnSelect
               clearable={false}
               placeholder="Fit Anatomy"
@@ -189,6 +192,7 @@ const Fit = (props) => {
               {isOpen && (
                 <CreateItem
                   handler={() => {
+                    setNewItemLoad(true);
                     setIsOpen();
                     fetchItems();
                   }}

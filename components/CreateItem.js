@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import fetch from "isomorphic-unfetch";
 import Link from "next/link";
-import { Select } from "baseui/select";
+import { Select, TYPE } from "baseui/select";
 import { Input } from "baseui/input";
 import { StatefulButtonGroup, MODE } from "baseui/button-group";
 import { Button } from "baseui/button";
@@ -32,7 +32,8 @@ const CreateItem = (props) => {
   const [year, setYear] = useState("");
   const [photo, setPhoto] = useState("");
   const [type, setType] = React.useState(props.type || "");
-  const [errorMessage, setErrorMessage] = React.useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [itemSaveLoading, setItemSaveLoading] = useState(false);
 
   const [brandList, setBrandList] = useState([]);
 
@@ -49,6 +50,7 @@ const CreateItem = (props) => {
 
   const submitData = async (e) => {
     e.preventDefault();
+    setItemSaveLoading(true);
     try {
       const body = { brand, model, year, type, sale };
       const res = await fetch(`${process.env.HOST}/api/item`, {
@@ -66,6 +68,7 @@ const CreateItem = (props) => {
       }
     } catch (error) {
       console.error(error);
+      setItemSaveLoading(false);
     }
   };
 
@@ -98,7 +101,9 @@ const CreateItem = (props) => {
   return (
     <>
       <div className="page">
-        <form onSubmit={submitData}>
+        <form>
+          {" "}
+          //onSubmit={submitData}>
           <label>
             <h3>What is it?</h3>
 
@@ -141,6 +146,7 @@ const CreateItem = (props) => {
               isLoading={!brandList}
               multi
               required
+              type={TYPE.search}
               placeholder="Brand"
               onChange={(params) => setBrand(params.value)}
             />
@@ -182,7 +188,6 @@ const CreateItem = (props) => {
           </label>
           <br />
           {/* <h3>Upload a photo (doesn't work yet)</h3> */}
-
           {/* <FileUploader
             errorMessage={errorMessage}
             disabled
@@ -194,13 +199,15 @@ const CreateItem = (props) => {
             }}
           /> */}
           {photo && <img src={data.url} />}
-          <button
+          <Button
+            onClick={submitData}
+            isLoading={itemSaveLoading}
             disabled={!brand || !model || !type}
             type="submit"
             value="model"
           >
             Save Item
-          </button>
+          </Button>
           <br />
           <Link href="/closet">
             <a>or return to Closet</a>

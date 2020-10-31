@@ -35,13 +35,13 @@ const Main = (props) => {
                 </div>
                 <div className="col">
                   <ol>
-                    <li>Sync Fits from Instagram or Upload directly.</li>
+                    <li>Sync fit pics from Instagram or Upload directly.</li>
                     <li>
-                      Quickly Link fits with your wardrobe (and build a digital
-                      closet over time)
+                      Quickly link outfits with your wardrobe (and build a
+                      digital closet over time)
                     </li>
                     <li>
-                      Easily export and Share fits as{" "}
+                      Easily export and Share outfits as{" "}
                       <a href="/export.png" target="_blank">
                         images
                       </a>
