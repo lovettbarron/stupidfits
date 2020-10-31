@@ -7,6 +7,7 @@ import { Select, TYPE } from "baseui/select";
 import FitBox from "../../components/FitBox";
 import CreateItem from "../../components/CreateItem";
 import { getSession, useSession } from "next-auth/client";
+import { Button } from "baseui/button";
 
 import {
   Modal,
@@ -37,9 +38,11 @@ const Fit = (props) => {
 
   const [isOpen, setIsOpen] = useState(false);
   const [newItemLoad, setNewItemLoad] = useState(false);
+  const [updateLoading, setUpdateLoading] = useState(false);
 
   const submitData = async (e) => {
     e.preventDefault();
+    setUpdateLoading(true);
     console.log("Submitting data");
     try {
       const body = { desc, components };
@@ -162,13 +165,14 @@ const Fit = (props) => {
               rows={8}
               value={desc}
             />
-            <button
+            <Button
               disabled={!components || components.length < 1}
               type="submit"
+              isLoading={updateLoading}
               onClick={submitData}
             >
               Update Fit
-            </button>
+            </Button>
             <Link href="/feed">
               <a>or Cancel</a>
             </Link>
@@ -180,10 +184,11 @@ const Fit = (props) => {
               fetchItems();
             }}
             closeable
+            autoFocus
             focusLock
             isOpen={isOpen}
             animate
-            autoFocus
+            unstable_ModalBackdropScroll
             size={SIZE.default}
             role={ROLE.dialog}
           >

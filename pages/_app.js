@@ -74,18 +74,18 @@ function App({ Component, pageProps, router }) {
         options={{ site: process.env.HOST }}
         session={pageProps.session}
       >
-        <Transition location={router.pathname}>
-          <StyletronProvider value={styletron} debugAfterHydration>
-            <BaseProvider theme={DarkTheme}>
+        <StyletronProvider value={styletron} debugAfterHydration>
+          <BaseProvider theme={DarkTheme}>
+            <Transition location={router.pathname}>
               <Header />
               <Component
                 {...pageProps}
                 url={process.env.HOST}
                 key={router.route}
               />
-            </BaseProvider>
-          </StyletronProvider>
-        </Transition>
+            </Transition>
+          </BaseProvider>
+        </StyletronProvider>
       </Provider>
     </>
   );
