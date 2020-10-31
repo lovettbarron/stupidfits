@@ -3,15 +3,18 @@ import Link from "next/link";
 import Router, { useRouter } from "next/router";
 import { useSession } from "next-auth/client";
 import Anatomy from "./Anatomy";
+import { Button } from "baseui/button";
 
 const Gram = (props) => {
   const router = useRouter();
   const [session, loading] = useSession();
   const [fit, setFit] = useState(props.fit);
+  const [saveLoading, setSaveLoading] = useState(false);
 
   // console.log("Fit?", props.fit);
   const addFit = async (e) => {
     e.preventDefault();
+    setSaveLoading(true);
     console.log("Adding fit", `${process.env.HOST}/api/insta/${props.id}`);
     try {
       const body = {
@@ -34,6 +37,7 @@ const Gram = (props) => {
       if (data) Router.push(`/fit/${data.id}`);
     } catch (error) {
       console.error(error);
+      setLoading(false);
     }
   };
 
@@ -47,8 +51,8 @@ const Gram = (props) => {
     return () => {};
   }, [session]);
 
-  if (props.media_type === "CAROUSEL_ALBUM")
-    console.log("Returning carousel", props.children);
+  // if (props.media_type === "CAROUSEL_ALBUM")
+  //   console.log("Returning carousel", props.children);
 
   return (
     <div className="fitbox">
@@ -63,9 +67,17 @@ const Gram = (props) => {
         </div>
         <br />
 
-        {!fit && <button onClick={addFit}>Add Fit</button>}
+        {!fit && (
+          <Button isLoading={saveLoading} onClick={addFit}>
+            Add Fit
+          </Button>
+        )}
 
-        {fit && <button onClick={editFit}>Edit Fit</button>}
+        {fit && (
+          <Button loading={saveLoading} onClick={editFit}>
+            Edit Fit
+          </Button>
+        )}
 
         <div className="components">
           {props.components && (
