@@ -198,7 +198,7 @@ const Fit = (props) => {
                 <CreateItem
                   handler={(data) => {
                     setNewItemLoad(true);
-                    setIsOpen();
+                    setIsOpen(false);
                     fetchItems();
                   }}
                 />

@@ -211,6 +211,7 @@ Details at stupidfits.com/f/${props.id}
 
         .components {
           font-size: 1rem;
+          height: 100%;
         }
 
         .des {
@@ -218,6 +219,12 @@ Details at stupidfits.com/f/${props.id}
           font-size: 1.2rem;
           border: 1px solid #151515;
           border-width: 2px 0 0 0;
+          text-align: center;
+          background: #2b2b2b;
+          min-height: 100px;
+          position: absolute;
+          bottom: 0;
+          width: 100%;
         }
 
         img {

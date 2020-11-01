@@ -102,7 +102,6 @@ const CreateItem = (props) => {
     <>
       <div className="page">
         <form>
-          {" "}
           <label>
             <h3>What is it?</h3>
 
@@ -198,7 +197,11 @@ const CreateItem = (props) => {
           /> */}
           {photo && <img src={data.url} />}
           <Button
-            onClick={submitData}
+            onClick={(e) => {
+              e.preventDefault();
+              if (!brand || !model || !type) return null;
+              else submitData(e);
+            }}
             isLoading={itemSaveLoading}
             disabled={!brand || !model || !type}
             type="submit"
