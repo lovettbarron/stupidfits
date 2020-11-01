@@ -19,7 +19,7 @@ export const Cap = (brand) => {
 const WithComments = (props) => {
   const [activeKey, setActiveKey] = React.useState("0");
 
-  // if (props.disable) return <>{props.children}</>;
+  if (props.disable) return <div>{props.children}</div>;
   return (
     <Tabs
       activeKey={activeKey}
