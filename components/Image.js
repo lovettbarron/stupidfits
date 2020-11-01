@@ -32,14 +32,19 @@ const MediaHolder = (props) => (
         position: relative;
       }
 
-      .mediaholder > * {
+
+      .layermap {
+        position: absolute;
+        top: 0; left; bottom: 0; right: 0;
+        width: 100%; height: 100%;
         transition: opacity 0.4s;
         opacity: 1;
       }
 
-      .mediaholder:hover > * {
-        opacity: 0;
-      }
+
+    .layermap:hover {
+      opacity: 0;
+    }
     `}</style>
   </div>
 );
@@ -168,25 +173,12 @@ const Pic = ({ media, url, user }) => {
           height: 100%;
           position: relative;
           opacity: 1;
-          transition: opacity .4s ;
+          transition: opacity 0.4s;
         }
 
         .holder:hover .mediaholder {
-          opacity: 0
+          opacity: 0;
         }
-
-        .layermap {
-          position: absolute;
-          top: 0; left; bottom: 0; right: 0;
-          width: 100%; height: 100%;
-          transition: opacity 0.4s;
-          opacity: 1;
-        }
-
-
-      .layermap:hover {
-        opacity: 0;
-      }
       `}</style>
     </>
   );
