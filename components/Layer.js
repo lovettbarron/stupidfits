@@ -25,7 +25,7 @@ const Layer = (props) => {
       <div className="header">{`${Cap(props.item.brand.name)} ${
         props.item.model
       }`}</div>
-      <div className="overlay">Desc goes here</div>
+
       <style jsx>{`
         .tag {
           margin: 0;
