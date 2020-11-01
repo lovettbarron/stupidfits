@@ -220,8 +220,6 @@ Details at stupidfits.com/f/${props.id}
           border: 1px solid #151515;
           border-width: 2px 0 0 0;
           text-align: center;
-          background: #2b2b2b;
-          min-height: 100px;
         }
 
         img {
