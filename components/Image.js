@@ -17,21 +17,27 @@ import { ArrowLeft, ArrowRight } from "baseui/icon";
 
 const MediaHolder = (props) => (
   <div className="mediaholder">
-    {props.children}
+    {props.m && props.m.layers && props.m.layers.length > 0 && (
+      <div className="layermap">
+        {props.m.layers.map((l) => (
+          <Layer {...l} />
+        ))}
+      </div>
+    )}
+    <>{props.children}</>
     <style jsx>{`
       .mediaholder {
         width: 100%;
         height: 100%;
         position: relative;
-
-        transition: opacity 0.4s;
       }
 
-      .mediaholder > div {
+      .mediaholder > * {
+        transition: opacity 0.4s;
         opacity: 1;
       }
 
-      .mediaholder:hover > div {
+      .mediaholder:hover > * {
         opacity: 0;
       }
     `}</style>
@@ -44,14 +50,7 @@ const Pic = ({ media, url, user }) => {
   const mediaArray =
     Array.isArray(media) &&
     media.map((m) => (
-      <MediaHolder>
-        {m && m.layers && m.layers.length > 0 && (
-          <div className="layermap">
-            {m.layers.map((l) => (
-              <Layer {...l} />
-            ))}
-          </div>
-        )}
+      <MediaHolder m={m}>
         <Image
           cloudName={process.env.CLOUDINARY_CLOUD_NAME || "stupidsystems"}
           publicId={m.cloudinary} // {m.censor || m.cloudinary}
@@ -112,14 +111,7 @@ const Pic = ({ media, url, user }) => {
             </div> */}
           </CarouselProvider>
         )) || (
-          <MediaHolder>
-            {media[0].layers && media[0].layers.length > 0 && (
-              <div className="layermap">
-                {media[0].layers.map((l) => (
-                  <Layer {...l} />
-                ))}
-              </div>
-            )}
+          <MediaHolder m={[media[0]]}>
             <Image
               cloudName={process.env.CLOUDINARY_CLOUD_NAME || "stupidsystems"}
               publicId={media[0].cloudinary} // {media[0].censor || media[0].cloudinary}
@@ -187,7 +179,14 @@ const Pic = ({ media, url, user }) => {
           position: absolute;
           top: 0; left; bottom: 0; right: 0;
           width: 100%; height: 100%;
+          transition: opacity 0.4s;
+          opacity: 1;
         }
+
+
+      .layermap:hover {
+        opacity: 0;
+      }
       `}</style>
     </>
   );

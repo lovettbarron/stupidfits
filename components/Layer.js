@@ -29,8 +29,9 @@ const Layer = (props) => {
       <style jsx>{`
         .tag {
           margin: 0;
-          padding: 1rem;
+          padding: 0.5rem;
           background: #151515;
+          opacity: 0.8;
           color: #ffffff;
           max-width: 30%;
           position: absolute;
