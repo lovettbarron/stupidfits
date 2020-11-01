@@ -68,8 +68,9 @@ model User {
 
 
 
-  Comment Comment[]
-  Media   Media[]   @relation("UserMediaRelationship")
+  Comment   Comment[]
+  Media     Media[]     @relation("UserMediaRelationship")
+  ItemLayer ItemLayer[] @relation("ItemLayer")
   @@map(name: "users")
 }
 
@@ -96,6 +97,7 @@ model Media {
   export      String?
   censor      String?
   url         String?
+  svg         String?
   description String
   fit         Fit?     @relation("MediaRelationship", fields: [fitId], references: [id])
   fitId       Int?
@@ -116,7 +118,6 @@ model Fit {
   status     Status    @default(value: PENDING)
   Comment    Comment[]
   style      Style[]
-
 }
 
 model Closet {
@@ -138,12 +139,12 @@ model Brand {
 }
 
 model Item {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now()) @map(name: "created_at")
-  updatedAt DateTime @default(now()) @map(name: "updated_at")
+  id        Int         @id @default(autoincrement())
+  createdAt DateTime    @default(now()) @map(name: "created_at")
+  updatedAt DateTime    @default(now()) @map(name: "updated_at")
   type      ItemType
   photo     String?
-  brand     Brand    @relation(fields: [brandId], references: [id])
+  brand     Brand       @relation(fields: [brandId], references: [id])
   model     String
   year      Int?
   size      String?
@@ -151,14 +152,15 @@ model Item {
   sale      String?
   archive   Boolean?
   repair    Boolean?
-  closet    Closet[] @relation("ClosetContent", fields: [closetId], references: [id])
+  closet    Closet[]    @relation("ClosetContent", fields: [closetId], references: [id])
   closetId  Int?
-  fit       Fit[]    @relation("FitComponent", fields: [fitId], references: [id])
+  fit       Fit[]       @relation("FitComponent", fields: [fitId], references: [id])
   fitId     Int?
-  user      User?    @relation("ItemRelation", fields: [userId], references: [id])
+  user      User?       @relation("ItemRelation", fields: [userId], references: [id])
   userId    Int?
-  Closet    Closet?  @relation("ClosetGrails", fields: [closetId], references: [id])
+  Closet    Closet?     @relation("ClosetGrails", fields: [closetId], references: [id])
   brandId   Int
+  ItemLayer ItemLayer[] @relation("ItemLayer")
 }
 
 model Comment {
@@ -181,6 +183,15 @@ model Style {
   updatedAt   DateTime @default(now()) @map(name: "updated_at")
   fit         Fit[]    @relation(fields: [fitId], references: [id])
   fitId       Int?
+}
+
+model ItemLayer {
+  id     Int   @id @default(autoincrement())
+  item   Item? @relation("ItemLayer", fields: [itemId], references: [id])
+  itemId Int?
+  x      Float
+  y      Float
+  r      Float
 }
 
 enum ItemType {

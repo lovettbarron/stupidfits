@@ -84,12 +84,14 @@ const Canvas = (props) => {
   const addLogo = () => {
     // Load text onto canvas.current
     const height = props.p.h / 3;
+    const w = 360;
+    const woff = props.p.w / 3 / 2 - w / 2;
     const textbox = new fabric.Textbox(
       `stupidfits.com/f/${props.id}\nstupidfits.com/u/${props.user.username}`,
       {
-        left: 0,
+        left: woff,
         top: height - 30,
-        width: 360,
+        width: w,
         fontSize: 12,
         fill: "#fff",
         textBackgroundColor: "#151515",
@@ -199,6 +201,42 @@ const Canvas = (props) => {
     canvas.current.renderAll();
   };
 
+  const saveSVG = () => {
+    // Remove overlay image
+    canvas.current.overlayImage = null;
+    canvas.current.renderAll.bind(canvas.current);
+    // Remove canvas.current clipping so export the image
+    canvas.current.clipTo = null;
+    // Export the canvas.current to dataurl at 3 times the size and crop to the active area
+    const imgData = canvas.current.toDataURL({
+      format: "png",
+      quality: 1,
+      multiplier: 3,
+      left: 0,
+      top: 0,
+      width: props.p.w / 3,
+      height: props.p.h / 3,
+    });
+
+    const strDataURI = imgData.substr(22, imgData.length);
+
+    const blob = dataURLtoBlob(imgData);
+
+    const objurl = URL.createObjectURL(blob);
+    const link = document.getElementById("saveimage");
+    link.download = `stupidfits-${props.p.label.replace(" ", "-")}-${
+      props.id
+    }.png`;
+    link.href = objurl;
+
+    // Reset the clipping path to what it was
+    canvas.current.clipTo = function (ctx) {
+      ctx.rect(220, 80, 360, 640);
+    };
+
+    canvas.current.renderAll();
+  };
+
   useEffect(() => {
     console.log("Killing prev canvas.current");
     canvas.current && canvas.current.dispose();
@@ -227,7 +265,10 @@ const Canvas = (props) => {
     <>
       <div className="save">
         <a id="saveimage" onClick={saveImage}>
-          <Button>Save Image</Button>
+          <Button>Export Image</Button>
+        </a>
+        <a id="savesvg" onClick={saveSVG}>
+          <Button>Save Layout</Button>
         </a>
       </div>
       <canvas
