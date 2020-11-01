@@ -101,7 +101,7 @@ const CreateItem = (props) => {
   return (
     <>
       <div className="page">
-        <form>
+        <div className="form">
           <label>
             <h3>What is it?</h3>
 
@@ -213,7 +213,7 @@ const CreateItem = (props) => {
           <Link href="/closet">
             <a>or return to Closet</a>
           </Link>
-        </form>
+        </div>
       </div>
       <style jsx>{`
         .page {
@@ -224,7 +224,7 @@ const CreateItem = (props) => {
           z-index: 1;
         }
 
-        form > * {
+        .form > * {
           margin: 0.5rem 0;
         }
 

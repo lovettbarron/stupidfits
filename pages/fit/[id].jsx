@@ -107,6 +107,7 @@ const Fit = (props) => {
             <h1>Describe your fit</h1>
             <FitBox
               {...props}
+              edit={true}
               nocomment={true}
               components={
                 items &&

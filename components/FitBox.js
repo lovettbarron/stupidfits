@@ -120,7 +120,7 @@ Details at stupidfits.com/f/${props.id}
           </div>
           <br />
 
-          {session && session.user.email === props.user.email && (
+          {session && session.user.email === props.user.email && !props.edit && (
             <div className="btns">
               <br />
               <button onClick={editFit}>Edit Fit</button>
@@ -222,9 +222,6 @@ Details at stupidfits.com/f/${props.id}
           text-align: center;
           background: #2b2b2b;
           min-height: 100px;
-          position: absolute;
-          bottom: 0;
-          width: 100%;
         }
 
         img {
