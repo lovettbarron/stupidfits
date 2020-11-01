@@ -2,10 +2,13 @@ import React, { useEffect, useState, useRef, useCallback } from "react";
 import { fabric } from "fabric";
 import { Cap } from "./Anatomy";
 import { Button } from "baseui/button";
+import fetch from "isomorphic-unfetch";
+import Router, { useRouter } from "next/router";
 
 const Canvas = (props) => {
   const [value, setValue] = useState("1");
   const [type, setType] = useState("LAND");
+  const [loadingLayout, setLoadingLayout] = useState(false);
   // const [canvas, setCanvas] = useState(false);
   const canvasDom = useRef();
   let canvas = useRef(); // useRef(null);
@@ -57,12 +60,12 @@ const Canvas = (props) => {
     );
   };
 
-  const addElement = (text, iter) => {
+  const addElement = (text, iter, id) => {
     // Load text onto canvas.current
     const height = props.p.h / 3;
     const offset = (iter / props.components.length) * height;
     const textbox = new fabric.Textbox(Formatted(text, value), {
-      id: "text" + iter,
+      id: "text" + id, //iter
       left: 0,
       top: offset,
       width: 150,
@@ -201,40 +204,54 @@ const Canvas = (props) => {
     canvas.current.renderAll();
   };
 
-  const saveSVG = () => {
+  const saveSVG = async () => {
     // Remove overlay image
-    canvas.current.overlayImage = null;
-    canvas.current.renderAll.bind(canvas.current);
-    // Remove canvas.current clipping so export the image
-    canvas.current.clipTo = null;
-    // Export the canvas.current to dataurl at 3 times the size and crop to the active area
-    const imgData = canvas.current.toDataURL({
-      format: "png",
-      quality: 1,
-      multiplier: 3,
-      left: 0,
-      top: 0,
-      width: props.p.w / 3,
-      height: props.p.h / 3,
+    setLoadingLayout(true);
+
+    const objs = canvas.current.getObjects();
+    const layers = [];
+    objs.forEach((o) => {
+      if (!o.id) return null;
+      else if (o.id && !!(String(o.id).indexOf("text") >= 0)) {
+        const id = o.id.split("text")[1];
+        const exist =
+          props.layers && props.layers.find((l) => l.item.id === id);
+        // console.log(o);
+        layers.push({
+          id: exist ? exist.id : -1,
+          x: o.left / (props.p.w / 3),
+          y: o.top / (props.p.h / 3),
+          r: 0,
+          item: Number(id),
+          media: props.image.id,
+        });
+      }
     });
 
-    const strDataURI = imgData.substr(22, imgData.length);
+    try {
+      const body = { layers: layers };
+      const res = await fetch(
+        `${process.env.HOST}/api/export/${props.image.id}`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body),
+        }
+      );
+      try {
+        const data = await res.json();
+      } catch (e) {
+        console.log("error:", e.message);
+        setLoadingLayout(false);
+      }
+      await Router.push(`/f/${props.id}`);
+      setLoadingLayout(false);
+    } catch (error) {
+      console.error(error);
+      setLoadingLayout(false);
+    }
 
-    const blob = dataURLtoBlob(imgData);
-
-    const objurl = URL.createObjectURL(blob);
-    const link = document.getElementById("saveimage");
-    link.download = `stupidfits-${props.p.label.replace(" ", "-")}-${
-      props.id
-    }.png`;
-    link.href = objurl;
-
-    // Reset the clipping path to what it was
-    canvas.current.clipTo = function (ctx) {
-      ctx.rect(220, 80, 360, 640);
-    };
-
-    canvas.current.renderAll();
+    console.log(layers);
   };
 
   useEffect(() => {
@@ -252,7 +269,7 @@ const Canvas = (props) => {
 
       props.components &&
         props.components.map((c) => {
-          addElement(c, text_iter);
+          addElement(c, text_iter, c.id);
         });
     }, 200);
     // }
@@ -268,7 +285,7 @@ const Canvas = (props) => {
           <Button>Export Image</Button>
         </a>
         <a id="savesvg" onClick={saveSVG}>
-          <Button>Save Layout</Button>
+          <Button isLoading={loadingLayout}>Save Layout</Button>
         </a>
       </div>
       <canvas

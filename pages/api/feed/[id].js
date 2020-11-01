@@ -12,7 +12,18 @@ export const FeedByUserId = async (id) => {
         },
       },
       include: {
-        media: true,
+        media: {
+          include: {
+            layers: {
+              include: {
+                item: {
+                  include: { brand: true },
+                },
+                media: true,
+              },
+            },
+          },
+        },
         user: true,
         components: { include: { brand: true } },
       },
@@ -33,7 +44,18 @@ export const FeedBySession = async (session) => {
         },
       },
       include: {
-        media: true,
+        media: {
+          include: {
+            layers: {
+              include: {
+                item: {
+                  include: { brand: true },
+                },
+                media: true,
+              },
+            },
+          },
+        },
         user: true,
         components: { include: { brand: true } },
       },

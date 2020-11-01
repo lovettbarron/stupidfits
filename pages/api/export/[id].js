@@ -46,7 +46,8 @@ async function handleGET(req, res) {
   res.json((post && post.find((p) => p.media[0].insta_id === id)) || false);
 }
 
-// POST /api/post/:id
+// POST /api/export/:id
+// ID is media id
 async function handlePOST(req, res) {
   const session = await getSession({ req });
   const id = req.query.id;
@@ -58,14 +59,33 @@ async function handlePOST(req, res) {
     },
   });
 
-  const media = await prisma.fit.update({
+  const layers = req.body.layers.map((l) => ({
     where: {
-      id: id,
+      id: l.id,
+    },
+    create: {
+      x: l.x,
+      y: l.y,
+      r: l.r,
+      item: {
+        connect: {
+          id: l.item,
+        },
+      },
+    },
+  }));
+
+  const media = await prisma.media.update({
+    where: {
+      id: Number(id),
     },
     data: {
-      svg: req.body.svg,
+      layers: {
+        connectOrCreate: layers,
+      },
     },
   });
+
   res.json(media);
 }
 

@@ -27,7 +27,18 @@ async function handleGET(req, res) {
     .findOne({
       where: { id: Number(id) },
       include: {
-        media: true,
+        media: {
+          include: {
+            layers: {
+              include: {
+                item: {
+                  include: { brand: true },
+                },
+                media: true,
+              },
+            },
+          },
+        },
         user: true,
         components: { include: { brand: true } },
       },

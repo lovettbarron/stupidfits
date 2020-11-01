@@ -11,8 +11,32 @@ import {
   CarouselContext,
 } from "pure-react-carousel";
 import "pure-react-carousel/dist/react-carousel.es.css";
+import Layer from "./Layer";
 
 import { ArrowLeft, ArrowRight } from "baseui/icon";
+
+const MediaHolder = (props) => (
+  <div className="mediaholder">
+    {props.children}
+    <style jsx>{`
+      .mediaholder {
+        width: 100%;
+        height: 100%;
+        position: relative;
+
+        transition: opacity 0.4s;
+      }
+
+      .mediaholder > div {
+        opacity: 1;
+      }
+
+      .mediaholder:hover > div {
+        opacity: 0;
+      }
+    `}</style>
+  </div>
+);
 
 const Pic = ({ media, url, user }) => {
   const handleDragStart = (e) => e.preventDefault();
@@ -20,15 +44,24 @@ const Pic = ({ media, url, user }) => {
   const mediaArray =
     Array.isArray(media) &&
     media.map((m) => (
-      <Image
-        cloudName={process.env.CLOUDINARY_CLOUD_NAME || "stupidsystems"}
-        publicId={m.cloudinary} // {m.censor || m.cloudinary}
-        style={{ width: "100%" }}
-        secure={true}
-        onDragStart={handleDragStart}
-      >
-        {user.hideface && <Transformation effect="pixelate_faces:15" />}
-      </Image>
+      <MediaHolder>
+        {m && m.layers && m.layers.length > 0 && (
+          <div className="layermap">
+            {m.layers.map((l) => (
+              <Layer {...l} />
+            ))}
+          </div>
+        )}
+        <Image
+          cloudName={process.env.CLOUDINARY_CLOUD_NAME || "stupidsystems"}
+          publicId={m.cloudinary} // {m.censor || m.cloudinary}
+          style={{ width: "100%" }}
+          secure={true}
+          onDragStart={handleDragStart}
+        >
+          {user.hideface && <Transformation effect="pixelate_faces:15" />}
+        </Image>
+      </MediaHolder>
     ));
 
   return (
@@ -79,15 +112,24 @@ const Pic = ({ media, url, user }) => {
             </div> */}
           </CarouselProvider>
         )) || (
-          <Image
-            cloudName={process.env.CLOUDINARY_CLOUD_NAME || "stupidsystems"}
-            publicId={media[0].cloudinary} // {media[0].censor || media[0].cloudinary}
-            style={{ width: "100%" }}
-            secure={true}
-            onDragStart={handleDragStart}
-          >
-            {user.hideface && <Transformation effect="pixelate_faces:15" />}
-          </Image>
+          <MediaHolder>
+            {media[0].layers && media[0].layers.length > 0 && (
+              <div className="layermap">
+                {media[0].layers.map((l) => (
+                  <Layer {...l} />
+                ))}
+              </div>
+            )}
+            <Image
+              cloudName={process.env.CLOUDINARY_CLOUD_NAME || "stupidsystems"}
+              publicId={media[0].cloudinary} // {media[0].censor || media[0].cloudinary}
+              style={{ width: "100%" }}
+              secure={true}
+              onDragStart={handleDragStart}
+            >
+              {user.hideface && <Transformation effect="pixelate_faces:15" />}
+            </Image>
+          </MediaHolder>
         )}
       </div>
       <style jsx>{`
@@ -127,6 +169,24 @@ const Pic = ({ media, url, user }) => {
         .holder img {
           width: 100%;
           min-height: 4rem;
+        }
+
+        .mediaholder {
+          width: 100%;
+          height: 100%;
+          position: relative;
+          opacity: 1;
+          transition: opacity .4s ;
+        }
+
+        .holder:hover .mediaholder {
+          opacity: 0
+        }
+
+        .layermap {
+          position: absolute;
+          top: 0; left; bottom: 0; right: 0;
+          width: 100%; height: 100%;
         }
       `}</style>
     </>

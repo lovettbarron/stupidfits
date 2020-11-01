@@ -5,7 +5,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url = "***"
 }
 
 model Account {
@@ -194,6 +194,7 @@ model ItemLayer {
   x       Float
   y       Float
   r       Float
+
 }
 
 enum ItemType {

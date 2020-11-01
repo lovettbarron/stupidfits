@@ -14,7 +14,18 @@ export default async function handle(req, res) {
         },
       },
       include: {
-        media: true,
+        media: {
+          include: {
+            layers: {
+              include: {
+                item: {
+                  include: { brand: true },
+                },
+                media: true,
+              },
+            },
+          },
+        },
         user: true,
         components: { include: { brand: true } },
       },
