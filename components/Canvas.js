@@ -249,7 +249,10 @@ const Canvas = (props) => {
         console.log("error:", e.message);
         setLoadingLayout(false);
       }
-      await Router.push(`/f/${props.id}`);
+      if (props.handler) {
+        props.handler(data);
+      }
+      // await Router.push(`/f/${props.id}`);
       setLoadingLayout(false);
     } catch (error) {
       console.error(error);

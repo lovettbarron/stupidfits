@@ -88,11 +88,12 @@ const Pic = ({ media, fit, url, user, edit, components }) => {
 
   const [isOpen, setIsOpen] = useState(false);
   const [index, setIndex] = useState(0);
+  const [medi, setMedi] = useState(media[0]);
   const ref = useRef();
 
   const mediaArray =
-    Array.isArray(media) &&
-    media.map((m) => (
+    Array.isArray(medi) &&
+    medi.map((m) => (
       <MediaHolder media={m} edit={edit} setIsOpen={setIsOpen}>
         <Image
           cloudName={process.env.CLOUDINARY_CLOUD_NAME || "stupidsystems"}
@@ -109,9 +110,9 @@ const Pic = ({ media, fit, url, user, edit, components }) => {
   return (
     <>
       <div className="holder">
-        {(media.length > 1 && (
+        {(medi.length > 1 && (
           <CarouselProvider
-            totalSlides={media.length}
+            totalSlides={medi.length}
             visibleSlides={1}
             step={1}
             isIntrinsicHeight={true}
@@ -131,11 +132,11 @@ const Pic = ({ media, fit, url, user, edit, components }) => {
 
               <ButtonNext
                 onClick={() => setIndex(index + 1)}
-                disabled={index >= media.length - 1}
+                disabled={index >= medi.length - 1}
                 className="navbutton"
                 style={{ border: 0 }}
               >
-                {index < media.length - 1 && <ArrowRight size={42} />}
+                {index < medi.length - 1 && <ArrowRight size={42} />}
               </ButtonNext>
             </div>
             <Slider>
@@ -164,19 +165,17 @@ const Pic = ({ media, fit, url, user, edit, components }) => {
             </div> */}
           </CarouselProvider>
         )) || (
-          <MediaHolder media={media[0]} edit={edit} setIsOpen={setIsOpen}>
+          <MediaHolder media={medi} edit={edit} setIsOpen={setIsOpen}>
             {edit && (
               <div className="edit">
                 <Button className="edit" onClick={() => setIsOpen(true)}>
-                  {media.find((m) => m.layers.length > 0)
-                    ? `Edit Layout`
-                    : `Add Layout`}
+                  {medi.layers.length > 0 ? `Edit Layout` : `Add Layout`}
                 </Button>
               </div>
             )}
             <Image
               cloudName={process.env.CLOUDINARY_CLOUD_NAME || "stupidsystems"}
-              publicId={media[0].cloudinary} // {media[0].censor || media[0].cloudinary}
+              publicId={medi.cloudinary} // {media[0].censor || media[0].cloudinary}
               style={{ width: "100%" }}
               secure={true}
               onDragStart={handleDragStart}
@@ -221,9 +220,13 @@ const Pic = ({ media, fit, url, user, edit, components }) => {
                     ylock: true,
                     xlock: true,
                   }}
-                  image={media[index]}
-                  layers={media[index].layers}
+                  image={medi}
+                  layers={medi.layers}
                   user={user}
+                  handler={(m) => {
+                    setMedi(m);
+                    setIsOpen(false);
+                  }}
                 />
               </div>
             )}

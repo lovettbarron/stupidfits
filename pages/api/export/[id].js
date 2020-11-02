@@ -84,6 +84,16 @@ async function handlePOST(req, res) {
         connectOrCreate: layers,
       },
     },
+    include: {
+      layers: {
+        include: {
+          item: {
+            include: { brand: true },
+          },
+          media: true,
+        },
+      },
+    },
   });
 
   res.json(media);
