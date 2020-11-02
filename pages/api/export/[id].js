@@ -75,6 +75,25 @@ async function handlePOST(req, res) {
     },
   }));
 
+  for (const l of req.body.layers) {
+    if (l.id < 0) continue;
+    await prisma.itemLayer.update({
+      where: {
+        id: l.id,
+      },
+      data: {
+        x: l.x,
+        y: l.y,
+        r: l.r,
+        item: {
+          connect: {
+            id: l.item,
+          },
+        },
+      },
+    });
+  }
+
   const media = await prisma.media.update({
     where: {
       id: Number(id),
@@ -95,6 +114,8 @@ async function handlePOST(req, res) {
       },
     },
   });
+
+  console.log(media);
 
   res.json(media);
 }

@@ -16,7 +16,6 @@ const Canvas = (props) => {
   let text_iter = 0;
 
   const Formatted = (c, v) => {
-    console.log("Value", v);
     switch (v) {
       case "1":
         return `${Cap(c.brand.name)} ${c.model}`;
@@ -65,28 +64,36 @@ const Canvas = (props) => {
     const height = props.p.h / props.p.m;
     const offset = (iter / props.components.length) * height;
     const exist = props.layers && props.layers.find((l) => l.item.id === id);
-    console.log("Exists?", exist, props.layers, id);
+    // console.log("Exists?", exist, props.layers, id);
 
     const s = { x: props.p.w / props.p.m, y: props.p.h / props.p.m };
 
-    const textbox = new fabric.Textbox(Formatted(text, value), {
-      id: "text" + id, //iter
-      left: (exist && exist.x * s.x) || 0,
-      top: (exist && exist.y * s.y) || offset,
-      width: 150,
-      fontSize: 14,
-      fill: "#fff",
-      textBackgroundColor: "#151515",
-      fontFamily: "Apercu",
-      fontWeight: 800,
-      textAlign: "center",
-      cornerSize: 12,
-      transparentCorners: false,
-    });
-    canvas.current.add(textbox);
-    canvas.current.bringToFront(textbox);
-    console.log("Added", Formatted(text, value), iter, offset);
-    text_iter += 1;
+    console.log("Adding", id, text.model, !!exist);
+
+    const objs = canvas.current.getObjects();
+    const cancel = objs.find((o) => o.id === "text" + id);
+    if (cancel) {
+      console.log("Already exists");
+    } else {
+      const textbox = new fabric.Textbox(Formatted(text, value), {
+        id: "text" + id, //iter
+        left: (exist && exist.x * s.x) || 0,
+        top: (exist && exist.y * s.y) || offset,
+        width: 150,
+        fontSize: 14,
+        fill: "#fff",
+        textBackgroundColor: "#151515",
+        fontFamily: "Apercu",
+        fontWeight: 800,
+        textAlign: "center",
+        cornerSize: 12,
+        transparentCorners: false,
+      });
+      canvas.current.add(textbox);
+      canvas.current.bringToFront(textbox);
+      console.log("Added", Formatted(text, value), iter, offset);
+      text_iter += 1;
+    }
   };
 
   const addLogo = () => {
@@ -220,7 +227,8 @@ const Canvas = (props) => {
       else if (o.id && !!(String(o.id).indexOf("text") >= 0)) {
         const id = o.id.split("text")[1];
         const exist =
-          props.layers && props.layers.find((l) => l.item.id === id);
+          props.layers && props.layers.find((l) => l.item.id === Number(id));
+
         // console.log(o);
         layers.push({
           id: exist ? exist.id : -1,
@@ -232,6 +240,8 @@ const Canvas = (props) => {
         });
       }
     });
+
+    console.log(layers);
 
     try {
       const body = { layers: layers };
@@ -245,15 +255,15 @@ const Canvas = (props) => {
       );
       try {
         const data = await res.json();
+        if (props.handler) {
+          props.handler(data);
+        }
+        // await Router.push(`/f/${props.id}`);
+        setLoadingLayout(false);
       } catch (e) {
         console.log("error:", e.message);
         setLoadingLayout(false);
       }
-      if (props.handler) {
-        props.handler(data);
-      }
-      // await Router.push(`/f/${props.id}`);
-      setLoadingLayout(false);
     } catch (error) {
       console.error(error);
       setLoadingLayout(false);
