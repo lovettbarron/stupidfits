@@ -89,11 +89,16 @@ const Pic = ({ media, fit, url, user, edit, components }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [index, setIndex] = useState(0);
   const [medi, setMedi] = useState(media[0]);
+  const [allMedia, setAllMedia] = useState(media);
   const ref = useRef();
 
+  useEffect(() => {
+    setMedi(allMedia[index]);
+  }, [index]);
+
   const mediaArray =
-    Array.isArray(medi) &&
-    medi.map((m) => (
+    Array.isArray(media) &&
+    media.map((m) => (
       <MediaHolder media={m} edit={edit} setIsOpen={setIsOpen}>
         <Image
           cloudName={process.env.CLOUDINARY_CLOUD_NAME || "stupidsystems"}
@@ -110,9 +115,9 @@ const Pic = ({ media, fit, url, user, edit, components }) => {
   return (
     <>
       <div className="holder">
-        {(medi.length > 1 && (
+        {(media.length > 1 && (
           <CarouselProvider
-            totalSlides={medi.length}
+            totalSlides={media.length}
             visibleSlides={1}
             step={1}
             isIntrinsicHeight={true}
@@ -132,11 +137,11 @@ const Pic = ({ media, fit, url, user, edit, components }) => {
 
               <ButtonNext
                 onClick={() => setIndex(index + 1)}
-                disabled={index >= medi.length - 1}
+                disabled={index >= media.length - 1}
                 className="navbutton"
                 style={{ border: 0 }}
               >
-                {index < medi.length - 1 && <ArrowRight size={42} />}
+                {index < media.length - 1 && <ArrowRight size={42} />}
               </ButtonNext>
             </div>
             <Slider>
@@ -225,6 +230,10 @@ const Pic = ({ media, fit, url, user, edit, components }) => {
                   user={user}
                   handler={(m) => {
                     setMedi(m);
+                    setAllMedia((allmed) => {
+                      allmed[index] = m;
+                      return [...allmed];
+                    });
                     setIsOpen(false);
                   }}
                 />
