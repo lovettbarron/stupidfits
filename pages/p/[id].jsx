@@ -99,6 +99,7 @@ const FitImage = (props) => {
                 ref={ref}
                 p={providers.find((p) => p.id === type)}
                 image={media}
+                layers={media.layers}
                 user={props.user}
               />
             </div>

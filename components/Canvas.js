@@ -64,10 +64,15 @@ const Canvas = (props) => {
     // Load text onto canvas.current
     const height = props.p.h / 3;
     const offset = (iter / props.components.length) * height;
+    const exist = props.layers && props.layers.find((l) => l.item.id === id);
+    console.log("Exists?", exist, props.layers, id);
+
+    const s = { x: props.p.w / 3, y: props.p.h / 3 };
+
     const textbox = new fabric.Textbox(Formatted(text, value), {
       id: "text" + id, //iter
-      left: 0,
-      top: offset,
+      left: (exist && exist.x * s.x) || 0,
+      top: (exist && exist.y * s.y) || offset,
       width: 150,
       fontSize: 14,
       fill: "#fff",
