@@ -116,7 +116,7 @@ const Pic = ({ media, url, user }) => {
             </div> */}
           </CarouselProvider>
         )) || (
-          <MediaHolder m={[media[0]]}>
+          <MediaHolder m={media[0]}>
             <Image
               cloudName={process.env.CLOUDINARY_CLOUD_NAME || "stupidsystems"}
               publicId={media[0].cloudinary} // {media[0].censor || media[0].cloudinary}
