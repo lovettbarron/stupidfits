@@ -16,6 +16,7 @@ export const providers = [
     w: "1600",
     h: "1920",
     s: "c_fill",
+    m: 3,
     ylock: true,
     xlock: true,
   },
@@ -25,6 +26,7 @@ export const providers = [
     w: "1920",
     h: "1600",
     s: "c_fit",
+    m: 3,
     ylock: true,
     xlock: true,
   },
@@ -34,6 +36,7 @@ export const providers = [
     w: "1080",
     h: "1960",
     s: "c_fit",
+    m: 3,
     ylock: true,
     xlock: true,
   },
@@ -43,6 +46,7 @@ export const providers = [
     w: "1200",
     h: "1200",
     s: "c_lpad",
+    m: 3,
     ylock: true,
     xlock: true,
   },
@@ -52,6 +56,7 @@ export const providers = [
     w: "1600",
     h: "1200",
     s: "c_lpad",
+    m: 3,
     ylock: true,
     xlock: true,
   },
@@ -61,6 +66,7 @@ export const providers = [
     w: "1920",
     h: "900",
     s: "c_lpad",
+    m: 3,
     ylock: true,
     xlock: true,
   },
@@ -110,7 +116,7 @@ const FitImage = (props) => {
               <ButtonGroup>
                 {props.media.map((m, i) => (
                   <Button key={i} onClick={() => setMedia(m)}>
-                    {i + 1}
+                    Image {i + 1}
                   </Button>
                 ))}
               </ButtonGroup>

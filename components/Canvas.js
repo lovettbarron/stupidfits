@@ -49,7 +49,7 @@ const Canvas = (props) => {
         img.lockMovementY = props.p.ylock;
         img.lockMovementX = props.p.xlock;
         // img.scaleToWidth(1080 / 3);
-        img.scaleToHeight(props.p.h / 3);
+        img.scaleToHeight(props.p.h / props.p.m);
         canvas.current.add(img);
         canvas.current.sendToBack(img);
       },
@@ -62,12 +62,12 @@ const Canvas = (props) => {
 
   const addElement = (text, iter, id) => {
     // Load text onto canvas.current
-    const height = props.p.h / 3;
+    const height = props.p.h / props.p.m;
     const offset = (iter / props.components.length) * height;
     const exist = props.layers && props.layers.find((l) => l.item.id === id);
     console.log("Exists?", exist, props.layers, id);
 
-    const s = { x: props.p.w / 3, y: props.p.h / 3 };
+    const s = { x: props.p.w / props.p.m, y: props.p.h / props.p.m };
 
     const textbox = new fabric.Textbox(Formatted(text, value), {
       id: "text" + id, //iter
@@ -91,9 +91,9 @@ const Canvas = (props) => {
 
   const addLogo = () => {
     // Load text onto canvas.current
-    const height = props.p.h / 3;
+    const height = props.p.h / props.p.m;
     const w = 360;
-    const woff = props.p.w / 3 / 2 - w / 2;
+    const woff = props.p.w / props.p.m / 2 - w / 2;
     const textbox = new fabric.Textbox(
       `stupidfits.com/f/${props.id}\nstupidfits.com/u/${props.user.username}`,
       {
@@ -122,8 +122,8 @@ const Canvas = (props) => {
         allowTouchScrolling: true,
       });
     canvas.current.setDimensions({ width: "100%", height: "100%" });
-    canvas.current.setWidth(props.p.w / 3);
-    canvas.current.setHeight(props.p.h / 3);
+    canvas.current.setWidth(props.p.w / props.p.m);
+    canvas.current.setHeight(props.p.h / props.p.m);
     canvas.current.backgroundColor = "rgb(21,21,21)";
     canvas.current.controlsAboveOverlay = true;
   };
@@ -186,8 +186,8 @@ const Canvas = (props) => {
       multiplier: 3,
       left: 0,
       top: 0,
-      width: props.p.w / 3,
-      height: props.p.h / 3,
+      width: props.p.w / props.p.m,
+      height: props.p.h / props.p.m,
     });
 
     const strDataURI = imgData.substr(22, imgData.length);
@@ -224,8 +224,8 @@ const Canvas = (props) => {
         // console.log(o);
         layers.push({
           id: exist ? exist.id : -1,
-          x: o.left / (props.p.w / 3),
-          y: o.top / (props.p.h / 3),
+          x: o.left / (props.p.w / props.p.m),
+          y: o.top / (props.p.h / props.p.m),
           r: 0,
           item: Number(id),
           media: props.image.id,
@@ -284,29 +284,45 @@ const Canvas = (props) => {
   }, [props]);
 
   return (
-    <>
-      <div className="save">
-        <a id="saveimage" onClick={saveImage}>
-          <Button>Export Image</Button>
-        </a>
-        <a id="savesvg" onClick={saveSVG}>
-          <Button isLoading={loadingLayout}>Save Layout</Button>
-        </a>
+    <div className="holder">
+      <div className="btn">
+        <div className="save">
+          {(!props.layout && (
+            <a id="saveimage" onClick={saveImage}>
+              <Button>Export Image</Button>
+            </a>
+          )) || (
+            <a id="savesvg" onClick={saveSVG}>
+              <Button isLoading={loadingLayout}>Save Layout</Button>
+            </a>
+          )}
+        </div>
       </div>
       <canvas
         id="c"
         ref={canvasDom}
-        width={props.p.w / 3}
-        height={props.p.h / 3}
+        width={props.p.w / props.p.m}
+        height={props.p.h / props.p.m}
         style={{ zoom: "100%" }}
       />
       <style jsx>{`
+        .holder {
+          display: flex;
+          justify-content: center;
+          flex-wrap: wrap;
+        }
+
+        .btn {
+          width: 100%;
+        }
+
         canvas {
           overflow: hidden;
+          margin: 0 auto;
           border: 1px solid #ffffff;
         }
       `}</style>
-    </>
+    </div>
   );
 };
 

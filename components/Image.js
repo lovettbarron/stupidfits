@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, useRef } from "react";
 import { Image, Transformation } from "cloudinary-react";
 import {
   CarouselProvider,
@@ -12,19 +12,38 @@ import {
 } from "pure-react-carousel";
 import "pure-react-carousel/dist/react-carousel.es.css";
 import Layer from "./Layer";
+import { Button } from "baseui/button";
+import Canvas from "./Canvas";
+
+import {
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  ModalButton,
+  SIZE,
+  ROLE,
+} from "baseui/modal";
 
 import { ArrowLeft, ArrowRight } from "baseui/icon";
 
-const MediaHolder = (props) => (
+const MediaHolder = ({ media, edit, children, setIsOpen }) => (
   <div className="mediaholder">
-    {props.m && props.m.layers && props.m.layers.length > 0 && (
+    {edit && (
+      <div className="edit">
+        <Button className="edit" onClick={() => setIsOpen(true)}>
+          {media.layers.length > 0 ? `Edit Layout` : `Add Layout`}
+        </Button>
+      </div>
+    )}
+    {media && media.layers && media.layers.length > 0 && (
       <div className="layermap">
-        {props.m.layers.map((l) => (
+        {media.layers.map((l) => (
           <Layer {...l} />
         ))}
       </div>
     )}
-    <>{props.children}</>
+    <>{children}</>
     <style jsx>{`
       .mediaholder {
         width: 100%;
@@ -45,17 +64,36 @@ const MediaHolder = (props) => (
     .layermap:hover {
       opacity: 0;
     }
+
+    .mediawrap {
+      max-width: 600px;
+      padding: 0;
+      margin: 0;
+      width: 50%;
+      position: relative;
+    }
+
+    .edit {
+      position: absolute;
+      z-index: 1;
+      top: 0.5rem;
+      right: 0.5rem;
+    }
     `}</style>
   </div>
 );
 
-const Pic = ({ media, url, user }) => {
+const Pic = ({ media, fit, url, user, edit, components }) => {
   const handleDragStart = (e) => e.preventDefault();
+
+  const [isOpen, setIsOpen] = useState(false);
+  const [index, setIndex] = useState(0);
+  const ref = useRef();
 
   const mediaArray =
     Array.isArray(media) &&
     media.map((m) => (
-      <MediaHolder m={m}>
+      <MediaHolder media={m} edit={edit} setIsOpen={setIsOpen}>
         <Image
           cloudName={process.env.CLOUDINARY_CLOUD_NAME || "stupidsystems"}
           publicId={m.cloudinary} // {m.censor || m.cloudinary}
@@ -82,12 +120,22 @@ const Pic = ({ media, url, user }) => {
             innerClassName={"carousel"}
           >
             <div className="arrows">
-              <ButtonBack className="navbutton" style={{ border: 0 }}>
-                <ArrowLeft size={42} />
+              <ButtonBack
+                onClick={() => setIndex(index - 1)}
+                disabled={index <= 0}
+                className="navbutton"
+                style={{ border: 0 }}
+              >
+                {index > 0 && <ArrowLeft size={42} />}
               </ButtonBack>
 
-              <ButtonNext className="navbutton" style={{ border: 0 }}>
-                <ArrowRight size={42} />
+              <ButtonNext
+                onClick={() => setIndex(index + 1)}
+                disabled={index >= media.length - 1}
+                className="navbutton"
+                style={{ border: 0 }}
+              >
+                {index < media.length - 1 && <ArrowRight size={42} />}
               </ButtonNext>
             </div>
             <Slider>
@@ -116,7 +164,16 @@ const Pic = ({ media, url, user }) => {
             </div> */}
           </CarouselProvider>
         )) || (
-          <MediaHolder m={media[0]}>
+          <MediaHolder media={media[0]} edit={edit} setIsOpen={setIsOpen}>
+            {edit && (
+              <div className="edit">
+                <Button className="edit" onClick={() => setIsOpen(true)}>
+                  {media.find((m) => m.layers.length > 0)
+                    ? `Edit Layout`
+                    : `Add Layout`}
+                </Button>
+              </div>
+            )}
             <Image
               cloudName={process.env.CLOUDINARY_CLOUD_NAME || "stupidsystems"}
               publicId={media[0].cloudinary} // {media[0].censor || media[0].cloudinary}
@@ -129,11 +186,70 @@ const Pic = ({ media, url, user }) => {
           </MediaHolder>
         )}
       </div>
+
+      {edit && (
+        <Modal
+          onClose={() => {
+            setIsOpen(false);
+          }}
+          closeable
+          autoFocus
+          focusLock
+          isOpen={isOpen}
+          animate
+          unstable_ModalBackdropScroll
+          size={SIZE.default}
+          role={ROLE.dialog}
+        >
+          <ModalHeader>Edit Layout</ModalHeader>
+          <ModalBody>
+            {isOpen && (
+              <div className="canvasholder">
+                <Canvas
+                  // {...props}
+                  id={fit}
+                  components={components}
+                  // ref={ref}
+                  layout={true}
+                  p={{
+                    label: "SVGLayout",
+                    id: "LAND",
+                    w: "400",
+                    h: "500",
+                    m: 1,
+                    s: "c_fill",
+                    ylock: true,
+                    xlock: true,
+                  }}
+                  image={media[index]}
+                  layers={media[index].layers}
+                  user={user}
+                />
+              </div>
+            )}
+          </ModalBody>
+        </Modal>
+      )}
       <style jsx>{`
         .holder {
           width: 100%;
           max-width: 600px;
           position: relative;
+        }
+
+        .mediawrap {
+          max-width: 600px;
+          padding: 0;
+          margin: 0;
+          width: 50%;
+          position: relative;
+        }
+
+        .edit {
+          position: absolute;
+          z-index: 1;
+          top: 0.5rem;
+          right: 0.5rem;
         }
 
         .carousel {

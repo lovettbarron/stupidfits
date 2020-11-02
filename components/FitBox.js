@@ -1,15 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import Router, { useRouter } from "next/router";
 import { useSession } from "next-auth/client";
 import Anatomy from "./Anatomy";
 import Image from "./Image";
+
 import { Cap } from "./Anatomy";
 
 const FitBox = (props) => {
   const router = useRouter();
   const [session, loading] = useSession();
   const [fit, setFit] = useState(props.fit || false);
+
+  // const hasLayers = props.media.find(m=> m.layers && m.layers.length > 0)
 
   const addFit = async (e) => {
     e.preventDefault();
@@ -92,7 +95,18 @@ Details at stupidfits.com/f/${props.id}
     <>
       <div className="fitbox">
         <div className="mediawrap">
-          <Image url={props.imageUrl} media={props.media} user={props.user} />
+          <Image
+            fit={props.id}
+            components={props.components}
+            url={props.imageUrl}
+            media={props.media}
+            user={props.user}
+            edit={
+              session && session.user.email === props.user.email && !props.edit
+                ? true
+                : false
+            }
+          />
         </div>
         <div className="components">
           <div className="description">
@@ -153,11 +167,8 @@ Details at stupidfits.com/f/${props.id}
           margin: 5px;
         }
 
-        .header {
-          width: 100%;
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
+        .canvasholder {
+          margin: 0 auto;
         }
 
         .mediawrap {
@@ -165,6 +176,13 @@ Details at stupidfits.com/f/${props.id}
           padding: 0;
           margin: 0;
           width: 50%;
+        }
+
+        .header {
+          width: 100%;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
         }
 
         .components {
