@@ -122,6 +122,20 @@ const Canvas = (props) => {
 
   // Pul all canvas.current code in a function so we can call it after google fonts have loaded
   const initCanvas = () => {
+    const order = {
+      EXTRA: 1,
+      JACKET: 2,
+      LAYER: 3,
+      SHIRT: 4,
+      BAG: 5,
+      PANT: 6,
+      SHOE: 7,
+    };
+
+    props.components.sort((a, b) => {
+      return order[a.type] - order[b.type];
+    });
+
     canvas.current =
       canvas.current ||
       new fabric.Canvas(canvasDom.current, {
