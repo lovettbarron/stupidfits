@@ -115,7 +115,7 @@ async function handlePOST(req, res) {
     },
   });
 
-  console.log(media);
+  // console.log(media);
 
   res.json(media);
 }

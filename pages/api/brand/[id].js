@@ -43,7 +43,18 @@ async function handleGET(req, res) {
             },
           },
           include: {
-            media: true,
+            media: {
+              include: {
+                layers: {
+                  include: {
+                    item: {
+                      include: { brand: true },
+                    },
+                    media: true,
+                  },
+                },
+              },
+            },
             user: true,
             components: {
               include: {
