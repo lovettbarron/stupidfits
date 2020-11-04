@@ -21,7 +21,7 @@ export default async function handle(req, res) {
     if (id) {
       posts = await prisma.item
         .findMany({
-          where: { user: { username: id } },
+          where: { user: { id: Number(id) } },
           include: { brand: true },
         })
         .finally(async () => {

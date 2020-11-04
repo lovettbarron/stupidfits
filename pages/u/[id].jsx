@@ -358,7 +358,7 @@ export const getServerSideProps = async (context) => {
   }
 
   // Get User's Items
-  const resc = await fetch(`${process.env.HOST}/api/item?id=${user.username}`, {
+  const resc = await fetch(`${process.env.HOST}/api/item?id=${user.id}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
