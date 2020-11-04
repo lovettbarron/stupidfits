@@ -83,7 +83,7 @@ const UserProfile = (props) => {
             <div className="top">
               <h1>
                 <Link href="/">
-                  <a>Stupid Fits</a>
+                  <a>{props.insta.username} on Stupid Fits</a>
                 </Link>
               </h1>
               <p>

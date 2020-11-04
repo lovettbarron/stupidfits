@@ -42,9 +42,9 @@ async function handleGET(req, res) {
       });
   } catch (e) {
     console.log("error:", e.message);
-    if (context.res) {
+    if (res) {
       res.json(comments || []);
-      context.res.end();
+      res.end();
     }
     return {};
   }
