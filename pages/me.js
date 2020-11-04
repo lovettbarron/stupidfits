@@ -215,7 +215,7 @@ const Me = (props) => {
                   placeholder="What's your story?"
                 />
                 <Button
-                  disabled={!url || !style}
+                  disabled={!email || !username}
                   type="submit"
                   value="Update"
                   onClick={submitData}
