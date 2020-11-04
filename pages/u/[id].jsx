@@ -209,6 +209,7 @@ const UserProfile = (props) => {
                 setActiveKey(activeKey);
               }}
               activateOnFocus
+              renderAll
             >
               <Tab title="Fits">
                 {" "}

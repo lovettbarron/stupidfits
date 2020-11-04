@@ -29,7 +29,6 @@ const WithComments = (props) => {
           setActiveKey(activeKey);
         }}
         activateOnFocus
-        renderAll
       >
         <Tab title="Anatomy">{props.children}</Tab>
         <Tab title="Comments">
