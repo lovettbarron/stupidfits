@@ -37,7 +37,6 @@ export default class MyDocument extends Document {
 
           <meta property="og:image:width" content="1024" />
           <meta property="og:image:height" content="1024" />
-          <meta name="viewport" content="width=device-width, initial-scale=1" />
 
           <link
             rel="apple-touch-icon-precomposed"

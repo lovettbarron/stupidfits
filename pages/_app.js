@@ -24,7 +24,6 @@ const styletron =
       });
 
 function App({ Component, pageProps, router }) {
-  const [engine, setEngine] = useState(null);
   useEffect(() => {
     // Load the `styletron-engine-atomic` package dynamically.
     // Reason: It requires use of `document`, which is not available
@@ -49,27 +48,11 @@ function App({ Component, pageProps, router }) {
   return (
     <>
       <DefaultSeo {...SEO} />
-      {/* <Head>
+      <Head>
         <title>Stupid Fits | Digital Fit Library for all your Fabrics</title>
 
-        <meta property="og:title" content="Stupid Fits" key="title" />
-        <meta property="og:url" content={process.env.HOST} key="url" />
-        <meta property="og:type" content="website" key="type" />
-        <meta
-          name="keywords"
-          content="fitpics, outfits, techwear, clueless, closet, fits"
-        />
-        <meta
-          property="og:image"
-          content="https://stupidfits.com/img/appicon.png"
-          key="mainimg"
-        />
-        <meta
-          property="og:description"
-          content="Digital Fit Library for all your Fabrics"
-          key="description"
-        />
-      </Head> */}
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+      </Head>
       <Provider
         options={{ site: process.env.HOST }}
         session={pageProps.session}

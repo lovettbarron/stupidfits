@@ -15,6 +15,7 @@ const CommentBox = (props) => {
   const addComment = async () => {
     setIsLoading(true);
     console.log("Setting comment for", props.id, comment);
+
     try {
       const body = {
         comment,
@@ -41,16 +42,26 @@ const CommentBox = (props) => {
 
   const fetchComments = async () => {
     setIsLoading(true);
-    const b = await fetch(`${process.env.HOST}/api/comment/${props.id}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    let it = [];
+    if (typeof window === "undefined") {
+      setComments([]);
+      return null;
+    }
+    try {
+      const b = await fetch(`${process.env.HOST}/api/comment/${props.id}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      let it = [];
 
-    it = await b.json();
-    setComments(it);
+      it = await b.json();
+      setComments(it);
+    } catch (error) {
+      console.error(error);
+      setComments([]);
+      setIsLoading(false);
+    }
     setIsLoading(false);
   };
 
