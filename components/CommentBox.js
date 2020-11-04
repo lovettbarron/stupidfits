@@ -122,7 +122,7 @@ const CommentBox = (props) => {
           width: 70%;
         }
       `}</style>
-    </>
+    </div>
   );
 };
 
