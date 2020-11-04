@@ -212,26 +212,28 @@ const UserProfile = (props) => {
               renderAll
             >
               <Tab title="Fits">
-                {" "}
-                {props.fits
-                  .sort((a, b) => {
-                    return b.media[0].timestamp - a.media[0].timestamp;
-                  })
-                  .map((fit) => (
-                    <FitBox
-                      key={fit.id}
-                      {...fit}
-                      username={props.insta.username}
-                    />
-                  ))}
+                <div>
+                  {props.fits
+                    .sort((a, b) => {
+                      return b.media[0].timestamp - a.media[0].timestamp;
+                    })
+                    .map((fit) => (
+                      <FitBox
+                        key={fit.id}
+                        {...fit}
+                        username={props.insta.username}
+                      />
+                    ))}
+                </div>
               </Tab>
               <Tab title="Closet">
-                {" "}
-                {props.closet && (
-                  <div className="closet">
-                    <Anatomy nocomment={true} components={props.closet} />
-                  </div>
-                )}
+                <div>
+                  {props.closet && (
+                    <div className="closet">
+                      <Anatomy nocomment={true} components={props.closet} />
+                    </div>
+                  )}
+                </div>
               </Tab>
             </Tabs>
           </main>

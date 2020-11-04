@@ -146,7 +146,8 @@ const Me = (props) => {
                   style={{ textAlign: "center" }}
                   onChange={(e) => {
                     const v = e.target.value.replace(" ", "").toLowerCase();
-                    setUsername(v);
+                    const safe = v.replace(/[^\w\s]/gi, "");
+                    setUsername(safe);
                   }}
                   placeholder="Username"
                   type="text"
