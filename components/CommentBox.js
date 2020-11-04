@@ -61,7 +61,7 @@ const CommentBox = (props) => {
   }, []);
 
   return (
-    <>
+    <div>
       <div className="commentbox">
         {(comments &&
           comments.map((c) => (

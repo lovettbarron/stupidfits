@@ -20,21 +20,23 @@ const WithComments = (props) => {
   const [activeKey, setActiveKey] = React.useState("0");
 
   if (props.disable) return <div>{props.children}</div>;
-  return (
-    <Tabs
-      activeKey={activeKey}
-      fill={FILL.fixed}
-      onChange={({ activeKey }) => {
-        setActiveKey(activeKey);
-      }}
-      activateOnFocus
-    >
-      <Tab title="Anatomy">{props.children}</Tab>
-      <Tab title="Comments">
-        <CommentBox id={props.id} />
-      </Tab>
-    </Tabs>
-  );
+  else
+    return (
+      <Tabs
+        activeKey={activeKey}
+        fill={FILL.fixed}
+        onChange={({ activeKey }) => {
+          setActiveKey(activeKey);
+        }}
+        activateOnFocus
+        renderAll
+      >
+        <Tab title="Anatomy">{props.children}</Tab>
+        <Tab title="Comments">
+          <CommentBox id={props.id} />
+        </Tab>
+      </Tabs>
+    );
 };
 
 const Filter = ({ items, filter }) => {
@@ -79,7 +81,7 @@ const Filter = ({ items, filter }) => {
 };
 
 const Anatomy = (props) => {
-  if (!props.components || props.components.length < 1) return null;
+  if (!props.components || props.components.length < 1) return <></>;
   return (
     <WithComments id={props.id} disable={props.nocomment}>
       <div>
