@@ -39,7 +39,7 @@ const MediaHolder = ({ media, edit, children, setIsOpen }) => (
     {media && media.layers && media.layers.length > 0 && (
       <div className="layermap">
         {media.layers.map((l) => (
-          <Layer {...l} />
+          <Layer key={l.id} {...l} />
         ))}
       </div>
     )}
@@ -123,7 +123,7 @@ const Pic = ({ media, fit, url, user, edit, components }) => {
             isIntrinsicHeight={true}
             // naturalSlideWidth={400}
             // naturalSlideHeight={400}
-            innerClassName={"carousel"}
+            // innerClassName={"carousel"}
           >
             <div className="arrows">
               <ButtonBack

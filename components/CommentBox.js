@@ -45,29 +45,29 @@ const CommentBox = (props) => {
     if (typeof window === "undefined") {
       setComments([]);
       return null;
-    }
-    try {
-      const b = await fetch(`${process.env.HOST}/api/comment/${props.id}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      let it = [];
+    } else {
+      try {
+        const b = await fetch(`${process.env.HOST}/api/comment/${props.id}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        let it = [];
 
-      it = await b.json();
-      setComments(it);
-    } catch (error) {
-      console.error(error);
-      setComments([]);
+        it = await b.json();
+        setComments(it);
+      } catch (error) {
+        console.error(error);
+        setComments([]);
+        setIsLoading(false);
+      }
       setIsLoading(false);
     }
-    setIsLoading(false);
   };
 
   useEffect(() => {
     if (!Array.isArray(comments)) fetchComments();
-
     return () => {};
   }, []);
 
