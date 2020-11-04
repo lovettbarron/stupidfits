@@ -23,21 +23,32 @@ export default async function handle(req, res) {
 // GET /api/post/:id
 async function handleGET(req, res) {
   const id = req.query.id;
-  const comments = await prisma.comment
-    .findMany({
-      where: {
-        fit: {
-          id: Number(id),
+  let comments = null;
+  try {
+    comments = await prisma.comment
+      .findMany({
+        where: {
+          fit: {
+            id: Number(id),
+          },
         },
-      },
-      include: {
-        fit: true,
-        user: true,
-      },
-    })
-    .finally(async () => {
-      await prisma.$disconnect();
-    });
+        include: {
+          fit: true,
+          user: true,
+        },
+      })
+      .finally(async () => {
+        await prisma.$disconnect();
+      });
+  } catch (e) {
+    console.log("error:", e.message);
+    if (context.res) {
+      res.json(comments || []);
+      context.res.end();
+    }
+    return {};
+  }
+
   res.json(comments || []);
 }
 

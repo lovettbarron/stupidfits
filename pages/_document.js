@@ -7,13 +7,9 @@ import { styletron } from "../styletron";
 export default class MyDocument extends Document {
   static async getInitialProps(ctx) {
     const initialProps = await Document.getInitialProps(ctx);
-    const page = ctx.renderPage((App) => (props) => (
-      <StyletronProvider value={styletron}>
-        <App {...props} />
-      </StyletronProvider>
-    ));
+
     const stylesheets = styletron.getStylesheets() || [];
-    return { ...page, stylesheets };
+    return { ...initialProps, stylesheets };
   }
 
   render() {
