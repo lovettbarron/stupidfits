@@ -9,6 +9,7 @@ import { Checkbox, LABEL_PLACEMENT, STYLE_TYPE } from "baseui/checkbox";
 import { Textarea } from "baseui/textarea";
 import { Input } from "baseui/input";
 import { Button } from "baseui/button";
+import { Select } from "baseui/select";
 
 const styles = [
   "Goretex Onion Knight",
@@ -16,6 +17,25 @@ const styles = [
   "Take Don't Bother",
   "Techwear House Cat",
 ];
+
+export const sizes = [
+  { id: 32, us: "XXXS" },
+  { id: 34, us: "XXS" },
+  { id: 36, us: "XS" },
+  { id: 38, us: "S" },
+  { id: 40, us: "M" },
+  { id: 42, us: "L" },
+  { id: 44, us: "XL" },
+  { id: 46, us: "XXL" },
+  { id: 48, us: "XXXL" },
+  { id: 50, us: "XXXXL" },
+  { id: 52, us: "XXXXXL" },
+];
+
+const getSizes = (trans) => {
+  const t = trans || "eu";
+  return sizes.map((s) => ({ id: s.id, label: s.id }));
+};
 
 const Me = (props) => {
   const [session, loading] = useSession();
@@ -30,6 +50,10 @@ const Me = (props) => {
   const [uploadSuccess, setUploadSuccess] = useState(false);
   const [uploadError, setUploadError] = useState(false);
   const [insta, setInsta] = useState();
+  const [gender, setGender] = useState(props.user.gender);
+  const [tags, setTags] = useState(props.tags);
+  const [topsize, setTopsize] = useState(props.user.top);
+  const [bottomsize, setBottomsize] = useState(props.user.bottom);
 
   const [url, setUrl] = useState(props.user.url);
   const [urllabel, setUrllabel] = useState(props.user.urllabel);
@@ -215,6 +239,79 @@ const Me = (props) => {
                   onChange={(e) => setDescription(e.target.value)}
                   placeholder="What's your story?"
                 />
+                <br />
+                <Button
+                  disabled={!email || !username}
+                  type="submit"
+                  value="Update"
+                  onClick={submitData}
+                >
+                  Update
+                </Button>
+              </div>
+            </div>
+
+            <div className="grid">
+              <div className="col">
+                <h2>Self Described</h2>
+                <h3>Gender</h3>
+
+                <Select
+                  options={[
+                    { label: "Male", id: "male" },
+                    { label: "Female", id: "female" },
+                    { label: "Intersex", id: "inter" },
+                    { label: "Queer", id: "queer" },
+                    { label: "Androgyne", id: "andro" },
+                    { label: "Other", id: "other" },
+                  ]}
+                  value={gender}
+                  multi
+                  placeholder="Choose your genders"
+                  onChange={(params) => setGender(params.value)}
+                />
+                <small>
+                  If you don't see yourself here, send a note to{" "}
+                  <a href="mailto:alb@stupidfits.com">alb@stupidfits.com</a> and
+                  we'll fix that.
+                </small>
+                <h3>What Styles Interest You?</h3>
+                <Select
+                  options={[]}
+                  value={tags}
+                  multi
+                  placeholder="Pick a few"
+                  onChange={(params) => setTags(params.value)}
+                />
+                <br />
+                <Button
+                  disabled={!email || !username}
+                  type="submit"
+                  value="Update"
+                  onClick={submitData}
+                >
+                  Update
+                </Button>
+              </div>
+              <div className="col">
+                <h2>I Fit Into...</h2>
+                <h3>Sizes for Jackets, shirts, jumpsuits</h3>
+                <Select
+                  options={getSizes()}
+                  value={topsize}
+                  multi
+                  placeholder="Select your top's sizes"
+                  onChange={(params) => setTopsize(params.value)}
+                />
+                <h3>Sizes for Pants, skirt, etc</h3>
+                <Select
+                  options={getSizes()}
+                  value={bottomsize}
+                  multi
+                  placeholder="Select your bottom size"
+                  onChange={(params) => setBottomsize(params.value)}
+                />
+                <br />
                 <Button
                   disabled={!email || !username}
                   type="submit"
@@ -416,8 +513,24 @@ export async function getServerSideProps(context) {
     console.log("error:", e.message);
   }
 
+  const sres = await fetch(`${process.env.HOST}/api/style`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      cookie: context.req.headers.cookie,
+    },
+  });
+
+  let style = null;
+  // console.log("Res", res);
+  try {
+    style = await sres.json();
+  } catch (e) {
+    console.log("error:", e.message);
+  }
+
   return {
-    props: { user },
+    props: { user, style },
   };
 }
 export default Me;

@@ -53,6 +53,7 @@ const Layout = (props) => {
 
         .col {
           width: 50%;
+          padding: 0 1rem;
         }
 
         body {
@@ -92,6 +93,10 @@ const Layout = (props) => {
         }
         h2 {
           font-size: 31pt;
+        }
+
+        h3 {
+          font-size: 16pt;
         }
 
         a {

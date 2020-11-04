@@ -165,7 +165,7 @@ const UserProfile = (props) => {
             <div className="top">
               <h1>
                 <Link href="/">
-                  <a>Stupid Fits</a>
+                  <a>{props.insta.username} on Stupid Fits</a>
                 </Link>
               </h1>
               <div className="grid">
@@ -336,7 +336,7 @@ const UserProfile = (props) => {
 
 export const getServerSideProps = async (context) => {
   // export async function getServerSideProps(context) {
-  const session = await getSession(context);
+  // const session = await getSession(context);
 
   // Get user and instagram username
   const res = await fetch(`${process.env.HOST}/api/user/${context.params.id}`, {
