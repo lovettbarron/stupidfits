@@ -54,6 +54,7 @@ const Me = (props) => {
   const [username, setUsername] = useState(props.user.username);
   const [publicprofile, setPublicprofile] = useState(props.user.public);
   const [profilepage, setProfilepage] = useState(props.user.profilepage);
+  const [nosize, setNosize] = useState(props.user.nosize);
   const [hideface, setHideface] = useState(props.user.hideface);
   const [instagramData, setInstagramData] = useState("");
   const [uploadSuccess, setUploadSuccess] = useState(false);
@@ -284,7 +285,7 @@ const Me = (props) => {
             <div className="grid">
               <div className="col">
                 <h2>Self Described</h2>
-                <h3>Gender</h3>
+                <h3>Gender(s)</h3>
 
                 <Select
                   options={[
@@ -366,7 +367,7 @@ const Me = (props) => {
                   labelPlacement={LABEL_PLACEMENT.right}
                   onChange={() => setHideface(!hideface)}
                 >
-                  Please (try) to blur my face on any images I upload.
+                  Please (try to) blur my face on any images I upload.
                 </Checkbox>
                 <p className="small">
                   Just a note that this feature is experimental and might become
@@ -400,6 +401,18 @@ const Me = (props) => {
                   We give you a custom landing page for your fits. Drop this in
                   your instagram, reddit, or similar so folk can make sense of
                   your fit genius.
+                </p>
+                <Checkbox
+                  checked={nosize}
+                  checkmarkType={STYLE_TYPE.toggle_round}
+                  labelPlacement={LABEL_PLACEMENT.right}
+                  onChange={() => setNosize(!nosize)}
+                >
+                  Hide my size and gender identity on my profile
+                </Checkbox>
+                <p className="small">
+                  Sizes and Gender are mostly for searching. Adding that info
+                  helps others, but don't feel like you need to broadcast it.
                 </p>
               </div>
               <div className="col">
