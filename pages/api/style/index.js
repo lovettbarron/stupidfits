@@ -7,12 +7,12 @@ const prisma = new PrismaClient();
 // Optional fields in body: content
 export default async function handle(req, res) {
   if (req.method === "GET") {
-    const posts = await prisma.style.findMany({
+    const styles = await prisma.style.findMany({
       where: {},
       orderBy: { name: "asc" },
     });
-    // console.log("Returning brands", posts);
-    res.json(posts);
+    console.log("Returning styles", styles);
+    res.json(styles);
   } else if (req.method === "POST") {
     const { name, logo, description } = req.body;
     const result = await prisma.tag.create({

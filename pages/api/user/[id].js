@@ -25,6 +25,9 @@ async function handleGET(req, res) {
     const post = await prisma.user
       .findOne({
         where: { username: id },
+        include: {
+          tags: true,
+        },
       })
       .finally(async () => {
         await prisma.$disconnect();
@@ -36,6 +39,9 @@ async function handleGET(req, res) {
     const post = await prisma.user
       .findOne({
         where: { email: session.user.email },
+        include: {
+          tags: true,
+        },
       })
       .finally(async () => {
         await prisma.$disconnect();

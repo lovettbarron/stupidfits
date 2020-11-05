@@ -31,6 +31,9 @@ async function handleGET(req, res) {
     const user = await prisma.user
       .findOne({
         where: { email: session.user.email },
+        include: {
+          tags: true,
+        },
       })
       .finally(async () => {
         await prisma.$disconnect();
@@ -45,6 +48,20 @@ async function handlePOST(req, res) {
   const session = await getSession({ req });
   console.log("Update", session.user.email, req.body);
   if (!session) return;
+
+  console.log(req.body);
+
+  const genderids =
+    Array.isArray(req.body.gender) &&
+    req.body.gender.map((g) => String(g.id).toUpperCase());
+
+  const styles =
+    (req.body.tags &&
+      req.body.tags.map((c) => ({
+        id: c.id,
+      }))) ||
+    null;
+
   const user = await prisma.user
     .update({
       where: { email: session.user.email },
@@ -58,6 +75,18 @@ async function handlePOST(req, res) {
         urllabel: req.body.urllabel,
         hideface: req.body.hideface,
         style: req.body.style,
+        gender: {
+          set: genderids,
+        },
+        top: {
+          set: req.body.top.map((t) => t.id),
+        },
+        bottom: {
+          set: req.body.bottom.map((t) => t.id),
+        },
+        tags: {
+          set: styles,
+        },
       },
     })
     .finally(async () => {

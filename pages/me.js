@@ -32,6 +32,15 @@ export const sizes = [
   { id: 52, us: "XXXXXL" },
 ];
 
+export const genders = [
+  { label: "Male", id: "MALE" },
+  { label: "Female", id: "FEMALE" },
+  { label: "Intersex", id: "INTER" },
+  { label: "Queer", id: "QUEER" },
+  { label: "Androgyne", id: "ANDRO" },
+  { label: "Other", id: "OTHER" },
+];
+
 const getSizes = (trans) => {
   const t = trans || "eu";
   return sizes.map((s) => ({ id: s.id, label: s.id }));
@@ -50,10 +59,27 @@ const Me = (props) => {
   const [uploadSuccess, setUploadSuccess] = useState(false);
   const [uploadError, setUploadError] = useState(false);
   const [insta, setInsta] = useState();
-  const [gender, setGender] = useState(props.user.gender);
-  const [tags, setTags] = useState(props.tags);
-  const [topsize, setTopsize] = useState(props.user.top);
-  const [bottomsize, setBottomsize] = useState(props.user.bottom);
+  const [gender, setGender] = useState(
+    genders.filter((g) => {
+      return props.user.gender.includes(g.id);
+    })
+  );
+  const [tags, setTags] = useState(
+    props.user.tags.map((t) => ({
+      id: t.id,
+      label: t.name,
+    }))
+  );
+  const [topsize, setTopsize] = useState(
+    sizes.filter((g) => {
+      return props.user.top.includes(g.id);
+    })
+  );
+  const [bottomsize, setBottomsize] = useState(
+    sizes.filter((g) => {
+      return props.user.bottom.includes(g.id);
+    })
+  );
 
   const [url, setUrl] = useState(props.user.url);
   const [urllabel, setUrllabel] = useState(props.user.urllabel);
@@ -73,6 +99,10 @@ const Me = (props) => {
         urllabel,
         description,
         hideface,
+        gender: gender,
+        tags: tags,
+        top: topsize,
+        bottom: bottomsize,
         public: publicprofile,
       };
       const res = await fetch(`${props.url}/api/user`, {
@@ -277,7 +307,10 @@ const Me = (props) => {
                 </small>
                 <h3>What Styles Interest You?</h3>
                 <Select
-                  options={[]}
+                  options={props.style.map((s) => ({
+                    id: s.id,
+                    label: s.name,
+                  }))}
                   value={tags}
                   multi
                   placeholder="Pick a few"
@@ -529,8 +562,10 @@ export async function getServerSideProps(context) {
     console.log("error:", e.message);
   }
 
+  console.log(user);
+
   return {
-    props: { user, style },
+    props: { user, style: style || [] },
   };
 }
 export default Me;
