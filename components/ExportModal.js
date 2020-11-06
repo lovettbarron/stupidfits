@@ -64,7 +64,7 @@ const ExportModal = ({ media, components, layers, user, fit, handler }) => {
                 },
               }}
             >
-              {providers.map((t, i) => (
+              {providers().map((t, i) => (
                 <Button key={t.id} onClick={() => setType(t.id)}>
                   {t.label}
                 </Button>
@@ -109,7 +109,7 @@ const ExportModal = ({ media, components, layers, user, fit, handler }) => {
             <Canvas
               id={fit}
               ref={ref}
-              p={providers.find((p) => p.id === type)}
+              p={providers().find((p) => p.id === type)}
               hideface={hideface}
               components={components}
               image={media}

@@ -206,7 +206,7 @@ const Canvas = (props) => {
     const imgData = canvas.current.toDataURL({
       format: "png",
       quality: 1,
-      multiplier: 3,
+      multiplier: props.p.m,
       left: 0,
       top: 0,
       width: props.p.w / props.p.m,

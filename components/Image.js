@@ -41,6 +41,15 @@ const MediaHolder = ({
   <div className="mediaholder">
     {edit && (
       <div className="edit">
+        <Button
+          className="edit"
+          size={SIZE.mini}
+          onClick={() => setIsOpen(true)}
+        >
+          {media.layers.length > 0 ? `Edit Layout` : `Add Layout`}
+        </Button>
+        <br />
+        <br />
         <ExportModal
           media={media}
           components={components}
@@ -49,13 +58,6 @@ const MediaHolder = ({
           fit={fit}
           handler={(s) => setDrag(s)}
         />
-        <Button
-          className="edit"
-          size={SIZE.mini}
-          onClick={() => setIsOpen(true)}
-        >
-          {media.layers.length > 0 ? `Edit Layout` : `Add Layout`}
-        </Button>
       </div>
     )}
     {media && media.layers && media.layers.length > 0 && (
@@ -220,6 +222,7 @@ const Pic = ({ media, fit, url, user, edit, components }) => {
                 >
                   {medi.layers.length > 0 ? `Edit Layout` : `Add Layout`}
                 </Button>
+                <br />
                 <ExportModal
                   media={medi}
                   components={components}

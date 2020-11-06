@@ -9,7 +9,26 @@ import { Radio, RadioGroup } from "baseui/radio";
 import { StatefulButtonGroup, MODE } from "baseui/button-group";
 import { Tabs, Tab, FILL } from "baseui/tabs-motion";
 
-export const providers = [
+export const providers = () => {
+  let w = 1;
+  let ssr = true;
+  const d = 3;
+  if (typeof window !== "undefined") {
+    ssr = false;
+    w = window.innerWidth;
+  }
+
+  return providertemplates.map((p) => {
+    if (ssr) return p;
+    else {
+      const e = Math.ceil(p.w / w);
+      p.m = e > d ? e : d;
+      return p;
+    }
+  });
+};
+
+const providertemplates = [
   {
     label: "4x3 Landscape",
     id: "LAND",
@@ -103,7 +122,7 @@ const FitImage = (props) => {
               <Canvas
                 {...props}
                 ref={ref}
-                p={providers.find((p) => p.id === type)}
+                p={providers().find((p) => p.id === type)}
                 image={media}
                 layers={media.layers}
                 user={props.user}
@@ -134,7 +153,7 @@ const FitImage = (props) => {
                   },
                 }}
               >
-                {providers.map((t, i) => (
+                {providers().map((t, i) => (
                   <Button key={t.id} onClick={() => setType(t.id)}>
                     {t.label}
                   </Button>

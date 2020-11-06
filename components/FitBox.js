@@ -75,6 +75,40 @@ Details at stupidfits.com/f/${props.id}
     }
   };
 
+  const copyHash = async () => {
+    const order = {
+      BAG: 6,
+      SHOE: 5,
+      JACKET: 1,
+      PANT: 4,
+      SHIRT: 3,
+      LAYER: 2,
+      EXTRA: 7,
+    };
+
+    const con = props.components.sort((a, b) => {
+      return order[a.type] - order[b.type];
+    });
+
+    const text = `${con
+      .map((c) => `#${c.brand.name.replace(" ", "")}`)
+      .join(" ")} #fitpic #fitpics #stupidfits
+
+Details at stupidfits.com/f/${props.id}
+    `;
+
+    if (navigator) {
+      navigator.clipboard.writeText(text).then(
+        function () {
+          alert("Copied Hashtags to clipboard");
+        },
+        function () {
+          alert("Something broke");
+        }
+      );
+    }
+  };
+
   const checkIfExists = async () => {
     const res = await fetch(`${process.env.HOST}/api/insta/${props.id}`);
     try {
@@ -142,7 +176,10 @@ Details at stupidfits.com/f/${props.id}
                 Edit Fit
               </Button>{" "}
               <Button kind={KIND.secondary} size={SIZE.mini} onClick={copyFit}>
-                Copy Text
+                Text
+              </Button>
+              <Button kind={KIND.secondary} size={SIZE.mini} onClick={copyHash}>
+                Hashtags
               </Button>
             </div>
           )}
