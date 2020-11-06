@@ -83,7 +83,7 @@ const ExportModal = ({ media, components, layers, user, fit, handler }) => {
         autoFocus
       >
         <Button kind={KIND.secondary} size={BUTTONSIZE.mini}>
-          Exprt Image
+          Export Image
         </Button>
       </StatefulPopover>
       <Modal
