@@ -4,6 +4,7 @@ import Router, { useRouter } from "next/router";
 import { useSession } from "next-auth/client";
 import Anatomy from "./Anatomy";
 import Image from "./Image";
+import { Button, KIND, SIZE } from "baseui/button";
 
 import { Cap } from "./Anatomy";
 
@@ -137,9 +138,12 @@ Details at stupidfits.com/f/${props.id}
           {session && session.user.email === props.user.email && !props.edit && (
             <div className="btns">
               <br />
-              <button onClick={editFit}>Edit Fit</button>
-              <button onClick={exportFit}>Export image</button>
-              <button onClick={copyFit}>Copy Text</button>
+              <Button kind={KIND.secondary} size={SIZE.mini} onClick={editFit}>
+                Edit Fit
+              </Button>{" "}
+              <Button kind={KIND.secondary} size={SIZE.mini} onClick={copyFit}>
+                Copy Text
+              </Button>
             </div>
           )}
           {props.components && (

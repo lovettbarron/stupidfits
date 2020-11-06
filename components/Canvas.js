@@ -9,6 +9,8 @@ const Canvas = (props) => {
   const [value, setValue] = useState("1");
   const [type, setType] = useState("LAND");
   const [loadingLayout, setLoadingLayout] = useState(false);
+  const hideface =
+    props.hideface !== null ? props.hideface : props.user.hideface;
   // const [canvas, setCanvas] = useState(false);
   const canvasDom = useRef();
   let canvas = useRef(); // useRef(null);
@@ -38,7 +40,7 @@ const Canvas = (props) => {
     img = fabric.util.loadImage(
       `https://res.cloudinary.com/stupidsystems/image/upload/b_rgb:151515,${
         props.p.s
-      }${props.user.hideface && `,e_pixelate_faces:15`},h_${props.p.h},w_${
+      }${hideface ? `,e_pixelate_faces:15` : ""},h_${props.p.h},w_${
         props.p.w
       }/${props.image.cloudinary}.png`,
       function (url) {

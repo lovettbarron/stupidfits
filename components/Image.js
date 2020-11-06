@@ -12,8 +12,9 @@ import {
 } from "pure-react-carousel";
 import "pure-react-carousel/dist/react-carousel.es.css";
 import Layer from "./Layer";
-import { Button } from "baseui/button";
+import { Button, KIND, SIZE } from "baseui/button";
 import Canvas from "./Canvas";
+import ExportModal from "./ExportModal";
 
 import {
   Modal,
@@ -21,17 +22,38 @@ import {
   ModalBody,
   ModalFooter,
   ModalButton,
-  SIZE,
+  SIZE as MODALSIZE,
   ROLE,
 } from "baseui/modal";
 
 import { ArrowLeft, ArrowRight } from "baseui/icon";
 
-const MediaHolder = ({ media, edit, children, setIsOpen }) => (
+const MediaHolder = ({
+  media,
+  fit,
+  edit,
+  children,
+  setIsOpen,
+  user,
+  components,
+  setDrag,
+}) => (
   <div className="mediaholder">
     {edit && (
       <div className="edit">
-        <Button className="edit" onClick={() => setIsOpen(true)}>
+        <ExportModal
+          media={media}
+          components={components}
+          layers={media.layers}
+          user={user}
+          fit={fit}
+          handler={(s) => setDrag(s)}
+        />
+        <Button
+          className="edit"
+          size={SIZE.mini}
+          onClick={() => setIsOpen(true)}
+        >
           {media.layers.length > 0 ? `Edit Layout` : `Add Layout`}
         </Button>
       </div>
@@ -90,6 +112,7 @@ const Pic = ({ media, fit, url, user, edit, components }) => {
   const [index, setIndex] = useState(0);
   const [medi, setMedi] = useState(media[0]);
   const [allMedia, setAllMedia] = useState(media);
+  const [drag, setDrag] = useState(true);
   const ref = useRef();
 
   useEffect(() => {
@@ -99,7 +122,15 @@ const Pic = ({ media, fit, url, user, edit, components }) => {
   const mediaArray =
     Array.isArray(media) &&
     media.map((m) => (
-      <MediaHolder media={m} edit={edit} setIsOpen={setIsOpen}>
+      <MediaHolder
+        media={m}
+        components={components}
+        edit={edit}
+        user={user}
+        fit={fit}
+        setIsOpen={setIsOpen}
+        setDrag={setDrag}
+      >
         <Image
           cloudName={process.env.CLOUDINARY_CLOUD_NAME || "stupidsystems"}
           publicId={m.cloudinary} // {m.censor || m.cloudinary}
@@ -121,6 +152,7 @@ const Pic = ({ media, fit, url, user, edit, components }) => {
             visibleSlides={1}
             step={1}
             isIntrinsicHeight={true}
+            dragEnabled={drag}
             // naturalSlideWidth={400}
             // naturalSlideHeight={400}
             // innerClassName={"carousel"}
@@ -170,12 +202,32 @@ const Pic = ({ media, fit, url, user, edit, components }) => {
             </div> */}
           </CarouselProvider>
         )) || (
-          <MediaHolder media={medi} edit={edit} setIsOpen={setIsOpen}>
+          <MediaHolder
+            media={medi}
+            edit={edit}
+            user={user}
+            components={components}
+            fit={fit}
+            setIsOpen={setIsOpen}
+            setDrag={setDrag}
+          >
             {edit && (
               <div className="edit">
-                <Button className="edit" onClick={() => setIsOpen(true)}>
+                <Button
+                  className="edit"
+                  size={SIZE.mini}
+                  onClick={() => setIsOpen(true)}
+                >
                   {medi.layers.length > 0 ? `Edit Layout` : `Add Layout`}
                 </Button>
+                <ExportModal
+                  media={medi}
+                  components={components}
+                  layers={medi.layers}
+                  user={user}
+                  fit={fit}
+                  handler={(s) => setDrag(s)}
+                />
               </div>
             )}
             <Image
@@ -202,7 +254,7 @@ const Pic = ({ media, fit, url, user, edit, components }) => {
           isOpen={isOpen}
           animate
           unstable_ModalBackdropScroll
-          size={SIZE.default}
+          size={MODALSIZE.default}
           role={ROLE.dialog}
         >
           <ModalHeader>Edit Layout</ModalHeader>
