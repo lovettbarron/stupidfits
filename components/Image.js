@@ -14,6 +14,9 @@ import "pure-react-carousel/dist/react-carousel.es.css";
 import Layer from "./Layer";
 import { Button, KIND, SIZE } from "baseui/button";
 import Canvas from "./Canvas";
+
+import { providers } from "../pages/p/[id]";
+
 import ExportModal from "./ExportModal";
 
 import {
@@ -270,16 +273,7 @@ const Pic = ({ media, fit, url, user, edit, components }) => {
                   components={components}
                   // ref={ref}
                   layout={true}
-                  p={{
-                    label: "SVGLayout",
-                    id: "LAND",
-                    w: "400",
-                    h: "500",
-                    m: 1,
-                    s: "c_fill",
-                    ylock: true,
-                    xlock: true,
-                  }}
+                  p={providers()[0]}
                   image={medi}
                   layers={medi.layers}
                   user={user}
