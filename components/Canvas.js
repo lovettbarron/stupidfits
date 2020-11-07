@@ -70,6 +70,8 @@ const Canvas = (props) => {
 
     const s = { x: props.p.w / props.p.m, y: props.p.h / props.p.m };
 
+    const mul = 3 / props.p.m;
+
     console.log("Adding", id, text.model, !!exist);
 
     const objs = canvas.current.getObjects();
@@ -81,8 +83,8 @@ const Canvas = (props) => {
         id: "text" + id, //iter
         left: (exist && exist.x * s.x) || 0,
         top: (exist && exist.y * s.y) || offset,
-        width: 150,
-        fontSize: 14,
+        width: 150 * mul,
+        fontSize: 14 * mul,
         fill: "#fff",
         textBackgroundColor: "#151515",
         fontFamily: "Apercu",
@@ -103,13 +105,15 @@ const Canvas = (props) => {
     const height = props.p.h / props.p.m;
     const w = 360;
     const woff = props.p.w / props.p.m / 2 - w / 2;
+    const mul = 3 / props.p.m;
+
     const textbox = new fabric.Textbox(
       `stupidfits.com/f/${props.id}\nstupidfits.com/u/${props.user.username}`,
       {
         left: woff,
         top: height - 30,
-        width: w,
-        fontSize: 12,
+        width: w * mul,
+        fontSize: 12 * mul,
         fill: "#fff",
         textBackgroundColor: "#151515",
         fontFamily: "Apercu",
