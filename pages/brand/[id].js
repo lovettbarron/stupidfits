@@ -125,6 +125,22 @@ const TabContent = ({ setActiveItemId, activeItemId, items, filter }) => (
         max-width: 30%;
         margin: 0 1rem 0 0;
       }
+
+      @media screen and (max-width: 800px) {
+        .withside {
+          flex-wrap: wrap;
+        }
+
+        .items {
+          max-width: 100% !important;
+          width: 100%!important!;
+        }
+
+        .nav {
+          text-align: center;
+          max-width: 100% !important;
+        }
+      }
     `}</style>
   </>
 );
@@ -318,15 +334,6 @@ const BrandProfile = (props) => {
 
         .tabs {
           max-width: 80%;
-        }
-
-        @media screen and (max-width: 800px) {
-          .withside {
-            flex-wrap: wrap;
-          }
-          .nav {
-            max-width: 100% !important;
-          }
         }
 
         .top {
