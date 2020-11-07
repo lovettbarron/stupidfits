@@ -271,7 +271,7 @@ const Pic = ({ media, fit, url, user, edit, components }) => {
                   // {...props}
                   id={fit}
                   components={components}
-                  // ref={ref}
+                  ref={ref}
                   layout={true}
                   p={providers()[0]}
                   image={medi}

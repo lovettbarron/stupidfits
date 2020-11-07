@@ -3,41 +3,135 @@ import Layout from "../../components/Layout";
 import FitBox from "../../components/FitBox";
 import { useSession, getSession } from "next-auth/client";
 import Link from "next/link";
+import { Navigation } from "baseui/side-navigation";
 import { Tabs, Tab, FILL } from "baseui/tabs-motion";
 import { Cap } from "../../components/Anatomy";
 import { NextSeo } from "next-seo";
 
-const BrandFilter = ({ items, filter }) => {
+const BrandFilter = ({ items, filter, modelid }) => {
+  const it = modelid ? items.filter((i) => i.id === modelid) : items;
   if (!filter)
     return (
       <>
-        {items.map((i) => (
-          <React.Fragment key={i.id}>
-            <h3>{i.model}</h3>
-            {i.fit && i.fit.map((f) => <FitBox key={f.id} {...f} fit={f.id} />)}
-          </React.Fragment>
-        ))}
+        <div className="items">
+          {it.map((i) => (
+            <React.Fragment key={i.id}>
+              <h3>{i.model}</h3>
+              {i.fit &&
+                i.fit.map((f) => <FitBox key={f.id} {...f} fit={f.id} />)}
+            </React.Fragment>
+          ))}
+        </div>
+        <style jsx>{`
+          .items {
+            max-width: 80%;
+          }
+        `}</style>
       </>
     );
 
-  const filtered = items.filter((f) => f.type === filter);
+  const filtered = it.filter((f) => f.type === filter);
 
   if (filtered.length <= 0) return <div>Nothing yet</div>;
 
   return (
     <>
-      {filtered.map((i) => (
-        <>
-          <h3>{i.model}</h3>
-          {i.fit && i.fit.map((f) => <FitBox key={f.id} {...f} fit={f.id} />)}
-        </>
-      ))}
+      <div className="items">
+        {filtered.map((i) => (
+          <>
+            <h3>{i.model}</h3>
+            {i.fit && i.fit.map((f) => <FitBox key={f.id} {...f} fit={f.id} />)}
+          </>
+        ))}
+      </div>
+      <style jsx>{`
+        .items {
+          max-width: 80%;
+        }
+      `}</style>
     </>
   );
 };
 
+const Nav = ({ items, setActiveItemId, activeItemId, filter }) => {
+  const it = filter ? items.filter((f) => f.type === filter) : items;
+  return (
+    <>
+      <div className="nav">
+        <Navigation
+          items={it
+            .sort(function (a, b) {
+              var textA = a.model.toUpperCase();
+              var textB = b.model.toUpperCase();
+              return textA < textB ? -1 : textA > textB ? 1 : 0;
+            })
+            .map((i) => ({
+              title: i.model,
+              itemId: i.id,
+              disabled: i.fit.length < 1,
+            }))}
+          activeItemId={activeItemId}
+          onChange={({ event, item }) => {
+            // prevent page reload
+            event.preventDefault();
+            setActiveItemId(item.itemId);
+          }}
+        />
+      </div>
+      <style jsx>{`
+        .nav {
+          max-width: 20%;
+          text-align: left;
+          margin: 0 1rem 0 0;
+        }
+
+        @media screen and (max-width: 800px) {
+          .withside {
+            flex-wrap: wrap;
+          }
+          .nav {
+            max-width: 100% !important;
+          }
+        }
+      `}</style>
+    </>
+  );
+};
+
+const TabContent = ({ setActiveItemId, activeItemId, items, filter }) => (
+  <>
+    <div className="withside">
+      <Nav
+        filter={filter}
+        setActiveItemId={setActiveItemId}
+        activeItemId={activeItemId}
+        items={items}
+      />
+      <BrandFilter items={items} filter={filter} modelid={activeItemId} />
+    </div>
+    <style jsx>{`
+      .items {
+        max-width: 80%;
+      }
+
+      .withside {
+        width: 100%;
+        display: flex;
+        flex-wrap: none;
+        flex: 1 1 0;
+      }
+
+      .nav {
+        max-width: 30%;
+        margin: 0 1rem 0 0;
+      }
+    `}</style>
+  </>
+);
+
 const BrandProfile = (props) => {
   const [activeKey, setActiveKey] = React.useState("0");
+  const [activeItemId, setActiveItemId] = React.useState(null);
 
   const getFits = props.brand.items.map((i) => i.fit).flat();
 
@@ -108,7 +202,6 @@ const BrandProfile = (props) => {
               </Link>
             </small>
           </div>
-
           <Tabs
             activeKey={activeKey}
             fill={FILL.fixed}
@@ -118,46 +211,86 @@ const BrandProfile = (props) => {
             activateOnFocus
           >
             <Tab title="All">
-              <BrandFilter items={props.brand.items} />
+              <TabContent
+                setActiveItemId={setActiveItemId}
+                activeItemId={activeItemId}
+                items={props.brand.items}
+                filter={null}
+              />
             </Tab>
             {props.brand.items.filter((t) => t.type === "CARRY").length >=
               1 && (
               <Tab title="Carry">
-                <BrandFilter items={props.brand.items} filter={"CARRY"} />
+                <TabContent
+                  setActiveItemId={setActiveItemId}
+                  activeItemId={activeItemId}
+                  items={props.brand.items}
+                  filter={"CARRY"}
+                />
               </Tab>
             )}
             {props.brand.items.filter((t) => t.type === "JACKET").length >=
               1 && (
               <Tab title="Outerwear">
-                <BrandFilter items={props.brand.items} filter={"JACKET"} />
+                <TabContent
+                  setActiveItemId={setActiveItemId}
+                  activeItemId={activeItemId}
+                  items={props.brand.items}
+                  filter={"JACKET"}
+                />
               </Tab>
             )}
             {props.brand.items.filter((t) => t.type === "LAYER").length >=
               1 && (
               <Tab title="Layer">
-                <BrandFilter items={props.brand.items} filter={"LAYER"} />
+                <TabContent
+                  setActiveItemId={setActiveItemId}
+                  activeItemId={activeItemId}
+                  items={props.brand.items}
+                  filter={"LAYER"}
+                />
               </Tab>
             )}
             {props.brand.items.filter((t) => t.type === "SHIRT").length >=
               1 && (
               <Tab title="Shirt">
-                <BrandFilter items={props.brand.items} filter={"SHIRT"} />
+                <TabContent
+                  setActiveItemId={setActiveItemId}
+                  activeItemId={activeItemId}
+                  items={props.brand.items}
+                  filter={"SHIRT"}
+                />
               </Tab>
             )}
             {props.brand.items.filter((t) => t.type === "PANT").length >= 1 && (
               <Tab title="Bottom">
-                <BrandFilter items={props.brand.items} filter={"PANT"} />
+                <TabContent
+                  setActiveItemId={setActiveItemId}
+                  activeItemId={activeItemId}
+                  items={props.brand.items}
+                  filter={"PANT"}
+                />
               </Tab>
             )}
             {props.brand.items.filter((t) => t.type === "SHOE").length >= 1 && (
               <Tab title="Shoe">
-                <BrandFilter items={props.brand.items} filter={"SHOE"} />
+                <TabContent
+                  setActiveItemId={setActiveItemId}
+                  activeItemId={activeItemId}
+                  items={props.brand.items}
+                  filter={"SHOE"}
+                />
               </Tab>
             )}
             {props.brand.items.filter((t) => t.type === "EXTRA").length >=
               1 && (
               <Tab title="Extra">
-                <BrandFilter items={props.brand.items} filter={"EXTRA"} />
+                <TabContent
+                  setActiveItemId={setActiveItemId}
+                  activeItemId={activeItemId}
+                  items={props.brand.items}
+                  filter={"EXTRA"}
+                />
               </Tab>
             )}
           </Tabs>
@@ -169,6 +302,31 @@ const BrandProfile = (props) => {
           min-width: 20rem;
           width: 100%;
           margin: 0;
+        }
+
+        .withside {
+          width: 100%;
+          display: flex;
+          flex-wrap: none;
+          flex: 1 1 0;
+        }
+
+        .nav {
+          max-width: 30%;
+          margin: 0 1rem 0 0;
+        }
+
+        .tabs {
+          max-width: 80%;
+        }
+
+        @media screen and (max-width: 800px) {
+          .withside {
+            flex-wrap: wrap;
+          }
+          .nav {
+            max-width: 100% !important;
+          }
         }
 
         .top {
@@ -192,18 +350,6 @@ const BrandProfile = (props) => {
         h1:hover {
           animation: shake 0.5s;
           animation-iteration-count: infinite;
-        }
-
-        .post {
-          transition: box-shadow 0.1s ease-in;
-        }
-
-        .post:hover {
-          box-shadow: 1px 1px 3px #aaa;
-        }
-
-        .post + .post {
-          margin-top: 2rem;
         }
 
         @keyframes shake {

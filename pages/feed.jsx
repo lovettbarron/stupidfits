@@ -155,18 +155,7 @@ const Feed = (props) => {
         <small>
           Multiple files are allowed, and will be added to a single fit.
         </small>
-        {/* {photo && <img src={data.url} />} */}
-        {/* <br />
-        <br />
-        <Button
-          className="left"
-          onClick={() => addNewFit()}
-          size={SIZE.mini}
-          isLoading={isLoading}
-          disabled={true}
-        >
-          Upload Fit Manually
-        </Button> */}
+
         <br />
         <br />
         <h4>Or</h4>
