@@ -226,6 +226,7 @@ const Pic = ({ media, fit, url, user, edit, components }) => {
                   {medi.layers.length > 0 ? `Edit Layout` : `Add Layout`}
                 </Button>
                 <br />
+                <br />
                 <ExportModal
                   media={medi}
                   components={components}
