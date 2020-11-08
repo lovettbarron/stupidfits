@@ -19,6 +19,7 @@ const Item = (props) => {
       <div className="flex">
         <div className="set">
           <CreateReview
+            review={props.review}
             handler={(data) => {
               setReview(data);
             }}
@@ -86,8 +87,7 @@ export const getServerSideProps = async (context) => {
 
   return {
     props: {
-      brands: brands && brands.map((b) => ({ label: b.name, id: b.id })),
-      url: process.env.HOST,
+      review: {},
     },
   };
 };

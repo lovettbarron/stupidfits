@@ -40,13 +40,9 @@ const RenderReview = ({
       <h1>{title}</h1>
       <div className="content">{compiled.tree}</div>
       <style jsx>{`
-        .stats {
-          display: flex;
-          justify-content: space-around;
-          align-items: center;
-        }
-
-        .weather {
+        .content {
+          margin: 1rem;
+          text-align: left;
         }
       `}</style>
     </div>

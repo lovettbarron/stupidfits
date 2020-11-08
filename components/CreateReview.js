@@ -108,7 +108,16 @@ const CreateReview = ({ review, handler }) => {
         </Checkbox>
 
         <label>
-          <h3>Write It Up</h3>
+          <h3>Markdown</h3>
+          <small>
+            This is a markdown form.{" "}
+            <a
+              href="https://guides.github.com/features/mastering-markdown/"
+              target="_blank"
+            >
+              There's a good guide here.
+            </a>
+          </small>
 
           <Textarea
             value={reviewtext}
@@ -118,8 +127,8 @@ const CreateReview = ({ review, handler }) => {
               Input: {
                 style: {
                   maxHeight: "300px",
-                  minHeight: "100px",
-                  minWidth: "50vh",
+                  minHeight: "50vh",
+                  minWidth: "100%",
                   width: "100vw", // fill all available space up to parent max-width
                   resize: "vertical",
                 },
