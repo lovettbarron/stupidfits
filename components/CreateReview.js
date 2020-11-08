@@ -6,7 +6,7 @@ import { Input } from "baseui/input";
 import { Button } from "baseui/button";
 import { ButtonGroup, MODE } from "baseui/button-group";
 import { Textarea } from "baseui/textarea";
-
+import { Checkbox, LABEL_PLACEMENT, STYLE_TYPE } from "baseui/checkbox";
 import { FileUploader } from "baseui/file-uploader";
 import { useUpload } from "use-cloudinary";
 import { useSession } from "next-auth/client";
@@ -18,6 +18,7 @@ const CreateReview = ({ review, handler }) => {
   const [focus, setFocus] = React.useState(
     (review && review.title) || "REVIEW"
   );
+  const [published, setPublished] = useState(review.published || false);
 
   const [title, setTitle] = useState((review && review.title) || "");
   const [reviewtext, setReviewtext] = useState((review && review.review) || "");
@@ -65,7 +66,7 @@ const CreateReview = ({ review, handler }) => {
   return (
     <>
       <div className="form">
-        <ButtonGroup
+        {/* <ButtonGroup
           mode={MODE.radio}
           selected={focus}
           onClick={(event, index) => {
@@ -75,7 +76,7 @@ const CreateReview = ({ review, handler }) => {
           <Button>Item</Button>
           <Button>Style</Button>
           <Button>Fit</Button>
-        </ButtonGroup>
+        </ButtonGroup> */}
         <label>
           <h3>What is it?</h3>
 
@@ -97,6 +98,14 @@ const CreateReview = ({ review, handler }) => {
             placeholder=""
           />
         </label>
+        <Checkbox
+          checked={published}
+          checkmarkType={STYLE_TYPE.toggle_round}
+          labelPlacement={LABEL_PLACEMENT.right}
+          onChange={() => setPublished(!published)}
+        >
+          Publish Review
+        </Checkbox>
 
         <label>
           <h3>Write It Up</h3>
@@ -136,7 +145,7 @@ const CreateReview = ({ review, handler }) => {
           type="submit"
           value="model"
         >
-          Save Item
+          Save
         </Button>
         <br />
         <Link href="/review">
