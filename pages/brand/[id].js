@@ -10,6 +10,7 @@ import { NextSeo } from "next-seo";
 
 const BrandFilter = ({ items, filter, modelid }) => {
   const it = modelid ? items.filter((i) => i.id === modelid) : items;
+
   if (!filter)
     return (
       <>
@@ -24,7 +25,13 @@ const BrandFilter = ({ items, filter, modelid }) => {
         </div>
         <style jsx>{`
           .items {
-            max-width: 80%;
+            max-width: 70%;
+            flex: 1 1 0;
+          }
+          @media screen and (max-width: 800px) {
+            .items {
+              max-width: 100%;
+            }
           }
         `}</style>
       </>
@@ -46,7 +53,13 @@ const BrandFilter = ({ items, filter, modelid }) => {
       </div>
       <style jsx>{`
         .items {
-          max-width: 80%;
+          max-width: 70%;
+          flex: 1 1 0;
+        }
+        @media screen and (max-width: 800px) {
+          .items {
+            max-width: 100%;
+          }
         }
       `}</style>
     </>
@@ -59,17 +72,20 @@ const Nav = ({ items, setActiveItemId, activeItemId, filter }) => {
     <>
       <div className="nav">
         <Navigation
-          items={it
-            .sort(function (a, b) {
-              var textA = a.model.toUpperCase();
-              var textB = b.model.toUpperCase();
-              return textA < textB ? -1 : textA > textB ? 1 : 0;
-            })
-            .map((i) => ({
-              title: i.model,
-              itemId: i.id,
-              disabled: i.fit.length < 1,
-            }))}
+          items={[
+            { title: "All", itemId: null, disabled: false },
+            ...it
+              .sort(function (a, b) {
+                var textA = a.model.toUpperCase();
+                var textB = b.model.toUpperCase();
+                return textA < textB ? -1 : textA > textB ? 1 : 0;
+              })
+              .map((i) => ({
+                title: i.model,
+                itemId: i.id,
+                disabled: i.fit.length < 1,
+              })),
+          ]}
           activeItemId={activeItemId}
           onChange={({ event, item }) => {
             // prevent page reload
@@ -80,7 +96,8 @@ const Nav = ({ items, setActiveItemId, activeItemId, filter }) => {
       </div>
       <style jsx>{`
         .nav {
-          max-width: 20%;
+          min-width: 20%;
+          max-width: 30%;
           text-align: left;
           margin: 0 1rem 0 0;
         }
