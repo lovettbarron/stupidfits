@@ -87,6 +87,11 @@ const Main = (props) => {
                       <Button>Add New Fits</Button>
                     </a>
                   </Link>
+                  <Link href="/review/create">
+                    <a>
+                      <Button>Write a Review</Button>
+                    </a>
+                  </Link>
                 </p>
               )) || (
                 <p>

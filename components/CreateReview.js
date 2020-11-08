@@ -3,30 +3,27 @@ import fetch from "isomorphic-unfetch";
 import Link from "next/link";
 import { Select, TYPE } from "baseui/select";
 import { Input } from "baseui/input";
-import { StatefulButtonGroup, MODE } from "baseui/button-group";
 import { Button } from "baseui/button";
+import { ButtonGroup, MODE } from "baseui/button-group";
+import { Textarea } from "baseui/textarea";
 
 import { FileUploader } from "baseui/file-uploader";
 import { useUpload } from "use-cloudinary";
 import { useSession } from "next-auth/client";
 
-export const types = [
-  { label: "Carry", id: "BAG" },
-  { label: "Shoe", id: "SHOE" },
-  { label: "Outerwear", id: "JACKET" },
-  { label: "Bottom", id: "PANT" },
-  { label: "Shirt", id: "SHIRT" },
-  { label: "Layers", id: "LAYER" },
-  { label: "Extras", id: "EXTRA" },
-];
-
-const CreateReview = (props) => {
+const CreateReview = ({ review, handler }) => {
   const [session, loading] = useSession();
   const [errorMessage, setErrorMessage] = useState("");
-  const [itemSaveLoading, setItemSaveLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [focus, setFocus] = React.useState(
+    (review && review.title) || "REVIEW"
+  );
+
+  const [title, setTitle] = useState((review && review.title) || "");
+  const [reviewtext, setReviewtext] = useState((review && review.review) || "");
+  const [slug, setSlug] = useState((review && review.slug) || "");
 
   if (isLoading) return <p>Loading...</p>;
-  if (isError) return <p>{error.message}</p>;
 
   const handle = (data) => {
     props.handler(data);
@@ -34,7 +31,7 @@ const CreateReview = (props) => {
 
   const submitData = async (e) => {
     e.preventDefault();
-    setItemSaveLoading(true);
+    setIsLoading(true);
     try {
       ///
       /// Edit below
@@ -55,78 +52,98 @@ const CreateReview = (props) => {
       }
     } catch (error) {
       console.error(error);
-      setItemSaveLoading(false);
-    }
-  };
-
-  const fetchBrand = async () => {
-    // console.log("Fetch Branding");
-    const b = await fetch(`${process.env.HOST}/api/brand`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    let brands;
-    try {
-      brands = await b.json();
-      setBrandList(brands && brands.map((b) => ({ label: b.name, id: b.id })));
-    } catch (e) {
-      console.log("error:", e.message);
+      setIsLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchBrand();
+    handler({ title, review: reviewtext, focus });
 
     return () => {};
-  }, [session]);
+  }, [title, reviewtext, focus]);
 
   return (
     <>
-      <div className="page">
-        <div className="form">
-          <label>
-            <h3>What is it?</h3>
+      <div className="form">
+        <ButtonGroup
+          mode={MODE.radio}
+          selected={focus}
+          onClick={(event, index) => {
+            setFocus(index);
+          }}
+        >
+          <Button>Item</Button>
+          <Button>Style</Button>
+          <Button>Fit</Button>
+        </ButtonGroup>
+        <label>
+          <h3>What is it?</h3>
 
-            <StatefulButtonGroup
-              mode={MODE.radio}
-              overrides={{
-                Root: {
-                  style: {
-                    flexWrap: "wrap",
-                    maxWidth: "600px",
-                    justifyContent: "center",
-                    margin: "0 auto",
-                  },
-                },
-              }}
-            >
-              {types.map((t, i) => (
-                <Button onClick={() => setType(t.id)}>{t.label}</Button>
-              ))}
-            </StatefulButtonGroup>
-          </label>
-
-          <Button
-            onClick={(e) => {
-              e.preventDefault();
-              if (!brand || !model || !type) return null;
-              else submitData(e);
+          <Input
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            placeholder="What are you writing about?"
+          />
+        </label>
+        <label>
+          <h4>Slug</h4>
+          <Input
+            value={slug}
+            onChange={(e) => {
+              const v = e.target.value.replace(" ", "").toLowerCase();
+              const safe = v.replace(/[^\w\s-_]/gi, "");
+              setSlug(safe);
             }}
-            isLoading={itemSaveLoading}
-            disabled={!brand || !model || !type}
-            type="submit"
-            value="model"
-          >
-            Save Item
-          </Button>
-          <br />
-          <Link href="/review">
-            <a>or return to Reviews</a>
-          </Link>
-        </div>
+            placeholder=""
+          />
+        </label>
+
+        <label>
+          <h3>Write It Up</h3>
+
+          <Textarea
+            value={reviewtext}
+            onChange={(e) => setReviewtext(e.target.value)}
+            placeholder="Start writing"
+            overrides={{
+              Input: {
+                style: {
+                  maxHeight: "300px",
+                  minHeight: "100px",
+                  minWidth: "50vh",
+                  width: "100vw", // fill all available space up to parent max-width
+                  resize: "vertical",
+                },
+              },
+              InputContainer: {
+                style: {
+                  maxWidth: "100%",
+                  width: "min-content",
+                },
+              },
+            }}
+          />
+        </label>
+
+        <Button
+          onClick={(e) => {
+            e.preventDefault();
+            if (!title || !review) return null;
+            else submitData(e);
+          }}
+          isLoading={isLoading}
+          disabled={!title || !review}
+          type="submit"
+          value="model"
+        >
+          Save Item
+        </Button>
+        <br />
+        <Link href="/review">
+          <a>or return to Reviews</a>
+        </Link>
       </div>
+
       <style jsx>{`
         .page {
           padding: 1rem;

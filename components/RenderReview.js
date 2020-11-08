@@ -28,14 +28,17 @@ const RenderReview = ({
     },
   });
 
-  const compiled = compile(review, {
-    // Options passed to "marked" (https://www.npmjs.com/package/marked)
-  });
+  const compiled =
+    (review &&
+      compile(review, {
+        // Options passed to "marked" (https://www.npmjs.com/package/marked)
+      })) ||
+    "No content yet";
 
   return (
     <div className="post">
       <h1>{title}</h1>
-      <div className="content">{compiled}</div>
+      <div className="content">{compiled.tree}</div>
       <style jsx>{`
         .stats {
           display: flex;

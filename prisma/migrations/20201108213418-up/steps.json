@@ -1,0 +1,46 @@
+{
+  "version": "0.3.14-fixed",
+  "steps": [
+    {
+      "tag": "CreateEnum",
+      "enum": "ReviewFocus",
+      "values": [
+        "ITEM",
+        "STYLE",
+        "FIT"
+      ]
+    },
+    {
+      "tag": "CreateField",
+      "model": "Review",
+      "field": "focus",
+      "type": "ReviewFocus",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Review",
+          "field": "focus"
+        },
+        "directive": "default"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Review",
+          "field": "focus"
+        },
+        "directive": "default"
+      },
+      "argument": "value",
+      "value": "ITEM"
+    }
+  ]
+}
