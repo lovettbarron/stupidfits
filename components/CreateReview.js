@@ -108,7 +108,7 @@ const CreateReview = ({ review, handler }) => {
         </Checkbox>
 
         <label>
-          <h3>Markdown</h3>
+          <h3>Article</h3>
           <small>
             This is a markdown form.{" "}
             <a

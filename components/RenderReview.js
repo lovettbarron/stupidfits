@@ -1,5 +1,6 @@
 import React, { useEffect, useState, createElement } from "react";
 import marksy from "marksy";
+import EmbedImage from "./EmbedImage";
 
 const RenderReview = ({
   id,
@@ -23,7 +24,7 @@ const RenderReview = ({
     // custom VDOM trees
     elements: {
       Media(props) {
-        return <h1>{props.children}</h1>;
+        return <EmbedImage id={props.id} />;
       },
     },
   });
