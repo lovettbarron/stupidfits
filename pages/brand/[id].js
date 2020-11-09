@@ -164,7 +164,7 @@ const TabContent = ({ setActiveItemId, activeItemId, items, filter }) => (
 
 const BrandProfile = (props) => {
   const [activeKey, setActiveKey] = React.useState("0");
-  const [activeItemId, setActiveItemId] = React.useState(null);
+  const [activeItemId, setActiveItemId] = React.useState(-1);
 
   const getFits = props.brand.items.map((i) => i.fit).flat();
 
