@@ -9,7 +9,7 @@ import { Cap } from "../../components/Anatomy";
 import { NextSeo } from "next-seo";
 
 const BrandFilter = ({ items, filter, modelid }) => {
-  const it = modelid ? items.filter((i) => i.id === modelid) : items;
+  const it = modelid >= 0 ? items.filter((i) => i.id === modelid) : items;
 
   if (!filter)
     return (
@@ -73,7 +73,7 @@ const Nav = ({ items, setActiveItemId, activeItemId, filter }) => {
       <div className="nav">
         <Navigation
           items={[
-            { title: "All", itemId: null, disabled: false },
+            { title: "All", itemId: -1, disabled: false },
             ...it
               .sort(function (a, b) {
                 var textA = a.model.toUpperCase();
