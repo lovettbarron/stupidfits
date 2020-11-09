@@ -12,16 +12,7 @@ import SEO from "../next-seo.config";
 import Head from "next/head";
 import Transition from "../components/Transition";
 import Header from "../components/Header";
-
-const getHydrateClass = () =>
-  document.getElementsByClassName("_styletron_hydrate_");
-
-const styletron =
-  typeof window === "undefined"
-    ? new Server()
-    : new Client({
-        hydrate: getHydrateClass(),
-      });
+import { styletron, getHydrateClass, debug } from "../styletron";
 
 function App({ Component, pageProps, router }) {
   useEffect(() => {
@@ -57,7 +48,7 @@ function App({ Component, pageProps, router }) {
         options={{ site: process.env.HOST }}
         session={pageProps.session}
       >
-        <StyletronProvider value={styletron} debugAfterHydration>
+        <StyletronProvider value={styletron} debugAfterHydration debug={debug}>
           <BaseProvider theme={DarkTheme}>
             <Transition location={router.pathname}>
               <Header />
