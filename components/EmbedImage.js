@@ -13,7 +13,12 @@ const EmbedImage = ({ id }) => {
   const [gallery, setGallery] = useState(null);
   const [mid, setMid] = useState(id || null);
 
-  const fetchMedia = () => {};
+  const fetchMedia = async () => {
+    if (!mid) return;
+    const posts = await fetch(`${process.env.HOST}/api/media/${mid}`);
+    const payload = await posts.json();
+    setGallery(payload.data);
+  };
 
   const fetchAll = async () => {
     console.log("Fetching media");
@@ -23,11 +28,13 @@ const EmbedImage = ({ id }) => {
   };
 
   useEffect(() => {
+    console.log("Media ID change", mid);
     if (!mid) fetchAll();
     else if (mid && media) fetchMedia();
     return () => {};
   }, [mid]);
 
+  return <div>Test</div>;
   if (!media && !gallery) return <div>Loading...</div>;
   if (!media && gallery)
     return (

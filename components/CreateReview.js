@@ -10,19 +10,33 @@ import { Checkbox, LABEL_PLACEMENT, STYLE_TYPE } from "baseui/checkbox";
 import { FileUploader } from "baseui/file-uploader";
 import { useUpload } from "use-cloudinary";
 import { useSession } from "next-auth/client";
+import MediaManager from "./MediaManager";
 
 const CreateReview = ({ review, handler }) => {
   const [session, loading] = useSession();
   const [errorMessage, setErrorMessage] = useState("");
+
+  // Loading func
   const [isLoading, setIsLoading] = useState(false);
+  const [newItemLoad, setNewItemLoad] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [saveError, setSaveError] = useState(null);
+  const [saved, setSaved] = useState(false);
+
+  // Content
   const [focus, setFocus] = React.useState(
     (review && review.title) || "REVIEW"
   );
   const [published, setPublished] = useState(review.published || false);
-
+  const [reviewid, setReviewid] = useState((review && review.id) || null);
   const [title, setTitle] = useState((review && review.title) || "");
   const [reviewtext, setReviewtext] = useState((review && review.review) || "");
   const [slug, setSlug] = useState((review && review.slug) || "");
+
+  const [items, setItems] = useState(null);
+  const [components, setComponents] = React.useState(
+    review && review.item && itemToOptions(review.item)
+  );
 
   if (isLoading) return <p>Loading...</p>;
 
@@ -30,38 +44,103 @@ const CreateReview = ({ review, handler }) => {
     props.handler(data);
   };
 
-  const submitData = async (e) => {
-    e.preventDefault();
-    setIsLoading(true);
+  const fetchItems = async (first) => {
+    // Get Items
+    // console.log("session", session);
+    const b = await fetch(`${process.env.HOST}/api/item`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    let it;
+    if (first) {
+      it = await b.json();
+      setItems(it);
+    }
     try {
-      ///
-      /// Edit below
-      ///
-      const body = { brand, model, year, type, sale };
-      const res = await fetch(`${process.env.HOST}/api/review`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-      });
-      try {
-        const data = await res.json();
-        if (props.handler) {
-          handle(data);
-        }
-      } catch (e) {
-        console.log("error:", e.message);
-      }
-    } catch (error) {
-      console.error(error);
-      setIsLoading(false);
+      it = await b.json();
+      const diff = it.filter((i) => !items.find((t) => t.id === i.id));
+      setItems(it);
+      setComponents(components.concat(itemToOptions(diff)));
+      console.log("Components after refresh!", components);
+      setNewItemLoad(false);
+    } catch (e) {
+      console.log("error:", e.message);
     }
   };
 
+  // Save functionality
+  const submitData = async () => {
+    setIsLoading(true);
+
+    // If has not been saved yet, create based off of title only
+    if (!reviewid) {
+      setSaving(true);
+      try {
+        const body = { title };
+        const res = await fetch(`${process.env.HOST}/api/review/create`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body),
+        });
+        try {
+          const data = await res.json();
+          setReviewid(data.id);
+        } catch (e) {
+          console.log("error:", e.message);
+        }
+        setSaved(true);
+        setSaving(false);
+      } catch (err) {
+        // 6. let's save the error so we can let the user know a save failed
+        setSaveError("Error Message");
+      }
+    } else {
+      // IF id exists
+      try {
+        const body = {
+          id,
+          title,
+          review: reviewtext,
+          item: components,
+          model,
+          year,
+          type,
+          sale,
+        };
+        const res = await fetch(`${process.env.HOST}/api/review`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body),
+        });
+        try {
+          const data = await res.json();
+          setSaved(true);
+          setSaving(false);
+        } catch (e) {
+          console.log("error:", e.message);
+        }
+      } catch (error) {
+        console.error(error);
+        setIsLoading(false);
+      }
+    }
+  };
+
+  const AUTOSAVE_INTERVAL = 3000;
+
   useEffect(() => {
+    fetchItems(true);
     handler({ title, review: reviewtext, focus });
 
-    return () => {};
-  }, [title, reviewtext, focus]);
+    const timer = setTimeout(() => {
+      if (title.length > 5) {
+        submitData();
+      }
+    }, AUTOSAVE_INTERVAL);
+    return () => clearTimeout(timer);
+  }, [title, reviewtext, slug]);
 
   return (
     <>
@@ -90,6 +169,7 @@ const CreateReview = ({ review, handler }) => {
           <h4>Slug</h4>
           <Input
             value={slug}
+            disabled={reviewid ? false : true}
             onChange={(e) => {
               const v = e.target.value.replace(" ", "").toLowerCase();
               const safe = v.replace(/[^\w\s-_]/gi, "");
@@ -100,6 +180,7 @@ const CreateReview = ({ review, handler }) => {
         </label>
         <Checkbox
           checked={published}
+          disabled={reviewid ? false : true}
           checkmarkType={STYLE_TYPE.toggle_round}
           labelPlacement={LABEL_PLACEMENT.right}
           onChange={() => setPublished(!published)}
@@ -107,8 +188,34 @@ const CreateReview = ({ review, handler }) => {
           Publish Review
         </Checkbox>
 
+        <h3>What are you reviewing?</h3>
+        <Select
+          options={
+            items &&
+            items.map((i) => ({
+              label: `${i.brand.name} ${i.model} ${i.year > 0 ? i.year : ""}`,
+              id: i.id,
+            }))
+          }
+          value={components}
+          isLoading={newItemLoad || !items}
+          multi
+          disabled={reviewid ? false : true}
+          type={TYPE.search}
+          closeOnSelect
+          clearable={false}
+          placeholder="Fit Anatomy"
+          onChange={(params) => {
+            setComponents(params.value);
+          }}
+          noResultsMsg={<>You can only review stuff that's in your closet.</>} //"Don't see your stuff? Use the button below"
+        />
+        <br />
+
+        <h3>Media Upload</h3>
+        <MediaManager exists={review.media} />
         <label>
-          <h3>Article</h3>
+          <h3>The Review</h3>
           <small>
             This is a markdown form.{" "}
             <a
@@ -123,6 +230,7 @@ const CreateReview = ({ review, handler }) => {
             value={reviewtext}
             onChange={(e) => setReviewtext(e.target.value)}
             placeholder="Start writing"
+            disabled={reviewid ? false : true}
             overrides={{
               Input: {
                 style: {
@@ -146,15 +254,13 @@ const CreateReview = ({ review, handler }) => {
         <Button
           onClick={(e) => {
             e.preventDefault();
-            if (!title || !review) return null;
-            else submitData(e);
           }}
           isLoading={isLoading}
           disabled={!title || !review}
           type="submit"
           value="model"
         >
-          Save
+          Close Editor
         </Button>
         <br />
         <Link href="/review">

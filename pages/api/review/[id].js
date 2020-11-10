@@ -47,14 +47,58 @@ async function handleGET(req, res) {
 
 // POST /api/post/:id
 async function handlePOST(req, res) {
-  const id = req.query.id;
   const session = await getSession({ req });
-  if (!session) return res.status(402);
-  const fit = await prisma.brand.update({
-    where: { id: Number(id) },
-    data: { payload },
+  console.log("Create Fit", session.user.email, req.body);
+
+  const user = await prisma.user.findOne({
+    where: {
+      email: session.user.email,
+    },
   });
-  res.json(fit);
+
+  cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+  });
+
+  const d = new Date();
+
+  let MediaArray = [];
+
+  for (let c of req.body.imgs) {
+    MediaArray.push({
+      insta_id: null,
+      username: user.username,
+      timestamp: Math.floor(d.getTime() / 1000),
+      cloudinary: c,
+      image: null,
+      url: null,
+      description: "",
+    });
+  }
+
+  const media = await prisma.review.update({
+    data: {
+      user: {
+        connect: {
+          email: session.user.email,
+        },
+      },
+      published: req.body.published,
+      title: req.body.title,
+      review: req.body.review,
+      slug: req.body.slug,
+      item: {
+        set: req.body.item.map((i) => ({ id: i.id })),
+      },
+      tags: {
+        set: req.body.tags.map((i) => ({ id: i.id })),
+      },
+      media: { create: MediaArray },
+    },
+  });
+  res.json(media);
 }
 
 // DELETE /api/post/:id

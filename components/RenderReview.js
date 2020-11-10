@@ -24,7 +24,11 @@ const RenderReview = ({
     // custom VDOM trees
     elements: {
       Media(props) {
-        return <EmbedImage id={props.id} />;
+        return (
+          <div>
+            Image!: <EmbedImage id={props.id} />
+          </div>
+        );
       },
     },
   });
