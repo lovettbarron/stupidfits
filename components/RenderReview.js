@@ -46,7 +46,7 @@ const RenderReview = ({
   return (
     <div className="post">
       <h1>{title}</h1>
-      {media && (
+      {media && media.length > 0 && (
         <Image
           fit={(media.fit && media.fit.id) || null}
           components={[]}
