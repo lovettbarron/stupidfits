@@ -82,6 +82,14 @@ export const getServerSideProps = async (context) => {
 
   const id = parseInt(context.params.id);
 
+  if (!session || !session.user) {
+    if (context.res) {
+      context.res.writeHead(302, { Location: `/review/${id}` });
+      context.res.end();
+    }
+    return {};
+  }
+
   const r = await fetch(`${process.env.HOST}/api/review/${id}`);
   let review;
   try {

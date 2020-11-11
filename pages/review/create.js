@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { getSession, useSession } from "next-auth/client";
 import fetch from "isomorphic-unfetch";
 import Layout from "../../components/Layout";
 import Router from "next/router";
@@ -77,12 +78,14 @@ const Item = (props) => {
 
 export const getServerSideProps = async (context) => {
   // Fetch Brands
-  const b = await fetch(`${process.env.HOST}/api/brand`);
-  let brands;
-  try {
-    brands = await b.json();
-  } catch (e) {
-    console.log("error:", e.message);
+  const session = await getSession(context);
+
+  if (!session || !session.user) {
+    if (context.res) {
+      context.res.writeHead(302, { Location: `/` });
+      context.res.end();
+    }
+    return {};
   }
 
   return {

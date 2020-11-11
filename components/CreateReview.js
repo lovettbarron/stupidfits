@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import fetch from "isomorphic-unfetch";
 import Link from "next/link";
+import Router from "next/router";
 import { Select, TYPE } from "baseui/select";
 import { Input } from "baseui/input";
 import { Button } from "baseui/button";
@@ -45,6 +46,7 @@ const CreateReview = ({ review, styles, handler }) => {
   };
 
   const fetchItems = async (first) => {
+    if (Array.isArray(items) && items.length > 0) return;
     // Get Items
     // console.log("session", session);
     const b = await fetch(`${process.env.HOST}/api/item`, {
@@ -87,13 +89,9 @@ const CreateReview = ({ review, styles, handler }) => {
         try {
           const data = await res.json();
           setReviewid(data.id);
-          Router.push(
-            {
-              pathname: `/review/edit/${data.id}`,
-            },
-            undefined,
-            { shallow: true }
-          );
+          Router.push({
+            pathname: `/review/edit/${data.id}`,
+          });
         } catch (e) {
           console.log("error:", e.message);
         }

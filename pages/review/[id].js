@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { getSession, useSession } from "next-auth/client";
 import fetch from "isomorphic-unfetch";
 import Layout from "../../components/Layout";
 import FitBox from "../../components/FitBox";
@@ -23,9 +24,21 @@ const Review = (props) => {
 
 export const getServerSideProps = async (context) => {
   // Get item
+
+  const session = await getSession(context);
+
   const res = await fetch(
     `${process.env.HOST}/api/review/${context.params.id}`
   );
+
+  if (!session || !session.user) {
+    if (context.res) {
+      context.res.writeHead(302, { Location: `/` });
+      context.res.end();
+    }
+    return {};
+  }
+
   let data;
   try {
     data = await res.json();

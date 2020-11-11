@@ -6,7 +6,14 @@ const prisma = new PrismaClient();
 
 export default async function handle(req, res) {
   const session = await getSession({ req });
-  console.log("Create Fit", session.user.email, req.body);
+
+  if (!session || !session.user) {
+    if (context.res) {
+      context.res.writeHead(302, { Location: `/` });
+      context.res.end();
+    }
+    return {};
+  }
 
   const user = await prisma.user.findOne({
     where: {
