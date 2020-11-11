@@ -7,22 +7,31 @@ const prisma = new PrismaClient();
 // Optional fields in body: content
 export default async function handle(req, res) {
   if (req.method === "GET") {
-    const styles = await prisma.style.findMany({
+    const review = await prisma.review.findMany({
       where: {},
-      orderBy: { name: "asc" },
-    });
-    console.log("Returning styles", styles);
-    res.json(styles);
-  } else if (req.method === "POST") {
-    const { name, logo, description } = req.body;
-    const result = await prisma.tag.create({
-      data: {
-        name: title,
-        logo: content,
-        description: description,
+      include: {
+        user: true,
+        item: {
+          include: {
+            brand: true,
+          },
+        },
+        tags: true,
+        media: {
+          include: {
+            layers: true,
+            fit: true,
+          },
+        },
+        Comment: {
+          include: {
+            user: true,
+          },
+        },
       },
     });
-    res.json(result);
+
+    res.json(review);
   } else {
     throw new Error(
       `The HTTP ${req.method} method is not supported at this route.`

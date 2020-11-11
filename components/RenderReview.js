@@ -70,7 +70,7 @@ const RenderReview = ({
             <hr />
           </div>
         )}
-        <div className="content" style={preview && { width: "100%" }}>
+        <div className="content">
           {(preview && compiled.tree) || (
             <Tabs
               activeKey={activeKey}
@@ -115,7 +115,7 @@ const RenderReview = ({
         .content {
           margin: 1rem;
           text-align: left;
-          width: 70%;
+          width: 100%;
         }
       `}</style>
     </div>

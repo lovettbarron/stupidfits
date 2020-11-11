@@ -9,18 +9,20 @@ import RenderReview from "../../components/RenderReview";
 
 const Review = (props) => {
   const seourl =
-    (props.review.media[0].cloudinary &&
+    (props.review.media.length > 0 &&
+      props.review.media[0].cloudinary &&
       `https://res.cloudinary.com/stupidsystems/image/${
         props.review.user.hideface && `e_pixelate_faces:15/`
       }upload/${props.review.media[0].cloudinary}.png`) ||
-    "";
+    "https://stupidfits.com/img/appicon.png";
 
   const seourlfb =
-    (props.review.media[0].cloudinary &&
+    (props.review.media.length > 0 &&
+      props.review.media[0].cloudinary &&
       `https://res.cloudinary.com/stupidsystems/image/upload/b_rgb:151515,${
         props.review.user.hideface && `e_pixelate_faces:15,`
       }c_lpad,h_630,w_1200/${props.review.media[0].cloudinary}.png`) ||
-    "";
+    "https://stupidfits.com/img/appicon.png";
 
   let tags = [
     ...props.review.item.map((i) => `${i.brand.name} ${i.model}`),
