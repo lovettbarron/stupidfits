@@ -440,6 +440,14 @@ export const getServerSideProps = async (context) => {
     return {};
   }
 
+  if (!b) {
+    if (context.res) {
+      context.res.writeHead(302, { Location: `/brand` });
+      context.res.end();
+    }
+    return {};
+  }
+
   return {
     props: { brand: b },
   };
