@@ -3,6 +3,8 @@ import marksy from "marksy";
 import EmbedImage from "./EmbedImage";
 import Image from "./Image";
 import Link from "next/link";
+import FitBox from "./FitBox";
+import { Tabs, Tab, FILL } from "baseui/tabs-motion";
 
 const RenderReview = ({
   id,
@@ -18,6 +20,7 @@ const RenderReview = ({
   slug,
   preview,
 }) => {
+  const [activeKey, setActiveKey] = React.useState("0");
   const compile = marksy({
     // Pass in whatever creates elements for your
     // virtual DOM library. h('h1', {})
@@ -68,7 +71,28 @@ const RenderReview = ({
           </div>
         )}
         <div className="content" style={preview && { width: "100%" }}>
-          {compiled.tree}
+          {(preview && compiled.tree) || (
+            <Tabs
+              activeKey={activeKey}
+              fill={FILL.fixed}
+              onChange={({ activeKey }) => {
+                setActiveKey(activeKey);
+              }}
+              activateOnFocus
+            >
+              <Tab title="Review">{compiled.tree}</Tab>
+
+              <Tab title="Fits">
+                {item.map((i) => (
+                  <React.Fragment key={i.id}>
+                    <h3>{i.model}</h3>
+                    {i.fit &&
+                      i.fit.map((f) => <FitBox key={f.id} {...f} fit={f.id} />)}
+                  </React.Fragment>
+                ))}
+              </Tab>
+            </Tabs>
+          )}
         </div>
       </div>
       <style jsx>{`

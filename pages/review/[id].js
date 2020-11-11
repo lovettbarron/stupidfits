@@ -1,14 +1,16 @@
 import React, { useState } from "react";
 import { getSession, useSession } from "next-auth/client";
 import fetch from "isomorphic-unfetch";
+import { Tabs, Tab, FILL } from "baseui/tabs-motion";
 import Layout from "../../components/Layout";
-import FitBox from "../../components/FitBox";
+
 import RenderReview from "../../components/RenderReview";
 
 const Review = (props) => {
   return (
     <Layout>
       <RenderReview {...props.review} />
+
       <style jsx>{`
         .page {
           display: flex;
@@ -29,19 +31,19 @@ export const getServerSideProps = async (context) => {
     `${process.env.HOST}/api/review/${context.params.id}`
   );
 
-  if (!session || !session.user) {
-    if (context.res) {
-      context.res.writeHead(302, { Location: `/` });
-      context.res.end();
-    }
-    return {};
-  }
-
   let data;
   try {
     data = await res.json();
   } catch (e) {
     console.log("error:", e.message);
+  }
+
+  if ((!session || !session.user) && !data.published) {
+    if (context.res) {
+      context.res.writeHead(302, { Location: `/` });
+      context.res.end();
+    }
+    return {};
   }
 
   return {

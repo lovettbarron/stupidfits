@@ -29,6 +29,33 @@ async function handleGET(req, res) {
       item: {
         include: {
           brand: true,
+          fit: {
+            where: {
+              user: {
+                public: true,
+              },
+            },
+            include: {
+              media: {
+                include: {
+                  layers: {
+                    include: {
+                      item: {
+                        include: { brand: true },
+                      },
+                      media: true,
+                    },
+                  },
+                },
+              },
+              user: true,
+              components: {
+                include: {
+                  brand: true,
+                },
+              },
+            },
+          },
         },
       },
       tags: true,
