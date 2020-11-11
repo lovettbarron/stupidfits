@@ -3,122 +3,15 @@ import Link from "next/link";
 import Router, { useRouter } from "next/router";
 import { useSession } from "next-auth/client";
 import Anatomy from "./Anatomy";
-import Image from "./Image";
+import ImageMini from "./ImageMini";
 import { Button, KIND, SIZE } from "baseui/button";
 
 import { Cap } from "./Anatomy";
 
-const FitBox = (props) => {
+const ReviewBox = (props) => {
   const router = useRouter();
   const [session, loading] = useSession();
   const [fit, setFit] = useState(props.fit || false);
-
-  // const hasLayers = props.media.find(m=> m.layers && m.layers.length > 0)
-
-  const addFit = async (e) => {
-    e.preventDefault();
-    console.log("Adding fit", `${process.env.HOST}/api/insta/{props.id}`);
-    try {
-      const body = { ...props };
-      const res = await fetch(`${process.env.HOST}/api/insta/{props.id}`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-      });
-      const data = await res.json();
-      console.log("Added fit!", data);
-      if (data) Router.push(`/fit/${data.id}`);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const editFit = async (e) => {
-    Router.push(`/fit/${fit || props.id}`);
-  };
-
-  const exportFit = async (e) => {
-    Router.push(`/p/${fit || props.id}`);
-  };
-
-  const copyFit = async () => {
-    const order = {
-      BAG: 6,
-      SHOE: 5,
-      JACKET: 1,
-      PANT: 4,
-      SHIRT: 3,
-      LAYER: 2,
-      EXTRA: 7,
-    };
-
-    const con = props.components.sort((a, b) => {
-      return order[a.type] - order[b.type];
-    });
-
-    const text = `${con
-      .map((c) => `${Cap(c.brand.name)} ${c.model}`)
-      .join("\n\r")}
-
-Details at stupidfits.com/f/${props.id}
-    `;
-
-    if (navigator) {
-      navigator.clipboard.writeText(text).then(
-        function () {
-          alert("Copied text to clipboard");
-        },
-        function () {
-          alert("Something broke");
-        }
-      );
-    }
-  };
-
-  const copyHash = async () => {
-    const order = {
-      BAG: 6,
-      SHOE: 5,
-      JACKET: 1,
-      PANT: 4,
-      SHIRT: 3,
-      LAYER: 2,
-      EXTRA: 7,
-    };
-
-    const con = props.components.sort((a, b) => {
-      return order[a.type] - order[b.type];
-    });
-
-    const text = `${con
-      .map((c) => `#${c.brand.name.replace(" ", "")}`)
-      .join(" ")} #fitpic #fitpics #stupidfits
-
-Details at stupidfits.com/f/${props.id}
-    `;
-
-    if (navigator) {
-      navigator.clipboard.writeText(text).then(
-        function () {
-          alert("Copied Hashtags to clipboard");
-        },
-        function () {
-          alert("Something broke");
-        }
-      );
-    }
-  };
-
-  const checkIfExists = async () => {
-    const res = await fetch(`${process.env.HOST}/api/insta/${props.id}`);
-    try {
-      const fit = await res.json();
-      // console.log("Got media for ", props.id, media.id);
-      setFit(fit.id ? true : false);
-    } catch (e) {
-      console.log("error:", e.message);
-    }
-  };
 
   useEffect(() => {
     // component is used for both displaying instagram images that aren't yet in the db, and fits that are currently in the db. It probably shouldn't, but this just prevent weird api request
@@ -128,79 +21,61 @@ Details at stupidfits.com/f/${props.id}
 
   return (
     <>
-      <div className="fitbox">
+      <div
+        className="fitbox"
+        onClick={() =>
+          Router.push({
+            pathname: `/review/${props.id}`,
+          })
+        }
+      >
         <div className="mediawrap">
-          <Image
-            fit={props.id}
-            components={props.components}
-            url={props.imageUrl}
-            media={props.media}
-            user={props.user}
-            edit={
-              session && session.user.email === props.user.email && !props.edit
-                ? true
-                : false
-            }
-          />
-        </div>
-        <div className="components">
-          <div className="description">
-            <div className="header">
-              <h3>
-                {(props.user && (
-                  <Link href={`/u/${props.user.username}`}>
-                    <a>{props.user.username || props.media[0].username}</a>
-                  </Link>
-                )) || <>{props.username || props.media[0].username}</>}
-              </h3>
-              <div className="links">
-                {props.media[0].insta_id && (
-                  <a href={props.media[0].url || props.url}>Instagram</a>
-                )}
-                <Link href={`/f/${props.id}`}>
-                  <a>Permalink</a>
-                </Link>
-              </div>
-            </div>
-            <div className="captions">
-              {props.caption || props.media[0].description}
-            </div>
-            {!props.media && !fit && <button onClick={addFit}>Add Fit</button>}
+          <div className="overlay">
+            <h3>Read the Review by {props.user.username}</h3>
           </div>
-          <br />
-
-          {session && session.user.email === props.user.email && !props.edit && (
-            <div className="btns">
-              <br />
-              <Button kind={KIND.secondary} size={SIZE.mini} onClick={editFit}>
-                Edit Fit
-              </Button>{" "}
-              <Button kind={KIND.secondary} size={SIZE.mini} onClick={copyFit}>
-                Text
-              </Button>
-              <Button kind={KIND.secondary} size={SIZE.mini} onClick={copyHash}>
-                Hashtags
-              </Button>
-            </div>
-          )}
-          {props.components && (
-            <Anatomy
-              id={props.id}
-              nocomment={props.nocomment || false}
-              components={props.components}
-            />
-          )}
-          {props.desc && <div className="des">{props.desc}</div>}
+          <ImageMini media={props.media} hideid={true} />
         </div>
+        <h2>{props.title}</h2>
+        <ul className="style">
+          {props.tags.map((t) => (
+            <li>{t.name}</li>
+          ))}
+        </ul>
+        <ul className="style">
+          {props.item.map((t) => (
+            <li>
+              {t.brand.name} {t.model}
+            </li>
+          ))}
+        </ul>
       </div>
 
       <style jsx>{`
         .fitbox {
-          margin: 2rem 0;
+          max-width: 400px;
+          margin: 2rem 1rem;
           background: #2b2b2b;
           border-radius: 0 0 5px 5px;
           display: flex;
           flex-wrap: wrap;
+          cursor: pointer;
+        }
+        .fitbox:hover .overlay {
+          opacity: 0.8;
+        }
+
+        ul {
+          list-style: none;
+          padding: none;
+          display: flex;
+          flex-wrap: wrap;
+        }
+
+        li {
+          margin: 0 1rem;
+          padding: 0.5rem;
+          background: #151515;
+          color: #ffffff;
         }
 
         button {
@@ -216,7 +91,24 @@ Details at stupidfits.com/f/${props.id}
           max-width: 600px;
           padding: 0;
           margin: 0;
-          width: 50%;
+          width: 100%;
+          position: relative;
+        }
+
+        .overlay {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: #151515;
+          opacity: 0;
+          transition: opacity 0.4s;
+          z-index: 1;
+          font-size: 20pt;
+          display: flex;
+          justify-content: center;
+          align-items: center;
         }
 
         .header {
@@ -309,4 +201,4 @@ Details at stupidfits.com/f/${props.id}
   );
 };
 
-export default FitBox;
+export default ReviewBox;

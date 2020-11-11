@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { NextSeo } from "next-seo";
 import Layout from "../../components/Layout";
 import fetch from "isomorphic-unfetch";
-import FitBox from "../../components/FitBox";
+import ReviewBox from "../../components/ReviewBox";
 import Link from "next/link";
 import { useSession, signin, signout } from "next-auth/client";
 import { extractHostname } from "../../components/Clicker";
@@ -71,7 +71,7 @@ const Reviews = (props) => {
             {(session && session.user && "Your recent fits") ||
               "Recent Featured Fits"}
           </h3>
-          <main>
+          <div className="reviews">
             {props.feed &&
               Array.isArray(props.feed) &&
               props.feed
@@ -79,10 +79,10 @@ const Reviews = (props) => {
                   session && session.user ? true : f.status === "FEATURED"
                 )
                 .sort((a, b) => {
-                  return b.media[0].timestamp - a.media[0].timestamp;
+                  return b.createdAt - a.createdAt;
                 })
                 .map((r) => <ReviewBox key={r.id} {...r} />)}
-          </main>
+          </div>
           <footer>
             <ul>
               <li>
@@ -111,6 +111,12 @@ const Reviews = (props) => {
         <style jsx>{`
           header > h1 {
             margin: 0;
+          }
+
+          .reviews {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
           }
 
           ol {

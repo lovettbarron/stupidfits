@@ -4,7 +4,7 @@ import { useSession } from "next-auth/client";
 
 import { Button } from "baseui/button";
 
-const Mini = ({ media, handler }) => {
+const Mini = ({ media, handler, hideid }) => {
   const [session, loading] = useSession();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -14,23 +14,21 @@ const Mini = ({ media, handler }) => {
 
   return (
     <div className="mini">
-      <div className="id">#{media.id}</div>
+      {hideid && <div className="id">#{media.id}</div>}
       <Image
         cloudName={process.env.CLOUDINARY_CLOUD_NAME || "stupidsystems"}
-        publicId={media.cloudinary}
+        publicId={(media && media.cloudinary) || "stupidfits/appicon"}
         style={{ width: "100%" }}
         secure={true}
       >
-        <Transformation width="300" height="300" crop="scale" />
+        <Transformation width="500" height="500" crop="scale" />
 
         {/* {user.hideface && <Transformation effect="pixelate_faces:15" />} */}
       </Image>
 
       <style jsx>{`
         .mini {
-          margin: 2rem 2.5%;
-          max-width: 20%;
-          min-width: 20%;
+          width: 100%;
           position: relative;
         }
 
