@@ -7,12 +7,12 @@ import { Button } from "baseui/button";
 import { ButtonGroup, MODE } from "baseui/button-group";
 import { Textarea } from "baseui/textarea";
 import { Checkbox, LABEL_PLACEMENT, STYLE_TYPE } from "baseui/checkbox";
-import { FileUploader } from "baseui/file-uploader";
-import { useUpload } from "use-cloudinary";
+
 import { useSession } from "next-auth/client";
 import MediaManager from "./MediaManager";
+import { itemToOptions } from "../pages/fit/[id]";
 
-const CreateReview = ({ review, handler }) => {
+const CreateReview = ({ review, styles, handler }) => {
   const [session, loading] = useSession();
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -27,18 +27,18 @@ const CreateReview = ({ review, handler }) => {
   const [focus, setFocus] = React.useState(
     (review && review.title) || "REVIEW"
   );
-  const [published, setPublished] = useState(review.published || false);
   const [reviewid, setReviewid] = useState((review && review.id) || null);
+  const [published, setPublished] = useState(review.published || false);
   const [title, setTitle] = useState((review && review.title) || "");
   const [reviewtext, setReviewtext] = useState((review && review.review) || "");
   const [slug, setSlug] = useState((review && review.slug) || "");
+
+  const [tags, setTags] = useState((review && review.tags) || []);
 
   const [items, setItems] = useState(null);
   const [components, setComponents] = React.useState(
     review && review.item && itemToOptions(review.item)
   );
-
-  if (isLoading) return <p>Loading...</p>;
 
   const handle = (data) => {
     props.handler(data);
@@ -78,7 +78,7 @@ const CreateReview = ({ review, handler }) => {
     if (!reviewid) {
       setSaving(true);
       try {
-        const body = { title };
+        const body = { title, review: reviewtext, slug, focus };
         const res = await fetch(`${process.env.HOST}/api/review/create`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -87,6 +87,13 @@ const CreateReview = ({ review, handler }) => {
         try {
           const data = await res.json();
           setReviewid(data.id);
+          Router.push(
+            {
+              pathname: `/review/edit/${data.id}`,
+            },
+            undefined,
+            { shallow: true }
+          );
         } catch (e) {
           console.log("error:", e.message);
         }
@@ -100,16 +107,14 @@ const CreateReview = ({ review, handler }) => {
       // IF id exists
       try {
         const body = {
-          id,
           title,
           review: reviewtext,
           item: components,
-          model,
-          year,
-          type,
-          sale,
+          tags,
+          slug,
+          published,
         };
-        const res = await fetch(`${process.env.HOST}/api/review`, {
+        const res = await fetch(`${process.env.HOST}/api/review/${reviewid}`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(body),
@@ -118,6 +123,7 @@ const CreateReview = ({ review, handler }) => {
           const data = await res.json();
           setSaved(true);
           setSaving(false);
+          setIsLoading(false);
         } catch (e) {
           console.log("error:", e.message);
         }
@@ -142,6 +148,7 @@ const CreateReview = ({ review, handler }) => {
     return () => clearTimeout(timer);
   }, [title, reviewtext, slug]);
 
+  // if (isLoading) return <p>Loading...</p>;
   return (
     <>
       <div className="form">
@@ -158,7 +165,6 @@ const CreateReview = ({ review, handler }) => {
         </ButtonGroup> */}
         <label>
           <h3>What is it?</h3>
-
           <Input
             value={title}
             onChange={(e) => setTitle(e.target.value)}
@@ -213,7 +219,7 @@ const CreateReview = ({ review, handler }) => {
         <br />
 
         <h3>Media Upload</h3>
-        <MediaManager exists={review.media} />
+        <MediaManager id={reviewid} media={review.media} />
         <label>
           <h3>The Review</h3>
           <small>
@@ -250,6 +256,21 @@ const CreateReview = ({ review, handler }) => {
             }}
           />
         </label>
+        <h3>What Styles Interest You?</h3>
+        <Select
+          options={
+            styles &&
+            styles.map((s) => ({
+              id: s.id,
+              label: s.name,
+            }))
+          }
+          disabled={reviewid ? false : true}
+          value={tags}
+          multi
+          placeholder="Pick a few"
+          onChange={(params) => setTags(params.value)}
+        />
 
         <Button
           onClick={(e) => {

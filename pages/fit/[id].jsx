@@ -19,7 +19,7 @@ import {
   ROLE,
 } from "baseui/modal";
 
-const itemToOptions = (items) => {
+export const itemToOptions = (items) => {
   return (
     items.map((c) => ({
       label: `${c.brand.name} ${c.model} ${c.year > 0 ? c.year : ""}`,

@@ -4,10 +4,13 @@ import { FileUploader } from "baseui/file-uploader";
 import { Button } from "baseui/button";
 import ImageMini from "./ImageMini";
 
-const MediaManager = (props, { exist, handler }) => {
+const MediaManager = (props) => {
   const [session, loading] = useSession();
   const [isLoading, setIsLoading] = useState(false);
-  const [media, setMedia] = useState(exist || []);
+  const [media, setMedia] = useState(props.media || []);
+  const [files, setFiles] = useState([]);
+  const [cloud, setCloud] = useState([]);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const [isUploading, setIsUploading] = React.useState(false);
   const timeoutId = React.useRef(null);
@@ -56,7 +59,7 @@ const MediaManager = (props, { exist, handler }) => {
     }
     Promise.all(requests).then((reqs) => {
       console.log("All reqs completed", reqs);
-      addNewFromUpload(reqs);
+      updateFromUpload(reqs);
     });
   };
 
@@ -69,13 +72,15 @@ const MediaManager = (props, { exist, handler }) => {
 
       console.log("Adding Media", `${process.env.HOST}/api/fits/create`, body);
 
-      const res = await fetch(`${process.env.HOST}/api/review/${props.id}`, {
+      const res = await fetch(`${process.env.HOST}/api/media/review`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
       });
       const data = await res.json();
       console.log("Added review media!", data);
+      setMedia(data.media);
+      setIsUploading(false);
       // Might need to add a handler function here
     } catch (error) {
       console.error(error);
@@ -104,6 +109,7 @@ const MediaManager = (props, { exist, handler }) => {
         .manager {
           display: flex;
           justify-content: center;
+          flex-wrap: wrap;
         }
 
         button {

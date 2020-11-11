@@ -4,9 +4,6 @@ import { getSession, session } from "next-auth/client";
 const prisma = new PrismaClient();
 
 export default async function handle(req, res) {
-  const id = req.query.id;
-  const session = await getSession({ req });
-
   if (req.method === "GET") {
     handleGET(req, res);
   } else if (req.method === "POST") {
@@ -23,21 +20,28 @@ export default async function handle(req, res) {
 // GET /api/get/:id
 async function handleGET(req, res) {
   const id = req.query.id;
+  console.log(req.query);
 
   const review = await prisma.review.findOne({
-    where: { name: id },
+    where: { id: Number(id) },
     include: {
       user: true,
       item: {
-        brand: true,
+        include: {
+          brand: true,
+        },
       },
       tags: true,
       media: {
-        layers: true,
-        fit: true,
+        include: {
+          layers: true,
+          fit: true,
+        },
       },
       Comment: {
-        user: true,
+        include: {
+          user: true,
+        },
       },
     },
   });
@@ -56,35 +60,11 @@ async function handlePOST(req, res) {
     },
   });
 
-  cloudinary.config({
-    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-    api_key: process.env.CLOUDINARY_API_KEY,
-    api_secret: process.env.CLOUDINARY_API_SECRET,
-  });
-
-  const d = new Date();
-
-  let MediaArray = [];
-
-  for (let c of req.body.imgs) {
-    MediaArray.push({
-      insta_id: null,
-      username: user.username,
-      timestamp: Math.floor(d.getTime() / 1000),
-      cloudinary: c,
-      image: null,
-      url: null,
-      description: "",
-    });
-  }
-
-  const media = await prisma.review.update({
+  const review = await prisma.review.update({
+    where: {
+      id: Number(req.query.id),
+    },
     data: {
-      user: {
-        connect: {
-          email: session.user.email,
-        },
-      },
       published: req.body.published,
       title: req.body.title,
       review: req.body.review,
@@ -95,10 +75,9 @@ async function handlePOST(req, res) {
       tags: {
         set: req.body.tags.map((i) => ({ id: i.id })),
       },
-      media: { create: MediaArray },
     },
   });
-  res.json(media);
+  res.json(review);
 }
 
 // DELETE /api/post/:id

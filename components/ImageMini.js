@@ -14,6 +14,7 @@ const Mini = ({ media, handler }) => {
 
   return (
     <div className="mini">
+      <div className="id">#{media.id}</div>
       <Image
         cloudName={process.env.CLOUDINARY_CLOUD_NAME || "stupidsystems"}
         publicId={media.cloudinary}
@@ -22,13 +23,22 @@ const Mini = ({ media, handler }) => {
       >
         <Transformation width="300" height="300" crop="scale" />
 
-        {user.hideface && <Transformation effect="pixelate_faces:15" />}
+        {/* {user.hideface && <Transformation effect="pixelate_faces:15" />} */}
       </Image>
 
       <style jsx>{`
         .mini {
           margin: 2rem 2.5%;
           max-width: 20%;
+          min-width: 20%;
+          position: relative;
+        }
+
+        .id {
+          position: absolute;
+          top: 0;
+          right: 0;
+          width: 30%;
         }
 
         button {

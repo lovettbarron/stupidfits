@@ -131,7 +131,7 @@ const Nav = (props) => {
       <style jsx>{`
         .navigation {
           margin-left: auto;
-          position: fixed;
+          position: sticky;
           cursor: pointer;
           top: 1rem;
           right: 1rem;

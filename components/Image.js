@@ -110,7 +110,7 @@ const MediaHolder = ({
   </div>
 );
 
-const Pic = ({ media, fit, url, user, edit, components }) => {
+const Pic = ({ media, fit, url, user, edit, components, full }) => {
   const handleDragStart = (e) => e.preventDefault();
 
   const [isOpen, setIsOpen] = useState(false);
@@ -150,11 +150,11 @@ const Pic = ({ media, fit, url, user, edit, components }) => {
 
   return (
     <>
-      <div className="holder">
+      <div className="holder" style={full && { maxWidth: "1200px" }}>
         {(media.length > 1 && (
           <CarouselProvider
             totalSlides={media.length}
-            visibleSlides={1}
+            visibleSlides={full ? 3 : 1}
             step={1}
             isIntrinsicHeight={true}
             dragEnabled={drag}

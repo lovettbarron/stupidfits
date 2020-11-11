@@ -1,23 +1,17 @@
 import React, { useState } from "react";
 import fetch from "isomorphic-unfetch";
 import Layout from "../../components/Layout";
-import Router from "next/router";
-import { Select } from "baseui/select";
-import { Input } from "baseui/input";
-import { FileUploader } from "baseui/file-uploader";
 import FitBox from "../../components/FitBox";
-import { useUpload } from "use-cloudinary";
+import RenderReview from "../../components/RenderReview";
 
-const Item = (props) => {
-  if (isLoading) return <p>Loading...</p>;
-  if (isError) return <p>{error.message}</p>;
-
+const Review = (props) => {
   return (
     <Layout>
-      <div className="page"></div>
+      <div className="page">
+        <RenderReview {...props.review} />
+      </div>
       <style jsx>{`
         .page {
-          padding: 3rem;
           display: flex;
           justify-content: center;
           align-items: center;
@@ -41,9 +35,9 @@ export const getServerSideProps = async (context) => {
 
   return {
     props: {
-      ...data,
+      review: data,
     },
   };
 };
 
-export default Item;
+export default Review;
