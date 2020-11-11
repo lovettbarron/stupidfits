@@ -136,7 +136,7 @@ const CreateReview = ({ review, styles, handler }) => {
 
   useEffect(() => {
     fetchItems(true);
-    handler({ title, review: reviewtext, focus });
+    handler({ title, review: reviewtext, focus, published, tags, components });
 
     const timer = setTimeout(() => {
       if (title.length > 5) {
@@ -144,7 +144,7 @@ const CreateReview = ({ review, styles, handler }) => {
       }
     }, AUTOSAVE_INTERVAL);
     return () => clearTimeout(timer);
-  }, [title, reviewtext, slug]);
+  }, [title, reviewtext, slug, published, tags, components]);
 
   // if (isLoading) return <p>Loading...</p>;
   return (
@@ -254,7 +254,7 @@ const CreateReview = ({ review, styles, handler }) => {
             }}
           />
         </label>
-        <h3>What Styles Interest You?</h3>
+        <h3>Style Tags</h3>
         <Select
           options={
             styles &&
