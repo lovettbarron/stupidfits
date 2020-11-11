@@ -72,9 +72,9 @@ const Reviews = (props) => {
             {props.feed &&
               Array.isArray(props.feed) &&
               props.feed
-                .filter((f) =>
-                  session && session.user ? true : f.status === "FEATURED"
-                )
+                // .filter((f) =>
+                //   session && session.user ? true : f.status === "FEATURED"
+                // )
                 .sort((a, b) => {
                   return b.createdAt - a.createdAt;
                 })

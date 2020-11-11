@@ -297,7 +297,10 @@ export const getServerSideProps = async (context) => {
     console.log("error:", e.message);
   }
   return {
-    props: { items, url: process.env.HOST },
+    props: {
+      items: items,
+      url: process.env.HOST,
+    },
   };
 };
 

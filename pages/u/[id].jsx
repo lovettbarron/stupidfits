@@ -230,7 +230,14 @@ const UserProfile = (props) => {
                 <div>
                   {props.closet && (
                     <div className="closet">
-                      <Anatomy nocomment={true} components={props.closet} />
+                      <Anatomy
+                        nocomment={true}
+                        components={props.closet.sort(function (a, b) {
+                          var textA = a.brand.name.toUpperCase();
+                          var textB = b.brand.name.toUpperCase();
+                          return textA < textB ? -1 : textA > textB ? 1 : 0;
+                        })}
+                      />
                     </div>
                   )}
                 </div>

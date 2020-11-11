@@ -103,6 +103,11 @@ const RenderReview = ({
         .post {
           width: 100%;
         }
+
+        .p {
+          font-size: 16px;
+          line-height: 16px;
+        }
         .cont {
           width: 100%;
           display: flex;
