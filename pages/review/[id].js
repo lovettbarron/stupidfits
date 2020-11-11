@@ -8,9 +8,7 @@ import RenderReview from "../../components/RenderReview";
 const Review = (props) => {
   return (
     <Layout>
-      <div className="page">
-        <RenderReview {...props.review} />
-      </div>
+      <RenderReview {...props.review} />
       <style jsx>{`
         .page {
           display: flex;

@@ -79,6 +79,7 @@ const RenderReview = ({
           width: 100%;
           display: flex;
           flex-wrap: wrap;
+          justify-content: center;
         }
         .nav {
           width: 30%;
