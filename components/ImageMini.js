@@ -4,7 +4,7 @@ import { useSession } from "next-auth/client";
 
 import { Button } from "baseui/button";
 
-const Mini = ({ media, handler, hideid }) => {
+const Mini = ({ media, handler, hideid, maxwidth }) => {
   const [session, loading] = useSession();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -13,7 +13,7 @@ const Mini = ({ media, handler, hideid }) => {
   }, [session]);
 
   return (
-    <div className="mini">
+    <div className="mini" style={maxwidth && { maxWidth: maxwidth }}>
       {hideid && <div className="id">#{media.id}</div>}
       <Image
         cloudName={process.env.CLOUDINARY_CLOUD_NAME || "stupidsystems"}
@@ -21,7 +21,7 @@ const Mini = ({ media, handler, hideid }) => {
         style={{ width: "100%" }}
         secure={true}
       >
-        <Transformation width="500" height="500" crop="scale" />
+        <Transformation width="500" height="500" crop="fill" gravity="face" />
 
         {/* {user.hideface && <Transformation effect="pixelate_faces:15" />} */}
       </Image>

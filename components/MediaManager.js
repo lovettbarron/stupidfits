@@ -102,7 +102,11 @@ const MediaManager = (props) => {
         progressMessage={isUploading ? `Uploading... hang tight.` : ""}
       />
       {media.map((m) => (
-        <ImageMini media={m} handler={(id) => removeMedia(id)} />
+        <ImageMini
+          media={m}
+          handler={(id) => removeMedia(id)}
+          maxwidth={"100px"}
+        />
       ))}
 
       <style jsx>{`

@@ -11,13 +11,6 @@ import { Cap } from "./Anatomy";
 const ReviewBox = (props) => {
   const router = useRouter();
   const [session, loading] = useSession();
-  const [fit, setFit] = useState(props.fit || false);
-
-  useEffect(() => {
-    // component is used for both displaying instagram images that aren't yet in the db, and fits that are currently in the db. It probably shouldn't, but this just prevent weird api request
-    if (props.imageUrl) checkIfExists();
-    return () => {};
-  }, [session]);
 
   return (
     <>
@@ -33,7 +26,10 @@ const ReviewBox = (props) => {
           <div className="overlay">
             <h3>Read the Review by {props.user.username}</h3>
           </div>
-          <ImageMini media={props.media} hideid={true} />
+          <ImageMini
+            media={(props.media.length > 0 && props.media[0]) || props.media}
+            hideid={true}
+          />
         </div>
         <h2>{props.title}</h2>
         <ul className="style">
@@ -44,7 +40,7 @@ const ReviewBox = (props) => {
         <ul className="style">
           {props.item.map((t) => (
             <li>
-              {t.brand.name} {t.model}
+              {Cap(t.brand.name)} {t.model}
             </li>
           ))}
         </ul>

@@ -67,10 +67,7 @@ const Reviews = (props) => {
             </>
           )}
 
-          <h3>
-            {(session && session.user && "Your recent fits") ||
-              "Recent Featured Fits"}
-          </h3>
+          <h3>Recent Reviews</h3>
           <div className="reviews">
             {props.feed &&
               Array.isArray(props.feed) &&
