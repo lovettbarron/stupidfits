@@ -27,6 +27,10 @@ async function handleGET(req, res) {
   const brand = await prisma.brand.findOne({
     where: { name: id },
   });
+  if (!brand) {
+    res.status(404);
+    return;
+  }
 
   const items = await prisma.item
     .findMany({
