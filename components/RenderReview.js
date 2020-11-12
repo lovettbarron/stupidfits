@@ -150,7 +150,6 @@ const RenderReview = ({
           justify-content: center;
         }
         .nav {
-          width: 30%;
           font-size: 2rem;
         }
         .content {
