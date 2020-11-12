@@ -205,7 +205,7 @@ const Nav = (props) => {
         }
 
         .mobile h1 {
-          font-size: 2rem;
+          font-size: 2.6rem;
           margin: 0;
         }
 
