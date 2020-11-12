@@ -71,7 +71,8 @@ const Layout = (props) => {
         }
 
         p {
-          font-size: 1.4rem;
+          font-size: 1.2rem;
+          line-height: 2.2rem
           max-width: 600px;
         }
 

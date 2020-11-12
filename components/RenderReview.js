@@ -10,6 +10,8 @@ const RenderReview = ({
   id,
   user,
   title,
+  createdAt,
+  updatedAt,
   review,
   item,
   faq,
@@ -49,6 +51,7 @@ const RenderReview = ({
   return (
     <div className="post">
       <h1>{title}</h1>
+
       {media && media.length > 0 && (
         <Image
           fit={(media.fit && media.fit.id) || null}
@@ -67,7 +70,6 @@ const RenderReview = ({
             <Link href={`/u/${user.username}`}>
               <a>{user.username}</a>
             </Link>
-            <hr />
           </div>
         )}
         <div className="content">
@@ -80,7 +82,29 @@ const RenderReview = ({
               }}
               activateOnFocus
             >
-              <Tab title="Review">{compiled.tree}</Tab>
+              <Tab title="Review">
+                <div className="struct">
+                  <div className="side">
+                    <div>
+                      Written{" "}
+                      {new Date(createdAt).toLocaleString("en-US", {
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                      })}
+                      <br />
+                      Updated{" "}
+                      {new Date(updatedAt).toLocaleString("en-US", {
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                      })}
+                    </div>
+                    <hr />
+                  </div>
+                  <div className="writeup">{compiled.tree}</div>
+                </div>
+              </Tab>
 
               <Tab title="Fits">
                 {(Array.isArray(item) &&
@@ -104,10 +128,21 @@ const RenderReview = ({
           width: 100%;
         }
 
-        .p {
-          font-size: 16px;
-          line-height: 16px;
+        .struct {
+          display: flex;
+          flex-wrap: wrap;
+          flex-direction: row-reverse;
+          justify-content: space-between;
         }
+
+        .writeup {
+          width: auto;
+        }
+
+        .side {
+          min-width: 20%;
+        }
+
         .cont {
           width: 100%;
           display: flex;
@@ -116,6 +151,7 @@ const RenderReview = ({
         }
         .nav {
           width: 30%;
+          font-size: 2rem;
         }
         .content {
           margin: 1rem;
