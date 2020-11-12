@@ -31,6 +31,11 @@ const Nav = (props) => {
   return (
     <>
       <div className="navigation">
+        <div className="mobile">
+          <Link href="/">
+            <h1>Stupid Fits</h1>
+          </Link>
+        </div>
         <div className="desktop">
           <Link href="/">
             <h1>Stupid Fits</h1>
@@ -191,9 +196,26 @@ const Nav = (props) => {
           align-items: center;
         }
 
+        .mobile {
+          display: flex;
+          justify-self: flex-start;
+          justify-content: flex-start;
+          align-items: center;
+          display: none;
+        }
+
+        .mobile h1 {
+          font-size: 2rem;
+          margin: 0;
+        }
+
         @media screen and (max-width: 800px) {
           .navigation {
-            justify-content: flex-end;
+            justify-content: space-between;
+          }
+
+          .mobile {
+            display: block !important;
           }
 
           .desktop {
