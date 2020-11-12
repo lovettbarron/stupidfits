@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { Drawer, SIZE, ANCHOR } from "baseui/drawer";
-
+import { Button } from "baseui/button";
 import { useSession, signin, signout } from "next-auth/client";
 
 const Nav = (props) => {
@@ -31,11 +31,46 @@ const Nav = (props) => {
   return (
     <>
       <div className="navigation">
-        {!session && (
-          <a className="topauth" onClick={signin}>
-            <img src={`/img/login.png`} />
-          </a>
-        )}
+        <div className="desktop">
+          <Link href="/">
+            <h1>Stupid Fits</h1>
+          </Link>
+          {(!session && (
+            <a className="topauth" onClick={signin}>
+              <img src={`/img/login.png`} />
+            </a>
+          )) || (
+            <Link href="/feed">
+              <a>
+                <Button>Add Fit</Button>
+              </a>
+            </Link>
+          )}
+          {(session && (
+            <Link href="/">
+              <a className="bold" data-active={isActive("/")}>
+                Feed
+              </a>
+            </Link>
+          )) || (
+            <Link href="/global">
+              <a className="bold" data-active={isActive("/global")}>
+                Fits
+              </a>
+            </Link>
+          )}
+          <Link href="/review">
+            <a className="bold" data-active={isActive("/review")}>
+              Review
+            </a>
+          </Link>
+          <Link href="/brand">
+            <a className="bold" data-active={isActive("/brand")}>
+              Brands
+            </a>
+          </Link>
+        </div>
+
         <a className="main" onClick={toggleTrueFalse}>
           <img src="/img/menu.png" />
         </a>
@@ -53,17 +88,23 @@ const Nav = (props) => {
           <div className="nav">
             <Link href="/">
               <a className="bold" data-active={isActive("/")}>
-                Fits
+                Feed
               </a>
             </Link>
+
             <Link href="/feed">
-              <a data-active={isActive("/feed")}>Add Fits</a>
+              <a data-active={isActive("/feed")}>
+                <Button>Add Fit</Button>
+              </a>
             </Link>
             <Link href="/closet">
               <a data-active={isActive("/closet")}>Closet</a>
             </Link>
             <Link href="/brand">
               <a data-active={isActive("/brand")}>Brands</a>
+            </Link>
+            <Link href="/review">
+              <a data-active={isActive("/review")}>Reviews</a>
             </Link>
             <Link href="/global">
               <a data-active={isActive("/global")}>Others' Fits</a>
@@ -130,16 +171,52 @@ const Nav = (props) => {
       </Drawer>
       <style jsx>{`
         .navigation {
+          display: flex;
+          width: 100%;
+          padding: 0 1rem;
+          justify-content: space-between;
+          align-items: center;
           margin-left: auto;
           position: sticky;
           cursor: pointer;
           top: 1rem;
-          right: 1rem;
+          left: 1rem;
           z-index: 120;
         }
 
+        .desktop {
+          display: flex;
+          justify-self: flex-start;
+          justify-content: flex-start;
+          align-items: center;
+        }
+
+        @media screen and (max-width: 800px) {
+          .navigation {
+            justify-content: flex-end;
+          }
+
+          .desktop {
+            display: none !important;
+          }
+        }
+
+        .desktop > h1 {
+          margin-right: 2rem;
+        }
+
+        .desktop > a {
+          margin: 0 1rem;
+          font-size: 16px;
+          text-decoration: none;
+        }
+
+        .desktop > a:hover {
+          text-decoration: underline;
+        }
+
         a.topauth > img {
-          max-width: 150px;
+          max-width: 200px;
           margin: 0 2rem 0 0;
         }
 
@@ -178,6 +255,11 @@ const Nav = (props) => {
           list-style: none;
         }
 
+        h1:hover {
+          animation: shake 0.5s;
+          animation-iteration-count: infinite;
+        }
+
         .nav a {
           display: block;
           line-height: 4rem;
@@ -186,6 +268,42 @@ const Nav = (props) => {
           align-items: center;
           color: #ffffff;
           text-decoration: underline;
+        }
+
+        @keyframes shake {
+          0% {
+            transform: translate(1px, 1px) rotate(0deg);
+          }
+          10% {
+            transform: translate(-1px, -2px) rotate(-1deg);
+          }
+          20% {
+            transform: translate(-3px, 0px) rotate(1deg);
+          }
+          30% {
+            transform: translate(3px, 2px) rotate(0deg);
+          }
+          40% {
+            transform: translate(1px, -1px) rotate(1deg);
+          }
+          50% {
+            transform: translate(-1px, 2px) rotate(-1deg);
+          }
+          60% {
+            transform: translate(-3px, 1px) rotate(0deg);
+          }
+          70% {
+            transform: translate(3px, 1px) rotate(-1deg);
+          }
+          80% {
+            transform: translate(-1px, -1px) rotate(1deg);
+          }
+          90% {
+            transform: translate(1px, 2px) rotate(0deg);
+          }
+          100% {
+            transform: translate(1px, -2px) rotate(-1deg);
+          }
         }
       `}</style>
     </>

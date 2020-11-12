@@ -99,20 +99,28 @@ const options = {
     session: async (session, token) => {
       // console.log("sesh", session, user);
       // console.log("Session", token, session);
-      if (!session?.user || !token?.account) {
-        return Promise.resolve(session);
-      }
+
+      // if (!session?.user || !token?.account) {
+      //   return Promise.resolve(session);
+      // }
 
       const user = await prisma.user.findOne({
         where: { email: session.user.email },
       });
-      console.log("token", token);
-      session.user.uid = user.uid;
+      // console.log("token", token);
+      session.user.uid = user.id;
+      session.user.email = user.email;
       session.user.instagram = user.instagram;
-      session.user.userId = token.user.id;
-      session.user.id = token.user.id;
-      session.accessToken = token.account.accessToken;
-      console.log("Updated", session);
+      session.user.id = user.id;
+      session.user.username = user.username;
+      // session.user.id = token.user.id;
+      // session.accessToken = token.account.accessToken;
+      // console.log("Updated", session);
+
+      if (!session?.user || !token?.account) {
+        return Promise.resolve(session);
+      }
+
       return Promise.resolve(session);
     },
     jwt: async (token, user, account, profile, isNewUser) => {

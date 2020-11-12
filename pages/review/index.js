@@ -17,41 +17,14 @@ const Reviews = (props) => {
     <>
       <Layout>
         <div className="page">
-          <header>
-            <h1>Stupid Fits</h1>
-            <h2>Fit Reviews</h2>
-          </header>
-          {!session && (
-            <>
-              <div className="main">
-                <div className="col">
-                  <a className="auth" onClick={signin}>
-                    <img src={`/img/login.png`} />
-                  </a>
-                </div>
-              </div>
-
-              <hr />
-            </>
-          )}
           {session && (
             <>
               <h3>Hej {props.user.username}</h3>
               {(props.user.username && (
                 <p className="center">
-                  Your public page is
-                  <br />
-                  <Link href={`${process.env.HOST}/u/${props.user.username}`}>
+                  <Link href="/review/create">
                     <a>
-                      {extractHostname(process.env.HOST)}
-                      /u/{props.user.username}
-                    </a>
-                  </Link>
-                  <br />
-                  <br />
-                  <Link href="/feed">
-                    <a>
-                      <Button>Add New Fits</Button>
+                      <Button>Write a Review</Button>
                     </a>
                   </Link>
                 </p>
