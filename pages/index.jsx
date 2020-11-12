@@ -18,13 +18,6 @@ const Main = (props) => {
     <>
       <Layout>
         <div className="page">
-          <header>
-            <h1>Stupid Fits</h1>
-            <h2>
-              Ingredients for
-              <br /> your Fitpics
-            </h2>
-          </header>
           {!session && (
             <>
               <div className="main">
