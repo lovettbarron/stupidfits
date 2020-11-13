@@ -422,12 +422,15 @@ const Me = (props) => {
                   <>
                     <p>Synced with {insta.username}</p>
                     <a className="auth" onClick={DisconnectInstagram}>
-                      <img src={`/img/instagram-disconnect.png`} />
+                      <img
+                        alt="Disconnect your instagram"
+                        src={`/img/instagram-disconnect.png`}
+                      />
                     </a>
                   </>
                 )) || (
                   <a className="auth" onClick={AuthWithInstagram}>
-                    <img src={`/img/instagram.png`} />
+                    <img alt="Sync your instagram" src={`/img/instagram.png`} />
                   </a>
                 )}
               </div>

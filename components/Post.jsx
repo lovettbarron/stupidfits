@@ -5,7 +5,7 @@ const Post = ({ post }) => {
   const authorName = post.author ? post.author.name : "Unknown author";
   return (
     <div onClick={() => Router.push("/p/[id]", `/p/${post.id}`)}>
-      <img src={`/img/demo.png`} />
+      <img alt="Media" src={`/img/demo.png`} />
       <div className="info"></div>
 
       <style jsx>{`

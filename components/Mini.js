@@ -15,7 +15,7 @@ const Mini = ({ media, handler }) => {
 
   return (
     <div className="mini">
-      <img src={props.media_url || props.media[0].image} />
+      <img src={props.media_url || props.media[0].image} alt="Media Image" />
       {props.media_type === "CAROUSEL_ALBUM" && props.children && (
         <>and {props.children.data.length - 1} others</>
       )}

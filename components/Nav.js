@@ -42,7 +42,7 @@ const Nav = (props) => {
           </Link>
           {(!session && (
             <a className="topauth" onClick={signin}>
-              <img src={`/img/login.png`} />
+              <img alt="Login or Create Account" src={`/img/login.png`} />
             </a>
           )) || (
             <Link href="/feed">
@@ -77,7 +77,7 @@ const Nav = (props) => {
         </div>
 
         <a className="main" onClick={toggleTrueFalse}>
-          <img src="/img/menu.png" />
+          <img alt="Open menu" src="/img/menu.png" />
         </a>
       </div>
       <Drawer
@@ -126,7 +126,7 @@ const Nav = (props) => {
             <h3>You're not logged in.</h3>
             <hr />
             <a className="auth" onClick={signin}>
-              <img src={`/img/login.png`} />
+              <img alt="Login or Create Account" src={`/img/login.png`} />
             </a>
             <Link href="/global">
               <a data-active={isActive("/global")}>Public Fits</a>

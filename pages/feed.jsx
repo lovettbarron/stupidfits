@@ -165,7 +165,7 @@ const Feed = (props) => {
           <div className="alert">
             <p className="small">
               <a className="auth" onClick={AuthWithInstagram}>
-                <img src={`/img/instagram.png`} />
+                <img alt="Sync with Instagram" src={`/img/instagram.png`} />
               </a>
             </p>
             <p>

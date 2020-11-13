@@ -134,7 +134,7 @@ const Item = (props) => {
               });
             }}
           />
-          {photo && <img src={data.url} />}
+          {photo && <img alt="Uploaded image" src={data.url} />}
           <button
             disabled={!brand || !model || !type}
             type="submit"
