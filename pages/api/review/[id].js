@@ -69,10 +69,10 @@ async function handleGET(req, res) {
         },
       },
       Comment: {
+        orderBy: {
+          id: "asc",
+        },
         include: {
-          orderBy: {
-            id: "asc",
-          },
           user: true,
         },
       },
