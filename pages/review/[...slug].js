@@ -34,10 +34,10 @@ const Review = (props) => {
       <NextSeo
         title={`${props.review.title} by ${props.review.user.username} on Stupid Fits `}
         description={`${props.review.title} by ${props.review.user.username} on Stupid Fits `}
-        canonical={`${process.env.HOST}/review/${props.review.id}`}
+        canonical={`${process.env.HOST}/review/${props.review.id}/${props.review.slug}`}
         openGraph={{
           keywords: tags,
-          url: `${process.env.HOST}/review/${props.review.id}`,
+          url: `${process.env.HOST}/review/${props.review.id}/${props.review.slug}`,
           title: `${props.review.title} by ${props.review.user.username} on Stupid Fits`,
           description: `${props.review.title} by ${props.review.user.username} on Stupid Fits `,
           type: "article",
@@ -71,7 +71,7 @@ const Review = (props) => {
         <link
           rel="alternate"
           type="application/json+oembed"
-          href={`${process.env.HOST}/api/embed?url=${process.env.HOST}/f/${props.id}`}
+          href={`${process.env.HOST}/api/embed?url=${process.env.HOST}/review/${props.review.id}/${props.review.slug}`}
           title={`${props.review.user.username}'s fit on Stupid Fits`}
           key="oembed"
         />
