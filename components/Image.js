@@ -138,7 +138,7 @@ const Pic = ({ media, fit, url, user, edit, components, full }) => {
       >
         <Image
           cloudName={process.env.CLOUDINARY_CLOUD_NAME || "stupidsystems"}
-          publicId={m.cloudinary} // {m.censor || m.cloudinary}
+          publicId={`${m.cloudinary}.jpg`} // {m.censor || m.cloudinary}
           style={{ width: "100%" }}
           secure={true}
           onDragStart={handleDragStart}
