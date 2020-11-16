@@ -17,7 +17,7 @@ const Mini = ({ media, handler, hideid, maxwidth }) => {
       {!hideid && <div className="id">#{media.id}</div>}
       <Image
         cloudName={process.env.CLOUDINARY_CLOUD_NAME || "stupidsystems"}
-        publicId={(media && media.cloudinary) || "stupidfits/appicon"}
+        publicId={(media && `${media.cloudinary}.jpg`) || "stupidfits/appicon"}
         style={{ width: "100%" }}
         secure={true}
       >

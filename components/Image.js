@@ -40,6 +40,7 @@ const MediaHolder = ({
   user,
   components,
   setDrag,
+  alt,
 }) => (
   <div className="mediaholder">
     {edit && (
@@ -110,7 +111,7 @@ const MediaHolder = ({
   </div>
 );
 
-const Pic = ({ media, fit, url, user, edit, components, full }) => {
+const Pic = ({ media, fit, url, user, edit, components, full, alt }) => {
   const handleDragStart = (e) => e.preventDefault();
 
   const [isOpen, setIsOpen] = useState(false);
@@ -141,6 +142,11 @@ const Pic = ({ media, fit, url, user, edit, components, full }) => {
           publicId={`${m.cloudinary}.jpg`} // {m.censor || m.cloudinary}
           style={{ width: "100%" }}
           secure={true}
+          alt={
+            alt || user
+              ? `Media by ${user.username}`
+              : `Media image ${medi.id} on Stupid Fits`
+          }
           onDragStart={handleDragStart}
         >
           {user.hideface && <Transformation effect="pixelate_faces:15" />}
@@ -239,9 +245,14 @@ const Pic = ({ media, fit, url, user, edit, components, full }) => {
             )}
             <Image
               cloudName={process.env.CLOUDINARY_CLOUD_NAME || "stupidsystems"}
-              publicId={medi.cloudinary} // {media[0].censor || media[0].cloudinary}
+              publicId={`${medi.cloudinary}.jpg`} // {media[0].censor || media[0].cloudinary}
               style={{ width: "100%" }}
               secure={true}
+              alt={
+                alt || user
+                  ? "Media by ${user.username}"
+                  : `Media image ${medi.id} on Stupid Fits`
+              }
               onDragStart={handleDragStart}
             >
               {user.hideface && <Transformation effect="pixelate_faces:15" />}
