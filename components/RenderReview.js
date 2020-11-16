@@ -34,7 +34,7 @@ const RenderReview = ({
       img({ src, alt }) {
         if (!media || !src) return <pre>Error loading Media</pre>;
         const mid = Array.isArray(media)
-          ? [media.find((m) => m.id === Number(src))]
+          ? media.filter((m) => String(src).split(",").includes(String(m.id)))
           : [media];
         if (!mid) return <pre>Can't find media by id</pre>;
         console.log("Media", mid);
