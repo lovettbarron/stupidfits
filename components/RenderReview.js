@@ -103,6 +103,7 @@ const RenderReview = ({
             >
               <Tab title="Review">
                 <div className="struct">
+                  <div className="writeup">{compiled.tree}</div>
                   <div className="side">
                     <div>
                       Written{" "}
@@ -122,7 +123,6 @@ const RenderReview = ({
                     <hr />
                     <CommentBox id={id} review={true} />
                   </div>
-                  <div className="writeup">{compiled.tree}</div>
                 </div>
               </Tab>
 
@@ -156,11 +156,15 @@ const RenderReview = ({
         .struct {
           display: flex;
           flex-wrap: wrap;
-          flex-direction: row-reverse;
+
           justify-content: space-between;
         }
 
         @media screen and (max-width: 800px) {
+          .side {
+            width: 100%;
+          }
+
           .writeup {
             width: auto;
             max-width: 100% !important;

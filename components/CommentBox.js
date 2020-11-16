@@ -105,6 +105,7 @@ const CommentBox = (props) => {
                 placeholder="Add a comment"
                 clearOnEscape
               />
+              <br />
               <Button
                 className="left"
                 onClick={() => addComment()}
@@ -119,6 +120,12 @@ const CommentBox = (props) => {
         </>
       </div>
       <style jsx>{`
+        .commentbox {
+          max-height: 200px;
+          overflow-y: auto;
+          overflow-x: hidden;
+        }
+
         .comment {
           margin: 0.5rem;
           padding: 0.5rem;
