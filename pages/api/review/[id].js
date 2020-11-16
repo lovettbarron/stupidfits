@@ -60,6 +60,9 @@ async function handleGET(req, res) {
       },
       tags: true,
       media: {
+        orderBy: {
+          id: "desc",
+        },
         include: {
           layers: true,
           fit: true,
@@ -95,7 +98,10 @@ async function handlePOST(req, res) {
       published: req.body.published,
       title: req.body.title,
       review: req.body.review,
-      slug: req.body.slug,
+      slug: req.body.slug
+        .toLowerCase()
+        .replace(" ", "-")
+        .replace(/[^\w\s-_]/gi, ""),
       item: {
         set: req.body.item.map((i) => ({ id: i.id })),
       },

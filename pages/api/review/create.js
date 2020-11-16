@@ -31,7 +31,10 @@ export default async function handle(req, res) {
       published: false,
       title: req.body.title,
       review: "",
-      slug: req.body.title.toLowerCase().replace(/[^\w\s-_]/gi, ""),
+      slug: req.body.title
+        .toLowerCase()
+        .replace(" ", "-")
+        .replace(/[^\w\s-_]/gi, ""),
     },
   });
   res.json(review);
