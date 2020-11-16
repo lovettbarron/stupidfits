@@ -33,6 +33,7 @@ const CreateReview = ({ review, styles, handler }) => {
   const [title, setTitle] = useState((review && review.title) || "");
   const [reviewtext, setReviewtext] = useState((review && review.review) || "");
   const [slug, setSlug] = useState((review && review.slug) || "");
+  const [media, setMedia] = useState((review && review.media) || []);
 
   const [tags, setTags] = useState((review && review.tags) || []);
 
@@ -136,7 +137,15 @@ const CreateReview = ({ review, styles, handler }) => {
 
   useEffect(() => {
     fetchItems(true);
-    handler({ title, review: reviewtext, focus, published, tags, components });
+    handler({
+      title,
+      review: reviewtext,
+      focus,
+      published,
+      tags,
+      components,
+      media,
+    });
 
     const timer = setTimeout(() => {
       if (title.length > 5) {
@@ -217,7 +226,7 @@ const CreateReview = ({ review, styles, handler }) => {
         <br />
 
         <h3>Media Upload</h3>
-        <MediaManager id={reviewid} media={review.media} />
+        <MediaManager id={reviewid} media={review.media} handle={setMedia} />
         <label>
           <h3>The Review</h3>
           <small>

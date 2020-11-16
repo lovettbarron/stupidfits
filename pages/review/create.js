@@ -27,7 +27,7 @@ const Item = (props) => {
           />
         </div>
         <div className="set">
-          <RenderReview {...review} />
+          <RenderReview {...review} preview={true} />
         </div>
       </div>
 

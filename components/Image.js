@@ -155,12 +155,14 @@ const Pic = ({ media, fit, url, user, edit, components, full, alt }) => {
           secure={true}
           alt={
             alt || user
-              ? `Media by ${user.username}`
+              ? `Media by ${(user && user.username) || "Stupidfits"}`
               : `Media image ${medi.id} on Stupid Fits`
           }
           onDragStart={handleDragStart}
         >
-          {user.hideface && <Transformation effect="pixelate_faces:15" />}
+          {user && user.hideface && (
+            <Transformation effect="pixelate_faces:15" />
+          )}
         </Image>
       </MediaHolder>
     ));
@@ -266,7 +268,9 @@ const Pic = ({ media, fit, url, user, edit, components, full, alt }) => {
               }
               onDragStart={handleDragStart}
             >
-              {user.hideface && <Transformation effect="pixelate_faces:15" />}
+              {user && user.hideface && (
+                <Transformation effect="pixelate_faces:15" />
+              )}
             </Image>
           </MediaHolder>
         )}

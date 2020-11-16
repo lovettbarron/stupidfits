@@ -67,6 +67,13 @@ const RenderReview = ({
       })) ||
     "No content yet";
   console.log(compiled.toc);
+  if (preview)
+    return (
+      <div className="post">
+        <h1>{title}</h1>
+        <div className="writeup">{compiled.tree}</div>
+      </div>
+    );
   return (
     <div className="post">
       <h1>{title}</h1>
@@ -156,7 +163,6 @@ const RenderReview = ({
         .struct {
           display: flex;
           flex-wrap: wrap;
-
           justify-content: space-between;
         }
 

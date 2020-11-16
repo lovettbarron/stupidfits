@@ -80,6 +80,7 @@ const MediaManager = (props) => {
       const data = await res.json();
       console.log("Added review media!", data);
       setMedia(data.media);
+      props.handle && props.handle(media);
       setIsUploading(false);
       // Might need to add a handler function here
     } catch (error) {
