@@ -19,6 +19,7 @@ const CommentBox = (props) => {
     try {
       const body = {
         comment,
+        review: props.review || false,
       };
 
       const res = await fetch(`${process.env.HOST}/api/comment/${props.id}`, {
@@ -47,12 +48,17 @@ const CommentBox = (props) => {
       return null;
     } else {
       try {
-        const b = await fetch(`${process.env.HOST}/api/comment/${props.id}`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
+        const b = await fetch(
+          `${process.env.HOST}/api/comment/${props.id}${
+            props.review && "?review=true"
+          }`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
         let it = [];
 
         it = await b.json();

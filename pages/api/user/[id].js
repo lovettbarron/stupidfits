@@ -27,6 +27,31 @@ async function handleGET(req, res) {
         where: { username: id },
         include: {
           tags: true,
+          Review: {
+            include: {
+              user: true,
+              item: {
+                include: {
+                  brand: true,
+                },
+              },
+              tags: true,
+              media: {
+                orderBy: {
+                  id: "asc",
+                },
+                include: {
+                  layers: true,
+                  fit: true,
+                },
+              },
+              Comment: {
+                include: {
+                  user: true,
+                },
+              },
+            },
+          },
         },
       })
       .finally(async () => {

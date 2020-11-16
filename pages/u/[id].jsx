@@ -7,6 +7,7 @@ import { useSession, getSession } from "next-auth/client";
 import Link from "next/link";
 import { Tabs, Tab, FILL } from "baseui/tabs-motion";
 import Anatomy from "../../components/Anatomy";
+import ReviewBox from "../../components/ReviewBox";
 import { NextSeo } from "next-seo";
 
 const UserProfile = (props) => {
@@ -226,6 +227,22 @@ const UserProfile = (props) => {
                     ))}
                 </div>
               </Tab>
+              {props.reviews && props.reviews.length > 0 && (
+                <Tab title="Reviews">
+                  <div className="reviews">
+                    {props.reviews &&
+                      Array.isArray(props.reviews) &&
+                      props.reviews
+                        // .filter((f) =>
+                        //   session && session.user ? true : f.status === "FEATURED"
+                        // )
+                        .sort((a, b) => {
+                          return b.createdAt - a.createdAt;
+                        })
+                        .map((r) => <ReviewBox key={r.id} {...r} />)}
+                  </div>
+                </Tab>
+              )}
               <Tab title="Closet">
                 <div>
                   {props.closet && (
@@ -253,6 +270,13 @@ const UserProfile = (props) => {
             min-width: 20rem;
             width: 100%;
             margin: 0;
+          }
+
+          .reviews {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            width: 100%;
           }
 
           p {
@@ -398,7 +422,7 @@ export const getServerSideProps = async (context) => {
   }
 
   return {
-    props: { insta: user, fits: fits, closet: closet },
+    props: { insta: user, reviews: user.Review, fits: fits, closet: closet },
   };
 };
 

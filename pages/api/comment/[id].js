@@ -24,14 +24,23 @@ export default async function handle(req, res) {
 async function handleGET(req, res) {
   const id = req.query.id;
   let comments = null;
+
+  console.log("Comment body", req.body, req.query.review);
   try {
     comments = await prisma.comment
       .findMany({
-        where: {
-          fit: {
-            id: Number(id),
-          },
-        },
+        where:
+          req.query.review === true
+            ? {
+                review: {
+                  id: Number(id),
+                },
+              }
+            : {
+                fit: {
+                  id: Number(id),
+                },
+              },
         include: {
           fit: true,
           user: true,
@@ -67,11 +76,20 @@ async function handlePOST(req, res) {
             email: session.user.email,
           },
         },
-        fit: {
-          connect: {
-            id: Number(id),
-          },
-        },
+        fit:
+          (!req.body.review && {
+            connect: {
+              id: Number(id),
+            },
+          }) ||
+          undefined,
+        Review:
+          (req.body.review && {
+            connect: {
+              id: Number(id),
+            },
+          }) ||
+          undefined,
         comment: req.body.comment || "",
       },
     })

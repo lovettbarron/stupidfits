@@ -23,7 +23,7 @@ const Nav = (props) => {
     router.events.on("routeChangeComplete", () => {
       setIsLoading(false);
       setIsOpen(false);
-      console.log("Close nav");
+      // console.log("Close nav");
     });
     return () => {};
   }, []);

@@ -4,6 +4,7 @@ import EmbedImage from "./EmbedImage";
 import Image from "./Image";
 import Link from "next/link";
 import FitBox from "./FitBox";
+import CommentBox from "./CommentBox";
 import { Tabs, Tab, FILL } from "baseui/tabs-motion";
 
 const RenderReview = ({
@@ -37,7 +38,7 @@ const RenderReview = ({
           ? media.filter((m) => String(src).split(",").includes(String(m.id)))
           : [media];
         if (!mid) return <pre>Can't find media by id</pre>;
-        console.log("Media", mid);
+        // console.log("Media", mid);
         return (
           <div
             className="embed"
@@ -119,6 +120,7 @@ const RenderReview = ({
                       })}
                     </div>
                     <hr />
+                    <CommentBox id={id} review={true} />
                   </div>
                   <div className="writeup">{compiled.tree}</div>
                 </div>
