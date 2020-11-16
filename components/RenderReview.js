@@ -39,22 +39,17 @@ const RenderReview = ({
         if (!mid) return <pre>Can't find media by id</pre>;
         console.log("Media", mid);
         return (
-          <Image
-            fit={(media.fit && media.fit.id) || null}
-            components={[]}
-            url={null}
-            media={mid}
-            user={user}
-            alt={alt}
-            edit={false}
-            full={true}
-          />
-        );
-      },
-      Media(props) {
-        return (
-          <div>
-            Image!: <EmbedImage id={props.id} />
+          <div className="embed">
+            <Image
+              fit={(media.fit && media.fit.id) || null}
+              components={[]}
+              url={null}
+              media={mid}
+              user={user}
+              alt={alt}
+              edit={false}
+              full={true}
+            />
           </div>
         );
       },
@@ -146,6 +141,11 @@ const RenderReview = ({
       <style jsx>{`
         .post {
           width: 100%;
+        }
+
+        .embed {
+          max-width: 600px;
+          margin: 0 auto;
         }
 
         .struct {

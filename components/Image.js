@@ -31,6 +31,17 @@ import {
 
 import { ArrowLeft, ArrowRight } from "baseui/icon";
 
+const CarouselSize = (full) => {
+  let w = full ? 3 : 1;
+  if (typeof window !== "undefined") {
+    w = Math.floor(window.innerWidth / 400);
+    console.log("Getting window size", w);
+    return w;
+  } else {
+    return w;
+  }
+};
+
 const MediaHolder = ({
   media,
   fit,
@@ -156,12 +167,12 @@ const Pic = ({ media, fit, url, user, edit, components, full, alt }) => {
 
   return (
     <>
-      <div className="holder" style={full && { maxWidth: "1200px" }}>
+      <div className="holder" style={(full && { maxWidth: "1200px" }) || null}>
         {(media.length > 1 && (
           <CarouselProvider
             totalSlides={media.length}
-            visibleSlides={full ? 3 : 1}
-            step={1}
+            visibleSlides={full ? CarouselSize(full) : 1}
+            step={full ? CarouselSize(full) : 1}
             isIntrinsicHeight={true}
             dragEnabled={drag}
             // naturalSlideWidth={400}
