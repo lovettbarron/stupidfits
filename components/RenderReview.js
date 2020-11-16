@@ -39,7 +39,10 @@ const RenderReview = ({
         if (!mid) return <pre>Can't find media by id</pre>;
         console.log("Media", mid);
         return (
-          <div className="embed">
+          <div
+            className="embed"
+            style={{ maxWidth: "600px", margin: "0 auto" }}
+          >
             <Image
               fit={(media.fit && media.fit.id) || null}
               components={[]}
