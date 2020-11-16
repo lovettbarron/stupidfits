@@ -95,10 +95,9 @@ export const getServerSideProps = async (context) => {
   // Get item
 
   const session = await getSession(context);
+  const id = context.params.slug[0];
 
-  const res = await fetch(
-    `${process.env.HOST}/api/review/${context.params.id}`
-  );
+  const res = await fetch(`${process.env.HOST}/api/review/${id}`);
 
   let data;
   try {

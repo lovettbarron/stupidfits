@@ -18,7 +18,7 @@ const ReviewBox = (props) => {
         className="fitbox"
         onClick={() =>
           Router.push({
-            pathname: `/review/${props.id}`,
+            pathname: `/review/${props.id}/${props.slug}`,
           })
         }
       >
