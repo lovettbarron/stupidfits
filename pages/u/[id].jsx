@@ -233,9 +233,6 @@ const UserProfile = (props) => {
                     {props.reviews &&
                       Array.isArray(props.reviews) &&
                       props.reviews
-                        .filter((f) =>
-                          ["FEATURED", "PUBLIC"].includes(f.status)
-                        )
                         .sort((a, b) => {
                           return b.createdAt - a.createdAt;
                         })
@@ -422,7 +419,14 @@ export const getServerSideProps = async (context) => {
   }
 
   return {
-    props: { insta: user, reviews: user.Review, fits: fits, closet: closet },
+    props: {
+      insta: user,
+      reviews: user.Review.filter((f) =>
+        ["FEATURED", "PUBLIC"].includes(f.status)
+      ),
+      fits: fits,
+      closet: closet,
+    },
   };
 };
 

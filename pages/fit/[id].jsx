@@ -7,7 +7,7 @@ import { Select, TYPE } from "baseui/select";
 import FitBox from "../../components/FitBox";
 import CreateItem from "../../components/CreateItem";
 import { getSession, useSession } from "next-auth/client";
-import { Button } from "baseui/button";
+import { Button, KIND } from "baseui/button";
 
 import {
   Modal,
@@ -59,6 +59,33 @@ const Fit = (props) => {
       await Router.push("/");
     } catch (error) {
       console.error(error);
+    }
+  };
+
+  const deleteFit = async (e) => {
+    e.preventDefault();
+    setUpdateLoading(true);
+    console.log("Deleting Fit");
+    var r = confirm("Confirm Delete Fit?");
+    if (r == true) {
+      try {
+        const body = { desc, components };
+        const res = await fetch(`${process.env.HOST}/api/fits/${props.id}`, {
+          method: "DELETE",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body),
+        });
+        try {
+          const data = await res.json();
+        } catch (e) {
+          console.log("error:", e.message);
+        }
+        await Router.push("/");
+      } catch (error) {
+        console.error(error);
+      }
+    } else {
+      setUpdatingLoading(false);
     }
   };
 
@@ -174,9 +201,17 @@ const Fit = (props) => {
             >
               Update Fit
             </Button>
-            <Link href="/feed">
-              <a>or Cancel</a>
-            </Link>
+            <hr />
+            <br />
+            <br />
+            <Button
+              kind={KIND.tertiary}
+              type="submit"
+              isLoading={updateLoading}
+              onClick={deleteFit}
+            >
+              Delete Fit
+            </Button>
           </form>
 
           <Modal
