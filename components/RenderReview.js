@@ -31,6 +31,26 @@ const RenderReview = ({
     // You can override the default elements with
     // custom VDOM trees
     elements: {
+      img({ src, alt }) {
+        if (!media || !src) return <pre>Error loading Media</pre>;
+        const mid = Array.isArray(media)
+          ? [media.find((m) => m.id === Number(src))]
+          : [media];
+        if (!mid) return <pre>Can't find media by id</pre>;
+        console.log("Media", mid);
+        return (
+          <Image
+            fit={(media.fit && media.fit.id) || null}
+            components={[]}
+            url={null}
+            media={mid}
+            user={user}
+            alt={alt}
+            edit={false}
+            full={true}
+          />
+        );
+      },
       Media(props) {
         return (
           <div>

@@ -34,7 +34,6 @@ const EmbedImage = ({ id }) => {
     return () => {};
   }, [mid]);
 
-  return <div>Test</div>;
   if (!media && !gallery) return <div>Loading...</div>;
   if (!media && gallery)
     return (

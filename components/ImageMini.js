@@ -14,7 +14,7 @@ const Mini = ({ media, handler, hideid, maxwidth }) => {
 
   return (
     <div className="mini" style={maxwidth && { maxWidth: maxwidth }}>
-      {hideid && <div className="id">#{media.id}</div>}
+      {!hideid && <div className="id">#{media.id}</div>}
       <Image
         cloudName={process.env.CLOUDINARY_CLOUD_NAME || "stupidsystems"}
         publicId={(media && media.cloudinary) || "stupidfits/appicon"}
@@ -37,6 +37,7 @@ const Mini = ({ media, handler, hideid, maxwidth }) => {
           top: 0;
           right: 0;
           width: 30%;
+          font-size: 16px;
         }
 
         button {
