@@ -61,7 +61,7 @@ async function handleGET(req, res) {
       tags: true,
       media: {
         orderBy: {
-          id: "desc",
+          id: "asc",
         },
         include: {
           layers: true,
@@ -70,6 +70,9 @@ async function handleGET(req, res) {
       },
       Comment: {
         include: {
+          orderBy: {
+            id: "asc",
+          },
           user: true,
         },
       },

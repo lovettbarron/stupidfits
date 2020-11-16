@@ -18,6 +18,9 @@ export default async function handle(req, res) {
         },
         tags: true,
         media: {
+          orderBy: {
+            id: "asc",
+          },
           include: {
             layers: true,
             fit: true,
