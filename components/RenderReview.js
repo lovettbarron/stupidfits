@@ -158,8 +158,16 @@ const RenderReview = ({
           justify-content: space-between;
         }
 
+        @media screen and (max-width: 800px) {
+          .writeup {
+            width: auto;
+            max-width: 100% !important;
+          }
+        }
+
         .writeup {
           width: auto;
+          max-width: 60%;
         }
 
         .side {
