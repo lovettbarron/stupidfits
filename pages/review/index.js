@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { NextSeo } from "next-seo";
+import Head from "next/head";
 import Layout from "../../components/Layout";
 import fetch from "isomorphic-unfetch";
 import ReviewBox from "../../components/ReviewBox";
@@ -12,9 +13,57 @@ const Reviews = (props) => {
   const [session, loading] = useSession();
   const [instagram, setInstagram] = useState("");
 
+  let tags = props.feed
+    .map((r) => [
+      r.item.map((i) => `${i.brand.name} ${i.model}`),
+      r.tags.map((s) => `${s.name}`),
+    ])
+    .flat();
+
   // console.log("session", props.user);
   return (
     <>
+      <NextSeo
+        title={`Reviews on Techwear, Designer brands, and streetstyle on Stupid Fits `}
+        description={`Reviews about designer brands, techwear, streetstyle, etc. on Stupid Fits `}
+        canonical={`${process.env.HOST}/review/`}
+        openGraph={{
+          keywords: tags,
+          url: `${process.env.HOST}/review/`,
+          title: `Reviews on Stupid Fits`,
+          description: `Reviews about designer brands, techwear, streetstyle, etc. on Stupid Fits `,
+          type: "website",
+          images: [
+            {
+              url: "https://stupidfits.com/img/reviews-wide.png",
+              width: 1200,
+              height: 630,
+              type: "image/png",
+              alt: "Primary image",
+            },
+            {
+              url: "https://stupidfits.com/img/review-header.png",
+              width: 1200,
+              height: 1200,
+              type: "image/png",
+              alt: "Og Image",
+            },
+          ],
+        }}
+        twitter={{
+          image: "https://stupidfits.com/img/reviews-wide.png",
+          cardType: "summary_large_image",
+        }}
+      />
+      <Head>
+        <link
+          rel="alternate"
+          type="application/json+oembed"
+          href={`${process.env.HOST}/api/embed?url=${process.env.HOST}/review/`}
+          title={`Reviews on Stupid Fits`}
+          key="oembed"
+        />
+      </Head>
       <Layout>
         <div className="page">
           {session && (
@@ -45,7 +94,6 @@ const Reviews = (props) => {
             {props.feed &&
               Array.isArray(props.feed) &&
               props.feed
-                .filter((f) => ["FEATURED", "PUBLIC"].includes(f.status))
                 .sort((a, b) => {
                   return b.createdAt - a.createdAt;
                 })
@@ -186,7 +234,11 @@ export const getServerSideProps = async (context) => {
     console.log("error:", e.message);
   }
   return {
-    props: { feed, user, url: process.env.HOST },
+    props: {
+      feed: feed.filter((f) => ["FEATURED", "PUBLIC"].includes(f.status)),
+      user,
+      url: process.env.HOST,
+    },
   };
 };
 

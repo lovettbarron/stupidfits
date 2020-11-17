@@ -26,10 +26,9 @@ const ReviewBox = (props) => {
           <div className="overlay">
             <h3>Read the Review by {props.user.username}</h3>
           </div>
-          <ImageMini
-            media={(props.media.length > 0 && props.media[0]) || props.media}
-            hideid={true}
-          />
+          {(props.media.length > 0 && (
+            <ImageMini media={props.media[0] || props.media} hideid={true} />
+          )) || <ImageMini media={null} hideid={true} />}
         </div>
         <h2>{props.title}</h2>
         <ul className="style">
@@ -85,6 +84,7 @@ const ReviewBox = (props) => {
 
         .mediawrap {
           max-width: 600px;
+          min-height: 70%;
           padding: 0;
           margin: 0;
           width: 100%;

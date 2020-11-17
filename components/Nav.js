@@ -286,7 +286,7 @@ const Nav = (props) => {
           display: block;
           line-height: 4rem;
           margin: 3rem auto;
-          font-size: 3rem;
+          font-size: 2rem;
           align-items: center;
           color: #ffffff;
           text-decoration: underline;
