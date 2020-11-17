@@ -52,38 +52,46 @@ const MediaHolder = ({
   components,
   setDrag,
   alt,
-}) => (
-  <div className="mediaholder">
-    {edit && (
-      <div className="edit">
-        <Button
-          className="edit"
-          size={SIZE.mini}
-          onClick={() => setIsOpen(true)}
-        >
-          {media.layers.length > 0 ? `Edit Layout` : `Add Layout`}
-        </Button>
-        <br />
-        <br />
-        <ExportModal
-          media={media}
-          components={components}
-          layers={media.layers}
-          user={user}
-          fit={fit}
-          handler={(s) => setDrag(s)}
-        />
-      </div>
-    )}
-    {media && media.layers && media.layers.length > 0 && (
-      <div className="layermap">
-        {media.layers.map((l) => (
-          <Layer key={l.id} {...l} />
-        ))}
-      </div>
-    )}
-    <>{children}</>
-    <style jsx>{`
+  isActive,
+}) => {
+  // const [active, setActive] = useState(false);
+
+  return (
+    <div
+      className="mediaholder"
+      // onMouseEnter={() => setActive(true)}
+      // onMouseLeave={() => setActive(false)}
+    >
+      {edit && (
+        <div className="edit">
+          <Button
+            className="edit"
+            size={SIZE.mini}
+            onClick={() => setIsOpen(true)}
+          >
+            {media.layers.length > 0 ? `Edit Layout` : `Add Layout`}
+          </Button>
+          <br />
+          <br />
+          <ExportModal
+            media={media}
+            components={components}
+            layers={media.layers}
+            user={user}
+            fit={fit}
+            handler={(s) => setDrag(s)}
+          />
+        </div>
+      )}
+      {media && media.layers && media.layers.length > 0 && (
+        <div className={`layermap ${isActive && "showlayer"}`}>
+          {media.layers.map((l) => (
+            <Layer key={l.id} {...l} />
+          ))}
+        </div>
+      )}
+      <>{children}</>
+      <style jsx>{`
       .mediaholder {
         width: 100%;
         height: 100%;
@@ -96,12 +104,12 @@ const MediaHolder = ({
         top: 0; left; bottom: 0; right: 0;
         width: 100%; height: 100%;
         transition: opacity 0.4s;
-        opacity: 1;
+        opacity: 0;
       }
 
 
-    .layermap:hover {
-      opacity: 0;
+    .layermap.showlayer {
+      opacity: 1;
     }
 
     .mediawrap {
@@ -119,8 +127,9 @@ const MediaHolder = ({
       right: 0.5rem;
     }
     `}</style>
-  </div>
-);
+    </div>
+  );
+};
 
 const Pic = ({ media, fit, url, user, edit, components, full, alt }) => {
   const handleDragStart = (e) => e.preventDefault();
@@ -130,6 +139,7 @@ const Pic = ({ media, fit, url, user, edit, components, full, alt }) => {
   const [medi, setMedi] = useState(media[0]);
   const [allMedia, setAllMedia] = useState(media);
   const [drag, setDrag] = useState(true);
+  const [isActive, setIsActive] = useState(false);
   const ref = useRef();
 
   useEffect(() => {
@@ -147,6 +157,7 @@ const Pic = ({ media, fit, url, user, edit, components, full, alt }) => {
         fit={fit}
         setIsOpen={setIsOpen}
         setDrag={setDrag}
+        isActive={isActive}
       >
         <Image
           cloudName={process.env.CLOUDINARY_CLOUD_NAME || "stupidsystems"}
@@ -169,7 +180,12 @@ const Pic = ({ media, fit, url, user, edit, components, full, alt }) => {
 
   return (
     <>
-      <div className="holder" style={(full && { maxWidth: "1200px" }) || null}>
+      <div
+        className="holder"
+        style={(full && { maxWidth: "1200px" }) || null}
+        onMouseEnter={() => setIsActive(true)}
+        onMouseLeave={() => setIsActive(false)}
+      >
         {(media.length > 1 && (
           <CarouselProvider
             totalSlides={media.length}
@@ -181,7 +197,11 @@ const Pic = ({ media, fit, url, user, edit, components, full, alt }) => {
             // naturalSlideHeight={400}
             // innerClassName={"carousel"}
           >
-            <div className="arrows">
+            <div
+              className="arrows"
+              onMouseEnter={() => setIsActive(true)}
+              // onMouseLeave={() => setIsActive(false)}
+            >
               <ButtonBack
                 onClick={() => setIndex(index - 1)}
                 disabled={index <= 0}
@@ -234,6 +254,7 @@ const Pic = ({ media, fit, url, user, edit, components, full, alt }) => {
             fit={fit}
             setIsOpen={setIsOpen}
             setDrag={setDrag}
+            isActive={isActive}
           >
             {edit && (
               <div className="edit">
@@ -376,12 +397,12 @@ const Pic = ({ media, fit, url, user, edit, components, full, alt }) => {
           width: 100%;
           height: 100%;
           position: relative;
-          opacity: 1;
+          opacity: 0;
           transition: opacity 0.4s;
         }
 
         .holder:hover .mediaholder {
-          opacity: 0;
+          opacity: 1;
         }
       `}</style>
     </>

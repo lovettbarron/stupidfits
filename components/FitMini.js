@@ -95,6 +95,7 @@ const FitMini = (props) => {
         .control {
           position: absolute;
           bottom: 0;
+          padding-top: 1rem;
           width: 100%;
           left: 0;
           right: 0;
