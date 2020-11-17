@@ -29,7 +29,7 @@ const Layer = (props) => {
       <style jsx>{`
         .tag {
           margin: 0;
-          padding: 0.5rem;
+          padding: 0.2rem;
           pointer-events: none;
           background: #151515;
           opacity: 0.8;

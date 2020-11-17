@@ -227,7 +227,7 @@ const FitMini = (props) => {
           background-color: #2b2b2b;
           margin: 1rem 1rem;
           width: 300px;
-          height: 400px;
+          height: 450px;
           padding-bottom: 60px;
           border: 1px solid #2b2b2b;
           border-radius: 5px;
