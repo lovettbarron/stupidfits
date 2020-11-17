@@ -201,10 +201,14 @@ const Pic = ({ media, fit, url, user, edit, components, full, alt }) => {
             <div
               className="arrows"
               onMouseEnter={() => setIsActive(true)}
+              onClick={() => setIsActive(!isActive)}
               // onMouseLeave={() => setIsActive(false)}
             >
               <ButtonBack
-                onClick={() => setIndex(index - 1)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setIndex(index - 1);
+                }}
                 disabled={index <= 0}
                 className="navbutton"
                 style={{ border: 0 }}
@@ -213,7 +217,10 @@ const Pic = ({ media, fit, url, user, edit, components, full, alt }) => {
               </ButtonBack>
 
               <ButtonNext
-                onClick={() => setIndex(index + 1)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setIndex(index + 1);
+                }}
                 disabled={index >= media.length - 1}
                 className="navbutton"
                 style={{ border: 0 }}
