@@ -30,6 +30,7 @@ const Layer = (props) => {
         .tag {
           margin: 0;
           padding: 0.5rem;
+          pointer-events: none;
           background: #151515;
           opacity: 0.8;
           color: #ffffff;

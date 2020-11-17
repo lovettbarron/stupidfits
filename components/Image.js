@@ -53,6 +53,7 @@ const MediaHolder = ({
   setDrag,
   alt,
   isActive,
+  setIsActive,
 }) => {
   // const [active, setActive] = useState(false);
 
@@ -84,7 +85,13 @@ const MediaHolder = ({
         </div>
       )}
       {media && media.layers && media.layers.length > 0 && (
-        <div className={`layermap ${isActive && "showlayer"}`}>
+        <div
+          className={`layermap ${isActive && "showlayer"}`}
+          onClick={(e) => {
+            e.stopPropagation();
+            setIsActive(!isActive);
+          }}
+        >
           {media.layers.map((l) => (
             <Layer key={l.id} {...l} />
           ))}
@@ -159,6 +166,7 @@ const Pic = ({ media, fit, url, user, edit, components, full, alt }) => {
         setIsOpen={setIsOpen}
         setDrag={setDrag}
         isActive={isActive}
+        setIsActive={setIsActive}
       >
         <Image
           cloudName={process.env.CLOUDINARY_CLOUD_NAME || "stupidsystems"}
@@ -266,6 +274,7 @@ const Pic = ({ media, fit, url, user, edit, components, full, alt }) => {
             setIsOpen={setIsOpen}
             setDrag={setDrag}
             isActive={isActive}
+            setIsActive={setIsActive}
           >
             {edit && (
               <div className="edit">
