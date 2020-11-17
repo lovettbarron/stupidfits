@@ -3,7 +3,7 @@ import marksy from "marksy";
 import EmbedImage from "./EmbedImage";
 import Image from "./Image";
 import Link from "next/link";
-import FitBox from "./FitBox";
+import FitMini from "./FitMini";
 import CommentBox from "./CommentBox";
 import { Tabs, Tab, FILL } from "baseui/tabs-motion";
 
@@ -140,7 +140,7 @@ const RenderReview = ({
                       <h3>{i.model}</h3>
                       {i.fit &&
                         i.fit.map((f) => (
-                          <FitBox key={f.id} {...f} fit={f.id} />
+                          <FitMini key={f.id} {...f} fit={f.id} />
                         ))}
                     </React.Fragment>
                   ))) ||

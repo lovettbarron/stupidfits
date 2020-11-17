@@ -1,6 +1,6 @@
 import fetch from "isomorphic-unfetch";
 import Layout from "../../components/Layout";
-import FitBox from "../../components/FitBox";
+import FitMini from "../../components/FitMini";
 import { useSession, getSession } from "next-auth/client";
 import Link from "next/link";
 import { Navigation } from "baseui/side-navigation";
@@ -18,8 +18,10 @@ const BrandFilter = ({ items, filter, modelid }) => {
           {it.map((i) => (
             <React.Fragment key={i.id}>
               <h3>{i.model}</h3>
-              {i.fit &&
-                i.fit.map((f) => <FitBox key={f.id} {...f} fit={f.id} />)}
+              <div className="cont">
+                {i.fit &&
+                  i.fit.map((f) => <FitMini key={f.id} {...f} fit={f.id} />)}
+              </div>
             </React.Fragment>
           ))}
         </div>
@@ -28,6 +30,12 @@ const BrandFilter = ({ items, filter, modelid }) => {
             max-width: 70%;
             flex: 1 1 0;
           }
+
+          .cont {
+            display: flex;
+            flex-wrap: wrap;
+          }
+
           @media screen and (max-width: 800px) {
             .items {
               max-width: 100%;
@@ -47,7 +55,8 @@ const BrandFilter = ({ items, filter, modelid }) => {
         {filtered.map((i) => (
           <>
             <h3>{i.model}</h3>
-            {i.fit && i.fit.map((f) => <FitBox key={f.id} {...f} fit={f.id} />)}
+            {i.fit &&
+              i.fit.map((f) => <FitMini key={f.id} {...f} fit={f.id} />)}
           </>
         ))}
       </div>

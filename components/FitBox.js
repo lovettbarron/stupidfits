@@ -91,7 +91,7 @@ Details at stupidfits.com/f/${props.id}
     });
 
     const text = `${con
-      .map((c) => `#${c.brand.name.replace(" ", "")}`)
+      .map((c) => `#${c.brand.name.split(" ").join("")}`)
       .join(" ")} #fitpic #fitpics #stupidfits
 
 Details at stupidfits.com/f/${props.id}

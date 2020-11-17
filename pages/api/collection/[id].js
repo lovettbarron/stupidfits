@@ -89,7 +89,8 @@ async function handlePOST(req, res) {
       description: req.body.description,
       slug: req.body.slug
         .toLowerCase()
-        .replace(" ", "-")
+        .split(" ")
+        .join("-")
         .replace(/[^\w\s-_]/gi, ""),
       fits: {
         set: req.body.fit.map((i) => ({ id: i.id })),

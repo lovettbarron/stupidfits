@@ -33,7 +33,8 @@ export default async function handle(req, res) {
       review: "",
       slug: req.body.title
         .toLowerCase()
-        .replace(" ", "-")
+        .split(" ")
+        .join("-")
         .replace(/[^\w\s-_]/gi, ""),
     },
   });
