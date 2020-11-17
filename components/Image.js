@@ -139,11 +139,12 @@ const Pic = ({ media, fit, url, user, edit, components, full, alt }) => {
   const [medi, setMedi] = useState(media[0]);
   const [allMedia, setAllMedia] = useState(media);
   const [drag, setDrag] = useState(true);
-  const [isActive, setIsActive] = useState(false);
+  const [isActive, setIsActive] = useState(true);
   const ref = useRef();
 
   useEffect(() => {
     setMedi(allMedia[index]);
+    setTimeout(() => setIsActive(false), 2000);
   }, [index]);
 
   const mediaArray =
