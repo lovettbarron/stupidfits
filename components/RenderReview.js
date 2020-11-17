@@ -138,10 +138,12 @@ const RenderReview = ({
                   item.map((i) => (
                     <React.Fragment key={i.id}>
                       <h3>{i.model}</h3>
-                      {i.fit &&
-                        i.fit.map((f) => (
-                          <FitMini key={f.id} {...f} fit={f.id} />
-                        ))}
+                      <div className="cont">
+                        {i.fit &&
+                          i.fit.map((f) => (
+                            <FitMini key={f.id} {...f} fit={f.id} />
+                          ))}
+                      </div>
                     </React.Fragment>
                   ))) ||
                   "No items"}
@@ -153,6 +155,10 @@ const RenderReview = ({
       <style jsx>{`
         .post {
           width: 100%;
+        }
+        .cont {
+          display: flex;
+          flex-wrap: wrap;
         }
 
         .embed {
