@@ -28,7 +28,7 @@ const CreateCollection = ({ collection }) => {
 
   const [tags, setTags] = useState((collection && collection.tags) || []);
   const [defslug, setDefslug] = useState(
-    collection && ollection.id ? true : false
+    collection && collection.id ? true : false
   );
 
   const [errorMessage, setErrorMessage] = useState("");
@@ -53,7 +53,9 @@ const CreateCollection = ({ collection }) => {
     try {
       const body = { title, slug, description, published, public: pub, tags };
       const res = await fetch(
-        `${process.env.HOST}/api/collection/${collection.id || "create"}`,
+        `${process.env.HOST}/api/collection/${
+          collection ? collection.id : "create"
+        }`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
