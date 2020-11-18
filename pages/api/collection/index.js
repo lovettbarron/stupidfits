@@ -9,34 +9,38 @@ const prisma = new PrismaClient();
 export default async function handle(req, res) {
   if (req.method === "GET") {
     const session = await getSession({ req });
-    const review = await prisma.collection.findMany({
-      where: {
-        OR: [
-          {
-            public: true,
-          },
-          {
-            user: {
-              id: session.user.id,
+    const review = await prisma.collection
+      .findMany({
+        where: {
+          OR: [
+            {
+              public: true,
+            },
+            {
+              user: {
+                id: session.user.id,
+              },
+            },
+          ],
+        },
+        include: {
+          user: true,
+          fits: {
+            include: {
+              media: true,
             },
           },
-        ],
-      },
-      include: {
-        user: true,
-        fits: {
-          include: {
-            media: true,
+          tags: true,
+          Comment: {
+            include: {
+              user: true,
+            },
           },
         },
-        tags: true,
-        Comment: {
-          include: {
-            user: true,
-          },
-        },
-      },
-    });
+      })
+      .finally(async () => {
+        await prisma.$disconnect();
+      });
 
     res.json(review);
   } else {

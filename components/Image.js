@@ -18,6 +18,7 @@ import Canvas from "./Canvas";
 import { providers } from "../pages/p/[id]";
 
 import ExportModal from "./ExportModal";
+import AddToCollection from "./AddToCollection";
 
 import {
   Modal,
@@ -73,6 +74,9 @@ const MediaHolder = ({
           >
             {media.layers.length > 0 ? `Edit Layout` : `Add Layout`}
           </Button>
+          <br />
+          <br />
+          <AddToCollection />
           <br />
           <br />
           <ExportModal
@@ -260,23 +264,6 @@ const Pic = ({
                 </Slide>
               ))}
             </Slider>
-            {/* <div>
-              {media.map((m, i) => (
-                <Dot
-                  key={i}
-                  slide={i}
-                  style={{
-                    border: 0,
-                    background: "#151515",
-                    borderRadius: "100%",
-                    margin: "1rem",
-                    width: "1rem",
-                    height: "1rem",
-                    padding: 0,
-                  }}
-                />
-              ))}
-            </div> */}
           </CarouselProvider>
         )) || (
           <MediaHolder
@@ -291,7 +278,7 @@ const Pic = ({
             setIsActive={setIsActive}
             nolayer={nolayer || false}
           >
-            {edit && (
+            {/* {edit && (
               <div className="edit">
                 <Button
                   className="edit"
@@ -311,7 +298,7 @@ const Pic = ({
                   handler={(s) => setDrag(s)}
                 />
               </div>
-            )}
+            )} */}
             <Image
               cloudName={process.env.CLOUDINARY_CLOUD_NAME || "stupidsystems"}
               publicId={`${medi.cloudinary}.jpg`} // {media[0].censor || media[0].cloudinary}

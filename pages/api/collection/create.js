@@ -21,22 +21,26 @@ export default async function handle(req, res) {
     },
   });
 
-  const review = await prisma.collection.create({
-    data: {
-      user: {
-        connect: {
-          id: Number(user.id),
+  const review = await prisma.collection
+    .create({
+      data: {
+        user: {
+          connect: {
+            id: Number(user.id),
+          },
         },
+        published: false,
+        title: req.body.title,
+        description: "",
+        slug: req.body.title
+          .toLowerCase()
+          .split(" ")
+          .join("-")
+          .replace(/[^\w\s-_]/gi, ""),
       },
-      published: false,
-      title: req.body.title,
-      description: "",
-      slug: req.body.title
-        .toLowerCase()
-        .split(" ")
-        .join("-")
-        .replace(/[^\w\s-_]/gi, ""),
-    },
-  });
+    })
+    .finally(async () => {
+      await prisma.$disconnect();
+    });
   res.json(review);
 }

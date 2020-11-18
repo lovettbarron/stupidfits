@@ -21,15 +21,19 @@ export default async function handle(req, res) {
     },
   });
 
-  const review = await prisma.collection.update({
-    where: {
-      id: req.body.id,
-    },
-    data: {
-      fits: {
-        connect: { id: req.body.fit },
+  const review = await prisma.collection
+    .update({
+      where: {
+        id: req.body.id,
       },
-    },
-  });
+      data: {
+        fits: {
+          connect: { id: req.body.fit },
+        },
+      },
+    })
+    .finally(async () => {
+      await prisma.$disconnect();
+    });
   res.json(review);
 }
