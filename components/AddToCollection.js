@@ -16,6 +16,25 @@ const AddToCollection = (props) => {
   const [session, loading] = useSession();
   const [collections, setCollections] = useState([]);
 
+  const addFit = async (id) => {
+    console.log("Adding fit", id, props.id);
+    try {
+      const body = { id: id, fit: props.id };
+      const res = await fetch(`${process.env.HOST}/api/collection/add`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+      const data = await res.json();
+      Router.push({
+        pathname: `/collection/${id}`,
+      });
+      console.log("Added fit!", data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const fetchCollection = async () => {
     let res;
     if (global) {
@@ -61,7 +80,7 @@ const AddToCollection = (props) => {
             )}
             <ul>
               {collections.map((c) => (
-                <li>{c.title}</li>
+                <li onClick={() => addFit(c.id)}>{c.title}</li>
               ))}
             </ul>
           </Block>
@@ -86,8 +105,22 @@ const AddToCollection = (props) => {
 
         li {
           list-style: none;
-          text-align: center;
-          padding: 0;
+          text-align: left;
+          padding: 0.5rem 0;
+          position: relative;
+          transition: all 0.4s;
+          background: transparent;
+          cursor: pointer;
+        }
+
+        li.added {
+          text-decoration: line-through;
+        }
+
+        li:hover {
+          padding-left: 0.5rem;
+          background: #151515;
+          color: white;
         }
 
         .back {

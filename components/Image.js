@@ -76,7 +76,7 @@ const MediaHolder = ({
           </Button>
           <br />
           <br />
-          <AddToCollection />
+          {fit && <AddToCollection id={fit} />}
           <br />
           <br />
           <ExportModal
