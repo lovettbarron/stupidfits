@@ -9,6 +9,7 @@ const prisma = new PrismaClient();
 export default async function handle(req, res) {
   if (req.method === "GET") {
     const session = await getSession({ req });
+
     const review = await prisma.collection
       .findMany({
         where: {
@@ -18,7 +19,7 @@ export default async function handle(req, res) {
             },
             {
               user: {
-                id: session.user.id,
+                id: session ? session.user.id : -1,
               },
             },
           ],

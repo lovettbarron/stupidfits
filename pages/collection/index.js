@@ -73,8 +73,7 @@ const Collections = (props) => {
         <div className="page">
           {session && (
             <>
-              <h3>Hej {props.user.username}</h3>
-              {props.user.username && (
+              {session && (
                 <p className="center">
                   <Button onClick={() => setIsOpen(true)}>
                     Create a Collection
@@ -225,21 +224,6 @@ const Collections = (props) => {
 };
 
 export const getServerSideProps = async (context) => {
-  const userres = await fetch(`${process.env.HOST}/api/user`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      cookie: context.req.headers.cookie,
-    },
-  });
-
-  let user = null;
-  try {
-    user = await userres.json();
-  } catch (e) {
-    console.log("error:", e.message);
-  }
-
   const res = await fetch(`${process.env.HOST}/api/collection`, {
     method: "GET",
     headers: {
@@ -256,8 +240,6 @@ export const getServerSideProps = async (context) => {
   return {
     props: {
       feed,
-      user,
-      url: process.env.HOST,
     },
   };
 };
