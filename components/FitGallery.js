@@ -4,18 +4,29 @@ import { useSession } from "next-auth/client";
 import FitThumb from "./FitThumb";
 import { Spinner } from "baseui/spinner";
 
-const FitGallery = ({ select, handler }) => {
+const FitGallery = ({ select, global, handler }) => {
   const [session, loading] = useSession();
   const [fits, setFits] = useState([]);
   const [selected, setSelected] = useState(select || []);
 
   const fetchFits = async () => {
-    const res = await fetch(`${process.env.HOST}/api/feed`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    let res;
+    if (global) {
+      res = await fetch(`${process.env.HOST}/api/feed`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+    } else {
+      res = await fetch(`${process.env.HOST}/api/feed/${session.user.id}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+    }
+
     let feed = [];
     try {
       feed = await res.json();

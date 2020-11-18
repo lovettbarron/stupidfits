@@ -3,7 +3,7 @@ import { NextSeo } from "next-seo";
 import Head from "next/head";
 import Layout from "../../components/Layout";
 import fetch from "isomorphic-unfetch";
-import ReviewBox from "../../components/ReviewBox";
+import CollectionBox from "../../components/CollectionBox";
 import Link from "next/link";
 import { useSession, signin, signout } from "next-auth/client";
 import { extractHostname } from "../../components/Clicker";
@@ -100,7 +100,7 @@ const Collections = (props) => {
                 .sort((a, b) => {
                   return b.createdAt - a.createdAt;
                 })
-                .map((r) => <ReviewBox key={r.id} {...r} />)}
+                .map((r) => <CollectionBox key={r.id} {...r} />)}
           </div>
           <footer>
             <ul>
@@ -264,7 +264,7 @@ export const getServerSideProps = async (context) => {
   }
   return {
     props: {
-      feed: feed.filter((f) => ["FEATURED", "PUBLIC"].includes(f.status)),
+      feed,
       user,
       url: process.env.HOST,
     },
