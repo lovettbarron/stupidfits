@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useContext, useRef } from "react";
 import { Image, Transformation } from "cloudinary-react";
+import { useSession } from "next-auth/client";
 import {
   CarouselProvider,
   Slider,
@@ -58,14 +59,14 @@ const MediaHolder = ({
   nolayer,
 }) => {
   // const [active, setActive] = useState(false);
-
+  const [session, loading] = useSession();
   return (
     <div
       className="mediaholder"
       // onMouseEnter={() => setActive(true)}
       // onMouseLeave={() => setActive(false)}
     >
-      {!nolayer && (
+      {session && (
         <>
           {(edit && (
             <div className="edit">
@@ -162,7 +163,7 @@ const Pic = ({
   mini,
 }) => {
   const handleDragStart = (e) => e.preventDefault();
-
+  const [session, loading] = useSession();
   const [isOpen, setIsOpen] = useState(false);
   const [index, setIndex] = useState(0);
   const [medi, setMedi] = useState(media[0]);
