@@ -63,28 +63,32 @@ const AddToCollection = (props) => {
   };
 
   useEffect(() => {
-    fetchCollection();
     return () => {};
   }, [session]);
 
   return (
     <>
       <StatefulPopover
-        content={() => (
-          <Block padding={"20px"}>
-            {collections.length === 0 && (
-              <Spinner
-                size={36}
-                overrides={{ Svg: { borderTopColor: "#fff" } }}
-              />
-            )}
-            <ul>
-              {collections.map((c) => (
-                <li onClick={() => addFit(c.id)}>{c.title}</li>
-              ))}
-            </ul>
-          </Block>
-        )}
+        content={() => {
+          fetchCollection();
+          return (
+            <Block padding={"20px"}>
+              {collections.length === 0 && (
+                <Spinner
+                  size={36}
+                  overrides={{ Svg: { borderTopColor: "#fff" } }}
+                />
+              )}
+              <ul>
+                {collections.map((c) => (
+                  <li key={c.id} onClick={() => addFit(c.id)}>
+                    {c.title}
+                  </li>
+                ))}
+              </ul>
+            </Block>
+          );
+        }}
         returnFocus
         autoFocus
       >
