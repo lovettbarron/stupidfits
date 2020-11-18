@@ -140,7 +140,7 @@ const Collection = ({ collection }) => {
           </>
         )}
         <div className="flex">
-          {collection.fits
+          {coll.fits
             .sort((a, b) => {
               return b.media[0].timestamp - a.media[0].timestamp;
             })
@@ -164,7 +164,11 @@ const Collection = ({ collection }) => {
           role={ROLE.dialog}
         >
           <ModalHeader>Add Fit</ModalHeader>
-          <ModalBody>{isOpen && <FitGallery handler={addFit} />}</ModalBody>
+          <ModalBody>
+            {isOpen && (
+              <FitGallery handler={addFit} select={fits.map((f) => f.id)} />
+            )}
+          </ModalBody>
         </Modal>
         <style jsx>{`
           .page {
@@ -176,6 +180,7 @@ const Collection = ({ collection }) => {
           .flex {
             display: flex;
             flex-wrap: wrap;
+            justify-content: center;
           }
         `}</style>
       </Layout>

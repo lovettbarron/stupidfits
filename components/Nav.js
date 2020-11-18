@@ -66,7 +66,12 @@ const Nav = (props) => {
           )}
           <Link href="/review">
             <a className="bold" data-active={isActive("/review")}>
-              Review
+              Reviews
+            </a>
+          </Link>
+          <Link href="/collection">
+            <a className="bold" data-active={isActive("/collection")}>
+              Collections
             </a>
           </Link>
           <Link href="/brand">
@@ -91,15 +96,23 @@ const Nav = (props) => {
       >
         {(session && (
           <div className="nav">
+            <Link href="/feed">
+              <a data-active={isActive("/feed")}>
+                <Button>Add Fit</Button>
+              </a>
+            </Link>
             <Link href="/">
               <a className="bold" data-active={isActive("/")}>
                 Feed
               </a>
             </Link>
 
-            <Link href="/feed">
-              <a data-active={isActive("/feed")}>
-                <Button>Add Fit</Button>
+            <Link href="/review">
+              <a data-active={isActive("/review")}>Reviews</a>
+            </Link>
+            <Link href="/collection">
+              <a className="bold" data-active={isActive("/collection")}>
+                Collections
               </a>
             </Link>
             <Link href="/closet">
@@ -107,9 +120,6 @@ const Nav = (props) => {
             </Link>
             <Link href="/brand">
               <a data-active={isActive("/brand")}>Brands</a>
-            </Link>
-            <Link href="/review">
-              <a data-active={isActive("/review")}>Reviews</a>
             </Link>
             <Link href="/global">
               <a data-active={isActive("/global")}>Others' Fits</a>

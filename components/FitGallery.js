@@ -4,9 +4,10 @@ import { useSession } from "next-auth/client";
 import FitThumb from "./FitThumb";
 import { Spinner } from "baseui/spinner";
 
-const FitGallery = ({ handler }) => {
+const FitGallery = ({ select, handler }) => {
   const [session, loading] = useSession();
   const [fits, setFits] = useState([]);
+  const [selected, setSelected] = useState(select || []);
 
   const fetchFits = async () => {
     const res = await fetch(`${process.env.HOST}/api/feed`, {
@@ -42,7 +43,13 @@ const FitGallery = ({ handler }) => {
           .filter((f) => ["FEATURED", "PUBLIC"].includes(f.status))
           .filter((f) => f.components.length > 0)
           .map((fit) => (
-            <FitThumb key={fit.id} {...fit} fit={fit.id} handler={handler} />
+            <FitThumb
+              key={fit.id}
+              {...fit}
+              fit={fit.id}
+              selected={selected.find((s) => s === fit.id) ? true : false}
+              handler={handler}
+            />
           ))}
       </div>
       <style jsx>{`
