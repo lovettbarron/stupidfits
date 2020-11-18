@@ -14,7 +14,7 @@ export default async function handle(req, res) {
         where: {
           OR: [
             {
-              public: true,
+              published: true,
             },
             {
               user: {
