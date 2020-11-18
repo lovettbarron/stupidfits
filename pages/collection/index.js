@@ -130,7 +130,7 @@ const Collections = (props) => {
             size={SIZE.default}
             role={ROLE.dialog}
           >
-            <ModalHeader>Add To Your Closet</ModalHeader>
+            <ModalHeader>Create New Collection</ModalHeader>
             <ModalBody>
               {isOpen && (
                 <CreateCollection
