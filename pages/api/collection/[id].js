@@ -71,20 +71,24 @@ async function handleGET(req, res) {
 // POST /api/post/:id
 async function handlePOST(req, res) {
   const session = await getSession({ req });
-  console.log("Create Fit", session.user.email, req.body);
+  console.log("Update Fit", session.user.email, req.body);
 
   const user = await prisma.user.findOne({
     where: {
       email: session.user.email,
     },
+    include: {
+      Collection: true,
+    },
   });
 
-  const review = await prisma.collection.update({
+  if (!user.Collection.find((c) => Number(c.id) === Number(req.query.id))) {
+    console.log("This doesn't belong to you");
+    return;
+  }
+  const collection = await prisma.collection.update({
     where: {
       id: Number(req.query.id),
-      user: {
-        id: user.id,
-      },
     },
     data: {
       published: req.body.published,
@@ -95,15 +99,12 @@ async function handlePOST(req, res) {
         .split(" ")
         .join("-")
         .replace(/[^\w\s-_]/gi, ""),
-      fits: {
-        set: req.body.fit.map((i) => ({ id: i.id })),
-      },
       tags: {
         set: req.body.tags.map((i) => ({ id: i.id })),
       },
     },
   });
-  res.json(review);
+  res.json(collection);
 }
 
 // DELETE /api/post/:id

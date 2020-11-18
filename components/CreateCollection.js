@@ -27,7 +27,7 @@ const CreateCollection = ({ collection }) => {
   const [fits, setFits] = useState((collection && collection.fits) || []);
 
   const [tags, setTags] = useState((collection && collection.tags) || []);
-  const [defslug, setDefslug] = useState(false);
+  const [defslug, setDefslug] = useState(collection.id ? true : false);
 
   const [errorMessage, setErrorMessage] = useState("");
   const [saveLoading, setSaveLoading] = useState(false);
@@ -50,19 +50,19 @@ const CreateCollection = ({ collection }) => {
     setSaveLoading(true);
     try {
       const body = { title, slug, description, published, public: pub, tags };
-      const res = await fetch(`${process.env.HOST}/api/collection/create`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-      });
+      const res = await fetch(
+        `${process.env.HOST}/api/collection/${collection.id || "create"}`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body),
+        }
+      );
       try {
         const data = await res.json();
-        if (props.handler) {
-          Router.push({
-            pathname: `/collection/${data.id}`,
-          });
-          // handle(data);
-        }
+        Router.push({
+          pathname: `/collection/${data.id}`,
+        });
       } catch (e) {
         console.log("error:", e.message);
       }

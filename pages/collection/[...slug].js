@@ -8,6 +8,7 @@ import { NextSeo } from "next-seo";
 import { Button } from "baseui/button";
 import FitGallery from "../../components/FitGallery";
 import FitMini from "../../components/FitMini";
+import CreateCollection from "../../components/CreateCollection";
 
 import {
   Modal,
@@ -22,6 +23,7 @@ import {
 const Collection = ({ collection }) => {
   const [session, loading] = useSession();
   const [isOpen, setIsOpen] = useState(false);
+  const [editOpen, setEditOpen] = useState(false);
   const [fits, setFits] = useState(collection.fits || []);
   const [coll, setColl] = useState(collection || null);
 
@@ -131,13 +133,12 @@ const Collection = ({ collection }) => {
       <Layout>
         <h1>{collection.title}</h1>
         {session && (
-          <>
-            {collection.user.username && (
-              <p className="center">
-                <Button onClick={() => setIsOpen(true)}>Add Fits</Button>
-              </p>
+          <p className="center">
+            <Button onClick={() => setIsOpen(true)}>Add Fits</Button>{" "}
+            {collection.user.id === session.user.id && (
+              <Button onClick={() => setEditOpen(true)}>Edit Collection</Button>
             )}
-          </>
+          </p>
         )}
         <div className="flex">
           {coll.fits
@@ -167,6 +168,32 @@ const Collection = ({ collection }) => {
           <ModalBody>
             {isOpen && (
               <FitGallery handler={addFit} select={fits.map((f) => f.id)} />
+            )}
+          </ModalBody>
+        </Modal>
+        <Modal
+          onClose={() => {
+            setIsOpen(false);
+          }}
+          closeable
+          autoFocus
+          focusLock
+          isOpen={editOpen}
+          animate
+          unstable_ModalBackdropScroll
+          size={SIZE.default}
+          role={ROLE.dialog}
+        >
+          <ModalHeader>Update Collection</ModalHeader>
+          <ModalBody>
+            {editOpen && (
+              <CreateCollection
+                collection={collection}
+                handler={(data) => {
+                  setIsLoading(true);
+                  setIsOpen(false);
+                }}
+              />
             )}
           </ModalBody>
         </Modal>
