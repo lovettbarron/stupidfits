@@ -53,7 +53,6 @@ const AddToCollection = (props) => {
       <StatefulPopover
         content={() => (
           <Block padding={"20px"}>
-            Collections
             {collections.length === 0 && (
               <Spinner
                 size={36}
@@ -78,6 +77,17 @@ const AddToCollection = (props) => {
       <style jsx>{`
         .save {
           width: 100%;
+        }
+
+        ul {
+          list-style: none;
+          padding: 0;
+        }
+
+        li {
+          list-style: none;
+          text-align: center;
+          padding: 0;
         }
 
         .back {
