@@ -65,29 +65,35 @@ const MediaHolder = ({
       // onMouseEnter={() => setActive(true)}
       // onMouseLeave={() => setActive(false)}
     >
-      {edit && (
-        <div className="edit">
-          <Button
-            className="edit"
-            size={SIZE.mini}
-            onClick={() => setIsOpen(true)}
-          >
-            {media.layers.length > 0 ? `Edit Layout` : `Add Layout`}
-          </Button>
-          <br />
-          <br />
-          {fit && <AddToCollection id={fit} />}
-          <br />
-          <br />
-          <ExportModal
-            media={media}
-            components={components}
-            layers={media.layers}
-            user={user}
-            fit={fit}
-            handler={(s) => setDrag(s)}
-          />
-        </div>
+      {!nolayer && (
+        <>
+          {(edit && (
+            <div className="edit">
+              <Button
+                className="edit"
+                size={SIZE.mini}
+                onClick={() => setIsOpen(true)}
+              >
+                {media.layers.length > 0 ? `Edit Layout` : `Add Layout`}
+              </Button>
+              <br />
+              <br />
+              {fit && <AddToCollection id={fit} />}
+              <br />
+              <br />
+              <ExportModal
+                media={media}
+                components={components}
+                layers={media.layers}
+                user={user}
+                fit={fit}
+                handler={(s) => setDrag(s)}
+              />
+            </div>
+          )) || (
+            <div className="edit">{fit && <AddToCollection id={fit} />}</div>
+          )}
+        </>
       )}
       {!nolayer && media && media.layers && media.layers.length > 0 && (
         <div
