@@ -6,7 +6,6 @@ import fetch from "isomorphic-unfetch";
 import CollectionBox from "../../components/CollectionBox";
 import Link from "next/link";
 import { useSession, signin, signout } from "next-auth/client";
-import { extractHostname } from "../../components/Clicker";
 import { Button } from "baseui/button";
 import CreateCollection from "../../components/CreateCollection";
 
@@ -26,14 +25,7 @@ const Collections = (props) => {
   const [isLoading, setIsLoading] = useState(false);
 
   let tags = [];
-  // props.feed
-  //   .map((r) => [
-  //     r.item.map((i) => `${i.brand.name} ${i.model}`),
-  //     r.tags.map((s) => `${s.name}`),
-  //   ])
-  //   .flat();
 
-  // console.log("session", props.user);
   return (
     <>
       <NextSeo

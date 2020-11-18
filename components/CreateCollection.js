@@ -27,7 +27,9 @@ const CreateCollection = ({ collection }) => {
   const [fits, setFits] = useState((collection && collection.fits) || []);
 
   const [tags, setTags] = useState((collection && collection.tags) || []);
-  const [defslug, setDefslug] = useState(collection.id ? true : false);
+  const [defslug, setDefslug] = useState(
+    collection && ollection.id ? true : false
+  );
 
   const [errorMessage, setErrorMessage] = useState("");
   const [saveLoading, setSaveLoading] = useState(false);
