@@ -106,6 +106,16 @@ export const getServerSideProps = async (context) => {
     console.log("error:", e.message);
   }
 
+  if (context.params.slug[1] !== data.slug) {
+    if (context.res) {
+      context.res.writeHead(302, {
+        Location: `/review/${data.id}/${data.slug}`,
+      });
+      context.res.end();
+    }
+    return {};
+  }
+
   if ((!session || !session.user) && !data.published) {
     if (context.res) {
       context.res.writeHead(302, { Location: `/` });

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Layout from "../components/Layout";
 import fetch from "isomorphic-unfetch";
 import Post from "../components/Post";
-import FitBox from "../components/FitBox";
+import FitMini from "../components/FitMini";
 import Link from "next/link";
 import { useSession, signin, signout } from "next-auth/client";
 
@@ -30,15 +30,17 @@ const Blog = (props) => {
 
         <h2>All the fits</h2>
         <main>
-          {props.feed
-            .sort((a, b) => {
-              return b.media[0].timestamp - a.media[0].timestamp;
-            })
-            .filter((f) => ["FEATURED", "PUBLIC"].includes(f.status))
-            .filter((f) => f.components.length > 0)
-            .map((fit) => (
-              <FitBox key={fit.id} {...fit} fit={fit.id} />
-            ))}
+          <div className="flex">
+            {props.feed
+              .sort((a, b) => {
+                return b.media[0].timestamp - a.media[0].timestamp;
+              })
+              .filter((f) => ["FEATURED", "PUBLIC"].includes(f.status))
+              .filter((f) => f.components.length > 0)
+              .map((fit) => (
+                <FitMini key={fit.id} {...fit} fit={fit.id} />
+              ))}
+          </div>
         </main>
         <footer>
           <ul>
@@ -68,6 +70,11 @@ const Blog = (props) => {
       <style jsx>{`
         header > h1 {
           margin: 0;
+        }
+        .flex {
+          display: flex;
+          justify-content: space-around;
+          flex-wrap: wrap;
         }
         .post {
         }

@@ -21,21 +21,14 @@ export default async function handle(req, res) {
     },
   });
 
-  const review = await prisma.collection.create({
+  const review = await prisma.collection.update({
+    where: {
+      id: req.body.id,
+    },
     data: {
-      user: {
-        connect: {
-          id: Number(user.id),
-        },
+      fits: {
+        connect: { id: req.body.fit },
       },
-      published: false,
-      title: req.body.title,
-      description: "",
-      slug: req.body.title
-        .toLowerCase()
-        .split(" ")
-        .join("-")
-        .replace(/[^\w\s-_]/gi, ""),
     },
   });
   res.json(review);

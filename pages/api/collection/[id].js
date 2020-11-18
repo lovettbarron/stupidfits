@@ -22,7 +22,7 @@ async function handleGET(req, res) {
   const id = req.query.id;
   console.log(req.query);
 
-  const review = await prisma.review.findOne({
+  const review = await prisma.collection.findOne({
     where: { id: Number(id) },
     include: {
       user: true,
@@ -82,6 +82,9 @@ async function handlePOST(req, res) {
   const review = await prisma.collection.update({
     where: {
       id: Number(req.query.id),
+      user: {
+        id: user.id,
+      },
     },
     data: {
       published: req.body.published,

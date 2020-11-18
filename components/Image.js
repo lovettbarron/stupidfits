@@ -54,6 +54,7 @@ const MediaHolder = ({
   alt,
   isActive,
   setIsActive,
+  nolayer,
 }) => {
   // const [active, setActive] = useState(false);
 
@@ -84,7 +85,7 @@ const MediaHolder = ({
           />
         </div>
       )}
-      {media && media.layers && media.layers.length > 0 && (
+      {!nolayer && media && media.layers && media.layers.length > 0 && (
         <div
           className={`layermap ${isActive && "showlayer"}`}
           onClick={(e) => {
@@ -138,7 +139,18 @@ const MediaHolder = ({
   );
 };
 
-const Pic = ({ media, fit, url, user, edit, components, full, alt }) => {
+const Pic = ({
+  media,
+  fit,
+  url,
+  user,
+  edit,
+  components,
+  full,
+  alt,
+  nolayer,
+  mini,
+}) => {
   const handleDragStart = (e) => e.preventDefault();
 
   const [isOpen, setIsOpen] = useState(false);
@@ -167,6 +179,7 @@ const Pic = ({ media, fit, url, user, edit, components, full, alt }) => {
         setDrag={setDrag}
         isActive={isActive}
         setIsActive={setIsActive}
+        nolayer={nolayer || false}
       >
         <Image
           cloudName={process.env.CLOUDINARY_CLOUD_NAME || "stupidsystems"}
@@ -183,6 +196,7 @@ const Pic = ({ media, fit, url, user, edit, components, full, alt }) => {
           {user && user.hideface && (
             <Transformation effect="pixelate_faces:15" />
           )}
+          {mini && <Transformation height="300" width="300" crop="fill" />}
         </Image>
       </MediaHolder>
     ));
@@ -275,6 +289,7 @@ const Pic = ({ media, fit, url, user, edit, components, full, alt }) => {
             setDrag={setDrag}
             isActive={isActive}
             setIsActive={setIsActive}
+            nolayer={nolayer || false}
           >
             {edit && (
               <div className="edit">
@@ -312,6 +327,7 @@ const Pic = ({ media, fit, url, user, edit, components, full, alt }) => {
               {user && user.hideface && (
                 <Transformation effect="pixelate_faces:15" />
               )}
+              {mini && <Transformation height="300" width="300" crop="fill" />}
             </Image>
           </MediaHolder>
         )}
