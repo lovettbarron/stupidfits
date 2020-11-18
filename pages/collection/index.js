@@ -129,7 +129,6 @@ const Collections = (props) => {
           <Modal
             onClose={() => {
               setIsOpen(false);
-              fetchItems();
             }}
             closeable
             autoFocus

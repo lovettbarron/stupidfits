@@ -58,11 +58,11 @@ const CreateCollection = ({ collection }) => {
       try {
         const data = await res.json();
         if (props.handler) {
-          handle(data);
+          Router.push({
+            pathname: `/collection/${data.id}`,
+          });
+          // handle(data);
         }
-        Router.push({
-          pathname: `/collection/${data.id}`,
-        });
       } catch (e) {
         console.log("error:", e.message);
       }
