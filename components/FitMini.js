@@ -6,14 +6,26 @@ import Anatomy from "./Anatomy";
 import Image from "./Image";
 import { Button, KIND, SIZE } from "baseui/button";
 import TriangleRight from "baseui/icon/triangle-right";
-
+import Show from "baseui/icon/show";
+import FitBox from "./FitBox";
 import { Cap } from "./Anatomy";
+
+import {
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  ModalButton,
+  SIZE as MODALSIZE,
+  ROLE,
+} from "baseui/modal";
 
 const FitMini = (props) => {
   const router = useRouter();
   const [session, loading] = useSession();
   const [fit, setFit] = useState(props.fit || false);
   const [isOpen, setIsOpen] = useState(false);
+  const [fullOpen, setFullOpen] = useState(false);
 
   const editFit = async (e) => {
     Router.push(`/fit/${fit || props.id}`);
@@ -80,7 +92,35 @@ const FitMini = (props) => {
             <TriangleRight size={36} />
           </Button>
         </div>
+        <div className="open">
+          <Button
+            onClick={() => setFullOpen(!fullOpen)}
+            kind={KIND.minimal}
+            size={SIZE.mini}
+          >
+            <Show size={24} />
+          </Button>
+        </div>
       </div>
+
+      <Modal
+        onClose={() => {
+          setFullOpen(false);
+        }}
+        closeable
+        autoFocus
+        focusLock
+        isOpen={fullOpen}
+        animate
+        unstable_ModalBackdropScroll
+        size={MODALSIZE.auto}
+        role={ROLE.dialog}
+      >
+        {/* <ModalHeader>Create New Collection</ModalHeader> */}
+        <ModalBody>
+          {fullOpen && <FitBox {...props} fit={props.id} />}
+        </ModalBody>
+      </Modal>
 
       <style jsx>{`
         .fitbox {
@@ -108,6 +148,13 @@ const FitMini = (props) => {
           position: absolute;
           right: 0;
           top: 0;
+          transition: transform 0.4s;
+        }
+
+        .open {
+          position: absolute;
+          left: 0;
+          top: 15%;
           transition: transform 0.4s;
         }
 
