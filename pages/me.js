@@ -103,6 +103,7 @@ const Me = (props) => {
         urllabel,
         description,
         hideface,
+        hidecloset,
         gender: gender,
         tags: tags,
         top: topsize,
@@ -182,7 +183,8 @@ const Me = (props) => {
     if (
       props.user.profilepage !== profilepage ||
       props.user.public !== publicprofile ||
-      props.user.hideface !== hideface
+      props.user.hideface !== hideface ||
+      props.user.hidecloset !== hidecloset
     )
       submitData();
   });
