@@ -29,11 +29,21 @@ const Main = (props) => {
                   </a>
                 </div>
                 <div className="col">
+                  <h3 style={{ textAlign: "left" }}>
+                    Stupidfits is an outfit diary that exports to other socials,
+                    connects reviews to real fits, and more.
+                  </h3>
                   <ol>
                     <li>Sync fit pics from Instagram or Upload directly.</li>
                     <li>
                       Quickly link outfits with your wardrobe (and build a
                       digital closet over time)
+                    </li>
+                    <li>
+                      Create a public or private outfit-focused blog,{" "}
+                      <Link href="/u/stupidfits">
+                        <a>like this one</a>
+                      </Link>
                     </li>
                     <li>
                       Easily export and Share outfits as{" "}
@@ -51,15 +61,6 @@ const Main = (props) => {
                   </ol>
                 </div>
               </div>
-
-              <p className="center small">
-                Checkout{" "}
-                <Link href="/u/stupidfits">
-                  <a>my public profile</a>
-                </Link>{" "}
-                or the featured fits below to get started.
-              </p>
-              <hr />
             </>
           )}
           {session && (
@@ -95,10 +96,6 @@ const Main = (props) => {
             </>
           )}
 
-          <h3>
-            {(session && session.user && "Your recent fits") ||
-              "Recent Featured Fits"}
-          </h3>
           <main className="main">
             <Tabs
               activeKey={activeKey}
@@ -129,7 +126,11 @@ const Main = (props) => {
                       )}
                 </div>
               </Tab> */}
-              <Tab title="Recent Fits">
+              <Tab
+                title={
+                  (session && session.user && "Recent Fits") || "Featured Fits"
+                }
+              >
                 <div className="main">
                   {props.feed &&
                     Array.isArray(props.feed) &&

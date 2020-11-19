@@ -72,9 +72,10 @@ model User {
   Comment Comment[]
   Media   Media[]   @relation("UserMediaRelationship")
 
-  Review Review[]
-  @@map(name: "users")
+  Review     Review[]
   Collection Collection[]
+  @@map(name: "users")
+  Notification Notification[]
 }
 
 model VerificationRequest {
@@ -250,6 +251,18 @@ model Collection {
   updatedAt   DateTime  @default(now()) @map(name: "updated_at")
   tags        Style[]
   Comment     Comment[]
+}
+
+model Notification {
+  id        Int      @id @default(autoincrement())
+  user      User     @relation(fields: [userId], references: [id])
+  seen      Boolean
+  content   String
+  cta       String
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  updatedAt DateTime @default(now()) @map(name: "updated_at")
+
+  userId Int
 }
 
 enum ReviewFocus {
