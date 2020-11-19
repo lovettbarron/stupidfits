@@ -89,11 +89,20 @@ const AddToCollection = (props) => {
                 />
               )}
               <ul>
-                {collections.map((c) => (
-                  <li key={c.id} onClick={() => addFit(c.id)}>
-                    {c.title}
-                  </li>
-                ))}
+                {collections.map((c) => {
+                  const ex = !!c.fits.find((f) => f.id === props.id);
+                  return (
+                    <li
+                      key={c.id}
+                      className={ex && `added`}
+                      onClick={() => {
+                        if (!ex) addFit(c.id);
+                      }}
+                    >
+                      {c.title}
+                    </li>
+                  );
+                })}
               </ul>
               <Button
                 kind={KIND.secondary}
@@ -164,10 +173,11 @@ const AddToCollection = (props) => {
         }
 
         li.added {
+          cursor: not-allowed;
           text-decoration: line-through;
         }
 
-        li:hover {
+        li:not(.added):hover {
           padding-left: 0.5rem;
           background: #151515;
           color: white;
