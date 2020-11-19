@@ -1,5 +1,7 @@
 import React, { useEffect, useState, createElement } from "react";
 import marksy from "marksy";
+import { getSession, useSession } from "next-auth/client";
+import { Button, KIND, SIZE as BUTTONSIZE } from "baseui/button";
 import EmbedImage from "./EmbedImage";
 import Image from "./Image";
 import Link from "next/link";
@@ -23,6 +25,7 @@ const RenderReview = ({
   slug,
   preview,
 }) => {
+  const [session, loading] = useSession();
   const [activeKey, setActiveKey] = React.useState("0");
   const compile = marksy({
     // Pass in whatever creates elements for your
@@ -113,6 +116,17 @@ const RenderReview = ({
                   <div className="writeup">{compiled.tree}</div>
                   <div className="side">
                     <div>
+                      {session && session.user.id === user.id && (
+                        <>
+                          <Link href={`/review/edit/${id}`}>
+                            <a>
+                              <Button>Edit Review</Button>
+                            </a>
+                          </Link>
+                          <br />
+                          <br />
+                        </>
+                      )}
                       Written{" "}
                       {new Date(createdAt).toLocaleString("en-US", {
                         year: "numeric",
