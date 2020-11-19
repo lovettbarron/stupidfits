@@ -59,6 +59,7 @@ model User {
   profilepage      Boolean   @default(true)
   nosize           Boolean   @default(false)
   hideface         Boolean   @default(false)
+  hidecloset       Boolean   @default(false)
   defaultStatus    Status    @default(value: PENDING)
   url              String?
   urllabel         String?
@@ -72,10 +73,10 @@ model User {
   Comment Comment[]
   Media   Media[]   @relation("UserMediaRelationship")
 
-  Review     Review[]
-  Collection Collection[]
-  @@map(name: "users")
+  Review       Review[]
+  Collection   Collection[]
   Notification Notification[]
+  @@map(name: "users")
 }
 
 model VerificationRequest {

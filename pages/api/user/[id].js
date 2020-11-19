@@ -52,6 +52,22 @@ async function handleGET(req, res) {
               },
             },
           },
+          Collection: {
+            include: {
+              user: true,
+              fits: {
+                include: {
+                  media: true,
+                },
+              },
+              tags: true,
+              Comment: {
+                include: {
+                  user: true,
+                },
+              },
+            },
+          },
         },
       })
       .finally(async () => {

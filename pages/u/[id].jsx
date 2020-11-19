@@ -8,6 +8,7 @@ import Link from "next/link";
 import { Tabs, Tab, FILL } from "baseui/tabs-motion";
 import Anatomy from "../../components/Anatomy";
 import ReviewBox from "../../components/ReviewBox";
+import CollectionBox from "../../components/CollectionBox";
 import { NextSeo } from "next-seo";
 
 const UserProfile = (props) => {
@@ -82,11 +83,7 @@ const UserProfile = (props) => {
         <div className="page">
           <main>
             <div className="top">
-              <h1>
-                <Link href="/">
-                  <a>{props.insta.username} on Stupid Fits</a>
-                </Link>
-              </h1>
+              <h1>{props.insta.username}</h1>
               <p>
                 {props.insta.username}'s profile isn't public, but you can visit
                 their instagram here if it is public.
@@ -237,6 +234,19 @@ const UserProfile = (props) => {
                           return b.createdAt - a.createdAt;
                         })
                         .map((r) => <ReviewBox key={r.id} {...r} />)}
+                  </div>
+                </Tab>
+              )}
+              {props.collections && props.collections.length > 0 && (
+                <Tab title="Collections">
+                  <div className="reviews">
+                    {props.collections &&
+                      Array.isArray(props.collections) &&
+                      props.collections
+                        .sort((a, b) => {
+                          return b.createdAt - a.createdAt;
+                        })
+                        .map((c) => <CollectionBox key={c.id} {...c} />)}
                   </div>
                 </Tab>
               )}
@@ -424,6 +434,7 @@ export const getServerSideProps = async (context) => {
       reviews: user.Review.filter((f) =>
         ["FEATURED", "PUBLIC"].includes(f.status)
       ),
+      collections: user.Collection.filter((f) => f.published),
       fits: fits,
       closet: closet,
     },
