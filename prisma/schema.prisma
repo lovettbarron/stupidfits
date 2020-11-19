@@ -126,7 +126,6 @@ model Fit {
   Comment    Comment[]
   style      Style[]
   Collection Collection[]
-
 }
 
 model Closet {
