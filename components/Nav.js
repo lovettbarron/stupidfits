@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
+
 import { useRouter } from "next/router";
 import { Drawer, SIZE, ANCHOR } from "baseui/drawer";
 import { Button } from "baseui/button";
@@ -7,13 +8,13 @@ import { useSession, signin, signout } from "next-auth/client";
 
 const Nav = (props) => {
   const router = useRouter();
+  const [session, loading] = useSession();
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const isActive = (pathname) => {
     router.pathname === pathname;
   };
   const toggleTrueFalse = () => setIsOpen(!isOpen);
-  const [session, loading] = useSession();
 
   useEffect(() => {
     router.events.on("routeChangeStart", () => {
@@ -52,11 +53,21 @@ const Nav = (props) => {
             </Link>
           )}
           {(session && (
-            <Link href="/">
-              <a className="bold" data-active={isActive("/")}>
-                Feed
-              </a>
-            </Link>
+            <>
+              <Link href="/">
+                <a className="bold" data-active={isActive("/")}>
+                  Feed
+                </a>
+              </Link>
+              <Link href={`/u/${session.user.username}`}>
+                <a
+                  className="bold"
+                  data-active={isActive(`/u/${session.user.username}`)}
+                >
+                  Me
+                </a>
+              </Link>
+            </>
           )) || (
             <Link href="/global">
               <a className="bold" data-active={isActive("/global")}>

@@ -10,8 +10,10 @@ import Anatomy from "../../components/Anatomy";
 import ReviewBox from "../../components/ReviewBox";
 import CollectionBox from "../../components/CollectionBox";
 import { NextSeo } from "next-seo";
+import { Button } from "baseui/button";
 
 const UserProfile = (props) => {
+  const [session, loading] = useSession();
   const [activeKey, setActiveKey] = React.useState("0");
 
   const getTopFit = props.fits
@@ -166,6 +168,17 @@ const UserProfile = (props) => {
                   <a>{props.insta.username} on Stupid Fits</a>
                 </Link>
               </h1>
+              {session && session.user.id === props.insta.id && (
+                <>
+                  <Link href={`/me`}>
+                    <a>
+                      <Button>Edit My Settings</Button>
+                    </a>
+                  </Link>
+                  <br />
+                  <br />
+                </>
+              )}
               <div className="grid">
                 <div className="col">
                   <p>
