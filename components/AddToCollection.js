@@ -116,7 +116,7 @@ const AddToCollection = (props) => {
                 size={SIZE.default}
                 role={ROLE.dialog}
               >
-                <ModalHeader>Update Collection</ModalHeader>
+                <ModalHeader>Create New Collection</ModalHeader>
                 <ModalBody>
                   {isOpen && (
                     <CreateCollection
