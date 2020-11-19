@@ -2,7 +2,7 @@ import Head from "next/head";
 import fetch from "isomorphic-unfetch";
 // import { NextSeo } from "next-seo";
 import Layout from "../../components/Layout";
-import FitBox from "../../components/FitBox";
+import FitMini from "../../components/FitMini";
 import { useSession, getSession } from "next-auth/client";
 import Link from "next/link";
 import { Tabs, Tab, FILL } from "baseui/tabs-motion";
@@ -163,11 +163,7 @@ const UserProfile = (props) => {
         <div className="page">
           <main>
             <div className="top">
-              <h1>
-                <Link href="/">
-                  <a>{props.insta.username} on Stupid Fits</a>
-                </Link>
-              </h1>
+              <h1>{props.insta.username}</h1>
               {session && session.user.id === props.insta.id && (
                 <>
                   <Link href={`/me`}>
@@ -223,13 +219,13 @@ const UserProfile = (props) => {
               renderAll
             >
               <Tab title="Fits">
-                <div>
+                <div className="flex">
                   {props.fits
                     .sort((a, b) => {
                       return b.media[0].timestamp - a.media[0].timestamp;
                     })
                     .map((fit) => (
-                      <FitBox
+                      <FitMini
                         key={fit.id}
                         {...fit}
                         username={props.insta.username}
@@ -299,6 +295,12 @@ const UserProfile = (props) => {
             flex-wrap: wrap;
             justify-content: center;
             width: 100%;
+          }
+
+          .flex {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
           }
 
           p {
