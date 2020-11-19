@@ -138,11 +138,25 @@ const Nav = (props) => {
             <a className="auth" onClick={signin}>
               <img alt="Login or Create Account" src={`/img/login.png`} />
             </a>
-            <Link href="/global">
-              <a data-active={isActive("/global")}>Public Fits</a>
+            <Link href="/">
+              <a className="bold" data-active={isActive("/")}>
+                Home
+              </a>
             </Link>
+            <Link href="/review">
+              <a data-active={isActive("/review")}>Reviews</a>
+            </Link>
+            <Link href="/collection">
+              <a className="bold" data-active={isActive("/collection")}>
+                Collections
+              </a>
+            </Link>
+
             <Link href="/brand">
               <a data-active={isActive("/brand")}>Brands</a>
+            </Link>
+            <Link href="/global">
+              <a data-active={isActive("/global")}>Public Fits</a>
             </Link>
           </div>
         )}
