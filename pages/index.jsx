@@ -23,27 +23,37 @@ const Main = (props) => {
           {!session && (
             <>
               <div className="main">
+                <h2 style={{ textAlign: "center", lineHeight: "3rem" }}>
+                  Stupidfits is an outfit diary made for you
+                </h2>
                 <div className="col">
                   <a className="auth" onClick={signin}>
                     <img alt="Login or Create Account" src={`/img/login.png`} />
                   </a>
                 </div>
                 <div className="col">
-                  <h3 style={{ textAlign: "left" }}>
-                    Stupidfits is an outfit diary that exports to other socials,
-                    connects reviews to real fits, and more.
-                  </h3>
                   <ol>
-                    <li>Sync fit pics from Instagram or Upload directly.</li>
                     <li>
-                      Quickly link outfits with your wardrobe (and build a
-                      digital closet over time)
+                      Upload your photos <br />
+                      (direct or instagram).
                     </li>
                     <li>
-                      Create a public or private outfit-focused blog,{" "}
+                      Link outfits with your wardrobe (building a digital closet
+                      over time)
+                    </li>
+                    <li>
+                      Create a profile,{" "}
                       <Link href="/u/stupidfits">
                         <a>like this one</a>
-                      </Link>
+                      </Link>{" "}
+                      to share fits and reviews.
+                    </li>
+                    <li>
+                      Create fit collections{" "}
+                      <Link href="/collection/1">
+                        <a>like this</a>
+                      </Link>{" "}
+                      to explore and inspire.
                     </li>
                     <li>
                       Easily export and Share outfits as{" "}
@@ -51,13 +61,19 @@ const Main = (props) => {
                         images
                       </a>
                       ,{" "}
-                      <a href="https://stupidfits.com/f/16" target="_blank">
-                        posts
-                      </a>
-                      , lists, etc.
+                      <Link href="/f/16">
+                        <a>posts</a>
+                      </Link>
+                      ,{" "}
+                      <Link href="/collection">
+                        <a>collections</a>
+                      </Link>
+                      , etc.
                     </li>
-                    <li>Private or public, you decide.</li>
-                    <li>Option to Auto-hide faces</li>
+                    <li>
+                      Apply privacy controls, from private profiles to auto-face
+                      hiding.
+                    </li>
                   </ol>
                 </div>
               </div>
