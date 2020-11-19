@@ -35,6 +35,8 @@ const CollectionBox = (props) => {
           )) || <ImageMini media={null} hideid={true} />}
         </div>
         <h2>{props.title}</h2>
+        {!props.published && <div className="priv">Private</div>}
+        {props.public && <div className="priv">Open Submissions</div>}
         <ul className="style">
           {props.tags.map((t) => (
             <li>{t.name}</li>
@@ -173,6 +175,17 @@ const CollectionBox = (props) => {
 
         .bold {
           font-weight: bold;
+        }
+
+        h2 {
+          margin: 0.5rem auto;
+        }
+        .priv {
+          margin: 0.5rem auto;
+          background: #151515;
+          border-radius: 0.5rem;
+          padding: 0.5rem;
+          width: auto;
         }
 
         a {
