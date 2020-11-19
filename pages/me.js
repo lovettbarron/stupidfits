@@ -566,7 +566,7 @@ const Me = (props) => {
             .col p {
               text-align: left !important;
               font-size: 0.8rem;
-              max-width: 60%;
+              max-width: 75%;
               margin-left: 20%;
             }
 

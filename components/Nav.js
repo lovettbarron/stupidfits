@@ -134,14 +134,14 @@ const Nav = (props) => {
                 Collections
               </a>
             </Link>
-            <Link href="/closet">
-              <a data-active={isActive("/closet")}>Closet</a>
-            </Link>
             <Link href="/brand">
               <a data-active={isActive("/brand")}>Brands</a>
             </Link>
+            <Link href="/closet">
+              <a data-active={isActive("/closet")}>Closet</a>
+            </Link>
             <Link href="/global">
-              <a data-active={isActive("/global")}>Others' Fits</a>
+              <a data-active={isActive("/global")}>Global Feed</a>
             </Link>
             <Link href="/me">
               <a data-active={isActive("/me")}>Setting</a>
@@ -333,7 +333,7 @@ const Nav = (props) => {
         .nav a {
           display: block;
           line-height: 4rem;
-          margin: 3rem auto;
+          margin: 1rem auto;
           font-size: 2rem;
           align-items: center;
           color: #ffffff;
