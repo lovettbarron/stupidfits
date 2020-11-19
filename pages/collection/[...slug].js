@@ -40,7 +40,7 @@ const Collection = ({ collection }) => {
     }
   };
 
-  const addFit = async (id) => {
+  const addFit = async (id, cb) => {
     console.log("Adding fit", id);
     try {
       const body = { id: collection.id, fit: id };
@@ -51,8 +51,11 @@ const Collection = ({ collection }) => {
       });
       const data = await res.json();
       console.log("Added fit!", data);
+      setFits(data.fits);
+      cb(true);
     } catch (error) {
       console.error(error);
+      cb(false);
     }
   };
 
@@ -79,7 +82,7 @@ const Collection = ({ collection }) => {
   // ];
 
   useEffect(() => {
-    refresh();
+    // refresh();
     return () => {};
   }, [fits]);
 
@@ -144,7 +147,7 @@ const Collection = ({ collection }) => {
           </p>
         )}
         <div className="flex">
-          {coll.fits
+          {fits
             .sort((a, b) => {
               return b.media[0].timestamp - a.media[0].timestamp;
             })

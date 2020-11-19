@@ -139,8 +139,8 @@ const Main = (props) => {
                         session && session.user ? true : f.status === "FEATURED"
                       )
                       .sort((a, b) => {
-                        return b.createdAt - a.createdAt;
-                        // return b.media[0].timestamp - a.media[0].timestamp;
+                        // return b.createdAt - a.createdAt;
+                        return b.media[0].timestamp - a.media[0].timestamp;
                       })
                       .map((fit) => (
                         <FitMini key={"f" + fit.id} {...fit} fit={fit.id} />

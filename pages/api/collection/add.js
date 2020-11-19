@@ -31,6 +31,35 @@ export default async function handle(req, res) {
           connect: { id: req.body.fit },
         },
       },
+      include: {
+        fits: {
+          where: {
+            user: {
+              public: true,
+            },
+          },
+          include: {
+            media: {
+              include: {
+                layers: {
+                  include: {
+                    item: {
+                      include: { brand: true },
+                    },
+                    media: true,
+                  },
+                },
+              },
+            },
+            user: true,
+            components: {
+              include: {
+                brand: true,
+              },
+            },
+          },
+        },
+      },
     })
     .finally(async () => {
       await prisma.$disconnect();

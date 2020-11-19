@@ -92,7 +92,9 @@ const MediaHolder = ({
               />
             </div>
           )) || (
-            <div className="edit">{fit && <AddToCollection id={fit} />}</div>
+            <div className="edit">
+              {!nolayer && fit && <AddToCollection id={fit} />}
+            </div>
           )}
         </>
       )}
