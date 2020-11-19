@@ -54,17 +54,17 @@ const Nav = (props) => {
           )}
           {(session && (
             <>
-              <Link href="/">
-                <a className="bold" data-active={isActive("/")}>
-                  Feed
-                </a>
-              </Link>
               <Link href={`/u/${session.user.username}`}>
                 <a
                   className="bold"
                   data-active={isActive(`/u/${session.user.username}`)}
                 >
-                  Me
+                  Profile
+                </a>
+              </Link>
+              <Link href="/">
+                <a className="bold" data-active={isActive("/")}>
+                  Feed
                 </a>
               </Link>
             </>
@@ -110,6 +110,14 @@ const Nav = (props) => {
             <Link href="/feed">
               <a data-active={isActive("/feed")}>
                 <Button>Add Fit</Button>
+              </a>
+            </Link>
+            <Link href={`/u/${session.user.username}`}>
+              <a
+                className="bold"
+                data-active={isActive(`/u/${session.user.username}`)}
+              >
+                Profile
               </a>
             </Link>
             <Link href="/">

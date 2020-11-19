@@ -74,6 +74,7 @@ async function handlePOST(req, res) {
         url: req.body.url,
         urllabel: req.body.urllabel,
         hideface: req.body.hideface,
+        hidecloset: req.body.hidecloset,
         style: req.body.style,
         gender: {
           set: genderids,
