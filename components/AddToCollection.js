@@ -2,19 +2,27 @@ import React, { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import Router, { useRouter } from "next/router";
 import { useSession } from "next-auth/client";
-
 import { StatefulPopover } from "baseui/popover";
-
+import CreateCollection from "./CreateCollection";
 import { Button, KIND, SIZE as BUTTONSIZE } from "baseui/button";
-
 import { Block } from "baseui/block";
-
 import { Spinner } from "baseui/spinner";
+
+import {
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  ModalButton,
+  SIZE,
+  ROLE,
+} from "baseui/modal";
 
 const AddToCollection = (props) => {
   const router = useRouter();
   const [session, loading] = useSession();
   const [collections, setCollections] = useState([]);
+  const [isOpen, setIsOpen] = useState(false);
 
   const addFit = async (id) => {
     console.log("Adding fit", id, props.id);
@@ -73,6 +81,7 @@ const AddToCollection = (props) => {
           fetchCollection();
           return (
             <Block padding={"20px"}>
+              <h4>Add to</h4>
               {collections.length === 0 && (
                 <Spinner
                   size={36}
@@ -86,6 +95,40 @@ const AddToCollection = (props) => {
                   </li>
                 ))}
               </ul>
+              <Button
+                kind={KIND.secondary}
+                size={BUTTONSIZE.mini}
+                onClick={() => setIsOpen(true)}
+              >
+                New Collection
+              </Button>
+
+              <Modal
+                onClose={() => {
+                  setIsOpen(false);
+                }}
+                closeable
+                autoFocus
+                focusLock
+                isOpen={isOpen}
+                animate
+                unstable_ModalBackdropScroll
+                size={SIZE.default}
+                role={ROLE.dialog}
+              >
+                <ModalHeader>Update Collection</ModalHeader>
+                <ModalBody>
+                  {isOpen && (
+                    <CreateCollection
+                      fit={props.id}
+                      handler={(data) => {
+                        setIsLoading(true);
+                        setIsOpen(false);
+                      }}
+                    />
+                  )}
+                </ModalBody>
+              </Modal>
             </Block>
           );
         }}
@@ -105,6 +148,9 @@ const AddToCollection = (props) => {
         ul {
           list-style: none;
           padding: 0;
+          max-height: 200px;
+          overflow-x: hidden;
+          overflow-y: auto;
         }
 
         li {

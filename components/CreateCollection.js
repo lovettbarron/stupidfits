@@ -7,12 +7,13 @@ import { Input } from "baseui/input";
 import { StatefulButtonGroup, MODE } from "baseui/button-group";
 import { Button } from "baseui/button";
 import { Checkbox, LABEL_PLACEMENT, STYLE_TYPE } from "baseui/checkbox";
+import { Textarea } from "baseui/textarea";
 
 import { FileUploader } from "baseui/file-uploader";
 import { useUpload } from "use-cloudinary";
 import { useSession } from "next-auth/client";
 
-const CreateCollection = ({ collection }) => {
+const CreateCollection = ({ collection, fit }) => {
   const [session, loading] = useSession();
 
   const [pub, setPub] = useState((collection && collection.public) || false);
@@ -24,7 +25,6 @@ const CreateCollection = ({ collection }) => {
     (collection && collection.description) || ""
   );
   const [slug, setSlug] = useState((collection && collection.slug) || "");
-  const [fits, setFits] = useState((collection && collection.fits) || []);
 
   const [tags, setTags] = useState((collection && collection.tags) || []);
   const [defslug, setDefslug] = useState(
@@ -51,7 +51,15 @@ const CreateCollection = ({ collection }) => {
     e.preventDefault();
     setSaveLoading(true);
     try {
-      const body = { title, slug, description, published, public: pub, tags };
+      const body = {
+        title,
+        slug,
+        description,
+        published,
+        public: pub,
+        tags,
+        fit: fit,
+      };
       const res = await fetch(
         `${process.env.HOST}/api/collection/${
           collection ? collection.id : "create"
@@ -111,6 +119,15 @@ const CreateCollection = ({ collection }) => {
                 setSlug(safe);
               }}
               placeholder=""
+            />
+          </label>
+
+          <label>
+            <h4>Description</h4>
+            <Textarea
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              placeholder="What's this collection of?"
             />
           </label>
 

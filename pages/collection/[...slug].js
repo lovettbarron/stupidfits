@@ -132,6 +132,9 @@ const Collection = ({ collection }) => {
       </Head>
       <Layout>
         <h1>{collection.title}</h1>
+        {collection.description && (
+          <p className="center">{collection.description}</p>
+        )}
         {session && (
           <p className="center">
             <Button onClick={() => setIsOpen(true)}>Add Fits</Button>{" "}

@@ -32,6 +32,13 @@ export default async function handle(req, res) {
         published: false,
         title: req.body.title,
         description: "",
+        fits: req.body.fit
+          ? {
+              connect: {
+                id: req.body.fit,
+              },
+            }
+          : undefined,
         slug: req.body.title
           .toLowerCase()
           .split(" ")
