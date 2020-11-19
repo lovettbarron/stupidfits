@@ -324,6 +324,11 @@ const Nav = (props) => {
           animation: shake 0.5s;
           animation-iteration-count: infinite;
         }
+        @media screen and (max-width: 800px) {
+          h1:hover {
+            animation: none;
+          }
+        }
 
         .nav a {
           display: block;

@@ -20,6 +20,10 @@ const styles = [
 ];
 
 export const sizes = [
+  { id: 24, us: "XXXXXXXS" },
+  { id: 26, us: "XXXXXXS" },
+  { id: 28, us: "XXXXXS" },
+  { id: 30, us: "XXXXS" },
   { id: 32, us: "XXXS" },
   { id: 34, us: "XXS" },
   { id: 36, us: "XS" },
@@ -31,6 +35,10 @@ export const sizes = [
   { id: 48, us: "XXXL" },
   { id: 50, us: "XXXXL" },
   { id: 52, us: "XXXXXL" },
+  { id: 54, us: "XXXXXXL" },
+  { id: 56, us: "XXXXXXXL" },
+  { id: 58, us: "XXXXXXXL" },
+  { id: 60, us: "XXXXXXXXL" },
 ];
 
 export const genders = [
@@ -205,11 +213,18 @@ const Me = (props) => {
               }}
               activateOnFocus
               renderAll
+              overrides={{
+                TabList: {
+                  style: {
+                    flexWrap: "wrap",
+                  },
+                },
+              }}
             >
               <Tab title="Profile">
                 <div className="grid">
                   <div className="col">
-                    <h2>{email}</h2>
+                    <h3>{email}</h3>
                     <h3>Your Stupidfits Username</h3>
                     <input
                       style={{ textAlign: "center" }}
@@ -297,7 +312,7 @@ const Me = (props) => {
                 </div>
               </Tab>
 
-              <Tab title="Style and Identity">
+              <Tab title="Style">
                 <div className="grid">
                   <div className="col">
                     <h2>Self Described</h2>
@@ -377,8 +392,6 @@ const Me = (props) => {
               <Tab title="Privacy">
                 <div className="grid">
                   <div className="col">
-                    {" "}
-                    <h2>Privacy & Sharing</h2>
                     <Checkbox
                       checked={hideface}
                       checkmarkType={STYLE_TYPE.toggle_round}
@@ -421,6 +434,20 @@ const Me = (props) => {
                       in your instagram, reddit, or similar so folk can make
                       sense of your fit genius.
                     </p>
+                  </div>
+                  <div className="col">
+                    <Checkbox
+                      checked={hidecloset}
+                      checkmarkType={STYLE_TYPE.toggle_round}
+                      labelPlacement={LABEL_PLACEMENT.right}
+                      onChange={() => setHidecloset(!hidecloset)}
+                    >
+                      Hide my closet on my profile page
+                    </Checkbox>
+                    <p className="small">
+                      Just incase you don't want to share all your garms. You
+                      can always access it privately via the nav bar.
+                    </p>
                     <Checkbox
                       checked={nosize}
                       checkmarkType={STYLE_TYPE.toggle_round}
@@ -435,25 +462,10 @@ const Me = (props) => {
                       broadcast it.
                     </p>
                   </div>
-                  <div className="col">
-                    <h2>Privacy & Sharing</h2>
-                    <Checkbox
-                      checked={hidecloset}
-                      checkmarkType={STYLE_TYPE.toggle_round}
-                      labelPlacement={LABEL_PLACEMENT.right}
-                      onChange={() => setHidecloset(!hidecloset)}
-                    >
-                      Hide my closet on my profile page
-                    </Checkbox>
-                    <p className="small">
-                      Just incase you don't want to share all your garms. You
-                      can always access it privately via the nav bar.
-                    </p>
-                  </div>
                 </div>
               </Tab>
 
-              <Tab title="Instagram Sync">
+              <Tab title="Sync">
                 <div className="grid">
                   <div className="col">
                     <h2>Sync with your Instagram Account</h2>
@@ -481,7 +493,7 @@ const Me = (props) => {
                   </div>
                 </div>
               </Tab>
-              <Tab title="Experimental">
+              <Tab title="X">
                 <div className="grid">
                   <div className="col">
                     <h1>
@@ -543,12 +555,19 @@ const Me = (props) => {
             }
 
             h2 {
-              margin-top: 8rem;
+              margin-top: 2rem;
             }
 
             label {
               width: 50%;
               margin: 0 auto;
+            }
+
+            .col p {
+              text-align: left !important;
+              font-size: 0.8rem;
+              max-width: 60%;
+              margin-left: 20%;
             }
 
             input[type="text"],
