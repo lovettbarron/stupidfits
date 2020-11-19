@@ -250,22 +250,24 @@ const UserProfile = (props) => {
                   </div>
                 </Tab>
               )}
-              <Tab title="Closet">
-                <div>
-                  {props.closet && (
-                    <div className="closet">
-                      <Anatomy
-                        nocomment={true}
-                        components={props.closet.sort(function (a, b) {
-                          var textA = a.brand.name.toUpperCase();
-                          var textB = b.brand.name.toUpperCase();
-                          return textA < textB ? -1 : textA > textB ? 1 : 0;
-                        })}
-                      />
-                    </div>
-                  )}
-                </div>
-              </Tab>
+              {!props.insta.hidecloset && (
+                <Tab title="Closet">
+                  <div>
+                    {props.closet && (
+                      <div className="closet">
+                        <Anatomy
+                          nocomment={true}
+                          components={props.closet.sort(function (a, b) {
+                            var textA = a.brand.name.toUpperCase();
+                            var textB = b.brand.name.toUpperCase();
+                            return textA < textB ? -1 : textA > textB ? 1 : 0;
+                          })}
+                        />
+                      </div>
+                    )}
+                  </div>
+                </Tab>
+              )}
             </Tabs>
           </main>
         </div>

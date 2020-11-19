@@ -10,6 +10,7 @@ import { Textarea } from "baseui/textarea";
 import { Input } from "baseui/input";
 import { Button } from "baseui/button";
 import { Select } from "baseui/select";
+import { Tabs, Tab, FILL } from "baseui/tabs-motion";
 
 const styles = [
   "Goretex Onion Knight",
@@ -48,6 +49,7 @@ const getSizes = (trans) => {
 
 const Me = (props) => {
   const [session, loading] = useSession();
+  const [activeKey, setActiveKey] = React.useState("0");
 
   const [instagram, setInstagram] = useState(props.user.instagram);
   const [email, setEmail] = useState(props.user.email);
@@ -56,6 +58,7 @@ const Me = (props) => {
   const [profilepage, setProfilepage] = useState(props.user.profilepage);
   const [nosize, setNosize] = useState(props.user.nosize);
   const [hideface, setHideface] = useState(props.user.hideface);
+  const [hidecloset, setHidecloset] = useState(props.user.hidecloset);
   const [instagramData, setInstagramData] = useState("");
   const [uploadSuccess, setUploadSuccess] = useState(false);
   const [uploadError, setUploadError] = useState(false);
@@ -192,291 +195,332 @@ const Me = (props) => {
         <Layout>
           <div className="page">
             <h1>My Settings</h1>
-
-            <div className="grid">
-              <div className="col">
-                <h2>{email}</h2>
-                <h3>Your Stupidfits Username</h3>
-                <input
-                  style={{ textAlign: "center" }}
-                  onChange={(e) => {
-                    const v = e.target.value.replace(" ", "").toLowerCase();
-                    const safe = v.replace(/[^\w\s]/gi, "");
-                    setUsername(safe);
-                  }}
-                  placeholder="Username"
-                  type="text"
-                  value={username}
-                />
-                <Button
-                  disabled={!email || !username}
-                  type="submit"
-                  value="Update"
-                  onClick={submitData}
-                >
-                  Update
-                </Button>
-                <p className="small">
-                  A username is required for your public profile.
-                </p>
-                {profilepage && (
-                  <>
-                    <br />
-                    <h3>Your public page is</h3>
-                    <p>
-                      {process.env.HOST}
-                      <br />
-                      /u/{username}
-                    </p>
-                    <br />
-                    <br />
-                  </>
-                )}
-              </div>
-              <div className="col">
-                <h2>Profile Page Info</h2>
-                <h3>What's your style?</h3>
-                <Input
-                  value={style}
-                  onChange={(e) => setStyle(e.target.value)}
-                  placeholder={
-                    styles[Math.floor(Math.random() * styles.length)]
-                  }
-                  clearOnEscape
-                />
+            <Tabs
+              activeKey={activeKey}
+              fill={FILL.fixed}
+              onChange={({ activeKey }) => {
+                setActiveKey(activeKey);
+              }}
+              activateOnFocus
+              renderAll
+            >
+              <Tab title="Profile">
                 <div className="grid">
                   <div className="col">
-                    <h3>URL</h3>
-                    <Input
-                      value={url}
-                      onChange={(e) => setUrl(e.target.value)}
-                      placeholder="https://stupidfits.com"
-                      clearOnEscape
+                    <h2>{email}</h2>
+                    <h3>Your Stupidfits Username</h3>
+                    <input
+                      style={{ textAlign: "center" }}
+                      onChange={(e) => {
+                        const v = e.target.value.replace(" ", "").toLowerCase();
+                        const safe = v.replace(/[^\w\s]/gi, "");
+                        setUsername(safe);
+                      }}
+                      placeholder="Username"
+                      type="text"
+                      value={username}
                     />
+                    <Button
+                      disabled={!email || !username}
+                      type="submit"
+                      value="Update"
+                      onClick={submitData}
+                    >
+                      Update
+                    </Button>
+                    <p className="small">
+                      A username is required for your public profile.
+                    </p>
+                    {profilepage && (
+                      <>
+                        <br />
+                        <h3>Your public page is</h3>
+                        <p>
+                          {process.env.HOST}
+                          <br />
+                          /u/{username}
+                        </p>
+                        <br />
+                        <br />
+                      </>
+                    )}
                   </div>
                   <div className="col">
-                    <h3>URL label</h3>
+                    <h2>Profile Page Info</h2>
+                    <h3>What's your style?</h3>
                     <Input
-                      value={urllabel}
-                      onChange={(e) => setUrllabel(e.target.value)}
-                      placeholder="Stupid Fits"
+                      value={style}
+                      onChange={(e) => setStyle(e.target.value)}
+                      placeholder={
+                        styles[Math.floor(Math.random() * styles.length)]
+                      }
                       clearOnEscape
                     />
+                    <div className="grid">
+                      <div className="col">
+                        <h3>URL</h3>
+                        <Input
+                          value={url}
+                          onChange={(e) => setUrl(e.target.value)}
+                          placeholder="https://stupidfits.com"
+                          clearOnEscape
+                        />
+                      </div>
+                      <div className="col">
+                        <h3>URL label</h3>
+                        <Input
+                          value={urllabel}
+                          onChange={(e) => setUrllabel(e.target.value)}
+                          placeholder="Stupid Fits"
+                          clearOnEscape
+                        />
+                      </div>
+                    </div>
+                    <h3>What's your story?</h3>
+                    <Textarea
+                      value={description}
+                      onChange={(e) => setDescription(e.target.value)}
+                      placeholder="What's your story?"
+                    />
+                    <br />
+                    <Button
+                      disabled={!email || !username}
+                      type="submit"
+                      value="Update"
+                      onClick={submitData}
+                    >
+                      Update
+                    </Button>
                   </div>
                 </div>
-                <h3>What's your story?</h3>
-                <Textarea
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                  placeholder="What's your story?"
-                />
-                <br />
-                <Button
-                  disabled={!email || !username}
-                  type="submit"
-                  value="Update"
-                  onClick={submitData}
-                >
-                  Update
-                </Button>
-              </div>
-            </div>
+              </Tab>
 
-            <div className="grid">
-              <div className="col">
-                <h2>Self Described</h2>
-                <h3>Gender(s)</h3>
+              <Tab title="Style and Identity">
+                <div className="grid">
+                  <div className="col">
+                    <h2>Self Described</h2>
+                    <h3>Gender(s)</h3>
 
-                <Select
-                  options={[
-                    { label: "Male", id: "male" },
-                    { label: "Female", id: "female" },
-                    { label: "Intersex", id: "inter" },
-                    { label: "Queer", id: "queer" },
-                    { label: "Androgyne", id: "andro" },
-                    { label: "Other", id: "other" },
-                  ]}
-                  value={gender}
-                  multi
-                  placeholder="Choose your genders"
-                  onChange={(params) => setGender(params.value)}
-                />
-                <small>
-                  If you don't see yourself here, send a note to{" "}
-                  <a href="mailto:alb@stupidfits.com">alb@stupidfits.com</a> and
-                  we'll fix that.
-                </small>
-                <h3>What Styles Interest You?</h3>
-                <Select
-                  options={props.style.map((s) => ({
-                    id: s.id,
-                    label: s.name,
-                  }))}
-                  value={tags}
-                  multi
-                  placeholder="Pick a few"
-                  onChange={(params) => setTags(params.value)}
-                />
-                <br />
-                <Button
-                  disabled={!email || !username}
-                  type="submit"
-                  value="Update"
-                  onClick={submitData}
-                >
-                  Update
-                </Button>
-              </div>
-              <div className="col">
-                <h2>I Fit Into...</h2>
-                <h3>Sizes for Jackets, shirts, jumpsuits</h3>
-                <Select
-                  options={getSizes()}
-                  value={topsize}
-                  multi
-                  placeholder="Select your top's sizes"
-                  onChange={(params) => setTopsize(params.value)}
-                />
-                <h3>Sizes for Pants, skirt, etc</h3>
-                <Select
-                  options={getSizes()}
-                  value={bottomsize}
-                  multi
-                  placeholder="Select your bottom size"
-                  onChange={(params) => setBottomsize(params.value)}
-                />
-                <br />
-                <Button
-                  disabled={!email || !username}
-                  type="submit"
-                  value="Update"
-                  onClick={submitData}
-                >
-                  Update
-                </Button>
-              </div>
-            </div>
+                    <Select
+                      options={[
+                        { label: "Male", id: "male" },
+                        { label: "Female", id: "female" },
+                        { label: "Intersex", id: "inter" },
+                        { label: "Queer", id: "queer" },
+                        { label: "Androgyne", id: "andro" },
+                        { label: "Other", id: "other" },
+                      ]}
+                      value={gender}
+                      multi
+                      placeholder="Choose your genders"
+                      onChange={(params) => setGender(params.value)}
+                    />
+                    <small>
+                      If you don't see yourself here, send a note to{" "}
+                      <a href="mailto:alb@stupidfits.com">alb@stupidfits.com</a>{" "}
+                      and we'll fix that.
+                    </small>
+                    <h3>What Styles Interest You?</h3>
+                    <Select
+                      options={props.style.map((s) => ({
+                        id: s.id,
+                        label: s.name,
+                      }))}
+                      value={tags}
+                      multi
+                      placeholder="Pick a few"
+                      onChange={(params) => setTags(params.value)}
+                    />
+                    <br />
+                    <Button
+                      disabled={!email || !username}
+                      type="submit"
+                      value="Update"
+                      onClick={submitData}
+                    >
+                      Update
+                    </Button>
+                  </div>
+                  <div className="col">
+                    <h2>I Fit Into...</h2>
+                    <h3>Sizes for Jackets, shirts, jumpsuits</h3>
+                    <Select
+                      options={getSizes()}
+                      value={topsize}
+                      multi
+                      placeholder="Select your top's sizes"
+                      onChange={(params) => setTopsize(params.value)}
+                    />
+                    <h3>Sizes for Pants, skirt, etc</h3>
+                    <Select
+                      options={getSizes()}
+                      value={bottomsize}
+                      multi
+                      placeholder="Select your bottom size"
+                      onChange={(params) => setBottomsize(params.value)}
+                    />
+                    <br />
+                    <Button
+                      disabled={!email || !username}
+                      type="submit"
+                      value="Update"
+                      onClick={submitData}
+                    >
+                      Update
+                    </Button>
+                  </div>
+                </div>
+              </Tab>
 
-            <div className="grid">
-              <div className="col">
-                {" "}
-                <h2>Privacy & Sharing</h2>
-                <Checkbox
-                  checked={hideface}
-                  checkmarkType={STYLE_TYPE.toggle_round}
-                  labelPlacement={LABEL_PLACEMENT.right}
-                  onChange={() => setHideface(!hideface)}
-                >
-                  Please (try to) blur my face on any images I upload.
-                </Checkbox>
-                <p className="small">
-                  Just a note that this feature is experimental and might become
-                  paid in the future. It only applies to uploads going further.
-                </p>
-                <Checkbox
-                  checked={publicprofile}
-                  checkmarkType={STYLE_TYPE.toggle_round}
-                  labelPlacement={LABEL_PLACEMENT.right}
-                  onChange={() => setPublicprofile(!publicprofile)}
-                >
-                  Make my fits visible on the Stupid Fits global feed.
-                </Checkbox>
-                <p className="small">
-                  The{" "}
-                  <Link href="/global">
-                    <a>global feed</a>
-                  </Link>{" "}
-                  is where everyone's fits go — if they let them. Will you?
-                </p>
-                <br />
-                <Checkbox
-                  checked={profilepage}
-                  onChange={() => setProfilepage(!profilepage)}
-                  checkmarkType={STYLE_TYPE.toggle_round}
-                  labelPlacement={LABEL_PLACEMENT.right}
-                >
-                  Make my Profile Page visible
-                </Checkbox>
-                <p className="small">
-                  We give you a custom landing page for your fits. Drop this in
-                  your instagram, reddit, or similar so folk can make sense of
-                  your fit genius.
-                </p>
-                <Checkbox
-                  checked={nosize}
-                  checkmarkType={STYLE_TYPE.toggle_round}
-                  labelPlacement={LABEL_PLACEMENT.right}
-                  onChange={() => setNosize(!nosize)}
-                >
-                  Hide my size and gender identity on my profile
-                </Checkbox>
-                <p className="small">
-                  Sizes and Gender are mostly for searching. Adding that info
-                  helps others, but don't feel like you need to broadcast it.
-                </p>
-              </div>
-              <div className="col">
-                <h2>Sync with your Instagram Account</h2>
-                <p>Only the images you select will be part of stupidfits,</p>
-                {(insta && (
-                  <>
-                    <p>Synced with {insta.username}</p>
-                    <a className="auth" onClick={DisconnectInstagram}>
-                      <img
-                        alt="Disconnect your instagram"
-                        src={`/img/instagram-disconnect.png`}
+              <Tab title="Privacy">
+                <div className="grid">
+                  <div className="col">
+                    {" "}
+                    <h2>Privacy & Sharing</h2>
+                    <Checkbox
+                      checked={hideface}
+                      checkmarkType={STYLE_TYPE.toggle_round}
+                      labelPlacement={LABEL_PLACEMENT.right}
+                      onChange={() => setHideface(!hideface)}
+                    >
+                      Please (try to) blur my face on any images I upload.
+                    </Checkbox>
+                    <p className="small">
+                      Just a note that this feature is experimental and might
+                      become paid in the future. It only applies to uploads
+                      going further.
+                    </p>
+                    <Checkbox
+                      checked={publicprofile}
+                      checkmarkType={STYLE_TYPE.toggle_round}
+                      labelPlacement={LABEL_PLACEMENT.right}
+                      onChange={() => setPublicprofile(!publicprofile)}
+                    >
+                      Make my fits visible on the Stupid Fits global feed.
+                    </Checkbox>
+                    <p className="small">
+                      The{" "}
+                      <Link href="/global">
+                        <a>global feed</a>
+                      </Link>{" "}
+                      is where everyone's fits go — if they let them. Will you?
+                    </p>
+                    <br />
+                    <Checkbox
+                      checked={profilepage}
+                      onChange={() => setProfilepage(!profilepage)}
+                      checkmarkType={STYLE_TYPE.toggle_round}
+                      labelPlacement={LABEL_PLACEMENT.right}
+                    >
+                      Make my Profile Page visible
+                    </Checkbox>
+                    <p className="small">
+                      We give you a custom landing page for your fits. Drop this
+                      in your instagram, reddit, or similar so folk can make
+                      sense of your fit genius.
+                    </p>
+                    <Checkbox
+                      checked={nosize}
+                      checkmarkType={STYLE_TYPE.toggle_round}
+                      labelPlacement={LABEL_PLACEMENT.right}
+                      onChange={() => setNosize(!nosize)}
+                    >
+                      Hide my size and gender identity on my profile
+                    </Checkbox>
+                    <p className="small">
+                      Sizes and Gender are mostly for searching. Adding that
+                      info helps others, but don't feel like you need to
+                      broadcast it.
+                    </p>
+                  </div>
+                  <div className="col">
+                    <h2>Privacy & Sharing</h2>
+                    <Checkbox
+                      checked={hidecloset}
+                      checkmarkType={STYLE_TYPE.toggle_round}
+                      labelPlacement={LABEL_PLACEMENT.right}
+                      onChange={() => setHidecloset(!hidecloset)}
+                    >
+                      Hide my closet on my profile page
+                    </Checkbox>
+                    <p className="small">
+                      Just incase you don't want to share all your garms. You
+                      can always access it privately via the nav bar.
+                    </p>
+                  </div>
+                </div>
+              </Tab>
+
+              <Tab title="Instagram Sync">
+                <div className="grid">
+                  <div className="col">
+                    <h2>Sync with your Instagram Account</h2>
+                    <p>
+                      Only the images you select will be part of stupidfits,
+                    </p>
+                    {(insta && (
+                      <>
+                        <p>Synced with {insta.username}</p>
+                        <a className="auth" onClick={DisconnectInstagram}>
+                          <img
+                            alt="Disconnect your instagram"
+                            src={`/img/instagram-disconnect.png`}
+                          />
+                        </a>
+                      </>
+                    )) || (
+                      <a className="auth" onClick={AuthWithInstagram}>
+                        <img
+                          alt="Sync your instagram"
+                          src={`/img/instagram.png`}
+                        />
+                      </a>
+                    )}
+                  </div>
+                </div>
+              </Tab>
+              <Tab title="Experimental">
+                <div className="grid">
+                  <div className="col">
+                    <h1>
+                      The following features are coming, but don't work yet
+                    </h1>
+
+                    <hr />
+                    <h3>Import Closet CSV</h3>
+                    <p>
+                      This project started with my{" "}
+                      <a
+                        href="https://andrewlb.com/writing/intentional-wardrobe/"
+                        target="_blank"
+                      >
+                        More Intentional Wardrobe
+                      </a>{" "}
+                      prototype on Notion. Building this app, I wanted an easy
+                      way to import the work I'd already done. So, you can too.
+                    </p>
+                    <p>
+                      Basically, if you have a CSV file with the following
+                      columns:{" "}
+                      <p>
+                        brand (brand name, will be lowercased)
+                        <br />
+                        name (name of the piece) <br />
+                        type (BAG, SHOE, JACKET, PANT, SHIRT, LAYER, EXTRA)
+                        <br />
+                        year (A number) <br />
+                        size (a string) <br />
+                        sale (URL to grailed or whatever)
+                      </p>
+                      <FileUploader
+                        errorMessage={uploadError}
+                        onDrop={uploadCSV}
                       />
-                    </a>
-                  </>
-                )) || (
-                  <a className="auth" onClick={AuthWithInstagram}>
-                    <img alt="Sync your instagram" src={`/img/instagram.png`} />
-                  </a>
-                )}
-              </div>
-            </div>
-
-            {/* <Checkbox
-                checked={profilepage}
-                onChange={() => setProfilepage(!profilepage)}
-                checkmarkType={STYLE_TYPE.toggle_round}
-                labelPlacement={LABEL_PLACEMENT.right}
-              >
-                Try to blur out my face please!
-              </Checkbox>
-              <p>we'll try to automagically blur out your face.</p> */}
-
-            <hr style={{ marginTop: "100px" }} />
-            <hr />
-            <h1>The following features are coming, but don't work yet</h1>
-
-            <hr />
-            <h3>Import Closet CSV</h3>
-            <p>
-              This project started with my{" "}
-              <a
-                href="https://andrewlb.com/writing/intentional-wardrobe/"
-                target="_blank"
-              >
-                More Intentional Wardrobe
-              </a>{" "}
-              prototype on Notion. Building this app, I wanted an easy way to
-              import the work I'd already done. So, you can too.
-            </p>
-            <p>
-              Basically, if you have a CSV file with the following columns:{" "}
-              <p>
-                brand (brand name, will be lowercased)
-                <br />
-                name (name of the piece) <br />
-                type (BAG, SHOE, JACKET, PANT, SHIRT, LAYER, EXTRA)
-                <br />
-                year (A number) <br />
-                size (a string) <br />
-                sale (URL to grailed or whatever)
-              </p>
-              <FileUploader errorMessage={uploadError} onDrop={uploadCSV} />
-            </p>
+                    </p>
+                  </div>
+                </div>
+              </Tab>
+            </Tabs>
           </div>
           <style jsx>{`
             .page {
