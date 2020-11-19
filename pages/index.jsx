@@ -3,16 +3,18 @@ import React, { useState } from "react";
 import Layout from "../components/Layout";
 import fetch from "isomorphic-unfetch";
 import Post from "../components/Post";
-import FitBox from "../components/FitBox";
+import FitMini from "../components/FitMini";
+import ReviewBox from "../components/ReviewBox";
 import Link from "next/link";
 import { useSession, signin, signout } from "next-auth/client";
 import { extractHostname } from "../components/Clicker";
 import { Button } from "baseui/button";
+import { Tabs, Tab, FILL } from "baseui/tabs-motion";
 
 const Main = (props) => {
   const [session, loading] = useSession();
   const [instagram, setInstagram] = useState("");
-
+  const [activeKey, setActiveKey] = React.useState("0");
   // console.log("session", props.user);
   return (
     <>
@@ -97,17 +99,69 @@ const Main = (props) => {
             {(session && session.user && "Your recent fits") ||
               "Recent Featured Fits"}
           </h3>
-          <main>
-            {props.feed &&
-              Array.isArray(props.feed) &&
-              props.feed
-                .filter((f) =>
-                  session && session.user ? true : f.status === "FEATURED"
-                )
-                .sort((a, b) => {
-                  return b.media[0].timestamp - a.media[0].timestamp;
-                })
-                .map((fit) => <FitBox key={fit.id} {...fit} fit={fit.id} />)}
+          <main className="main">
+            <Tabs
+              activeKey={activeKey}
+              fill={FILL.fixed}
+              onChange={({ activeKey }) => {
+                setActiveKey(activeKey);
+              }}
+              activateOnFocus
+            >
+              {/* <Tab title="All">
+                <div className="main">
+                  {props.feed &&
+                    Array.isArray(props.feed) &&
+                    [...props.feed, ...props.review]
+                      .filter((f) =>
+                        session && session.user ? true : f.status === "FEATURED"
+                      )
+                      .sort((a, b) => {
+                        return a.createdAt - b.createdAt;
+                        // return b.media[0].timestamp - a.media[0].timestamp;
+                      })
+                      .map((fit) =>
+                        fit.title ? (
+                          <ReviewBox key={"r" + fit.id} {...fit} />
+                        ) : (
+                          <FitMini key={"f" + fit.id} {...fit} fit={fit.id} />
+                        )
+                      )}
+                </div>
+              </Tab> */}
+              <Tab title="Recent Fits">
+                <div className="main">
+                  {props.feed &&
+                    Array.isArray(props.feed) &&
+                    props.feed
+                      .filter((f) =>
+                        session && session.user ? true : f.status === "FEATURED"
+                      )
+                      .sort((a, b) => {
+                        return b.createdAt - a.createdAt;
+                        // return b.media[0].timestamp - a.media[0].timestamp;
+                      })
+                      .map((fit) => (
+                        <FitMini key={"f" + fit.id} {...fit} fit={fit.id} />
+                      ))}
+                </div>
+              </Tab>
+              <Tab title="Recent Reviews">
+                <div className="main">
+                  {props.feed &&
+                    Array.isArray(props.feed) &&
+                    props.review
+                      .filter((f) =>
+                        session && session.user ? true : f.status === "FEATURED"
+                      )
+                      .sort((a, b) => {
+                        return b.createdAt - a.createdAt;
+                        // return b.media[0].timestamp - a.media[0].timestamp;
+                      })
+                      .map((fit) => <ReviewBox key={"r" + fit.id} {...fit} />)}
+                </div>
+              </Tab>
+            </Tabs>
           </main>
           <footer>
             <ul>
@@ -147,6 +201,7 @@ const Main = (props) => {
           .main {
             display: flex;
             flex-wrap: wrap;
+            justify-content: center;
             align-items: center;
           }
 
@@ -240,8 +295,25 @@ export const getServerSideProps = async (context) => {
   } catch (e) {
     console.log("error:", e.message);
   }
+
+  const rev = await fetch(`${process.env.HOST}/api/review/`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      cookie: context.req.headers.cookie,
+    },
+  });
+  let revfeed = [];
+  try {
+    revfeed = await rev.json();
+  } catch (e) {
+    console.log("error:", e.message);
+  }
+
+  // console.log(revfeed);
+
   return {
-    props: { feed, user, url: process.env.HOST },
+    props: { feed, review: revfeed, user, url: process.env.HOST },
   };
 };
 
