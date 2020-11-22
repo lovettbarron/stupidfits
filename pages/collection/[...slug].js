@@ -40,6 +40,24 @@ const Collection = ({ collection }) => {
     }
   };
 
+  const createBattle = async () => {
+    const body = {
+      collection: collection.id,
+    };
+    const res = await fetch(`${process.env.HOST}/api/battle/create`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
+    let data;
+    try {
+      data = await res.json();
+      console.log("Create", data);
+    } catch (e) {
+      console.log("error:", e.message);
+    }
+  };
+
   const addFit = async (id, cb) => {
     console.log("Adding fit", id);
     try {
@@ -143,7 +161,8 @@ const Collection = ({ collection }) => {
             <Button onClick={() => setIsOpen(true)}>Add Fits</Button>{" "}
             {collection.user.id === session.user.id && (
               <Button onClick={() => setEditOpen(true)}>Edit Collection</Button>
-            )}
+            )}{" "}
+            <Button onClick={() => createBattle()}>Create Battle</Button>
           </p>
         )}
         <div className="flex">

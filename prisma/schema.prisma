@@ -78,6 +78,7 @@ model User {
   Notification Notification[]
   Battle       Battle[]
   BattleVote   BattleVote[]
+  BattleJudge  Battle[]       @relation(name: "battleJudges")
   @@map(name: "users")
 }
 
@@ -271,13 +272,15 @@ model Notification {
 }
 
 model Battle {
-  id        Int      @id @default(autoincrement())
-  startDate DateTime @default(now())
-  endDate   DateTime @default(now())
+  id        Int        @id @default(autoincrement())
+  startDate DateTime   @default(now())
+  endDate   DateTime   @default(now())
   rules     String
+  type      BattleType @default(value: POPULAR)
 
 
   user          User            @relation(fields: [userId], references: [id])
+  judges        User[]          @relation(name: "battleJudges")
   collection    Collection      @relation(fields: [collectionId], references: [id])
   tags          Style[]
   Comment       Comment[]
@@ -288,22 +291,14 @@ model Battle {
   collectionId  Int
 }
 
-model BattleRound {
-  id        Int             @id @default(autoincrement())
-  matchups  BattleMatchup[]
-  createdAt DateTime        @default(now()) @map(name: "created_at")
-  updatedAt DateTime        @default(now()) @map(name: "updated_at")
-
-}
-
 model BattleMatchup {
-  id            Int          @id @default(autoincrement())
-  battle        Battle       @relation(fields: [battleId], references: [id])
-  round         BattleRound  @relation(fields: [battleRoundId], references: [id])
-  Fits          Fit[]
-  votes         BattleVote[]
-  battleId      Int
-  battleRoundId Int
+  id       Int          @id @default(autoincrement())
+  battle   Battle       @relation(fields: [battleId], references: [id])
+  round    Int
+  Fits     Fit[]
+  votes    BattleVote[]
+  battleId Int
+
 }
 
 model BattleVote {
@@ -313,6 +308,7 @@ model BattleVote {
   fit       Fit           @relation(fields: [fitId], references: [id])
   createdAt DateTime      @default(now()) @map(name: "created_at")
   updatedAt DateTime      @default(now()) @map(name: "updated_at")
+  comment   String
 
   userId          Int
   battleMatchupId Int
@@ -405,4 +401,9 @@ enum Gender {
   QUEER
   INTER
   OTHER
+}
+
+enum BattleType {
+  POPULAR
+  PANEL
 }

@@ -23,6 +23,7 @@
     "@sentry/react": "^5.26.0",
     "@sentry/tracing": "^5.26.0",
     "baseui": "^9.102.0",
+    "brackets-manager": "^1.1.2",
     "cloudinary": "^1.23.0",
     "cloudinary-core": "^2.11.3",
     "cloudinary-react": "^1.6.7",
@@ -53,8 +54,10 @@
     "react-instagram-login": "^1.4.0",
     "react-markdown": "^4.3.1",
     "react-transition-group": "^4.4.1",
+    "round-robin-tournament": "^1.2.2",
     "styletron-engine-atomic": "^1.4.6",
     "styletron-react": "^5.2.7",
+    "tournament-generator": "^1.2.0",
     "use-cloudinary": "^3.1.6",
     "user-instagram": "^2.1.3"
   },
