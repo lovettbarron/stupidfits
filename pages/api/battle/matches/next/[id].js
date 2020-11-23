@@ -3,16 +3,16 @@ import { getSession, session } from "next-auth/client";
 
 const prisma = new PrismaClient();
 
-const calculateWinner = (matchid, matches) => {
+const calculateWinner = (matchid, matches, fix) => {
   const match = matches.find((m) => m.id === matchid);
 
   let results = [];
   for (let i in match.parents) {
-    if (match.fits.length > 0) {
+    if (match.Fits.length > 0) {
       console.log(
         "Already a matchup here",
         match.id,
-        match.fits.map((f) => f.id)
+        match.Fits.map((f) => f.id)
       );
       continue;
     }
@@ -21,6 +21,12 @@ const calculateWinner = (matchid, matches) => {
     const m = matches.find((f) => f.id === c.id);
 
     if (m.votes.length < 1) {
+      if (m.Fits.length < 1) {
+        console.log("Empty Parent at", m.id);
+        fix(m.id);
+        continue;
+      }
+
       const rand = m.Fits[Math.floor(Math.random() * m.Fits.length)];
       console.log("RANDOM WINNER!", rand.id);
       results.push(rand.id);
@@ -132,7 +138,21 @@ async function handlePOST(req, res) {
 
     const match = upcoming[i];
 
-    const winners = calculateWinner(match.id, matches);
+    const fixfunc = async (brokenid) => {
+      const fix = calculateWinner(brokenid, matches, fixfunc);
+      const updatematch = await prisma.battleMatchup.update({
+        where: {
+          id: brokenid,
+        },
+        data: {
+          Fits: {
+            connect: fix.map((w) => ({ id: w })),
+          },
+        },
+      });
+    };
+
+    const winners = calculateWinner(match.id, matches, fixfunc);
 
     console.log("Winner for", match.id, winners);
 

@@ -3,6 +3,7 @@ import fetch from "isomorphic-unfetch";
 import { useSession } from "next-auth/client";
 import BattleMatch from "./BattleMatch";
 import { Spinner } from "baseui/spinner";
+import { Button } from "baseui/button";
 
 const Battle = (props) => {
   const [session, loading] = useSession();
@@ -16,7 +17,7 @@ const Battle = (props) => {
 
   const nextRound = async () => {
     // setActiveRound(activeRound + 1);
-
+    setIsLoading(true);
     console.log("Next Round for", props.id);
     try {
       // const body = { fit: fitid };
@@ -30,10 +31,12 @@ const Battle = (props) => {
       );
       const data = await res.json();
       console.log("Voted!", data);
-      setActiveAround(data.activeRound);
+      setActiveRound(data.activeRound);
+      setIsLoading(false);
       // cb(true);
     } catch (error) {
       console.error(error);
+      setIsLoading(false);
       // cb(false);
     }
   };
@@ -77,7 +80,13 @@ const Battle = (props) => {
 
   return (
     <div className="container">
-      <button onClick={nextRound}>Next Round</button>
+      <Button
+        onClick={nextRound}
+        isLoading={isLoading}
+        disabled={activeRound === rounds - 1}
+      >
+        Next Round
+      </Button>
       <div className="bracket">
         {isLoading && (
           <Spinner size={96} overrides={{ Svg: { borderTopColor: "#fff" } }} />
@@ -94,6 +103,7 @@ const Battle = (props) => {
                     <BattleMatch
                       key={match.id}
                       round={r}
+                      totalRounds={rounds.length}
                       activeRound={activeRound}
                       {...match}
                       handler={props.handler}

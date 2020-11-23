@@ -9,6 +9,7 @@ const BattleMatch = ({
   id,
   round,
   activeRound,
+  totalRounds,
   Fits,
   votes,
   parents,
@@ -39,28 +40,29 @@ const BattleMatch = ({
 
   return (
     <div className="matchups">
-      {Fits.length < 1 && (
+      {Fits.length === 0 && (
         <>
           <div className="match">
-            <FitVote key={0} vote={false} empty={true} />
+            <FitVote key={0} votes={false} empty={true} />
           </div>
           <div className="match">
-            <FitVote key={0} vote={false} empty={true} />
+            <FitVote key={0} votes={false} empty={true} />
           </div>
         </>
       )}
-      {Fits.length === 1 && (
+      {Fits.length === 1 && activeRound < totalRounds - 1 && (
         <>
           <div className="match">
             <FitVote
-              key={fit[0].id}
-              vote={activeRound === round}
-              {...fit[0]}
-              fit={fit[0].id}
+              key={Fits[0].id}
+              active={activeRound === round}
+              votes={votes}
+              {...Fits[0]}
+              fit={Fits[0].id}
             />
           </div>
           <div className="match">
-            <FitVote key={0} vote={false} empty={true} />
+            <FitVote key={0} votes={false} empty={true} />
           </div>
         </>
       )}
