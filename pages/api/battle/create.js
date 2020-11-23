@@ -9,22 +9,35 @@ const prisma = new PrismaClient();
 // fits, array ids
 // prevMatch array ids
 // battle obj
-const newMatch = (round, fits, prevMatches, battle, tempid) => {
+const newMatch = (round, fits, prevMatches, battle, id) => {
   // BattleMatchup
 
+  console.log(id, round, prevMatches);
+
   return {
+    id: id,
+    Fits:
+      fits && Array.isArray(fits)
+        ? {
+            connect: fits.map((f) => ({
+              id: f,
+            })),
+          }
+        : undefined,
+    round: Number(round),
+    parents: Array.isArray(prevMatches)
+      ? {
+          connect: prevMatches.map((p) => ({
+            id: p,
+          })),
+        }
+      : undefined,
+    votes: undefined,
     battle: {
       connect: {
         id: battle.id,
       },
     },
-    fits: fits && Array.isArray(fits) && { connect: fits.map((f) => f.id) },
-    round: Number(round),
-    parents: {
-      set: prevMatches,
-    },
-    votes: null,
-    _tempid: tempid,
   };
 };
 
@@ -40,18 +53,15 @@ const setParentMatches = (step, matches) => {
       return m.round === step - 1;
     })
     .filter((m) => {
-      return (
-        (current.length > 1 && current.find((t) => t._tempid !== m._tempid)) ||
-        true
-      );
+      return (current.length > 1 && current.find((t) => t.id !== m.id)) || true;
     });
 
   console.log("Parent", step, prev);
 
   // Grab two matches from the previous unmatched
-  if (prev.length > 1) return prev.slice(0, 2).map((p) => p._tempid);
+  if (prev.length > 1) return prev.slice(0, 2).map((p) => p.id);
   // Grab just the one
-  else if (prev.length === 1) return prev.slice(0, 1).map((p) => p._tempid);
+  else if (prev.length === 1) return prev.slice(0, 1).map((p) => p.id);
   // Return null if there isn't anything
   else return [];
 };
@@ -89,23 +99,27 @@ export default async function handle(req, res) {
     },
   });
 
-  const battle = { id: 1 };
-  // await prisma.battle.create({
-  //   startDate: "TODO",
-  //   endDate: "TODO",
-  //   rules: "",
-  //   type: BattleType.POPULAR,
-  //   user: {
-  //     connect: { id: user.id },
-  //   },
-  //   judges: null,
-  //   collection: {
-  //     connect: {
-  //       id: collection.id,
-  //     },
-  //   },
-  //   tags: null,
-  // });
+  const battle = await prisma.battle.create({
+    data: {
+      startDate: new Date(Date.now()),
+      endDate: new Date(
+        Date.now() + 1000 /*sec*/ * 60 /*min*/ * 60 /*hour*/ * 24 /*day*/ * 10
+      ),
+      rules: "",
+      type: BattleType.POPULAR,
+      user: {
+        connect: { id: user.id },
+      },
+      // judges: null,
+      collection: {
+        connect: {
+          id: collection.id,
+        },
+      },
+      // BattleMatchup: matches,
+      // tags: null,
+    },
+  });
 
   // Calculate Matches w/ library
   const { data: games } = generator(
@@ -144,11 +158,10 @@ export default async function handle(req, res) {
           matches.push(
             newMatch(
               step,
-              [
-                g.awayTeam !== "TO_BE_DEFINED" && g.awayTeam.id,
-                g.homeTeam !== "TO_BE_DEFINED" && g.homeTeam.id,
-              ],
-              [g.customData.awayTeam.id, g.customData.homeTeam.id],
+              g.awayTeam !== "TO_BE_DEFINED"
+                ? [g.awayTeam.id, g.homeTeam.id]
+                : null,
+              [g.customData.awayTeam, g.customData.homeTeam],
               battle,
               g.id
             )
@@ -174,7 +187,7 @@ export default async function handle(req, res) {
           matches.push(
             newMatch(
               step,
-              [],
+              null,
               setParentMatches(step, matches),
               battle,
               (0, _uuid.v4)()
@@ -185,10 +198,17 @@ export default async function handle(req, res) {
     }
   }
   // Set Match objects
-
   console.log("All Calculated Matches", JSON.stringify(matches));
 
   // Save Battle
+  for (let i in matches) {
+    const m = matches[i];
 
-  res.json([]);
+    const mat = await prisma.battleMatchup.create({
+      data: m,
+    });
+    console.log("Saved Match", mat);
+  }
+
+  res.json(battle);
 }

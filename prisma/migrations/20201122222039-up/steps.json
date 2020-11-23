@@ -1,0 +1,267 @@
+{
+  "version": "0.3.14-fixed",
+  "steps": [
+    {
+      "tag": "CreateEnum",
+      "enum": "BattleType",
+      "values": [
+        "POPULAR",
+        "PANEL"
+      ]
+    },
+    {
+      "tag": "DeleteModel",
+      "model": "BattleRound"
+    },
+    {
+      "tag": "CreateField",
+      "model": "User",
+      "field": "BattleJudge",
+      "type": "Battle",
+      "arity": "List"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "User",
+          "field": "BattleJudge"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "User",
+          "field": "BattleJudge"
+        },
+        "directive": "relation"
+      },
+      "argument": "name",
+      "value": "\"battleJudges\""
+    },
+    {
+      "tag": "CreateField",
+      "model": "Battle",
+      "field": "type",
+      "type": "BattleType",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Battle",
+          "field": "type"
+        },
+        "directive": "default"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Battle",
+          "field": "type"
+        },
+        "directive": "default"
+      },
+      "argument": "value",
+      "value": "POPULAR"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Battle",
+      "field": "judges",
+      "type": "User",
+      "arity": "List"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Battle",
+          "field": "judges"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Battle",
+          "field": "judges"
+        },
+        "directive": "relation"
+      },
+      "argument": "name",
+      "value": "\"battleJudges\""
+    },
+    {
+      "tag": "CreateField",
+      "model": "BattleMatchup",
+      "field": "parents",
+      "type": "BattleMatchup",
+      "arity": "List"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "BattleMatchup",
+          "field": "parents"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "BattleMatchup",
+          "field": "parents"
+        },
+        "directive": "relation"
+      },
+      "argument": "",
+      "value": "\"BattleMatchupToBattleMatchup\""
+    },
+    {
+      "tag": "CreateField",
+      "model": "BattleMatchup",
+      "field": "BattleMatchup",
+      "type": "BattleMatchup",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "BattleMatchup",
+          "field": "BattleMatchup"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "BattleMatchup",
+          "field": "BattleMatchup"
+        },
+        "directive": "relation"
+      },
+      "argument": "",
+      "value": "\"BattleMatchupToBattleMatchup\""
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "BattleMatchup",
+          "field": "BattleMatchup"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[battleMatchupId]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "BattleMatchup",
+          "field": "BattleMatchup"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[id]"
+    },
+    {
+      "tag": "CreateField",
+      "model": "BattleMatchup",
+      "field": "battleMatchupId",
+      "type": "String",
+      "arity": "Optional"
+    },
+    {
+      "tag": "DeleteField",
+      "model": "BattleMatchup",
+      "field": "battleRoundId"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "BattleMatchup",
+      "field": "id",
+      "type": "String"
+    },
+    {
+      "tag": "UpdateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "BattleMatchup",
+          "field": "id"
+        },
+        "directive": "default"
+      },
+      "argument": "",
+      "newValue": "uuid()"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "BattleMatchup",
+      "field": "round",
+      "type": "Int"
+    },
+    {
+      "tag": "DeleteDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "BattleMatchup",
+          "field": "round"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateField",
+      "model": "BattleVote",
+      "field": "comment",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "BattleVote",
+      "field": "battleMatchupId",
+      "type": "String"
+    }
+  ]
+}

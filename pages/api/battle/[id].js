@@ -1,52 +1,110 @@
 import { PrismaClient } from "@prisma/client";
-import { getSession } from "next-auth/client";
+import { getSession, session } from "next-auth/client";
 
 const prisma = new PrismaClient();
 
-// POST /api/brand
-// Required fields in body: title, authorEmail
-// Optional fields in body: content
 export default async function handle(req, res) {
   if (req.method === "GET") {
-    const session = await getSession({ req });
-
-    const review = await prisma.collection
-      .findMany({
-        where: {
-          OR: [
-            {
-              published: true,
-            },
-            {
-              user: {
-                id: session ? session.user.id : -1,
-              },
-            },
-          ],
-        },
-        include: {
-          user: true,
-          fits: {
-            include: {
-              media: true,
-            },
-          },
-          tags: true,
-          Comment: {
-            include: {
-              user: true,
-            },
-          },
-        },
-      })
-      .finally(async () => {
-        await prisma.$disconnect();
-      });
-
-    res.json(review);
+    handleGET(req, res);
+  } else if (req.method === "POST") {
+    handlePOST(req, res);
+  } else if (req.method === "DELETE") {
+    handleDELETE(req, res);
   } else {
     throw new Error(
       `The HTTP ${req.method} method is not supported at this route.`
     );
   }
+}
+
+// GET /api/get/:id
+async function handleGET(req, res) {
+  const id = req.query.id;
+  // console.log(req.query);
+
+  const review = await prisma.battle
+    .findOne({
+      where: { id: Number(id) },
+      include: {
+        user: true,
+        collection: {
+          include: {
+            fits: {
+              include: {
+                media: true,
+              },
+            },
+          },
+        },
+        BattleMatchup: {
+          include: {
+            parents: true,
+            Fits: {
+              include: {
+                media: true,
+                user: true,
+              },
+            },
+          },
+        },
+        tags: true,
+      },
+    })
+    .finally(async () => {
+      await prisma.$disconnect();
+    });
+
+  res.json(review);
+}
+
+// POST /api/post/:id
+async function handlePOST(req, res) {
+  const session = await getSession({ req });
+  console.log("Update Fit", session.user.email, req.body);
+
+  const user = await prisma.user.findOne({
+    where: {
+      email: session.user.email,
+    },
+    include: {
+      Collection: true,
+    },
+  });
+
+  if (!user.Collection.find((c) => Number(c.id) === Number(req.query.id))) {
+    console.log("This doesn't belong to you");
+    return;
+  }
+  const collection = await prisma.collection
+    .update({
+      where: {
+        id: Number(req.query.id),
+      },
+      data: {
+        published: req.body.published,
+        title: req.body.title,
+        description: req.body.description,
+        slug: req.body.slug
+          .toLowerCase()
+          .split(" ")
+          .join("-")
+          .replace(/[^\w\s-_]/gi, ""),
+        tags: {
+          set: req.body.tags.map((i) => ({ id: i.id })),
+        },
+      },
+    })
+    .finally(async () => {
+      await prisma.$disconnect();
+    });
+  res.json(collection);
+}
+
+// DELETE /api/post/:id
+async function handleDELETE(req, res) {
+  const id = req.query.id;
+  const post = await prisma.collection.delete({
+    where: { id: Number(id) },
+  });
+  res.json(post);
 }
