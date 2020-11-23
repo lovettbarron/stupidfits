@@ -53,10 +53,27 @@ const setParentMatches = (step, matches) => {
       return m.round === step - 1;
     })
     .filter((m) => {
-      return (current.length > 1 && current.find((t) => t.id !== m.id)) || true;
+      // const checkCurrent = m.parents
+      //   ? !m.parents.connect.some((p) =>
+      //       current.some((c) => {
+      //         return c.parents && c.parents.connect.some((r) => r.id === p.id);
+      //       })
+      //     )
+      //   : true;
+
+      const checkCurrent = !current.find(
+        (c) => c.parents && c.parents.connect.some((t) => t.id === m.id)
+      );
+      console.log(step, m.id, checkCurrent);
+
+      return checkCurrent;
     });
 
-  console.log("Parent", step, prev);
+  // .filter((m) => {
+  //   return (current.length > 0 && current.find((t) => t.id !== m.id)) || true;
+  // });
+
+  // console.log("Parent", step, current, prev);
 
   // Grab two matches from the previous unmatched
   if (prev.length > 1) return prev.slice(0, 2).map((p) => p.id);
@@ -186,13 +203,7 @@ export default async function handle(req, res) {
           continue;
         } else {
           matches.push(
-            newMatch(
-              step,
-              null,
-              setParentMatches(step, matches),
-              battle,
-              (0, _uuid.v4)()
-            )
+            newMatch(step, null, parentMatches, battle, (0, _uuid.v4)())
           );
         }
       }

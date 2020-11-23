@@ -83,7 +83,7 @@ const Battle = (props) => {
       <Button
         onClick={nextRound}
         isLoading={isLoading}
-        disabled={activeRound === rounds - 1}
+        disabled={activeRound === rounds}
       >
         Next Round
       </Button>
@@ -111,6 +111,25 @@ const Battle = (props) => {
                   ))}
             </section>
           ))}
+        <section className={`round ${activeRound === rounds && `active`}`}>
+          <h3>Winner!</h3>
+          {activeRound === rounds && <h4>Tournament Closed</h4>}
+
+          {matches &&
+            matches
+              .filter((m) => m.round === rounds)
+              .map((match) => (
+                <BattleMatch
+                  key={match.id}
+                  round={rounds}
+                  winner={activeRound === rounds}
+                  totalRounds={rounds.length}
+                  activeRound={activeRound}
+                  {...match}
+                  handler={props.handler}
+                />
+              ))}
+        </section>
       </div>
       <style jsx>{`
         .container {
