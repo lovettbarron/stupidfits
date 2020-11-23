@@ -4,28 +4,51 @@ import { useSession } from "next-auth/client";
 import BattleMatch from "./BattleMatch";
 import { Spinner } from "baseui/spinner";
 
-const Battle = ({ id, handler }) => {
+const Battle = (props) => {
   const [session, loading] = useSession();
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [matches, setMatches] = useState([]);
   const [rounds, setRounds] = useState(0);
-  const [activeRound, setActiveRound] = useState(1);
+  const [activeRound, setActiveRound] = useState(props.activeRound || 0);
 
   const ref = useRef();
 
   const nextRound = async () => {
-    setActiveRound(activeRound + 1);
+    // setActiveRound(activeRound + 1);
+
+    console.log("Next Round for", props.id);
+    try {
+      // const body = { fit: fitid };
+      const res = await fetch(
+        `${process.env.HOST}/api/battle/matches/next/${props.id}`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          // body: JSON.stringify(body),
+        }
+      );
+      const data = await res.json();
+      console.log("Voted!", data);
+      setActiveAround(data.activeRound);
+      // cb(true);
+    } catch (error) {
+      console.error(error);
+      // cb(false);
+    }
   };
 
   const fetchMatches = async (first) => {
     setIsLoading(true);
-    const b = await fetch(`${process.env.HOST}/api/battle/matches/${id}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    const b = await fetch(
+      `${process.env.HOST}/api/battle/matches/${props.id}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
     let it;
     if (first) {
       it = await b.json();
@@ -61,19 +84,19 @@ const Battle = ({ id, handler }) => {
         )}
         {rounds > 0 &&
           Array.from(Array(rounds).keys()).map((r) => (
-            <section className={`round ${activeRound === r + 1 && `active`}`}>
+            <section className={`round ${activeRound === r && `active`}`}>
               <h3>Round {r + 1}</h3>
-              {activeRound === r + 1 && <h4>Currently Voting!</h4>}
+              {activeRound === r && <h4>Currently Voting!</h4>}
               {matches &&
                 matches
                   .filter((m) => m.round === r + 1)
                   .map((match) => (
                     <BattleMatch
                       key={match.id}
-                      round={r + 1}
+                      round={r}
                       activeRound={activeRound}
                       {...match}
-                      handler={handler}
+                      handler={props.handler}
                     />
                   ))}
             </section>

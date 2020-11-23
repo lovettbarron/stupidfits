@@ -106,6 +106,7 @@ export default async function handle(req, res) {
         Date.now() + 1000 /*sec*/ * 60 /*min*/ * 60 /*hour*/ * 24 /*day*/ * 10
       ),
       rules: "",
+      activeRound: 0,
       type: BattleType.POPULAR,
       user: {
         connect: { id: user.id },
