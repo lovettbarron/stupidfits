@@ -4,219 +4,93 @@ import { useSession } from "next-auth/client";
 import BattleMatch from "./BattleMatch";
 import { Spinner } from "baseui/spinner";
 
-const Battle = ({ matches, handler }) => {
+const Battle = ({ id, handler }) => {
   const [session, loading] = useSession();
   const [isOpen, setIsOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [matches, setMatches] = useState([]);
+  const [rounds, setRounds] = useState(0);
+  const [activeRound, setActiveRound] = useState(0);
 
   const ref = useRef();
 
+  const fetchMatches = async (first) => {
+    setIsLoading(true);
+    const b = await fetch(`${process.env.HOST}/api/battle/matches/${id}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    let it;
+    if (first) {
+      it = await b.json();
+      setMatches(it);
+      setRounds(Math.ceil(Math.log2(it.length)));
+      setIsLoading(false);
+    }
+    try {
+      it = await b.json();
+      setMatches(it);
+      setRounds(Math.ceil(Math.log2(it.length)));
+      setIsLoading(false);
+    } catch (e) {
+      console.log("error:", e.message);
+    }
+  };
+
   useEffect(() => {
+    if (matches.length < 1) fetchMatches(true);
     return () => {};
-  }, [session]);
+  }, [matches]);
 
   // Based on this
   // https://codepen.io/b3b00/pen/YoZYmv
-  console.log(
-    matches &&
-      matches.reduce((a, c) => {
-        return c.round > a ? c.round : a;
-      })
-  );
 
   return (
     <div className="container">
       <div className="bracket">
-        <section className="round quarterfinals">
-          {}
-          <div className="winners">
-            <div className="matchups"></div>
-            <div className="connector">
-              <div className="merger" />
-              <div className="line" />
-            </div>
-          </div>
-        </section>
-        {matches.map((match) => (
-          <BattleMatch key={match.id} {...match} handler={handler} />
-        ))}
+        {isLoading && (
+          <Spinner size={96} overrides={{ Svg: { borderTopColor: "#fff" } }} />
+        )}
+        {rounds > 0 &&
+          Array.from(Array(rounds).keys()).map((r) => (
+            <section className="round quarterfinals">
+              <div className="winners">
+                {matches &&
+                  matches
+                    .filter((m) => m.round === r + 1)
+                    .map((match) => (
+                      <BattleMatch
+                        key={match.id}
+                        activeRound={activeRound}
+                        {...match}
+                        handler={handler}
+                      />
+                    ))}
+              </div>
+            </section>
+          ))}
       </div>
       <style jsx>{`
         .container {
-          position: relative;
-          width: 100vw;
-          height: 60vh;
         }
 
         .bracket {
-          display: inline-block;
-          position: absolute;
-          left: 50%;
-          top: 50%;
-          transform: translate(-50%, -50%);
-          white-space: nowrap;
-          font-size: 0;
-        }
-
-        .bracket .round {
-          display: inline-block;
-          vertical-align: middle;
-        }
-
-        .bracket .round .winners > div {
-          display: inline-block;
-          vertical-align: middle;
-        }
-
-        .bracket .round .winners > div.matchups .matchup:last-child {
-          margin-bottom: 0 !important;
-        }
-
-        .bracket .round .winners > div.matchups .matchup .participants {
-          border-radius: 0.25rem;
-          overflow: hidden;
-        }
-
-        .bracket
-          .round
-          .winners
-          > div.matchups
-          .matchup
-          .participants
-          .participant {
-          box-sizing: border-box;
-          color: #858585;
-          border-left: 0.25rem solid #858585;
-          background: white;
-          width: 14rem;
-          height: 3rem;
-          box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.12);
-        }
-
-        .bracket
-          .round
-          .winners
-          > div.matchups
-          .matchup
-          .participants
-          .participant.winner {
-          color: #60c645;
-          border-color: #60c645;
-        }
-
-        .bracket
-          .round
-          .winners
-          > div.matchups
-          .matchup
-          .participants
-          .participant.loser {
-          color: #dc563f;
-          border-color: #dc563f;
-        }
-
-        .bracket
-          .round
-          .winners
-          > div.matchups
-          .matchup
-          .participants
-          .participant:not(:last-child) {
-          border-bottom: thin solid #f0f2f2;
-        }
-
-        .bracket
-          .round
-          .winners
-          > div.matchups
-          .matchup
-          .participants
-          .participant
-          span {
-          margin: 0 1.25rem;
-          line-height: 3;
-          font-size: 1rem;
-          font-family: "Roboto Slab";
-        }
-
-        .bracket .round .winners > div.connector.filled .line,
-        .bracket .round .winners > div.connector.filled.bottom .merger:after,
-        .bracket .round .winners > div.connector.filled.top .merger:before {
-          border-color: #60c645;
-        }
-
-        .bracket .round .winners > div.connector .line,
-        .bracket .round .winners > div.connector .merger {
-          box-sizing: border-box;
-          width: 2rem;
-          display: inline-block;
-          vertical-align: top;
-        }
-
-        .bracket .round .winners > div.connector .line {
-          border-bottom: thin solid #c0c0c8;
-          height: 4rem;
-        }
-
-        .bracket .round .winners > div.connector .merger {
-          position: relative;
-          height: 8rem;
-        }
-
-        .bracket .round .winners > div.connector .merger:before,
-        .bracket .round .winners > div.connector .merger:after {
-          content: "";
-          display: block;
-          box-sizing: border-box;
+          display: flex;
+          flex-direction: row;
+          height: 90%;
           width: 100%;
-          height: 50%;
-          border: 0 solid;
-          border-color: #c0c0c8;
         }
 
-        .bracket .round .winners > div.connector .merger:before {
-          border-right-width: thin;
-          border-top-width: thin;
-        }
-
-        .bracket .round .winners > div.connector .merger:after {
-          border-right-width: thin;
-          border-bottom-width: thin;
-        }
-
-        .bracket .round.quarterfinals .winners:not(:last-child) {
-          margin-bottom: 2rem;
-        }
-
-        .bracket
-          .round.quarterfinals
-          .winners
-          .matchups
-          .matchup:not(:last-child) {
-          margin-bottom: 2rem;
-        }
-
-        .bracket
-          .round.semifinals
-          .winners
-          .matchups
-          .matchup:not(:last-child) {
-          margin-bottom: 10rem;
-        }
-
-        .bracket .round.semifinals .winners .connector .merger {
-          height: 16rem;
-        }
-
-        .bracket .round.semifinals .winners .connector .line {
-          height: 8rem;
-        }
-
-        .bracket .round.finals .winners .connector .merger {
-          height: 3rem;
-        }
-
-        .bracket .round.finals .winners .connector .line {
-          height: 1.5rem;
+        .round {
+          display: flex;
+          flex-direction: column;
+          justify-content: space-around;
+          height: 100%;
+          width: 100%;
+          flex-grow: 1;
+          transition: all ease 0.5s;
         }
       `}</style>
     </div>

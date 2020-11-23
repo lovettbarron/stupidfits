@@ -20,30 +20,50 @@ export default async function handle(req, res) {
 // GET /api/get/:id
 async function handleGET(req, res) {
   const id = req.query.id;
-  // console.log(req.query);
+  console.log(req.query);
 
-  const review = await prisma.battle
-    .findOne({
-      where: { id: Number(id) },
+  const matches = await prisma.battleMatchup
+    .findMany({
+      where: { battle: { id: Number(id) } },
       include: {
-        user: true,
-        collection: {
+        Fits: {
           include: {
-            fits: {
+            media: {
               include: {
-                media: true,
+                layers: {
+                  include: {
+                    item: {
+                      include: { brand: true },
+                    },
+                    media: true,
+                  },
+                },
+              },
+            },
+            user: true,
+            components: {
+              include: {
+                brand: true,
               },
             },
           },
         },
-        tags: true,
+        parents: true,
+        votes: {
+          include: {
+            fit: true,
+            user: true,
+          },
+        },
       },
     })
     .finally(async () => {
       await prisma.$disconnect();
     });
 
-  res.json(review);
+  // console.log("Found matches", matches);
+
+  res.json(matches);
 }
 
 // POST /api/post/:id

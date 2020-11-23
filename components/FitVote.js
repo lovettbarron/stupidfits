@@ -8,8 +8,20 @@ import { Button, KIND, SIZE } from "baseui/button";
 import TriangleRight from "baseui/icon/triangle-right";
 import { Skeleton } from "baseui/skeleton";
 import { Cap } from "./Anatomy";
+import Show from "baseui/icon/show";
+import FitBox from "./FitBox";
 
-const FitMini = (props) => {
+import {
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  ModalButton,
+  SIZE as MODALSIZE,
+  ROLE,
+} from "baseui/modal";
+
+const FitVote = (props) => {
   const router = useRouter();
   const [session, loading] = useSession();
   const [fit, setFit] = useState(props.fit || false);
@@ -25,6 +37,17 @@ const FitMini = (props) => {
   return (
     <div>
       <div className={`fitbox ${selected && "selected"}`}>
+        {!props.empty && (
+          <div className="open" onClick={() => setIsOpen(!isOpen)}>
+            {/* <Button
+              onClick={() => setIsOpen(!isOpen)}
+              kind={KIND.minimal}
+              size={SIZE.mini}
+            > */}
+            <Show size={36} />
+            {/* </Button> */}
+          </div>
+        )}
         <div className="mediawrap">
           {props.empty ? (
             <Skeleton height="300px" width="200px" />
@@ -41,7 +64,7 @@ const FitMini = (props) => {
             />
           )}
         </div>
-        {props.id && !props.empty && (
+        {props.id && !props.empty && props.vote && (
           <div className="control">
             <div className="header">
               <Button
@@ -57,12 +80,29 @@ const FitMini = (props) => {
                   });
                 }}
               >
-                {selected ? "Added" : "Add Fit"}
+                {selected ? "Voted!" : "Vote"}
               </Button>
             </div>
           </div>
         )}
       </div>
+
+      <Modal
+        onClose={() => {
+          setIsOpen(false);
+        }}
+        closeable
+        autoFocus
+        focusLock
+        isOpen={isOpen}
+        animate
+        unstable_ModalBackdropScroll
+        size={MODALSIZE.auto}
+        role={ROLE.dialog}
+      >
+        {/* <ModalHeader>Create New Collection</ModalHeader> */}
+        <ModalBody>{isOpen && <FitBox {...props} fit={props.id} />}</ModalBody>
+      </Modal>
 
       <style jsx>{`
         .fitbox {
@@ -83,6 +123,29 @@ const FitMini = (props) => {
 
         .fitbox.selected {
           opacity: 0.2;
+        }
+
+        .open {
+          opacity: 0;
+          width: 100%;
+          height: 100%;
+          cursor: pointer;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          z-index: 5;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          position: absolute;
+          background: #151515;
+          background-opacity: 0.8;
+          transition: opacity 0.4s;
+        }
+
+        .fitbox:hover .open {
+          opacity: 1;
         }
 
         .control {
@@ -218,4 +281,4 @@ const FitMini = (props) => {
   );
 };
 
-export default FitMini;
+export default FitVote;

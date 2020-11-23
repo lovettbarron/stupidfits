@@ -1,71 +1,78 @@
 import React, { useEffect, useState } from "react";
 import fetch from "isomorphic-unfetch";
 import { useSession } from "next-auth/client";
-import FitThumb from "./FitThumb";
+import FitVote from "./FitVote";
 import { Spinner } from "baseui/spinner";
+import { Skeleton } from "baseui/skeleton";
 
-const BattleMatch = ({ id, round, Fits, parentshandler }) => {
-  const router = useRouter();
+const BattleMatch = ({ id, round, activeRound, Fits, parents, handler }) => {
   const [session, loading] = useSession();
-
   const [isOpen, setIsOpen] = useState(false);
 
-  const ref = useRef();
-
-  useEffect(() => {
-    if (type) {
-      setIsOpen(true);
-      handler(false);
-    }
-    return () => {};
-  }, [media, type, session]);
-
   return (
-    <div className="modal">
+    <div className="matchups">
+      {Fits.length < 1 && (
+        <>
+          <div className="match">
+            <FitVote key={0} vote={false} empty={true} />
+          </div>
+          <div className="match">
+            <FitVote key={0} vote={false} empty={true} />
+          </div>
+        </>
+      )}
+      {Fits.length === 1 && (
+        <>
+          <div className="match">
+            <FitVote
+              key={fit[0].id}
+              vote={activeRound === round}
+              {...fit[0]}
+              fit={fit[0].id}
+            />
+          </div>
+          <div className="match">
+            <FitVote key={0} vote={false} empty={true} />
+          </div>
+        </>
+      )}
       {Fits.map((fit) => (
-        <FitThumb
-          key={fit.id}
-          {...fit}
-          fit={fit.id}
-          selected={selected.find((s) => s === fit.id) ? true : false}
-          handler={handler}
-        />
+        <div className="match">
+          <FitVote
+            key={fit.id}
+            {...fit}
+            vote={activeRound === round}
+            fit={fit.id}
+            // selected={selected.find((s) => s === fit.id) ? true : false}
+            // handler={handler}
+          />
+        </div>
       ))}
+
+      <div className="connector">
+        <div className="merger" />
+        <div className="line" />
+      </div>
       <style jsx>{`
-        .page {
-          padding: 0;
-          display: flex;
-          flex-wrap: wrap;
-          justify-content: center;
-          align-items: center;
-        }
-
-        .save {
+        .matchups {
           width: 100%;
-        }
-
-        canvas {
+          margin: auto;
+          max-height: 300px;
           overflow: hidden;
-          border: 1px solid #ffffff;
+          height: 100%;
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
         }
 
-        input[type="text"],
-        textarea {
+        .match {
+          height: 45%;
           width: 100%;
-          padding: 0.5rem;
-          margin: 0.5rem 0;
-          border-radius: 0.25rem;
-          border: 0.125rem solid rgba(0, 0, 0, 0.2);
-        }
-
-        input[type="submit"] {
-          background: #ececec;
-          border: 0;
-          padding: 1rem 2rem;
-        }
-
-        .back {
-          margin-left: 1rem;
+          background-color: #f5f5f5;
+          box-shadow: rgba(0, 0, 0, 0.3) 0 1px 3px;
+          display: flex;
+          flex-direction: row;
+          transition: all ease 0.5s;
         }
       `}</style>
     </div>

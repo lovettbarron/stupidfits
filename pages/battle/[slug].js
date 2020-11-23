@@ -111,7 +111,7 @@ const Collection = ({ battle }) => {
           </p>
         )} */}
         <div className="flex">
-          <Battle matches={battle.BattleMatchup} />
+          <Battle {...battle} />
         </div>
         {/* <Modal
           onClose={() => {
@@ -211,7 +211,7 @@ export const getServerSideProps = async (context) => {
   //   return {};
   // }
 
-  // console.log("data", data);
+  console.log("data", data);
 
   return {
     props: {
