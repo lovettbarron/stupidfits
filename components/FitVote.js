@@ -27,16 +27,38 @@ const FitVote = (props) => {
   const [fit, setFit] = useState(props.fit || false);
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [selected, setSelected] = useState(props.selected || false);
+  const [selected, setSelected] = useState(props.selected);
+  const [disabled, setDisabled] = useState(false);
 
   useEffect(() => {
-    // component is used for both displaying instagram images that aren't yet in the db, and fits that are currently in the db. It probably shouldn't, but this just prevent weird api request
+    // My votes for this match
+    if (session) {
+      // Count votes for your session
+      // if active session
+      const myvotes =
+        (props.votes &&
+          props.votes.filter((v) => v.user.id === session.user.id)) ||
+        [];
+
+      // Did I vote for this fit?
+      const vo = (myvotes && myvotes.find((v) => v.fit.id === props.fit)) || [];
+
+      setDisabled((myvotes.length > 0 && vo.length === 0) || false);
+      // setSelected((myvotes.length > 0 && vo.length === 1) || false);
+    } else {
+      // Incase of no session
+      // Count votes from prev only
+    }
     return () => {};
-  }, []);
+  }, [session]);
 
   return (
     <div>
-      <div className={`fitbox ${selected && "selected"}`}>
+      <div
+        className={`fitbox ${selected && "selected"} ${
+          disabled && "notselected"
+        }`}
+      >
         {!props.empty && (
           <div className="open" onClick={() => setIsOpen(!isOpen)}>
             {/* <Button
@@ -64,7 +86,7 @@ const FitVote = (props) => {
             />
           )}
         </div>
-        {props.id && !props.empty && props.vote && (
+        {props.id && !props.empty && props.active && (
           <div className="control">
             <div className="header">
               <Button
@@ -72,7 +94,7 @@ const FitVote = (props) => {
                 disabled={selected}
                 onClick={() => {
                   setIsLoading(true);
-                  props.handler(props.id, (added) => {
+                  props.handler(props.fit, (added) => {
                     added ? setSelected(true) : setSelected(false);
                     setIsLoading(false);
                   });
@@ -120,6 +142,10 @@ const FitVote = (props) => {
         }
 
         .fitbox.selected {
+          opacity: 0.8;
+        }
+
+        .fitbox.notselected {
           opacity: 0.2;
         }
 

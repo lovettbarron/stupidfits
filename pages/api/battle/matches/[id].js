@@ -69,44 +69,41 @@ async function handleGET(req, res) {
 // POST /api/post/:id
 async function handlePOST(req, res) {
   const session = await getSession({ req });
-  console.log("Update Fit", session.user.email, req.body);
+
+  const id = req.query.id;
+  console.log(req.query);
 
   const user = await prisma.user.findOne({
     where: {
       email: session.user.email,
     },
-    include: {
-      Collection: true,
-    },
   });
 
-  if (!user.Collection.find((c) => Number(c.id) === Number(req.query.id))) {
-    console.log("This doesn't belong to you");
-    return;
-  }
-  const collection = await prisma.collection
-    .update({
-      where: {
-        id: Number(req.query.id),
-      },
+  const vote = await prisma.battleVote
+    .create({
       data: {
-        published: req.body.published,
-        title: req.body.title,
-        description: req.body.description,
-        slug: req.body.slug
-          .toLowerCase()
-          .split(" ")
-          .join("-")
-          .replace(/[^\w\s-_]/gi, ""),
-        tags: {
-          set: req.body.tags.map((i) => ({ id: i.id })),
+        user: {
+          connect: {
+            id: user.id,
+          },
         },
+        matchup: {
+          connect: {
+            id: id,
+          },
+        },
+        fit: {
+          connect: {
+            id: Number(req.body.fit),
+          },
+        },
+        comment: "",
       },
     })
     .finally(async () => {
       await prisma.$disconnect();
     });
-  res.json(collection);
+  res.json(vote);
 }
 
 // DELETE /api/post/:id
