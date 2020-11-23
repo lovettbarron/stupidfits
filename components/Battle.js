@@ -10,7 +10,7 @@ const Battle = ({ id, handler }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [matches, setMatches] = useState([]);
   const [rounds, setRounds] = useState(0);
-  const [activeRound, setActiveRound] = useState(0);
+  const [activeRound, setActiveRound] = useState(1);
 
   const ref = useRef();
 
@@ -55,20 +55,20 @@ const Battle = ({ id, handler }) => {
         )}
         {rounds > 0 &&
           Array.from(Array(rounds).keys()).map((r) => (
-            <section className="round quarterfinals">
-              <div className="winners">
-                {matches &&
-                  matches
-                    .filter((m) => m.round === r + 1)
-                    .map((match) => (
-                      <BattleMatch
-                        key={match.id}
-                        activeRound={activeRound}
-                        {...match}
-                        handler={handler}
-                      />
-                    ))}
-              </div>
+            <section className="round">
+              <h3>Round {r + 1}</h3>
+              {matches &&
+                matches
+                  .filter((m) => m.round === r + 1)
+                  .map((match) => (
+                    <BattleMatch
+                      key={match.id}
+                      round={r + 1}
+                      activeRound={activeRound}
+                      {...match}
+                      handler={handler}
+                    />
+                  ))}
             </section>
           ))}
       </div>
@@ -91,6 +91,17 @@ const Battle = ({ id, handler }) => {
           width: 100%;
           flex-grow: 1;
           transition: all ease 0.5s;
+        }
+
+        @media screen and (max-width: 800px) {
+          .bracket {
+            flex-direction: column;
+          }
+
+          .round {
+            flex-wrap: wrap;
+            flex-direction: row;
+          }
         }
       `}</style>
     </div>

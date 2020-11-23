@@ -68,11 +68,20 @@ const BattleMatch = ({ id, round, activeRound, Fits, parents, handler }) => {
         .match {
           height: 45%;
           width: 100%;
-          background-color: #f5f5f5;
           box-shadow: rgba(0, 0, 0, 0.3) 0 1px 3px;
           display: flex;
           flex-direction: row;
           transition: all ease 0.5s;
+        }
+
+        @media screen and (max-width: 800px) {
+          .matchups {
+            max-height: auto;
+            height: auto;
+          }
+          .match {
+            height: 100%;
+          }
         }
       `}</style>
     </div>

@@ -68,8 +68,6 @@ const FitVote = (props) => {
           <div className="control">
             <div className="header">
               <Button
-                size={SIZE.mini}
-                kind={KIND.secondary}
                 isLoading={isLoading}
                 disabled={selected}
                 onClick={() => {
