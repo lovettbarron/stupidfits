@@ -89,7 +89,7 @@ const FitVote = (props) => {
             />
           )}
         </div>
-        {props.id && !props.empty && !disabled && props.active && (
+        {session && props.id && !props.empty && !disabled && props.active && (
           <div className="control">
             <div className="header">
               <Button
