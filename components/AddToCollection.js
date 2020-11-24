@@ -34,9 +34,9 @@ const AddToCollection = (props) => {
         body: JSON.stringify(body),
       });
       const data = await res.json();
-      Router.push({
-        pathname: `/collection/${id}`,
-      });
+      // Router.push({
+      //   pathname: `/collection/${id}`,
+      // });
       console.log("Added fit!", data);
     } catch (error) {
       console.error(error);

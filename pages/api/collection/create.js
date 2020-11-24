@@ -33,7 +33,7 @@ export default async function handle(req, res) {
         public: req.body.public,
         oneperuser: req.body.oneperuser,
         title: req.body.title,
-        description: "",
+        description: req.body.description || "",
         fits: req.body.fit
           ? {
               connect: {
