@@ -210,7 +210,12 @@ const Collection = ({ collection }) => {
               <FitGallery
                 handler={addFit}
                 collection={collection}
-                select={fits.map((f) => f.id)}
+                select={
+                  fits &&
+                  fits
+                    .filter((f) => f.user.id === session.user.id)
+                    .map((f) => f.id)
+                }
               />
             )}
           </ModalBody>
