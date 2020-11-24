@@ -137,7 +137,10 @@ const Collection = ({ collection }) => {
     <>
       <NextSeo
         title={`${collection.title} by ${collection.user.username} on Stupid Fits `}
-        description={`${collection.title} by ${collection.user.username} on Stupid Fits `}
+        description={
+          collection.description ||
+          `${collection.title} by ${collection.user.username} on Stupid Fits `
+        }
         canonical={`${process.env.HOST}/collection/${collection.id}/${collection.slug}`}
         openGraph={{
           keywords: tags,
@@ -176,7 +179,7 @@ const Collection = ({ collection }) => {
           rel="alternate"
           type="application/json+oembed"
           href={`${process.env.HOST}/api/embed?url=${process.env.HOST}/collection/${collection.id}/${collection.slug}`}
-          title={`${collection.user.username}'s fit on Stupid Fits`}
+          title={`${collection.title} by ${collection.user.username} on Stupid Fits `}
           key="oembed"
         />
       </Head>
@@ -190,7 +193,10 @@ const Collection = ({ collection }) => {
             {(session.user.id === collection.user.id || collection.public) && (
               <>
                 <Button onClick={() => setIsOpen(true)}>
-                  Add Fit{!collection.oneperuser && "s"} to Collection
+                  {fits && fits.some((f) => f.user.id === session.user.id)
+                    ? "Edit"
+                    : "Add"}{" "}
+                  Fit{!collection.oneperuser && "s"} to Collection
                 </Button>{" "}
               </>
             )}
