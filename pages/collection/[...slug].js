@@ -146,7 +146,9 @@ const Collection = ({ collection }) => {
           keywords: tags,
           url: `${process.env.HOST}/collection/${collection.id}/${collection.slug}`,
           title: `${collection.title} by ${collection.user.username} on Stupid Fits`,
-          description: `${collection.title} by ${collection.user.username} on Stupid Fits `,
+          description:
+            collection.description ||
+            `${collection.title} by ${collection.user.username} on Stupid Fits `,
           type: "article",
           article: {
             authors: [collection.user.username],
