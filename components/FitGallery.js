@@ -64,7 +64,6 @@ const FitGallery = ({ select, collection, global, handler }) => {
           .sort((a, b) => {
             return b.media[0].timestamp - a.media[0].timestamp;
           })
-          .filter((f) => f.components.length > 0)
           .map((fit) => (
             <FitThumb
               key={fit.id}

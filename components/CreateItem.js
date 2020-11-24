@@ -209,10 +209,6 @@ const CreateItem = (props) => {
           >
             Save Item
           </Button>
-          <br />
-          <Link href="/closet">
-            <a>or return to Closet</a>
-          </Link>
         </div>
       </div>
       <style jsx>{`

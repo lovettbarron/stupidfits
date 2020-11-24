@@ -168,7 +168,9 @@ const Collection = ({ collection }) => {
           <p className="center">
             {(session.user.id === collection.user.id || collection.public) && (
               <>
-                <Button onClick={() => setIsOpen(true)}>Add Fits</Button>{" "}
+                <Button onClick={() => setIsOpen(true)}>
+                  Add Fit{!collection.oneperuser && "s"} to Collection
+                </Button>{" "}
               </>
             )}
             {collection.user.id === session.user.id && (
