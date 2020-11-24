@@ -52,6 +52,7 @@ const Collection = ({ collection }) => {
     let data;
     try {
       data = await res.json();
+      if (data) Router.push(`/battle/${data.id}`);
       console.log("Create", data);
     } catch (e) {
       console.log("error:", e.message);

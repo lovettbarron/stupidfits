@@ -82,13 +82,15 @@ const Battle = (props) => {
 
   return (
     <div className="container">
-      <Button
-        onClick={nextRound}
-        isLoading={isLoading}
-        disabled={activeRound === rounds}
-      >
-        Next Round
-      </Button>
+      {session && session.user.id === props.user.id && (
+        <Button
+          onClick={nextRound}
+          isLoading={isLoading}
+          disabled={activeRound === rounds}
+        >
+          Next Round
+        </Button>
+      )}
       <br />
       {isLoading && (
         <Spinner size={96} overrides={{ Svg: { borderTopColor: "#fff" } }} />
@@ -146,7 +148,7 @@ const Battle = (props) => {
           margin: auto;
           min-width: 300px;
 
-          height: 100%;
+          height: auto;
           display: flex;
           flex-direction: row;
           justify-content: space-between;
@@ -201,10 +203,12 @@ const Battle = (props) => {
 
           .bracket {
             flex-direction: column-reverse;
+            height: auto;
           }
 
           .round {
             flex-wrap: wrap;
+            height: auto;
             flex-direction: row;
           }
         }
