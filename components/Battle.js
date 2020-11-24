@@ -12,7 +12,7 @@ const Battle = (props) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [matches, setMatches] = useState([]);
-  const [rounds, setRounds] = useState(0);
+  const [rounds, setRounds] = useState(2);
   const [activeRound, setActiveRound] = useState(props.activeRound || 0);
 
   const ref = useRef();
@@ -120,20 +120,22 @@ const Battle = (props) => {
                   ))}
             </section>
           ))}
-        <section
-          className={`round ${activeRound === rounds && ` active`}${
-            activeRound < rounds && ` nomobile`
-          }`}
-        >
-          <h3>Winner!</h3>
-          {activeRound === rounds && <h4>Tournament Closed</h4>}
-          <div className="winnerBox">
-            {(props.winners &&
-              props.winners.map((f) => (
-                <FitMini key={f.id} {...f} fit={f.id} />
-              ))) || <Skeleton height="300px" width="200px" />}
-          </div>
-        </section>
+        {props.winners.length > 0 && (
+          <section
+            className={`round ${activeRound === rounds && ` active`}${
+              activeRound < rounds && ` nomobile`
+            }`}
+          >
+            <h3>Winner!</h3>
+            {activeRound === rounds && <h4>Tournament Closed</h4>}
+            <div className="winnerBox">
+              {(props.winners &&
+                props.winners.map((f) => (
+                  <FitMini key={f.id} {...f} fit={f.id} />
+                ))) || <Skeleton height="300px" width="200px" />}
+            </div>
+          </section>
+        )}
       </div>
       <style jsx>{`
         .container {

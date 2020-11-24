@@ -84,6 +84,7 @@ const BattleMatch = ({
   } else
     return (
       <div className="matchups">
+        <div className="vs">vs</div>
         {Fits.length === 0 && (
           <>
             <div className="match">
@@ -134,10 +135,12 @@ const BattleMatch = ({
           <div className="merger" />
           <div className="line" />
         </div>
+
         <style jsx>{`
           .matchups {
             width: 100%;
             margin: auto;
+            position: relative;
             min-width: 300px;
             min-height: 180px;
             max-height: 300px;
@@ -151,6 +154,24 @@ const BattleMatch = ({
             padding: 0.5rem;
             // border: 1px solid #2b2b2b;
             // border-radius: 5px;
+          }
+
+          .vs {
+            background: #151515;
+            // font-family: "Futura";
+            top: 5rem;
+            left: 50%;
+            margin: -1rem;
+            width: 2rem;
+            height: 2rem;
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.5);
+            position: absolute;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
           }
 
           .match {
