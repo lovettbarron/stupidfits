@@ -16,6 +16,7 @@ const FitMini = (props) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [selected, setSelected] = useState(props.selected || false);
+  const [disabled, setDisabled] = useState(props.disabled || false);
 
   useEffect(() => {
     // component is used for both displaying instagram images that aren't yet in the db, and fits that are currently in the db. It probably shouldn't, but this just prevent weird api request
@@ -24,7 +25,12 @@ const FitMini = (props) => {
 
   return (
     <div>
-      <div className={`fitbox ${selected && "selected"}`}>
+      <div
+        className={`fitbox ${
+          (!disabled && selected && "selected") ||
+          (disabled && !selected && "selected")
+        }`}
+      >
         <div className="mediawrap">
           {props.empty ? (
             <Skeleton height="300px" width="200px" />
@@ -44,21 +50,23 @@ const FitMini = (props) => {
         {props.id && !props.empty && (
           <div className="control">
             <div className="header">
-              <Button
-                size={SIZE.mini}
-                kind={KIND.secondary}
-                isLoading={isLoading}
-                disabled={selected}
-                onClick={() => {
-                  setIsLoading(true);
-                  props.handler(props.id, (added) => {
-                    added ? setSelected(true) : setSelected(false);
-                    setIsLoading(false);
-                  });
-                }}
-              >
-                {selected ? "Added" : "Add Fit"}
-              </Button>
+              {!disabled && (
+                <Button
+                  size={SIZE.mini}
+                  kind={KIND.secondary}
+                  isLoading={isLoading}
+                  disabled={selected}
+                  onClick={() => {
+                    setIsLoading(true);
+                    props.handler(props.id, (added) => {
+                      added ? setSelected(true) : setSelected(false);
+                      setIsLoading(false);
+                    });
+                  }}
+                >
+                  {selected ? "Added" : "Add Fit"}
+                </Button>
+              )}
             </div>
           </div>
         )}

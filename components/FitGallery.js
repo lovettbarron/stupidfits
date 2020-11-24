@@ -53,6 +53,7 @@ const FitGallery = ({ select, collection, global, handler }) => {
               likely because it will be used for a tournament
             </p>
           )}
+          <br />
         </>
       )}
       <div className="flex">
@@ -70,20 +71,33 @@ const FitGallery = ({ select, collection, global, handler }) => {
               key={fit.id}
               {...fit}
               fit={fit.id}
+              disabled={
+                collection.oneperuser
+                  ? selected.length > 0
+                    ? true
+                    : false
+                  : false
+              }
               selected={selected.find((s) => s === fit.id) ? true : false}
-              handler={handler}
+              handler={(data, cb) => {
+                handler(data, cb);
+                if (collection.oneperuser) setSelected((s) => [data, ...s]);
+              }}
             />
           ))}
       </div>
       <style jsx>{`
         .gallery {
-          display: flex;
-          justify-content: center;
-          align-items: center;
+          text-align: center;
+          // display: flex;
+          // flex-wrap: wrap;
+          // justify-content: center;
+          // align-items: center;
         }
 
         .flex {
           display: flex;
+          align-items: center;
           justify-content: center;
           flex-wrap: wrap;
         }

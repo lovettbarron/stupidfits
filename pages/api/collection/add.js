@@ -37,7 +37,7 @@ export default async function handle(req, res) {
   if (collectionCheck.oneperuser) {
     const exist = collectionCheck.fits.find((f) => f.user.id === user.id);
 
-    if (existingentry) {
+    if (exist) {
       res.json({});
       res.end();
       return {};

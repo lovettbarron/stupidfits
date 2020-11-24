@@ -164,25 +164,32 @@ const Collection = ({ collection }) => {
         )}
         {session && (
           <p className="center">
-            <Button onClick={() => setIsOpen(true)}>Add Fits</Button>{" "}
+            {(session.user.id === collection.user.id || collection.public) && (
+              <>
+                <Button onClick={() => setIsOpen(true)}>Add Fits</Button>{" "}
+              </>
+            )}
             {collection.user.id === session.user.id && (
-              <Button onClick={() => setEditOpen(true)}>Edit Collection</Button>
-            )}{" "}
-            <Button isLoading={isLoading} onClick={() => createBattle()}>
-              Create Battle
-            </Button>
+              <>
+                <Button onClick={() => setEditOpen(true)}>
+                  Edit Collection
+                </Button>{" "}
+                <Button isLoading={isLoading} onClick={() => createBattle()}>
+                  Create Battle
+                </Button>
+              </>
+            )}
           </p>
         )}
         <div className="flex">
-          {fits
-            .sort((a, b) => {
-              return b.media[0].timestamp - a.media[0].timestamp;
-            })
-            .filter((f) => ["FEATURED", "PUBLIC"].includes(f.status))
-            .filter((f) => f.components.length > 0)
-            .map((fit) => (
-              <FitMini key={fit.id} {...fit} fit={fit.id} />
-            ))}
+          {fits &&
+            fits
+              .sort((a, b) => {
+                return b.media[0].timestamp - a.media[0].timestamp;
+              })
+              .filter((f) => ["FEATURED", "PUBLIC"].includes(f.status))
+              .filter((f) => f.components.length > 0)
+              .map((fit) => <FitMini key={fit.id} {...fit} fit={fit.id} />)}
         </div>
         <Modal
           onClose={() => {
