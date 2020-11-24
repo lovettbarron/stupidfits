@@ -41,10 +41,11 @@ const FitVote = (props) => {
         [];
 
       // Did I vote for this fit?
-      const vo = (myvotes && myvotes.find((v) => v.fit.id === props.fit)) || [];
+      const vo =
+        (myvotes && myvotes.some((v) => v.fit.id === props.fit)) || false;
 
-      setDisabled((myvotes.length > 0 && vo.length === 0) || false);
-      // setSelected((myvotes.length > 0 && vo.length === 1) || false);
+      setDisabled((myvotes.length > 0 && !vo) || false);
+      setSelected((myvotes.length > 0 && vo) || false);
     } else {
       // Incase of no session
       // Count votes from prev only
@@ -86,7 +87,7 @@ const FitVote = (props) => {
             />
           )}
         </div>
-        {props.id && !props.empty && props.active && (
+        {props.id && !props.empty && !disabled && props.active && (
           <div className="control">
             <div className="header">
               <Button

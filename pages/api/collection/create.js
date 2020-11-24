@@ -29,7 +29,9 @@ export default async function handle(req, res) {
             id: Number(user.id),
           },
         },
-        published: false,
+        published: req.body.published,
+        public: req.body.public,
+        oneperuser: req.body.oneperuser,
         title: req.body.title,
         description: "",
         fits: req.body.fit

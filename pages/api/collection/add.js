@@ -21,6 +21,29 @@ export default async function handle(req, res) {
     },
   });
 
+  const collectionCheck = await prisma.collection.findOne({
+    where: {
+      id: req.body.id,
+    },
+    include: {
+      fits: {
+        include: {
+          user: true,
+        },
+      },
+    },
+  });
+
+  if (collectionCheck.oneperuser) {
+    const exist = collectionCheck.fits.find((f) => f.user.id === user.id);
+
+    if (existingentry) {
+      res.json({});
+      res.end();
+      return {};
+    }
+  }
+
   const review = await prisma.collection
     .update({
       where: {

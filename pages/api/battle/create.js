@@ -12,7 +12,7 @@ const prisma = new PrismaClient();
 const newMatch = (round, fits, prevMatches, battle, id) => {
   // BattleMatchup
 
-  console.log(id, round, prevMatches);
+  // console.log(id, round, prevMatches);
 
   return {
     id: id,

@@ -97,6 +97,8 @@ async function handlePOST(req, res) {
       },
       data: {
         published: req.body.published,
+        public: req.body.public,
+        oneperuser: req.body.oneperuser,
         title: req.body.title,
         description: req.body.description,
         slug: req.body.slug

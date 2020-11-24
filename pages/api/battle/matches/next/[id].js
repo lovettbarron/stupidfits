@@ -81,20 +81,16 @@ async function handlePOST(req, res) {
 
   const battle = await prisma.battle.findOne({
     where: { id: Number(id) },
-    // include: {
-    //   user: true,
-    //   collection: {
-    //     include: {
-    //       fits: {
-    //         include: {
-    //           media: true,
-    //         },
-    //       },
-    //     },
-    //   },
-    //   tags: true,
-    // },
+    include: {
+      user: true,
+    },
   });
+
+  if (user.id !== battle.user.id) {
+    res.json({});
+    res.end();
+    return {};
+  }
 
   const matches = await prisma.battleMatchup.findMany({
     where: { battle: { id: Number(id) } },

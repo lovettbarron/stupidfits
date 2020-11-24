@@ -17,6 +17,9 @@ const CreateCollection = ({ collection, fit }) => {
   const [session, loading] = useSession();
 
   const [pub, setPub] = useState((collection && collection.public) || false);
+  const [onePer, setOnePer] = useState(
+    (collection && collection.oneperuser) || false
+  );
   const [published, setPublished] = useState(
     (collection && collection.published) || false
   );
@@ -58,6 +61,7 @@ const CreateCollection = ({ collection, fit }) => {
         published,
         public: pub,
         tags,
+        oneperuser: onePer,
         fit: fit,
       };
       const res = await fetch(
@@ -138,6 +142,15 @@ const CreateCollection = ({ collection, fit }) => {
             onChange={() => setPub(!pub)}
           >
             Accept Public Submission
+          </Checkbox>
+
+          <Checkbox
+            checked={onePer}
+            checkmarkType={STYLE_TYPE.toggle_round}
+            labelPlacement={LABEL_PLACEMENT.right}
+            onChange={() => setOnePer(!onePer)}
+          >
+            One Fit per User
           </Checkbox>
 
           <Checkbox

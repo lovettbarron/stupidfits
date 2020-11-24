@@ -192,7 +192,11 @@ const Collection = ({ collection }) => {
           <ModalHeader>Add Fit</ModalHeader>
           <ModalBody>
             {isOpen && (
-              <FitGallery handler={addFit} select={fits.map((f) => f.id)} />
+              <FitGallery
+                handler={addFit}
+                collection={collection}
+                select={fits.map((f) => f.id)}
+              />
             )}
           </ModalBody>
         </Modal>

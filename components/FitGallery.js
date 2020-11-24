@@ -4,10 +4,11 @@ import { useSession } from "next-auth/client";
 import FitThumb from "./FitThumb";
 import { Spinner } from "baseui/spinner";
 
-const FitGallery = ({ select, global, handler }) => {
+const FitGallery = ({ select, collection, global, handler }) => {
   const [session, loading] = useSession();
   const [fits, setFits] = useState([]);
   const [selected, setSelected] = useState(select || []);
+  const [hasAdded, setHasAdded] = useState();
 
   const fetchFits = async () => {
     let res;
@@ -37,12 +38,23 @@ const FitGallery = ({ select, global, handler }) => {
   };
 
   useEffect(() => {
-    fetchFits();
+    if (collection) fetchFits();
     return () => {};
   }, [session]);
 
   return (
     <div className="gallery">
+      {collection && (
+        <>
+          <h3>Add a fit to {collection.title}</h3>
+          {collection.oneperuser && (
+            <p>
+              Pick carefully! You can only add one fit to this collection —
+              likely because it will be used for a tournament
+            </p>
+          )}
+        </>
+      )}
       <div className="flex">
         {fits.length === 0 && (
           <Spinner size={96} overrides={{ Svg: { borderTopColor: "#fff" } }} />
