@@ -78,6 +78,7 @@ const Collection = ({ collection }) => {
       const data = await res.json();
       console.log("Added fit!", data);
       setFits(data.fits);
+      if (collection.oneperuser) setIsOpen(false);
       cb(true);
     } catch (error) {
       console.error(error);
@@ -225,8 +226,6 @@ const Collection = ({ collection }) => {
               .sort((a, b) => {
                 return b.media[0].timestamp - a.media[0].timestamp;
               })
-              .filter((f) => ["FEATURED", "PUBLIC"].includes(f.status))
-              .filter((f) => f.components.length > 0)
               .map((fit) => <FitMini key={fit.id} {...fit} fit={fit.id} />)}
         </div>
         <Modal
