@@ -117,6 +117,7 @@ const BattleMatch = ({
                 key={fit.id}
                 {...fit}
                 active={activeRound + 1 === round}
+                done={activeRound + 1 > round}
                 votes={allVotes}
                 vote={vote}
                 fit={fit.id}

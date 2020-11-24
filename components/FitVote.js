@@ -50,6 +50,32 @@ const FitVote = (props) => {
       setSelected((myvotes.length > 0 && vo) || false);
     } else {
       // Incase of no session
+      if (props.done) {
+        if (props.votes.length > 0) {
+          const res = props.votes.reduce((store, curr) => {
+            let exist = store.find((s) => s.id === curr.fit.id);
+            if (!exist) {
+              store.push({ id: curr.fit.id, val: 1 });
+            } else {
+              const index = store.indexOf(exist);
+              store[index].val = Number(store[index].val) + 1;
+            }
+            return store;
+          }, []);
+
+          const winner = res.reduce((store, cur) =>
+            store.val > cur.val ? store : cur
+          );
+
+          if (winner.id === props.fit) {
+            setSelected(true);
+          } else {
+            setSelected(false);
+            setDisabled(true);
+          }
+        }
+      }
+
       // Count votes from prev only
     }
     return () => {};
