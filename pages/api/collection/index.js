@@ -29,6 +29,7 @@ export default async function handle(req, res) {
           fits: {
             include: {
               media: true,
+              user: true,
             },
           },
           tags: true,

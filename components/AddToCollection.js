@@ -90,7 +90,13 @@ const AddToCollection = (props) => {
               )}
               <ul>
                 {collections.map((c) => {
-                  const ex = !!c.fits.find((f) => f.id === props.id);
+                  let ex = false;
+                  if (c.oneperuser) {
+                    ex = !!c.fits.find((f) => f.user.id === props.user.id);
+                  } else {
+                    ex = !!c.fits.find((f) => f.id === props.id);
+                  }
+
                   return (
                     <li
                       key={c.id}

@@ -79,7 +79,7 @@ const MediaHolder = ({
               </Button>
               <br />
               <br />
-              {fit && <AddToCollection id={fit} />}
+              {fit && <AddToCollection id={fit} user={user} />}
               <br />
               <br />
               <ExportModal
@@ -93,7 +93,7 @@ const MediaHolder = ({
             </div>
           )) || (
             <div className="edit">
-              {!nolayer && fit && <AddToCollection id={fit} />}
+              {!nolayer && fit && <AddToCollection id={fit} user={user} />}
             </div>
           )}
         </>

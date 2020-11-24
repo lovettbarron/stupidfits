@@ -35,7 +35,16 @@ export default async function handle(req, res) {
   });
 
   if (collectionCheck.oneperuser) {
-    const exist = collectionCheck.fits.find((f) => f.user.id === user.id);
+    const userCheck = await prisma.fit.findOne({
+      where: { id: req.body.fit },
+      include: {
+        user: true,
+      },
+    });
+
+    const exist = collectionCheck.fits.find(
+      (f) => f.user.id === userCheck.user.id
+    );
 
     if (exist) {
       res.json({});
