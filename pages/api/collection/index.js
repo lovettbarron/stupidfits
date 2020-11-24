@@ -22,6 +22,15 @@ export default async function handle(req, res) {
                 id: session ? session.user.id : -1,
               },
             },
+            {
+              fits: {
+                some: {
+                  user: {
+                    id: session ? session.user.id : -1,
+                  },
+                },
+              },
+            },
           ],
         },
         include: {
