@@ -5,6 +5,8 @@ import Router from "next/router";
 import fetch from "isomorphic-unfetch";
 import { Tabs, Tab, FILL } from "baseui/tabs-motion";
 import Layout from "../../components/Layout";
+import { StatefulTooltip } from "baseui/tooltip";
+import { Block } from "baseui/block";
 import { NextSeo } from "next-seo";
 import { Button } from "baseui/button";
 import FitGallery from "../../components/FitGallery";
@@ -174,9 +176,43 @@ const Collection = ({ collection }) => {
                 <Button onClick={() => setEditOpen(true)}>
                   Edit Collection
                 </Button>{" "}
-                <Button isLoading={isLoading} onClick={() => createBattle()}>
-                  Create Battle
-                </Button>
+                <StatefulTooltip
+                  content={() => (
+                    <Block
+                      padding={"20px"}
+                      margin={"0"}
+                      backgroundColor="#151515"
+                      color="#fff"
+                      border="none"
+                    >
+                      <h4>This feature is experimental</h4>
+
+                      {fits.length < 4 && (
+                        <p>Add more fits to create a battle</p>
+                      )}
+
+                      {fits.length % 2 === 0 && (
+                        <p>
+                          An even number of fits is required to make a battle
+                        </p>
+                      )}
+                    </Block>
+                  )}
+                  returnFocus
+                  autoFocus
+                >
+                  <span>
+                    <Button
+                      isLoading={isLoading}
+                      disabled={
+                        fits.length > 3 && fits.length % 2 === 0 ? false : true
+                      }
+                      onClick={() => createBattle()}
+                    >
+                      Create Battle
+                    </Button>
+                  </span>
+                </StatefulTooltip>
               </>
             )}
           </p>
