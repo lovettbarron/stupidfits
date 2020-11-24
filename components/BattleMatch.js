@@ -20,6 +20,7 @@ const BattleMatch = ({
   const [session, loading] = useSession();
   const [isOpen, setIsOpen] = useState(false);
   const [vote, setVote] = useState(null);
+  const [allVotes, setAllVotes] = useState(votes);
 
   const addVote = async (fitid, cb) => {
     console.log("Adding fit", id);
@@ -32,6 +33,7 @@ const BattleMatch = ({
       });
       const data = await res.json();
       console.log("Voted!", data);
+      if (data) setAllVotes((v) => [data, ...v]);
       setVote(data.fit.id);
       cb(true);
     } catch (error) {
@@ -39,6 +41,10 @@ const BattleMatch = ({
       cb(false);
     }
   };
+
+  useEffect(() => {
+    return () => {};
+  }, [vote, allVotes, activeRound]);
 
   if (winner) {
     if (votes.length < 1) {
@@ -94,7 +100,7 @@ const BattleMatch = ({
               <FitVote
                 key={Fits[0].id}
                 active={activeRound === round}
-                votes={votes}
+                votes={allVotes}
                 {...Fits[0]}
                 fit={Fits[0].id}
               />
@@ -111,10 +117,12 @@ const BattleMatch = ({
                 key={fit.id}
                 {...fit}
                 active={activeRound + 1 === round}
-                votes={votes}
+                votes={allVotes}
                 vote={vote}
                 fit={fit.id}
-                selected={votes.find((s) => s.fit.id === fit.id) ? true : false}
+                selected={
+                  allVotes.find((s) => s.fit.id === fit.id) ? true : false
+                }
                 handler={addVote}
               />
             </div>

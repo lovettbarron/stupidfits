@@ -53,7 +53,7 @@ const FitVote = (props) => {
       // Count votes from prev only
     }
     return () => {};
-  }, [session]);
+  }, [session, props]);
 
   return (
     <div>

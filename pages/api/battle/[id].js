@@ -27,6 +27,28 @@ async function handleGET(req, res) {
       where: { id: Number(id) },
       include: {
         user: true,
+        winners: {
+          include: {
+            media: {
+              include: {
+                layers: {
+                  include: {
+                    item: {
+                      include: { brand: true },
+                    },
+                    media: true,
+                  },
+                },
+              },
+            },
+            user: true,
+            components: {
+              include: {
+                brand: true,
+              },
+            },
+          },
+        },
         collection: {
           include: {
             fits: {

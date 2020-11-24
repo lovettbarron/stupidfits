@@ -3,6 +3,49 @@ import { getSession, session } from "next-auth/client";
 
 const prisma = new PrismaClient();
 
+const tallyVotes = (match) => {
+  const res = match.votes.reduce((store, curr) => {
+    let exist = store.find((s) => s.id === curr.fit.id);
+    if (!exist) {
+      store.push({ id: curr.fit.id, val: 1 });
+    } else {
+      const index = store.indexOf(exist);
+      store[index].val = Number(store[index].val) + 1;
+    }
+    return store;
+  }, []);
+
+  // This is superfluous, but the reduce
+  //above is just incase I want to have
+  // more complex results or check for tie
+  const winner = res.reduce((store, cur) =>
+    store.val > cur.val ? store : cur
+  );
+
+  return winner;
+};
+
+const calculateBattleWinner = (matchid, matches) => {
+  const match = matches.find((m) => m.id === matchid);
+
+  const results = [];
+  if (match.votes.length < 1) {
+    if (match.Fits.length < 1) {
+      console.log("No fits in final match", match.id);
+      return null;
+    }
+
+    console.log("No votes, so no winner");
+    return [];
+  } else {
+    const winner = tallyVotes(match);
+    console.log("CALCULATED WINNER!", winner.id);
+    results.push(winner.id);
+  }
+
+  return results;
+};
+
 const calculateWinner = (matchid, matches, fix) => {
   const match = matches.find((m) => m.id === matchid);
 
@@ -31,23 +74,8 @@ const calculateWinner = (matchid, matches, fix) => {
       console.log("RANDOM WINNER!", rand.id);
       results.push(rand.id);
     } else {
-      const res = m.votes.reduce((store, curr) => {
-        let exist = store.find((s) => s.id === curr.fit.id);
-        if (!exist) {
-          store.push({ id: curr.fit.id, val: 1 });
-        } else {
-          const index = store.indexOf(exist);
-          store[index].val = Number(store[index].val) + 1;
-        }
-        return store;
-      }, []);
+      const winner = tallyVotes(m);
 
-      // This is superfluous, but the reduce
-      //above is just incase I want to have
-      // more complex results or check for tie
-      const winner = res.reduce((store, cur) =>
-        store.val > cur.val ? store : cur
-      );
       console.log("CALCULATED WINNER!", winner.id);
       results.push(winner.id);
     }
@@ -83,9 +111,13 @@ async function handlePOST(req, res) {
     where: { id: Number(id) },
     include: {
       user: true,
+      BattleMatchup: true,
     },
   });
 
+  const totalRounds = Math.ceil(Math.log2(battle.BattleMatchup.length));
+
+  // Just make sure you're the owner of this
   if (user.id !== battle.user.id) {
     res.json({});
     res.end();
@@ -129,47 +161,72 @@ async function handlePOST(req, res) {
 
   const upcoming = matches.filter((m) => m.round === battle.activeRound + 2);
 
-  for (let i in upcoming) {
-    // Note on the +2, ActiveROund is 0 start, round is 1 start.
+  let updatedbattle = {};
+  if (totalRounds === battle.activeRound) {
+    console.log("This battle is closed");
+    res.json(battle);
+  } else if (totalRounds - 1 > battle.activeRound) {
+    // If not last round
+    for (let i in upcoming) {
+      // Note on the +2, ActiveROund is 0 start, round is 1 start.
 
-    const match = upcoming[i];
+      const match = upcoming[i];
 
-    const fixfunc = async (brokenid) => {
-      const fix = calculateWinner(brokenid, matches, fixfunc);
-      const updatematch = await prisma.battleMatchup.update({
+      const fixfunc = async (brokenid) => {
+        const fix = calculateWinner(brokenid, matches, fixfunc);
+        const updatematch = await prisma.battleMatchup.update({
+          where: {
+            id: brokenid,
+          },
+          data: {
+            Fits: {
+              connect: fix.map((w) => ({ id: w })),
+            },
+          },
+        });
+      };
+
+      const winners = calculateWinner(match.id, matches, fixfunc);
+
+      console.log("Winner for", match.id, winners);
+
+      const updatedmatch = await prisma.battleMatchup.update({
         where: {
-          id: brokenid,
+          id: match.id,
         },
         data: {
           Fits: {
-            connect: fix.map((w) => ({ id: w })),
+            connect: winners.map((w) => ({ id: w })),
           },
         },
       });
-    };
+    }
 
-    const winners = calculateWinner(match.id, matches, fixfunc);
-
-    console.log("Winner for", match.id, winners);
-
-    const updatedmatch = await prisma.battleMatchup.update({
-      where: {
-        id: match.id,
-      },
+    updatedbattle = await prisma.battle.update({
+      where: { id: Number(id) },
       data: {
-        Fits: {
-          connect: winners.map((w) => ({ id: w })),
-        },
+        activeRound: battle.activeRound + 1,
+      },
+    });
+  } else {
+    // Set Winner
+
+    const match = matches.find((m) => m.round === totalRounds);
+
+    console.log("Got match ", match, totalRounds - 1);
+
+    const winners = calculateBattleWinner(match.id, matches);
+
+    console.log("Found Winner", winners);
+
+    updatedbattle = await prisma.battle.update({
+      where: { id: Number(id) },
+      data: {
+        activeRound: totalRounds,
+        winners: { connect: winners.map((w) => ({ id: w })) },
       },
     });
   }
-
-  const updatedbattle = await prisma.battle.update({
-    where: { id: Number(id) },
-    data: {
-      activeRound: battle.activeRound + 1,
-    },
-  });
 
   await prisma.$disconnect();
   res.json(updatedbattle);

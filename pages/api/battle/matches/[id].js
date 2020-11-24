@@ -89,37 +89,47 @@ async function handlePOST(req, res) {
       },
     },
   });
-
-  if (!checkVote.length < 1) {
-    console.log("Valid Vote", id);
-    const vote = await prisma.battleVote
-      .create({
-        data: {
-          user: {
-            connect: {
-              id: user.id,
+  try {
+    if (checkVote.length < 1) {
+      console.log("Valid Vote", id);
+      const vote = await prisma.battleVote
+        .create({
+          data: {
+            user: {
+              connect: {
+                id: user.id,
+              },
             },
-          },
-          matchup: {
-            connect: {
-              id: id,
+            matchup: {
+              connect: {
+                id: id,
+              },
             },
-          },
-          fit: {
-            connect: {
-              id: Number(req.body.fit),
+            fit: {
+              connect: {
+                id: Number(req.body.fit),
+              },
             },
+            comment: "",
           },
-          comment: "",
-        },
-      })
-      .finally(async () => {
-        await prisma.$disconnect();
-      });
-    res.json(vote);
-  } else {
-    console.log("Already Voted on", id);
-    res.json(null);
+          include: {
+            fit: true,
+            user: true,
+          },
+        })
+        .finally(async () => {
+          await prisma.$disconnect();
+        });
+      res.json(vote);
+    } else {
+      console.log("Already Voted on", id);
+      await prisma.$disconnect();
+      res.json(null);
+    }
+  } catch (e) {
+    console.log("Something went wrong while voting", e);
+    await prisma.$disconnect();
+    res.status(500).json(null);
   }
 }
 

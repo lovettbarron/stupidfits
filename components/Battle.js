@@ -4,6 +4,8 @@ import { useSession } from "next-auth/client";
 import BattleMatch from "./BattleMatch";
 import { Spinner } from "baseui/spinner";
 import { Button } from "baseui/button";
+import FitMini from "./FitMini";
+import { Skeleton } from "baseui/skeleton";
 
 const Battle = (props) => {
   const [session, loading] = useSession();
@@ -87,13 +89,18 @@ const Battle = (props) => {
       >
         Next Round
       </Button>
+      <br />
+      {isLoading && (
+        <Spinner size={96} overrides={{ Svg: { borderTopColor: "#fff" } }} />
+      )}
       <div className="bracket">
-        {isLoading && (
-          <Spinner size={96} overrides={{ Svg: { borderTopColor: "#fff" } }} />
-        )}
         {rounds > 0 &&
           Array.from(Array(rounds).keys()).map((r) => (
-            <section className={`round ${activeRound === r && `active`}`}>
+            <section
+              className={`round ${activeRound === r && `active`}${
+                activeRound < r && ` nomobile`
+              } `}
+            >
               <h3>Round {r + 1}</h3>
               {activeRound === r && <h4>Currently Voting!</h4>}
               {matches &&
@@ -111,28 +118,43 @@ const Battle = (props) => {
                   ))}
             </section>
           ))}
-        <section className={`round ${activeRound === rounds && `active`}`}>
+        <section
+          className={`round${activeRound === rounds && ` active`}${
+            activeRound < rounds && ` nomobile`
+          }`}
+        >
           <h3>Winner!</h3>
           {activeRound === rounds && <h4>Tournament Closed</h4>}
-
-          {matches &&
-            matches
-              .filter((m) => m.round === rounds)
-              .map((match) => (
-                <BattleMatch
-                  key={match.id}
-                  round={rounds}
-                  winner={activeRound === rounds}
-                  totalRounds={rounds.length}
-                  activeRound={activeRound}
-                  {...match}
-                  handler={props.handler}
-                />
-              ))}
+          <div className="winnerBox">
+            {(props.winners &&
+              props.winners.map((f) => (
+                <FitMini key={f.id} {...f} fit={f.id} />
+              ))) || <Skeleton height="300px" width="200px" />}
+          </div>
         </section>
       </div>
       <style jsx>{`
         .container {
+          display: block;
+          overflow: scroll;
+          width: 100%;
+          height: 90vh;
+        }
+
+        .winnerBox {
+          width: 100%;
+          margin: auto;
+          min-width: 300px;
+
+          height: 100%;
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+          // align-items: center;
+          align-items: top;
+          padding: 0.5rem;
+          // border: 1px solid #2b2b2b;
+          // border-radius: 5px;
         }
 
         .bracket {
@@ -167,8 +189,18 @@ const Battle = (props) => {
         }
 
         @media screen and (max-width: 800px) {
+          .container {
+            overflow: scroll;
+            width: 100%;
+            height: auto;
+          }
+
+          .nomobile {
+            display: none;
+          }
+
           .bracket {
-            flex-direction: column;
+            flex-direction: column-reverse;
           }
 
           .round {
