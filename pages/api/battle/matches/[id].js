@@ -71,7 +71,7 @@ async function handlePOST(req, res) {
   const session = await getSession({ req });
 
   const id = req.query.id;
-  console.log(req.query);
+  console.log("Vote:", req.query.id, req.body.fit);
 
   const user = await prisma.user.findOne({
     where: {
@@ -79,31 +79,48 @@ async function handlePOST(req, res) {
     },
   });
 
-  const vote = await prisma.battleVote
-    .create({
-      data: {
-        user: {
-          connect: {
-            id: user.id,
-          },
-        },
-        matchup: {
-          connect: {
-            id: id,
-          },
-        },
-        fit: {
-          connect: {
-            id: Number(req.body.fit),
-          },
-        },
-        comment: "",
+  const checkVote = await prisma.battleVote.findMany({
+    where: {
+      user: {
+        id: user.id,
       },
-    })
-    .finally(async () => {
-      await prisma.$disconnect();
-    });
-  res.json(vote);
+      matchup: {
+        id: id,
+      },
+    },
+  });
+
+  if (!checkVote.length < 1) {
+    console.log("Valid Vote", id);
+    const vote = await prisma.battleVote
+      .create({
+        data: {
+          user: {
+            connect: {
+              id: user.id,
+            },
+          },
+          matchup: {
+            connect: {
+              id: id,
+            },
+          },
+          fit: {
+            connect: {
+              id: Number(req.body.fit),
+            },
+          },
+          comment: "",
+        },
+      })
+      .finally(async () => {
+        await prisma.$disconnect();
+      });
+    res.json(vote);
+  } else {
+    console.log("Already Voted on", id);
+    res.json(null);
+  }
 }
 
 // DELETE /api/post/:id

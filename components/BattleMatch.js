@@ -112,6 +112,7 @@ const BattleMatch = ({
                 {...fit}
                 active={activeRound + 1 === round}
                 votes={votes}
+                vote={vote}
                 fit={fit.id}
                 selected={votes.find((s) => s.fit.id === fit.id) ? true : false}
                 handler={addVote}

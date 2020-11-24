@@ -28,7 +28,9 @@ const FitVote = (props) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [selected, setSelected] = useState(props.selected);
-  const [disabled, setDisabled] = useState(false);
+  const [disabled, setDisabled] = useState(
+    props.vote && props.vote !== props.fit.id
+  );
 
   useEffect(() => {
     // My votes for this match
