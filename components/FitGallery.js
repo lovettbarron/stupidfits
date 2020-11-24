@@ -4,7 +4,7 @@ import { useSession } from "next-auth/client";
 import FitThumb from "./FitThumb";
 import { Spinner } from "baseui/spinner";
 
-const FitGallery = ({ select, collection, global, handler }) => {
+const FitGallery = ({ select, collection, global, deleteHandler, handler }) => {
   const [session, loading] = useSession();
   const [fits, setFits] = useState([]);
   const [selected, setSelected] = useState(select || []);
@@ -76,11 +76,12 @@ const FitGallery = ({ select, collection, global, handler }) => {
                     : false
                   : false
               }
-              selected={selected.find((s) => s === fit.id) ? true : false}
+              selected={selected.find((s) => s.id === fit.id) ? true : false}
               handler={(data, cb) => {
                 handler(data, cb);
                 if (collection.oneperuser) setSelected((s) => [data, ...s]);
               }}
+              deleteHandler={deleteHandler}
             />
           ))}
       </div>

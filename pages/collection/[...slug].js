@@ -86,6 +86,26 @@ const Collection = ({ collection }) => {
     }
   };
 
+  const deleteFit = async (id, cb) => {
+    console.log("Deleting fit", id);
+    try {
+      const body = { id: collection.id, fit: id };
+      const res = await fetch(`${process.env.HOST}/api/collection/delete`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+      const data = await res.json();
+      console.log("Deleting fit!", data);
+      setFits(data.fits);
+      // if (collection.oneperuser) setIsOpen(false);
+      cb(true);
+    } catch (error) {
+      console.error(error);
+      cb(false);
+    }
+  };
+
   const seourl =
     (collection.fits.length > 0 &&
       collection.fits[0].media[0].cloudinary &&
@@ -188,13 +208,18 @@ const Collection = ({ collection }) => {
                       color="#fff"
                       border="none"
                     >
-                      <h4>This feature is experimental</h4>
+                      <h4>Create a Tournament</h4>
+                      <ul>
+                        <li>Generate a Tournament from this collection</li>
+                        <li>Share with others to vote</li>
+                        <li>Have fun. No stress.</li>
+                      </ul>
 
                       {fits.length < 4 && (
                         <p>Add more fits to create a battle</p>
                       )}
 
-                      {fits.length % 2 === 0 && (
+                      {fits.length % 2 !== 0 && (
                         <p>
                           An even number of fits is required to make a battle
                         </p>
@@ -246,12 +271,11 @@ const Collection = ({ collection }) => {
             {isOpen && (
               <FitGallery
                 handler={addFit}
+                deleteHandler={deleteFit}
                 collection={collection}
                 select={
-                  fits &&
-                  fits
-                    .filter((f) => f.user.id === session.user.id)
-                    .map((f) => f.id)
+                  fits && fits.filter((f) => f.user.id === session.user.id)
+                  // .map((f) => f.id)
                 }
               />
             )}

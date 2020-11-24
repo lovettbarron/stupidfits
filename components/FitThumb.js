@@ -15,7 +15,7 @@ const FitMini = (props) => {
   const [fit, setFit] = useState(props.fit || false);
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [selected, setSelected] = useState(props.selected || false);
+  const [selected, setSelected] = useState(props.selected ? true : false);
   const [disabled, setDisabled] = useState(props.disabled || false);
 
   useEffect(() => {
@@ -55,16 +55,23 @@ const FitMini = (props) => {
                   size={SIZE.mini}
                   kind={KIND.secondary}
                   isLoading={isLoading}
-                  disabled={selected}
+                  // disabled={selected}
                   onClick={() => {
                     setIsLoading(true);
-                    props.handler(props.id, (added) => {
-                      added ? setSelected(true) : setSelected(false);
-                      setIsLoading(false);
-                    });
+                    if (selected) {
+                      props.deleteHandler(props.id, (del) => {
+                        del ? setSelected(false) : setSelected(true);
+                        setIsLoading(false);
+                      });
+                    } else {
+                      props.handler(props.id, (added) => {
+                        added ? setSelected(true) : setSelected(false);
+                        setIsLoading(false);
+                      });
+                    }
                   }}
                 >
-                  {selected ? "Added" : "Add Fit"}
+                  {selected ? "Remove" : "Add Fit"}
                 </Button>
               )}
             </div>
@@ -85,11 +92,9 @@ const FitMini = (props) => {
           overflow: hidden;
           position: relative;
           margin: 0.25rem;
-          opacity: 1;
-          transition: opacity 0.4s;
         }
 
-        .fitbox.selected {
+        .fitbox.selected > .mediawrap {
           opacity: 0.2;
         }
 
@@ -128,6 +133,8 @@ const FitMini = (props) => {
           padding: 0;
           margin: 0;
           width: 100%;
+          opacity: 1;
+          transition: opacity 0.4s;
         }
 
         .header {
