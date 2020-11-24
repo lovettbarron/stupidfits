@@ -99,8 +99,8 @@ const Battle = (props) => {
         {rounds > 0 &&
           Array.from(Array(rounds).keys()).map((r) => (
             <section
-              className={`round ${activeRound === r && `active`}${
-                activeRound < r && ` nomobile`
+              className={`round ${activeRound === r && `active`} ${
+                activeRound < r && `nomobile`
               } `}
             >
               <h3>Round {r + 1}</h3>
@@ -121,7 +121,7 @@ const Battle = (props) => {
             </section>
           ))}
         <section
-          className={`round${activeRound === rounds && ` active`}${
+          className={`round ${activeRound === rounds && ` active`}${
             activeRound < rounds && ` nomobile`
           }`}
         >
@@ -140,7 +140,7 @@ const Battle = (props) => {
           display: block;
           overflow: scroll;
           width: 100%;
-          height: 90vh;
+          height: auto;
         }
 
         .winnerBox {

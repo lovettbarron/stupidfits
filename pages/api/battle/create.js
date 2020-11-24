@@ -64,7 +64,7 @@ const setParentMatches = (step, matches) => {
       const checkCurrent = !current.find(
         (c) => c.parents && c.parents.connect.some((t) => t.id === m.id)
       );
-      console.log(step, m.id, checkCurrent);
+      // console.log(step, m.id, checkCurrent);
 
       return checkCurrent;
     });
@@ -100,7 +100,7 @@ export default async function handle(req, res) {
     },
   });
 
-  console.log("Generate tournament", req.body);
+  // console.log("Generate tournament", req.body);
 
   // Call Collection
   const collection = await prisma.collection.findOne({
@@ -219,8 +219,10 @@ export default async function handle(req, res) {
     const mat = await prisma.battleMatchup.create({
       data: m,
     });
-    console.log("Saved Match", mat);
+    // console.log("Saved Match", mat);
   }
+
+  console.log("Done, returning ", battle.id);
 
   res.json(battle);
 }

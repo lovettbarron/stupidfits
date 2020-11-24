@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { getSession, useSession } from "next-auth/client";
 import Head from "next/head";
+import Router from "next/router";
 import fetch from "isomorphic-unfetch";
 import { Tabs, Tab, FILL } from "baseui/tabs-motion";
 import Layout from "../../components/Layout";
@@ -26,6 +27,7 @@ const Collection = ({ collection }) => {
   const [editOpen, setEditOpen] = useState(false);
   const [fits, setFits] = useState(collection.fits || []);
   const [coll, setColl] = useState(collection || null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const refresh = async () => {
     const res = await fetch(
@@ -41,6 +43,7 @@ const Collection = ({ collection }) => {
   };
 
   const createBattle = async () => {
+    setIsLoading(true);
     const body = {
       collection: collection.id,
     };
@@ -53,8 +56,10 @@ const Collection = ({ collection }) => {
     try {
       data = await res.json();
       if (data) Router.push(`/battle/${data.id}`);
+      setIsLoading(false);
       console.log("Create", data);
     } catch (e) {
+      setIsLoading(false);
       console.log("error:", e.message);
     }
   };
@@ -163,7 +168,9 @@ const Collection = ({ collection }) => {
             {collection.user.id === session.user.id && (
               <Button onClick={() => setEditOpen(true)}>Edit Collection</Button>
             )}{" "}
-            <Button onClick={() => createBattle()}>Create Battle</Button>
+            <Button isLoading={isLoading} onClick={() => createBattle()}>
+              Create Battle
+            </Button>
           </p>
         )}
         <div className="flex">

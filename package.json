@@ -19,7 +19,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@prisma/client": "2.5.1",
+    "@prisma/client": "2.11.0",
     "@sentry/react": "^5.26.0",
     "@sentry/tracing": "^5.26.0",
     "baseui": "^9.102.0",

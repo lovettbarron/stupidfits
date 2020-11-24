@@ -123,13 +123,13 @@ async function handlePOST(req, res) {
       res.json(vote);
     } else {
       console.log("Already Voted on", id);
-      await prisma.$disconnect();
       res.json(null);
     }
   } catch (e) {
     console.log("Something went wrong while voting", e);
-    await prisma.$disconnect();
     res.status(500).json(null);
+  } finally {
+    await prisma.$disconnect();
   }
 }
 

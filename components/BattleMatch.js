@@ -138,6 +138,7 @@ const BattleMatch = ({
             width: 100%;
             margin: auto;
             min-width: 300px;
+            min-height: 180px;
             max-height: 300px;
             overflow: hidden;
             height: 100%;

@@ -230,4 +230,5 @@ async function handlePOST(req, res) {
 
   await prisma.$disconnect();
   res.json(updatedbattle);
+  res.end();
 }
