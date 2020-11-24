@@ -274,8 +274,10 @@ const Collection = ({ collection }) => {
                 deleteHandler={deleteFit}
                 collection={collection}
                 select={
-                  fits && fits.filter((f) => f.user.id === session.user.id)
-                  // .map((f) => f.id)
+                  fits &&
+                  fits
+                    .filter((f) => f.user.id === session.user.id)
+                    .map((f) => f.id)
                 }
               />
             )}
@@ -283,7 +285,7 @@ const Collection = ({ collection }) => {
         </Modal>
         <Modal
           onClose={() => {
-            setIsOpen(false);
+            setEditOpen(false);
           }}
           closeable
           autoFocus

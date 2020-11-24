@@ -69,19 +69,16 @@ const FitGallery = ({ select, collection, global, deleteHandler, handler }) => {
               key={fit.id}
               {...fit}
               fit={fit.id}
-              disabled={
-                collection.oneperuser
-                  ? selected.length > 0
-                    ? true
-                    : false
-                  : false
-              }
-              selected={selected.find((s) => s.id === fit.id) ? true : false}
+              disabled={collection.oneperuser ? selected.length > 0 : false}
+              selected={selected.find((s) => s === fit.id) ? true : false}
               handler={(data, cb) => {
                 handler(data, cb);
-                if (collection.oneperuser) setSelected((s) => [data, ...s]);
+                if (collection.oneperuser) setSelected((s) => [data]);
               }}
-              deleteHandler={deleteHandler}
+              deleteHandler={(data, cb) => {
+                deleteHandler(data, cb);
+                if (collection.oneperuser) setSelected([]);
+              }}
             />
           ))}
       </div>

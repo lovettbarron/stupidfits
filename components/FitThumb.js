@@ -19,9 +19,9 @@ const FitMini = (props) => {
   const [disabled, setDisabled] = useState(props.disabled || false);
 
   useEffect(() => {
-    // component is used for both displaying instagram images that aren't yet in the db, and fits that are currently in the db. It probably shouldn't, but this just prevent weird api request
+    setDisabled(props.disabled);
     return () => {};
-  }, []);
+  }, [props]);
 
   return (
     <div>
@@ -50,7 +50,7 @@ const FitMini = (props) => {
         {props.id && !props.empty && (
           <div className="control">
             <div className="header">
-              {!disabled && (
+              {(selected + !disabled && (
                 <Button
                   size={SIZE.mini}
                   kind={KIND.secondary}
@@ -60,12 +60,12 @@ const FitMini = (props) => {
                     setIsLoading(true);
                     if (selected) {
                       props.deleteHandler(props.id, (del) => {
-                        del ? setSelected(false) : setSelected(true);
+                        del && setSelected(false); // : setSelected(true);
                         setIsLoading(false);
                       });
                     } else {
                       props.handler(props.id, (added) => {
-                        added ? setSelected(true) : setSelected(false);
+                        added && setSelected(true); // : setSelected(false);
                         setIsLoading(false);
                       });
                     }
@@ -73,7 +73,8 @@ const FitMini = (props) => {
                 >
                   {selected ? "Remove" : "Add Fit"}
                 </Button>
-              )}
+              )) ||
+                null}
             </div>
           </div>
         )}
