@@ -47,6 +47,7 @@ async function handleGET(req, res) {
               },
             },
             user: true,
+            Battle: true,
             components: {
               include: {
                 brand: true,

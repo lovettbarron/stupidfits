@@ -22,11 +22,11 @@ const Blog = (props) => {
   // console.log("session", props.user);
 
   const fetch = () => {
-    const nextMax = (v) => {
-      let t = v.length + 4;
-      return t > feed.length - 1 ? feed.length - 1 : t;
+    const nextMax = () => {
+      let t = visible.length + 4;
+      return t > feed.length - 1 ? feed.length : t;
     };
-    setVisible((v) => [feed.slice(0, nextMax(v))]);
+    setVisible(feed.slice(0, nextMax()));
     console.log("Fetchin", visible);
   };
 
@@ -45,7 +45,7 @@ const Blog = (props) => {
         <main>
           <div className="flex">
             <InfiniteScroll
-              dataLength={feed.length || 0} //This is important field to render the next data
+              dataLength={visible.length} //This is important field to render the next data
               next={fetch}
               style={{
                 display: "flex",
@@ -54,11 +54,7 @@ const Blog = (props) => {
               }}
               hasMore={feed.length > visible.length}
               loader={<h4>Loading...</h4>}
-              endMessage={
-                <p style={{ textAlign: "center" }}>
-                  <b>Yay! You have seen it all</b>
-                </p>
-              }
+              endMessage={<p style={{ textAlign: "center" }}>All done!</p>}
             >
               {visible.map((fit, i) => (
                 <FitMini key={i} {...fit} fit={fit.id} />
