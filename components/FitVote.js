@@ -75,8 +75,11 @@ const FitVote = (props) => {
       const vo =
         (myvotes && myvotes.some((v) => v.fit.id === props.fit)) || false;
 
-      checkDone();
-      setDisabled((myvotes.length > 0 && !vo) || false);
+      if (props.done) {
+        checkDone();
+      } else {
+        setDisabled((myvotes.length > 0 && !vo) || false);
+      }
       setSelected((myvotes.length > 0 && vo) || false);
     } else {
       // Incase of no session
