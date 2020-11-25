@@ -130,7 +130,7 @@ const FitVote = (props) => {
             <div className="header">
               <Button
                 isLoading={isLoading}
-                disabled={selected}
+                disabled={selected || props.archive}
                 onClick={() => {
                   setIsLoading(true);
                   props.handler(props.fit, (added) => {

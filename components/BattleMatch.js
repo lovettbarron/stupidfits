@@ -14,6 +14,7 @@ const BattleMatch = ({
   Fits,
   votes,
   winner,
+  archive,
   parents,
   handler,
 }) => {
@@ -128,6 +129,7 @@ const BattleMatch = ({
                 done={activeRound + 1 > round}
                 votes={allVotes}
                 vote={vote}
+                archive={archive}
                 fit={fit.id}
                 selected={
                   allVotes.find((s) => s.fit.id === fit.id) ? true : false

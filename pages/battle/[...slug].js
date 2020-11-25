@@ -111,12 +111,15 @@ const Collection = ({ battle }) => {
       </Head>
       <Layout>
         <h1>{collection.title} Tournament</h1>
+        {battle.archive && <h3>This tournament is archived</h3>}
         <Link href={`/collection/${collection.id}/${collection.slug}`}>
           <a>Return to Collection</a>
         </Link>
+        <br />
         {collection.description && (
           <p className="center">{collection.description}</p>
         )}
+        <br />
         {/* {session && (
           <p className="center">
             <Button onClick={() => setIsOpen(true)}>Add Fits</Button>{" "}

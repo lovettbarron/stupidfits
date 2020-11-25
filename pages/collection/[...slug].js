@@ -292,7 +292,7 @@ const Collection = ({ collection }) => {
               </div>
             </Tab>
           )}
-          {collection.user.id === session.user.id && (
+          {session && collection.user.id === session.user.id && (
             <Tab title="Archived">
               <div className="flex">
                 {collection.Battle &&

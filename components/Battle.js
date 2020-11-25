@@ -114,30 +114,32 @@ const Battle = (props) => {
           <Button
             onClick={nextRound}
             isLoading={isLoading}
-            disabled={activeRound === rounds}
+            disabled={activeRound === rounds || props.archive}
           >
             {activeRound === rounds - 1 ? "Calculate Winner" : "Next Round"}
           </Button>{" "}
-          <StatefulPopover
-            content={() => (
-              <div style={{ maxWidth: "300px", padding: "1rem" }}>
-                <h3>Really archive this tournament?</h3>
-                <p>
-                  This will close the tournament for everyone and voting will no
-                  longer be possible.
-                </p>
-                <Button onClick={archive} isLoading={isLoading}>
-                  Archive Tournament
-                </Button>
-              </div>
-            )}
-            returnFocus
-            autoFocus
-          >
-            <Button kind={KIND.tertiary} isLoading={isLoading}>
-              Archive Tournament
-            </Button>
-          </StatefulPopover>
+          {!props.archive && (
+            <StatefulPopover
+              content={() => (
+                <div style={{ maxWidth: "300px", padding: "1rem" }}>
+                  <h3>Really archive this tournament?</h3>
+                  <p>
+                    This will close the tournament for everyone and voting will
+                    no longer be possible.
+                  </p>
+                  <Button onClick={archive} isLoading={isLoading}>
+                    Archive Tournament
+                  </Button>
+                </div>
+              )}
+              returnFocus
+              autoFocus
+            >
+              <Button kind={KIND.tertiary} isLoading={isLoading}>
+                Archive Tournament
+              </Button>
+            </StatefulPopover>
+          )}
         </>
       )}
       <br />
@@ -161,6 +163,7 @@ const Battle = (props) => {
                     <BattleMatch
                       key={match.id}
                       round={r}
+                      archive={props.archive}
                       totalRounds={rounds.length}
                       activeRound={activeRound}
                       {...match}
@@ -213,7 +216,7 @@ const Battle = (props) => {
         .bracket {
           display: flex;
           flex-direction: row;
-          height: 90%;
+          height: auto;
           width: 100%;
         }
 
