@@ -22,53 +22,60 @@ async function handleGET(req, res) {
   const id = req.query.id;
   // console.log(req.query);
 
-  const review = await prisma.collection
-    .findOne({
-      where: { id: Number(id) },
-      include: {
-        user: true,
-        fits: {
-          where: {
-            user: {
-              public: true,
-            },
+  const review = await prisma.collection.findOne({
+    where: { id: Number(id) },
+    include: {
+      user: true,
+      fits: {
+        where: {
+          user: {
+            public: true,
           },
-          include: {
-            media: {
-              include: {
-                layers: {
-                  include: {
-                    item: {
-                      include: { brand: true },
-                    },
-                    media: true,
+        },
+        include: {
+          media: {
+            include: {
+              layers: {
+                include: {
+                  item: {
+                    include: { brand: true },
                   },
+                  media: true,
                 },
               },
             },
-            user: true,
-            Battle: true,
-            components: {
-              include: {
-                brand: true,
-              },
+          },
+          user: true,
+          components: {
+            include: {
+              brand: true,
             },
           },
         },
-        tags: true,
-        Comment: {
-          orderBy: {
-            id: "asc",
-          },
-          include: {
-            user: true,
-          },
+      },
+      tags: true,
+      Comment: {
+        orderBy: {
+          id: "asc",
         },
+        include: {
+          user: true,
+        },
+      },
+    },
+  });
+  const battle = await prisma.battle
+    .findMany({
+      where: { collection: { id: Number(id) } },
+      include: {
+        winners: true,
       },
     })
     .finally(async () => {
       await prisma.$disconnect();
     });
+
+  review.Battle = battle;
 
   res.json(review);
 }

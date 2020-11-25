@@ -79,37 +79,30 @@ async function handlePOST(req, res) {
       email: session.user.email,
     },
     include: {
-      Collection: true,
+      Battle: true,
     },
   });
 
-  if (!user.Collection.find((c) => Number(c.id) === Number(req.query.id))) {
+  if (!user.Battle.find((c) => Number(c.id) === Number(req.query.id))) {
     console.log("This doesn't belong to you");
     return;
   }
-  const collection = await prisma.collection
+  const battle = await prisma.battle
     .update({
       where: {
         id: Number(req.query.id),
       },
       data: {
-        published: req.body.published,
-        title: req.body.title,
-        description: req.body.description,
-        slug: req.body.slug
-          .toLowerCase()
-          .split(" ")
-          .join("-")
-          .replace(/[^\w\s-_]/gi, ""),
-        tags: {
-          set: req.body.tags.map((i) => ({ id: i.id })),
-        },
+        archive: req.body.archive,
+      },
+      include: {
+        collection: true,
       },
     })
     .finally(async () => {
       await prisma.$disconnect();
     });
-  res.json(collection);
+  res.json(battle);
 }
 
 // DELETE /api/post/:id

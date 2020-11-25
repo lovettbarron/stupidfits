@@ -12,6 +12,7 @@ import { Button } from "baseui/button";
 import FitGallery from "../../components/FitGallery";
 import FitMini from "../../components/FitMini";
 import CreateCollection from "../../components/CreateCollection";
+import BattleCard from "../../components/BattleCard";
 
 import {
   Modal,
@@ -30,6 +31,7 @@ const Collection = ({ collection }) => {
   const [fits, setFits] = useState(collection.fits || []);
   const [coll, setColl] = useState(collection || null);
   const [isLoading, setIsLoading] = useState(false);
+  const [activeKey, setActiveKey] = React.useState("0");
 
   const refresh = async () => {
     const res = await fetch(
@@ -249,14 +251,60 @@ const Collection = ({ collection }) => {
             )}
           </p>
         )}
-        <div className="flex">
-          {fits &&
-            fits
-              .sort((a, b) => {
-                return b.media[0].timestamp - a.media[0].timestamp;
-              })
-              .map((fit) => <FitMini key={fit.id} {...fit} fit={fit.id} />)}
-        </div>
+        <Tabs
+          activeKey={activeKey}
+          fill={FILL.fixed}
+          onChange={({ activeKey }) => {
+            setActiveKey(activeKey);
+          }}
+          activateOnFocus
+          renderAll
+        >
+          <Tab title="Fits">
+            <div className="flex">
+              {fits &&
+                fits
+                  .sort((a, b) => {
+                    return b.media[0].timestamp - a.media[0].timestamp;
+                  })
+                  .map((fit) => <FitMini key={fit.id} {...fit} fit={fit.id} />)}
+            </div>
+          </Tab>
+          <Tab title="Tournaments">
+            <div className="flex">
+              {collection.Battle &&
+                collection.Battle.filter((b) => !b.archive)
+                  .sort((a, b) => {
+                    return a.createdAt - b.createdAt;
+                  })
+                  .map((battle) => (
+                    <BattleCard
+                      key={battle.id}
+                      battle={battle}
+                      collection={collection}
+                    />
+                  ))}
+            </div>
+          </Tab>
+          {collection.user.id === session.user.id && (
+            <Tab title="Archived">
+              <div className="flex">
+                {collection.Battle &&
+                  collection.Battle.filter((b) => b.archive)
+                    .sort((a, b) => {
+                      return a.createdAt - b.createdAt;
+                    })
+                    .map((battle) => (
+                      <BattleCard
+                        key={battle.id}
+                        battle={battle}
+                        collection={collection}
+                      />
+                    ))}
+              </div>
+            </Tab>
+          )}
+        </Tabs>
         <Modal
           onClose={() => {
             setIsOpen(false);

@@ -3,9 +3,11 @@ import fetch from "isomorphic-unfetch";
 import { useSession } from "next-auth/client";
 import BattleMatch from "./BattleMatch";
 import { Spinner } from "baseui/spinner";
-import { Button } from "baseui/button";
+import { Button, KIND } from "baseui/button";
 import FitMini from "./FitMini";
+import Router from "next/router";
 import { Skeleton } from "baseui/skeleton";
+import { StatefulPopover } from "baseui/popover";
 
 const Battle = (props) => {
   const [session, loading] = useSession();
@@ -16,6 +18,31 @@ const Battle = (props) => {
   const [activeRound, setActiveRound] = useState(props.activeRound || 0);
 
   const ref = useRef();
+
+  const archive = async () => {
+    setIsLoading(true);
+    try {
+      const body = {
+        archive: true,
+      };
+      const res = await fetch(`${process.env.HOST}/api/battle/${props.id}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+      try {
+        const data = await res.json();
+        Router.push({
+          pathname: `/collection/${data.collection.id}`,
+        });
+      } catch (e) {
+        console.log("error:", e.message);
+      }
+    } catch (error) {
+      console.error(error);
+      setIsLoading(false);
+    }
+  };
 
   const nextRound = async () => {
     // setActiveRound(activeRound + 1);
@@ -83,16 +110,38 @@ const Battle = (props) => {
   return (
     <div className="container">
       {session && session.user.id === props.user.id && (
-        <Button
-          onClick={nextRound}
-          isLoading={isLoading}
-          disabled={activeRound === rounds}
-        >
-          Next Round
-        </Button>
+        <>
+          <Button
+            onClick={nextRound}
+            isLoading={isLoading}
+            disabled={activeRound === rounds}
+          >
+            {activeRound === rounds - 1 ? "Calculate Winner" : "Next Round"}
+          </Button>{" "}
+          <StatefulPopover
+            content={() => (
+              <div style={{ maxWidth: "300px", padding: "1rem" }}>
+                <h3>Really archive this tournament?</h3>
+                <p>
+                  This will close the tournament for everyone and voting will no
+                  longer be possible.
+                </p>
+                <Button onClick={archive} isLoading={isLoading}>
+                  Archive Tournament
+                </Button>
+              </div>
+            )}
+            returnFocus
+            autoFocus
+          >
+            <Button kind={KIND.tertiary} isLoading={isLoading}>
+              Archive Tournament
+            </Button>
+          </StatefulPopover>
+        </>
       )}
       <br />
-      {isLoading && (
+      {isLoading && matches.length === 0 && (
         <Spinner size={96} overrides={{ Svg: { borderTopColor: "#fff" } }} />
       )}
       <div className="bracket">
