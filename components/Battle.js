@@ -75,7 +75,7 @@ const Battle = (props) => {
     if (matches.length < 1) fetchMatches(true);
     else fetchMatches(false);
     return () => {};
-  }, [matches, activeRound]);
+  }, [activeRound]);
 
   // Based on this
   // https://codepen.io/b3b00/pen/YoZYmv
