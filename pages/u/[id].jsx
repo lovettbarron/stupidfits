@@ -267,6 +267,8 @@ const UserProfile = (props) => {
                         <Anatomy
                           nocomment={true}
                           components={props.closet.sort(function (a, b) {
+                            if (!a.brand || !b.brand) return b;
+
                             var textA = a.brand.name.toUpperCase();
                             var textB = b.brand.name.toUpperCase();
                             return textA < textB ? -1 : textA > textB ? 1 : 0;

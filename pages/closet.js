@@ -258,7 +258,7 @@ const Closet = (props) => {
         ul {
           display: flex;
           flex-wrap: wrap;
-          justify-content: center;
+          justify-content: flex-start;
           font-size: 1rem;
           padding: 0;
           margin: 0;
@@ -267,6 +267,8 @@ const Closet = (props) => {
         li {
           margin: 1rem;
           list-style: none !important;
+          width: 30rem;
+          text-align: left;
         }
 
         .hover {
@@ -298,7 +300,11 @@ export const getServerSideProps = async (context) => {
   }
   return {
     props: {
-      items: items,
+      items: items.sort((a, b) => {
+        var textA = a.brand.name.toUpperCase();
+        var textB = b.brand.name.toUpperCase();
+        return textA < textB ? -1 : textA > textB ? 1 : 0;
+      }),
       url: process.env.HOST,
     },
   };
