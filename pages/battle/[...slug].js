@@ -181,7 +181,8 @@ export const getServerSideProps = async (context) => {
   // Get item
 
   const session = await getSession(context);
-  const id = context.params.slug;
+  console.log("Battle Slug", context.params.slug);
+  const id = context.params.slug[0];
 
   console.log("Fetching battle", id);
 
@@ -202,8 +203,6 @@ export const getServerSideProps = async (context) => {
     }
     return {};
   }
-
-  console.log("data", data);
 
   return {
     props: {

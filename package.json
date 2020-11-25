@@ -7,6 +7,8 @@
     "node": ">=12.0.0"
   },
   "scripts": {
+    "log:stage": "heroku logs --app stupidfits-stage --tail",
+    "log:prod": "heroku logs --app stupidfits-prod --tail",
     "dev": "next",
     "build": "next build",
     "start": "next start -p $PORT",

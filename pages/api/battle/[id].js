@@ -20,7 +20,7 @@ export default async function handle(req, res) {
 // GET /api/get/:id
 async function handleGET(req, res) {
   const id = req.query.id;
-  // console.log(req.query);
+  console.log(req.query);
 
   const review = await prisma.battle
     .findOne({
@@ -51,6 +51,7 @@ async function handleGET(req, res) {
         },
         collection: {
           include: {
+            user: true,
             fits: {
               include: {
                 media: true,

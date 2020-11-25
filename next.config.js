@@ -23,6 +23,11 @@ module.exports = {
         permanent: true,
       },
       {
+        source: "/battle",
+        destination: "/collection",
+        permanent: true,
+      },
+      {
         source: "/fit",
         destination: "/",
         permanent: true,
