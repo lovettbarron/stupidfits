@@ -84,7 +84,14 @@ const BattleMatch = ({
   } else
     return (
       <div className="matchups">
-        <div className="vs">vs</div>
+        <div className="vs">
+          {activeRound + 1 > round ? (allVotes.length < 1 ? "=" : "vs") : "vs"}
+        </div>
+
+        {activeRound + 1 > round && allVotes.length > 0 && (
+          <div className="report">{allVotes.length} votes</div>
+        )}
+
         {Fits.length === 0 && (
           <>
             <div className="match">
@@ -168,6 +175,23 @@ const BattleMatch = ({
             color: rgba(255, 255, 255, 0.5);
             position: absolute;
             border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+          }
+
+          .report {
+            background: #151515;
+            top: 10rem;
+            left: 50%;
+            margin: -2.5rem;
+            width: 5rem;
+            height: 2rem;
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.5);
+            position: absolute;
+            border-radius: 0.5rem 0.5rem 0 0;
             display: flex;
             justify-content: center;
             align-items: center;
