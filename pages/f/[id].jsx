@@ -86,10 +86,6 @@ const Fit = (props) => {
             },
           ],
         }}
-        twitter={{
-          image: seourlfb,
-          cardType: "summary_large_image",
-        }}
       />
       <Head>
         <link

@@ -171,10 +171,6 @@ const Collection = ({ collection }) => {
             },
           ],
         }}
-        twitter={{
-          image: seourlfb,
-          cardType: "summary_large_image",
-        }}
       />
       <Head>
         <link

@@ -223,10 +223,6 @@ const BrandProfile = (props) => {
             },
           ],
         }}
-        twitter={{
-          image: seourlfb,
-          cardType: "summary_large_image",
-        }}
       />
       <div className="page">
         <main>

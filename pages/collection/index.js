@@ -55,10 +55,6 @@ const Collections = (props) => {
             },
           ],
         }}
-        twitter={{
-          image: "https://stupidfits.com/img/reviews-wide.png",
-          cardType: "summary_large_image",
-        }}
       />
       <Head>
         <link

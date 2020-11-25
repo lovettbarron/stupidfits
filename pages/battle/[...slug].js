@@ -29,7 +29,7 @@ const generateVSImage = (fit1, fit2, square) => {
     square ? "315" : "600"
   }/l_stupidfits:vsimage,x_0/h_630,w_${square ? "630" : "1200"},c_fit/${
     fit2.media[0].cloudinary
-  }.jpg`;
+  }.png`;
 };
 
 const Collection = ({ battle }) => {
@@ -48,7 +48,14 @@ const Collection = ({ battle }) => {
       generateVSImage(collection.fits[0], collection.fits[1], false)) ||
     "https://stupidfits.com/img/appicon.png";
 
-  let tags = [];
+  let tags = [
+    "outfit",
+    "tournament",
+    "techwear",
+    "whatsapp",
+    "discord",
+    "compete",
+  ];
   // [
   //   ...collection.item.map((i) => `${i.brand.name} ${i.model}`),
   //   ...props.review.tags.map((s) => `${s.name}`),
@@ -69,7 +76,7 @@ const Collection = ({ battle }) => {
           keywords: tags,
           url: `${process.env.HOST}/battle/${battle.id}/${collection.slug}`,
           title: `${collection.title} Tournament by ${battle.user.username} on Stupid Fits`,
-          description: `${collection.title} Tournamentby ${battle.user.username} on Stupid Fits `,
+          description: `${collection.title} Tournamentby ${battle.user.username} on Stupid Fits`,
           type: "article",
           article: {
             authors: [battle.user.username],
@@ -81,20 +88,16 @@ const Collection = ({ battle }) => {
               width: 1200,
               height: 630,
               type: "image/png",
-              alt: "Primary image",
+              alt: `${collection.title} Tournamentby ${battle.user.username} on Stupid Fits`,
             },
             {
               url: seourl,
               width: 1200,
               height: 1200,
               type: "image/png",
-              alt: "Og Image",
+              alt: `${collection.title} Tournamentby ${battle.user.username} on Stupid Fits`,
             },
           ],
-        }}
-        twitter={{
-          image: seourlfb,
-          cardType: "summary_large_image",
         }}
       />
       <Head>

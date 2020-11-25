@@ -18,7 +18,7 @@ const Blog = (props) => {
       .filter((f) => ["FEATURED", "PUBLIC"].includes(f.status))
       .filter((f) => f.components.length > 0) || []
   );
-  const [visible, setVisible] = useState(feed.slice(0, 1));
+  const [visible, setVisible] = useState(feed.slice(0, 5));
   // console.log("session", props.user);
 
   const fetch = () => {

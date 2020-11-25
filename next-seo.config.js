@@ -6,20 +6,23 @@ export default {
     locale: "en_US",
     url: "https://stupidfits.com",
     site_name: "Stupid Fits",
-    description: "Digital Fit Library for all your Fabrics",
+    description:
+      "Stupid Fits is an outfit diary with reviews, albums, competitions, and more.",
     keywords: ["fitpics", "outfits", "techwear", "clueless", "closet", "fits"],
     images: [
       {
         url: "https://stupidfits.com/img/appiconwide.png",
         width: 1200,
         height: 630,
-        alt: "Stupid Fits",
+        alt:
+          "Stupid Fits is an outfit diary with reviews, albums, competitions, and more.",
       },
       {
         url: "https://stupidfits.com/img/appicon.png",
         width: 1024,
         height: 1024,
-        alt: "Stupid Fits",
+        alt:
+          "Stupid Fits is an outfit diary with reviews, albums, competitions, and more.",
       },
     ],
   },
@@ -27,8 +30,8 @@ export default {
     appId: "2742481926027884",
   },
   twitter: {
-    image: "https://stupidfits.com/img/appiconwide.png",
-    description: "Digital Fit Library for all your Fabrics",
+    description:
+      "Stupid Fits is an outfit diary with reviews, albums, competitions, and more.",
     handle: "@readywater",
     site: "@stupid_systems",
     cardType: "summary_large_image",
