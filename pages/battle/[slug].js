@@ -21,28 +21,28 @@ import {
 const Collection = ({ battle }) => {
   const [session, loading] = useSession();
   const [isOpen, setIsOpen] = useState(false);
+  const [collection, setCollection] = useState(battle.collection);
+  const seourl =
+    (collection.fits.length > 0 &&
+      collection.fits[0].media[0].cloudinary &&
+      `https://res.cloudinary.com/stupidsystems/image/${
+        battle.user.hideface && `e_pixelate_faces:15/`
+      }upload/${collection.fits[0].media[0].cloudinary}.png`) ||
+    "https://stupidfits.com/img/appicon.png";
 
-  // const seourl =
-  //   (collection.fits.length > 0 &&
-  //     collection.fits[0].media[0].cloudinary &&
-  //     `https://res.cloudinary.com/stupidsystems/image/${
-  //       collection.user.hideface && `e_pixelate_faces:15/`
-  //     }upload/${collection.fits[0].media[0].cloudinary}.png`) ||
-  //   "https://stupidfits.com/img/appicon.png";
+  const seourlfb =
+    (collection.fits.length > 0 &&
+      collection.fits[0].media[0].cloudinary &&
+      `https://res.cloudinary.com/stupidsystems/image/upload/b_rgb:151515,${
+        battle.user.hideface && `e_pixelate_faces:15,`
+      }c_lpad,h_630,w_1200/${collection.fits[0].media[0].cloudinary}.png`) ||
+    "https://stupidfits.com/img/appicon.png";
 
-  // const seourlfb =
-  //   (collection.fits.length > 0 &&
-  //     collection.fits[0].media[0].cloudinary &&
-  //     `https://res.cloudinary.com/stupidsystems/image/upload/b_rgb:151515,${
-  //       collection.user.hideface && `e_pixelate_faces:15,`
-  //     }c_lpad,h_630,w_1200/${collection.fits[0].media[0].cloudinary}.png`) ||
-  //   "https://stupidfits.com/img/appicon.png";
-
-  // let tags = [];
-  // // [
-  // //   ...collection.item.map((i) => `${i.brand.name} ${i.model}`),
-  // //   ...props.review.tags.map((s) => `${s.name}`),
-  // // ];
+  let tags = [];
+  // [
+  //   ...collection.item.map((i) => `${i.brand.name} ${i.model}`),
+  //   ...props.review.tags.map((s) => `${s.name}`),
+  // ];
 
   useEffect(() => {
     // refresh();
@@ -51,18 +51,18 @@ const Collection = ({ battle }) => {
 
   return (
     <>
-      {/* <NextSeo
-        title={`${collection.title} by ${collection.user.username} on Stupid Fits `}
-        description={`${collection.title} by ${collection.user.username} on Stupid Fits `}
-        canonical={`${process.env.HOST}/collection/${collection.id}/${collection.slug}`}
+      <NextSeo
+        title={`${collection.title} by ${battle.user.username} on Stupid Fits `}
+        description={`${collection.title} by ${battle.user.username} on Stupid Fits `}
+        canonical={`${process.env.HOST}/battle/${battle.id}/${collection.slug}`}
         openGraph={{
           keywords: tags,
-          url: `${process.env.HOST}/collection/${collection.id}/${collection.slug}`,
-          title: `${collection.title} by ${collection.user.username} on Stupid Fits`,
-          description: `${collection.title} by ${collection.user.username} on Stupid Fits `,
+          url: `${process.env.HOST}/battle/${battle.id}/${collection.slug}`,
+          title: `${collection.title} Tournament by ${battle.user.username} on Stupid Fits`,
+          description: `${collection.title} Tournamentby ${battle.user.username} on Stupid Fits `,
           type: "article",
           article: {
-            authors: [collection.user.username],
+            authors: [battle.user.username],
             tags: tags,
           },
           images: [
@@ -91,16 +91,16 @@ const Collection = ({ battle }) => {
         <link
           rel="alternate"
           type="application/json+oembed"
-          href={`${process.env.HOST}/api/embed?url=${process.env.HOST}/collection/${collection.id}/${collection.slug}`}
-          title={`${collection.user.username}'s fit on Stupid Fits`}
+          href={`${process.env.HOST}/api/embed?url=${process.env.HOST}/battle/${battle.id}/${collection.slug}`}
+          title={`${collection.title} Tournament on Stupid Fits`}
           key="oembed"
         />
-      </Head> */}
+      </Head>
       <Layout>
-        {/* <h1>{battle.title}</h1> */}
-        {/* {collection.description && (
+        <h1>{collection.title} Tournament</h1>
+        {collection.description && (
           <p className="center">{collection.description}</p>
-        )} */}
+        )}
         {/* {session && (
           <p className="center">
             <Button onClick={() => setIsOpen(true)}>Add Fits</Button>{" "}
@@ -193,23 +193,15 @@ export const getServerSideProps = async (context) => {
     console.log("error:", e.message);
   }
 
-  // if (context.params.slug[1] !== data.slug) {
-  //   if (context.res) {
-  //     context.res.writeHead(302, {
-  //       Location: `/collection/${data.id}/${data.collection.slug}`,
-  //     });
-  //     context.res.end();
-  //   }
-  //   return {};
-  // }
-
-  // if ((!session || !session.user) && !data.published) {
-  //   if (context.res) {
-  //     context.res.writeHead(302, { Location: `/` });
-  //     context.res.end();
-  //   }
-  //   return {};
-  // }
+  if (context.params.slug[1] !== data.collection.slug) {
+    if (context.res) {
+      context.res.writeHead(302, {
+        Location: `/battle/${data.id}/${data.collection.slug}`,
+      });
+      context.res.end();
+    }
+    return {};
+  }
 
   console.log("data", data);
 

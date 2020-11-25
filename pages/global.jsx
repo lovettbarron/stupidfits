@@ -5,21 +5,34 @@ import Post from "../components/Post";
 import FitMini from "../components/FitMini";
 import Link from "next/link";
 import { useSession, signin, signout } from "next-auth/client";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 const Blog = (props) => {
   const [session, loading] = useSession();
   const [instagram, setInstagram] = useState("");
+  const [feed, setFeed] = useState(
+    props.feed
+      .sort((a, b) => {
+        return b.media[0].timestamp - a.media[0].timestamp;
+      })
+      .filter((f) => ["FEATURED", "PUBLIC"].includes(f.status))
+      .filter((f) => f.components.length > 0) || []
+  );
+  const [visible, setVisible] = useState(feed.slice(0, 1));
   // console.log("session", props.user);
+
+  const fetch = () => {
+    const nextMax = (v) => {
+      let t = v.length + 4;
+      return t > feed.length - 1 ? feed.length - 1 : t;
+    };
+    setVisible((v) => [feed.slice(0, nextMax(v))]);
+    console.log("Fetchin", visible);
+  };
+
   return (
     <Layout>
       <div className="page">
-        <header>
-          <h1>Stupid Fits</h1>
-          <h2>
-            Ingredients for
-            <br /> your Fitpics
-          </h2>
-        </header>
         {!session && (
           <>
             <a className="auth" onClick={signin}>
@@ -31,15 +44,26 @@ const Blog = (props) => {
         <h2>All the fits</h2>
         <main>
           <div className="flex">
-            {props.feed
-              .sort((a, b) => {
-                return b.media[0].timestamp - a.media[0].timestamp;
-              })
-              .filter((f) => ["FEATURED", "PUBLIC"].includes(f.status))
-              .filter((f) => f.components.length > 0)
-              .map((fit) => (
-                <FitMini key={fit.id} {...fit} fit={fit.id} />
+            <InfiniteScroll
+              dataLength={feed.length || 0} //This is important field to render the next data
+              next={fetch}
+              style={{
+                display: "flex",
+                flexWrap: "wrap",
+                justifyContent: "center",
+              }}
+              hasMore={feed.length > visible.length}
+              loader={<h4>Loading...</h4>}
+              endMessage={
+                <p style={{ textAlign: "center" }}>
+                  <b>Yay! You have seen it all</b>
+                </p>
+              }
+            >
+              {visible.map((fit, i) => (
+                <FitMini key={i} {...fit} fit={fit.id} />
               ))}
+            </InfiniteScroll>
           </div>
         </main>
         <footer>
