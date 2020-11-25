@@ -64,19 +64,22 @@ const FitVote = (props) => {
     // My votes for this match
     if (session) {
       // Count votes for your session
-      // if active session
-      const myvotes =
-        (props.votes &&
-          props.votes.filter((v) => v.user.id === session.user.id)) ||
-        [];
+      if (props.votes.some((v) => v.user.id === session.user.id)) {
+        // if active session
+        const myvotes =
+          (props.votes &&
+            props.votes.filter((v) => v.user.id === session.user.id)) ||
+          [];
 
-      // Did I vote for this fit?
-      const vo =
-        (myvotes && myvotes.some((v) => v.fit.id === props.fit)) || false;
+        // Did I vote for this fit?
+        const vo =
+          (myvotes && myvotes.some((v) => v.fit.id === props.fit)) || false;
 
-      setDisabled((myvotes.length > 0 && !vo) || false);
-      setSelected((myvotes.length > 0 && vo) || false);
-      checkDone();
+        setDisabled((myvotes.length > 0 && !vo) || false);
+        setSelected((myvotes.length > 0 && vo) || false);
+      } else {
+        checkDone();
+      }
     } else {
       // Incase of no session
 
