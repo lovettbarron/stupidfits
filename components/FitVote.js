@@ -64,7 +64,10 @@ const FitVote = (props) => {
     // My votes for this match
     if (session) {
       // Count votes for your session
-      if (props.votes.some((v) => v.user.id === session.user.id)) {
+      if (
+        props.votes &&
+        props.votes.some((v) => v.user.id === session.user.id)
+      ) {
         // if active session
         const myvotes =
           (props.votes &&
