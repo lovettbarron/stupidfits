@@ -18,6 +18,20 @@ import {
   ROLE,
 } from "baseui/modal";
 
+const generateVSImage = (fit1, fit2, square) => {
+  //https://res.cloudinary.com/stupidsystems/image/upload/b_rgb:151515,h_630,w_630,c_fit/l_jjgxbgrmqyvck3nltlvt,h_1.0,fl_relative,x_600/l_stupidfits:vsimage,x_0/h_630,w_1200,c_fill/kqz94moxwrmfvxvpdx53.jpg
+
+  //res.cloudinary.com/stupidsystems/image/upload/b_rgb:151515,h_630,w_630/l_jjgxbgrmqyvck3nltlvt,h_1.0,fl_relative,x_630/l_stupidfits:vsimage,x_0/h_630,w_1200,c_fit/kqz94moxwrmfvxvpdx53.jpg
+
+  https: return `https://res.cloudinary.com/stupidsystems/image/upload/b_rgb:151515,h_630,w_${
+    square ? "630" : "630"
+  }/l_${fit1.media[0].cloudinary.replace("/", ":")},h_1.0,fl_relative,x_${
+    square ? "315" : "600"
+  }/l_stupidfits:vsimage,x_0/h_630,w_${square ? "630" : "1200"},c_fit/${
+    fit2.media[0].cloudinary
+  }.jpg`;
+};
+
 const Collection = ({ battle }) => {
   const [session, loading] = useSession();
   const [isOpen, setIsOpen] = useState(false);
@@ -25,17 +39,13 @@ const Collection = ({ battle }) => {
   const seourl =
     (collection.fits.length > 0 &&
       collection.fits[0].media[0].cloudinary &&
-      `https://res.cloudinary.com/stupidsystems/image/${
-        battle.user.hideface && `e_pixelate_faces:15/`
-      }upload/${collection.fits[0].media[0].cloudinary}.png`) ||
-    "https://stupidfits.com/img/appicon.png";
+      generateVSImage(collection.fits[0], collection.fits[1]),
+    true) || "https://stupidfits.com/img/appicon.png";
 
   const seourlfb =
     (collection.fits.length > 0 &&
       collection.fits[0].media[0].cloudinary &&
-      `https://res.cloudinary.com/stupidsystems/image/upload/b_rgb:151515,${
-        battle.user.hideface && `e_pixelate_faces:15,`
-      }c_lpad,h_630,w_1200/${collection.fits[0].media[0].cloudinary}.png`) ||
+      generateVSImage(collection.fits[0], collection.fits[1], false)) ||
     "https://stupidfits.com/img/appicon.png";
 
   let tags = [];
