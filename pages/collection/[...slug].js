@@ -196,7 +196,11 @@ const Collection = ({ collection }) => {
                   {fits && fits.some((f) => f.user.id === session.user.id)
                     ? "Edit"
                     : "Add"}{" "}
-                  Fit{!collection.oneperuser && "s"} to Collection
+                  Fit{!collection.oneperuser && "s"}{" "}
+                  {fits && fits.some((f) => f.user.id === session.user.id)
+                    ? "in"
+                    : "to"}{" "}
+                  Collection
                 </Button>{" "}
               </>
             )}
@@ -270,22 +274,24 @@ const Collection = ({ collection }) => {
                   .map((fit) => <FitMini key={fit.id} {...fit} fit={fit.id} />)}
             </div>
           </Tab>
-          <Tab title="Tournaments">
-            <div className="flex">
-              {collection.Battle &&
-                collection.Battle.filter((b) => !b.archive)
-                  .sort((a, b) => {
-                    return a.createdAt - b.createdAt;
-                  })
-                  .map((battle) => (
-                    <BattleCard
-                      key={battle.id}
-                      battle={battle}
-                      collection={collection}
-                    />
-                  ))}
-            </div>
-          </Tab>
+          {collection.Battle.length > 0 && (
+            <Tab title="Tournaments">
+              <div className="flex">
+                {collection.Battle &&
+                  collection.Battle.filter((b) => !b.archive)
+                    .sort((a, b) => {
+                      return a.createdAt - b.createdAt;
+                    })
+                    .map((battle) => (
+                      <BattleCard
+                        key={battle.id}
+                        battle={battle}
+                        collection={collection}
+                      />
+                    ))}
+              </div>
+            </Tab>
+          )}
           {collection.user.id === session.user.id && (
             <Tab title="Archived">
               <div className="flex">
