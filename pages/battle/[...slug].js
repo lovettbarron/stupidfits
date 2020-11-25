@@ -23,7 +23,7 @@ const generateVSImage = (fit1, fit2, square) => {
 
   //res.cloudinary.com/stupidsystems/image/upload/b_rgb:151515,h_630,w_630/l_jjgxbgrmqyvck3nltlvt,h_1.0,fl_relative,x_630/l_stupidfits:vsimage,x_0/h_630,w_1200,c_fit/kqz94moxwrmfvxvpdx53.jpg
 
-  return `https://res.cloudinary.com/stupidsystems/image/upload/b_rgb:151515,h_630,w_${
+  return `https://res.cloudinary.com/stupidsystems/image/upload/b_rgb:151515,c_fit,h_630,w_${
     square ? "630" : "630"
   }/l_${fit1.media[0].cloudinary.replace("/", ":")},h_1.0,fl_relative,x_${
     square ? "315" : "600"
