@@ -192,7 +192,7 @@ const Battle = (props) => {
       <style jsx>{`
         .container {
           display: block;
-          overflow: scroll;
+
           width: 100%;
           height: auto;
         }
@@ -246,7 +246,6 @@ const Battle = (props) => {
 
         @media screen and (max-width: 800px) {
           .container {
-            overflow: scroll;
             width: 100%;
             height: auto;
           }
