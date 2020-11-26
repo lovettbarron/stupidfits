@@ -40,6 +40,17 @@ const Main = (props) => {
   };
 
   useEffect(() => {
+    setFeed(
+      props.feed &&
+        Array.isArray(props.feed) &&
+        props.feed
+          .filter((f) => (session ? true : f.status === "FEATURED"))
+          .sort((a, b) => {
+            // return b.createdAt - a.createdAt;
+            return b.media[0].timestamp - a.media[0].timestamp;
+          })
+    );
+
     return () => {};
   }, [session]);
 
