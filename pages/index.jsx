@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 // import { NextSeo } from "next-seo";
 import Layout from "../components/Layout";
 import fetch from "isomorphic-unfetch";
@@ -10,11 +10,39 @@ import { useSession, signin, signout } from "next-auth/client";
 import { extractHostname } from "../components/Clicker";
 import { Button } from "baseui/button";
 import { Tabs, Tab, FILL } from "baseui/tabs-motion";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 const Main = (props) => {
   const [session, loading] = useSession();
   const [instagram, setInstagram] = useState("");
   const [activeKey, setActiveKey] = React.useState("0");
+
+  const [feed, setFeed] = useState(
+    props.feed &&
+      Array.isArray(props.feed) &&
+      props.feed
+        .filter((f) => (session ? true : f.status === "FEATURED"))
+        .sort((a, b) => {
+          // return b.createdAt - a.createdAt;
+          return b.media[0].timestamp - a.media[0].timestamp;
+        })
+  );
+  const [visible, setVisible] = useState(feed.slice(0, 10));
+  // console.log("session", props.user);
+
+  const fetch = () => {
+    const nextMax = () => {
+      let t = visible.length + 4;
+      return t > feed.length - 1 ? feed.length : t;
+    };
+    setVisible(feed.slice(0, nextMax()));
+    console.log("Fetchin", visible);
+  };
+
+  useEffect(() => {
+    return () => {};
+  }, [session]);
+
   // console.log("session", props.user);
   return (
     <>
@@ -148,19 +176,21 @@ const Main = (props) => {
                 }
               >
                 <div className="main">
-                  {props.feed &&
-                    Array.isArray(props.feed) &&
-                    props.feed
-                      .filter((f) =>
-                        session && session.user ? true : f.status === "FEATURED"
-                      )
-                      .sort((a, b) => {
-                        // return b.createdAt - a.createdAt;
-                        return b.media[0].timestamp - a.media[0].timestamp;
-                      })
-                      .map((fit) => (
-                        <FitMini key={"f" + fit.id} {...fit} fit={fit.id} />
-                      ))}
+                  <InfiniteScroll
+                    dataLength={visible.length} //This is important field to render the next data
+                    next={fetch}
+                    style={{
+                      display: "flex",
+                      flexWrap: "wrap",
+                      justifyContent: "center",
+                    }}
+                    hasMore={feed.length > visible.length}
+                    loader={<h4>Loading...</h4>}
+                  >
+                    {visible.map((fit, i) => (
+                      <FitMini key={i} {...fit} fit={fit.id} />
+                    ))}
+                  </InfiniteScroll>
                 </div>
               </Tab>
               <Tab title="Recent Reviews">
@@ -175,7 +205,7 @@ const Main = (props) => {
                         return b.createdAt - a.createdAt;
                         // return b.media[0].timestamp - a.media[0].timestamp;
                       })
-                      .map((fit) => <ReviewBox key={"r" + fit.id} {...fit} />)}
+                      .map((fit, i) => <ReviewBox key={"r" + i} {...fit} />)}
                 </div>
               </Tab>
             </Tabs>

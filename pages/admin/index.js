@@ -3,6 +3,7 @@ import fetch from "isomorphic-unfetch";
 import Layout from "../../components/Layout";
 import Link from "next/link";
 import Router from "next/router";
+import Head from "next/head";
 import { FileUploader } from "baseui/file-uploader";
 import { useSession, getSession } from "next-auth/client";
 import { Checkbox, LABEL_PLACEMENT, STYLE_TYPE } from "baseui/checkbox";
@@ -39,6 +40,9 @@ const Admin = (props) => {
         session.user &&
         session.user.email === "alb@andrewlb.com" && (
           <Layout>
+            <Head>
+              <title>StupidFits Admin</title>
+            </Head>
             <div className="page">
               <h1>Moderate Feed</h1>
               <Link href="/admin/migrate">
