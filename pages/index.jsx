@@ -6,7 +6,7 @@ import Post from "../components/Post";
 import FitMini from "../components/FitMini";
 import ReviewBox from "../components/ReviewBox";
 import Link from "next/link";
-import { useSession, signin, signout } from "next-auth/client";
+import { getSession, useSession, signin, signout } from "next-auth/client";
 import { extractHostname } from "../components/Clicker";
 import { Button } from "baseui/button";
 import { Tabs, Tab, FILL } from "baseui/tabs-motion";
@@ -17,39 +17,33 @@ const Main = (props) => {
   const [instagram, setInstagram] = useState("");
   const [activeKey, setActiveKey] = React.useState("0");
 
-  const [feed, setFeed] = useState(
-    props.feed &&
-      Array.isArray(props.feed) &&
-      props.feed
-        .filter((f) => (session ? true : f.status === "FEATURED"))
-        .sort((a, b) => {
-          // return b.createdAt - a.createdAt;
-          return b.media[0].timestamp - a.media[0].timestamp;
-        })
-  );
-  const [visible, setVisible] = useState(feed.slice(0, 10));
+  // const [feed, setFeed] = useState(
+  //   props.feed && Array.isArray(props.feed) && props.feed
+  // );
+  const [visible, setVisible] = useState(props.feed.slice(0, 10));
   // console.log("session", props.user);
 
   const fetch = () => {
     const nextMax = () => {
       let t = visible.length + 4;
-      return t > feed.length - 1 ? feed.length : t;
+      return t > props.feed.length - 1 ? props.feed.length : t;
     };
-    setVisible(feed.slice(0, nextMax()));
+    setVisible(props.feed.slice(0, nextMax()));
     console.log("Fetchin", visible);
   };
 
   useEffect(() => {
-    setFeed(
-      props.feed &&
-        Array.isArray(props.feed) &&
-        props.feed
-          .filter((f) => (session ? true : f.status === "FEATURED"))
-          .sort((a, b) => {
-            // return b.createdAt - a.createdAt;
-            return b.media[0].timestamp - a.media[0].timestamp;
-          })
-    );
+    // setFeed(
+    //   props.feed &&
+    //     Array.isArray(props.feed) &&
+    //     props.feed
+    //       .filter((f) => (session ? true : f.status === "FEATURED"))
+    //       .sort((a, b) => {
+    //         // return b.createdAt - a.createdAt;
+    //         return b.media[0].timestamp - a.media[0].timestamp;
+    //       })
+    // );
+    setVisible(props.feed.slice(0, 10));
 
     return () => {};
   }, [session]);
@@ -195,7 +189,7 @@ const Main = (props) => {
                       flexWrap: "wrap",
                       justifyContent: "center",
                     }}
-                    hasMore={feed.length > visible.length}
+                    hasMore={props.feed.length > visible.length}
                     loader={<h4>Loading...</h4>}
                   >
                     {visible.map((fit, i) => (
@@ -322,6 +316,7 @@ const Main = (props) => {
 };
 
 export const getServerSideProps = async (context) => {
+  const session = await getSession(context);
   const userres = await fetch(`${process.env.HOST}/api/user`, {
     method: "GET",
     headers: {
@@ -371,7 +366,17 @@ export const getServerSideProps = async (context) => {
   // console.log(revfeed);
 
   return {
-    props: { feed, review: revfeed, user, url: process.env.HOST },
+    props: {
+      feed: feed
+        .filter((f) => (session ? true : f.status === "FEATURED"))
+        .sort((a, b) => {
+          // return b.createdAt - a.createdAt;
+          return b.media[0].timestamp - a.media[0].timestamp;
+        }),
+      review: revfeed,
+      user,
+      url: process.env.HOST,
+    },
   };
 };
 
