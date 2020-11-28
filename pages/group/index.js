@@ -3,7 +3,7 @@ import { NextSeo } from "next-seo";
 import Head from "next/head";
 import Layout from "../../components/Layout";
 import fetch from "isomorphic-unfetch";
-import CollectionBox from "../../components/CollectionBox";
+import GroupBox from "../../components/GroupBox";
 import Link from "next/link";
 import { useSession, signin, signout } from "next-auth/client";
 import { Button } from "baseui/button";
@@ -31,7 +31,7 @@ const Group = (props) => {
       <NextSeo
         title={`Groups on Stupid Fits `}
         description={`Groups for styles, tournaments, communities, and similar — mostly to support existing communities`}
-        canonical={`${process.env.HOST}/collection/`}
+        canonical={`${process.env.HOST}/group/`}
         openGraph={{
           keywords: tags,
           url: `${process.env.HOST}/group/`,
@@ -87,7 +87,7 @@ const Group = (props) => {
                 .sort((a, b) => {
                   return b.createdAt - a.createdAt;
                 })
-                .map((r) => <CollectionBox key={r.id} {...r} />)}
+                .map((r) => <GroupBox key={r.id} {...r} />)}
           </div>
 
           <Modal

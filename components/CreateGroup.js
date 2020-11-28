@@ -23,7 +23,7 @@ const CreateGroup = ({ group, fit }) => {
   const [published, setPublished] = useState(
     (group && group.published) || false
   );
-  const [title, setTitle] = useState((group && group.title) || "");
+  const [name, setName] = useState((group && group.name) || "");
   const [description, setDescription] = useState(
     (group && group.description) || ""
   );
@@ -85,12 +85,12 @@ const CreateGroup = ({ group, fit }) => {
   useEffect(() => {
     return () => {
       if (!defslug) {
-        const v = title.split(" ").join("-").toLowerCase();
+        const v = name.split(" ").join("-").toLowerCase();
         const safe = v.replace(/[^\w\s-_]/gi, "");
         setSlug(safe);
       }
     };
-  }, [session, title, defslug]);
+  }, [session, name, defslug]);
 
   return (
     <>
@@ -110,8 +110,8 @@ const CreateGroup = ({ group, fit }) => {
           <label>
             <h3>Group Name</h3>
             <Input
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
+              value={name}
+              onChange={(e) => setName(e.target.value)}
               placeholder="Name of your group"
             />
           </label>
@@ -161,11 +161,11 @@ const CreateGroup = ({ group, fit }) => {
           <Button
             onClick={(e) => {
               e.preventDefault();
-              if (!title) return null;
+              if (!name) return null;
               else submitData(e);
             }}
             isLoading={saveLoading}
-            disabled={!title}
+            disabled={!name}
             type="submit"
             value="model"
           >

@@ -24,7 +24,9 @@ export default async function handle(req, res) {
             },
             {
               member: {
-                id: session ? session.user.id : -1,
+                some: {
+                  id: session ? session.user.id : -1,
+                },
               },
             },
           ],

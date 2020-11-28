@@ -24,55 +24,19 @@ import {
   ROLE,
 } from "baseui/modal";
 
-const Collection = ({ collection }) => {
+const Group = ({ group, collections, members, fits }) => {
   const [session, loading] = useSession();
   const [isOpen, setIsOpen] = useState(false);
   const [editOpen, setEditOpen] = useState(false);
-  const [fits, setFits] = useState(collection.fits || []);
-  const [coll, setColl] = useState(collection || null);
+  const [coll, setColl] = useState(group || null);
   const [isLoading, setIsLoading] = useState(false);
   const [activeKey, setActiveKey] = React.useState("0");
-
-  const refresh = async () => {
-    const res = await fetch(
-      `${process.env.HOST}/api/collection/${collection.id}`
-    );
-    let data;
-    try {
-      data = await res.json();
-      setColl(data);
-    } catch (e) {
-      console.log("error:", e.message);
-    }
-  };
-
-  const createBattle = async () => {
-    setIsLoading(true);
-    const body = {
-      collection: collection.id,
-    };
-    const res = await fetch(`${process.env.HOST}/api/battle/create`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body),
-    });
-    let data;
-    try {
-      data = await res.json();
-      if (data) Router.push(`/battle/${data.id}`);
-      setIsLoading(false);
-      console.log("Create", data);
-    } catch (e) {
-      setIsLoading(false);
-      console.log("error:", e.message);
-    }
-  };
 
   const addFit = async (id, cb) => {
     console.log("Adding fit", id);
     try {
-      const body = { id: collection.id, fit: id };
-      const res = await fetch(`${process.env.HOST}/api/collection/add`, {
+      const body = { id: group.id, fit: id };
+      const res = await fetch(`${process.env.HOST}/api/group/add`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
@@ -80,7 +44,7 @@ const Collection = ({ collection }) => {
       const data = await res.json();
       console.log("Added fit!", data);
       setFits(data.fits);
-      if (collection.oneperuser) setIsOpen(false);
+      if (group.oneperuser) setIsOpen(false);
       cb(true);
     } catch (error) {
       console.error(error);
@@ -91,8 +55,8 @@ const Collection = ({ collection }) => {
   const deleteFit = async (id, cb) => {
     console.log("Deleting fit", id);
     try {
-      const body = { id: collection.id, fit: id };
-      const res = await fetch(`${process.env.HOST}/api/collection/delete`, {
+      const body = { id: group.id, fit: id };
+      const res = await fetch(`${process.env.HOST}/api/group/delete`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
@@ -100,7 +64,7 @@ const Collection = ({ collection }) => {
       const data = await res.json();
       console.log("Deleting fit!", data);
       setFits(data.fits);
-      // if (collection.oneperuser) setIsOpen(false);
+      // if (group.oneperuser) setIsOpen(false);
       cb(true);
     } catch (error) {
       console.error(error);
@@ -109,24 +73,24 @@ const Collection = ({ collection }) => {
   };
 
   const seourl =
-    (collection.fits.length > 0 &&
-      collection.fits[0].media[0].cloudinary &&
-      `https://res.cloudinary.com/stupidsystems/image/${
-        collection.user.hideface && `e_pixelate_faces:15/`
-      }upload/${collection.fits[0].media[0].cloudinary}.png`) ||
+    // (group.fits.length > 0 &&
+    //   group.fits[0].media[0].cloudinary &&
+    //   `https://res.cloudinary.com/stupidsystems/image/${
+    //     group.user.hideface && `e_pixelate_faces:15/`
+    //   }upload/${group.fits[0].media[0].cloudinary}.png`) ||
     "https://stupidfits.com/img/appicon.png";
 
   const seourlfb =
-    (collection.fits.length > 0 &&
-      collection.fits[0].media[0].cloudinary &&
-      `https://res.cloudinary.com/stupidsystems/image/upload/b_rgb:151515,${
-        collection.user.hideface && `e_pixelate_faces:15,`
-      }c_lpad,h_630,w_1200/${collection.fits[0].media[0].cloudinary}.png`) ||
+    // (group.fits.length > 0 &&
+    //   group.fits[0].media[0].cloudinary &&
+    //   `https://res.cloudinary.com/stupidsystems/image/upload/b_rgb:151515,${
+    //     group.user.hideface && `e_pixelate_faces:15,`
+    //   }c_lpad,h_630,w_1200/${group.fits[0].media[0].cloudinary}.png`) ||
     "https://stupidfits.com/img/appicon.png";
 
   let tags = [];
   // [
-  //   ...collection.item.map((i) => `${i.brand.name} ${i.model}`),
+  //   ...group.item.map((i) => `${i.brand.name} ${i.model}`),
   //   ...props.review.tags.map((s) => `${s.name}`),
   // ];
 
@@ -138,22 +102,17 @@ const Collection = ({ collection }) => {
   return (
     <>
       <NextSeo
-        title={`${collection.title} by ${collection.user.username} on Stupid Fits `}
-        description={
-          collection.description ||
-          `${collection.title} by ${collection.user.username} on Stupid Fits `
-        }
-        canonical={`${process.env.HOST}/collection/${collection.id}/${collection.slug}`}
+        title={`${group.name} on Stupid Fits `}
+        description={group.description || `${group.name} on Stupid Fits `}
+        canonical={`${process.env.HOST}/group/${group.id}/${group.slug}`}
         openGraph={{
           keywords: tags,
-          url: `${process.env.HOST}/collection/${collection.id}/${collection.slug}`,
-          title: `${collection.title} by ${collection.user.username} on Stupid Fits`,
-          description:
-            collection.description ||
-            `${collection.title} by ${collection.user.username} on Stupid Fits `,
-          type: "article",
+          url: `${process.env.HOST}/group/${group.id}/${group.slug}`,
+          title: `${group.name} on Stupid Fits`,
+          description: group.description || `${group.name} on Stupid Fits `,
+          type: "profile",
           article: {
-            authors: [collection.user.username],
+            authors: [group.user.username],
             tags: tags,
           },
           images: [
@@ -178,79 +137,24 @@ const Collection = ({ collection }) => {
         <link
           rel="alternate"
           type="application/json+oembed"
-          href={`${process.env.HOST}/api/embed?url=${process.env.HOST}/collection/${collection.id}/${collection.slug}`}
-          title={`${collection.title} by ${collection.user.username} on Stupid Fits `}
+          href={`${process.env.HOST}/api/embed?url=${process.env.HOST}/group/${group.id}/${group.slug}`}
+          title={`${group.name} on Stupid Fits `}
           key="oembed"
         />
       </Head>
       <Layout>
-        <h1>{collection.title}</h1>
-        {collection.description && (
-          <p className="center">{collection.description}</p>
-        )}
+        <h1>{group.name}</h1>
+        {group.description && <p className="center">{group.description}</p>}
         {session && (
           <p className="center">
-            {(session.user.id === collection.user.id || collection.public) && (
+            {(session.user.id === group.user.id || group.public) && (
               <>
-                <Button onClick={() => setIsOpen(true)}>
-                  {fits && fits.some((f) => f.user.id === session.user.id)
-                    ? "Edit"
-                    : "Add"}{" "}
-                  Fit{!collection.oneperuser && "s"}{" "}
-                  {fits && fits.some((f) => f.user.id === session.user.id)
-                    ? "in"
-                    : "to"}{" "}
-                  Collection
-                </Button>{" "}
+                <Button onClick={() => setIsOpen(true)}>Modal Open</Button>{" "}
               </>
             )}
-            {collection.user.id === session.user.id && (
+            {group.user.id === session.user.id && (
               <>
-                <Button onClick={() => setEditOpen(true)}>
-                  Edit Collection
-                </Button>{" "}
-                <StatefulTooltip
-                  content={() => (
-                    <Block
-                      padding={"20px"}
-                      margin={"0"}
-                      backgroundColor="#151515"
-                      color="#fff"
-                      border="none"
-                    >
-                      <h4>Create a Tournament</h4>
-                      <ul>
-                        <li>Generate a Tournament from this collection</li>
-                        <li>Share with others to vote</li>
-                        <li>Have fun. No stress.</li>
-                      </ul>
-
-                      {fits.length < 4 && (
-                        <p>Add more fits to create a battle</p>
-                      )}
-
-                      {fits.length % 2 !== 0 && (
-                        <p>
-                          An even number of fits is required to make a battle
-                        </p>
-                      )}
-                    </Block>
-                  )}
-                  returnFocus
-                  autoFocus
-                >
-                  <span>
-                    <Button
-                      isLoading={isLoading}
-                      disabled={
-                        fits.length > 3 && fits.length % 2 === 0 ? false : true
-                      }
-                      onClick={() => createBattle()}
-                    >
-                      Create Battle
-                    </Button>
-                  </span>
-                </StatefulTooltip>
+                <Button onClick={() => setEditOpen(true)}>Edit Group</Button>{" "}
               </>
             )}
           </p>
@@ -274,44 +178,6 @@ const Collection = ({ collection }) => {
                   .map((fit) => <FitMini key={fit.id} {...fit} fit={fit.id} />)}
             </div>
           </Tab>
-          {collection.Battle.length > 0 && (
-            <Tab title="Tournaments">
-              <div className="flex">
-                {collection.Battle &&
-                  collection.Battle.filter((b) => !b.archive)
-                    .sort((a, b) => {
-                      return a.createdAt - b.createdAt;
-                    })
-                    .map((battle) => (
-                      <BattleCard
-                        key={battle.id}
-                        battle={battle}
-                        collection={collection}
-                      />
-                    ))}
-              </div>
-            </Tab>
-          )}
-          {session &&
-            collection.user.id === session.user.id &&
-            collection.Battle.length > 0 && (
-              <Tab title="Archived">
-                <div className="flex">
-                  {collection.Battle &&
-                    collection.Battle.filter((b) => b.archive)
-                      .sort((a, b) => {
-                        return a.createdAt - b.createdAt;
-                      })
-                      .map((battle) => (
-                        <BattleCard
-                          key={battle.id}
-                          battle={battle}
-                          collection={collection}
-                        />
-                      ))}
-                </div>
-              </Tab>
-            )}
         </Tabs>
         <Modal
           onClose={() => {
@@ -393,7 +259,7 @@ export const getServerSideProps = async (context) => {
   const session = await getSession(context);
   const id = context.params.slug[0];
 
-  const res = await fetch(`${process.env.HOST}/api/collection/${id}`);
+  const res = await fetch(`${process.env.HOST}/api/group/${id}`);
   let data;
   try {
     data = await res.json();
@@ -404,7 +270,7 @@ export const getServerSideProps = async (context) => {
   if (context.params.slug[1] !== data.slug) {
     if (context.res) {
       context.res.writeHead(302, {
-        Location: `/collection/${data.id}/${data.slug}`,
+        Location: `/group/${data.id}/${data.slug}`,
       });
       context.res.end();
     }
@@ -423,9 +289,14 @@ export const getServerSideProps = async (context) => {
 
   return {
     props: {
-      collection: data,
+      group: data,
+      collections: data.collection,
+      members: data.member,
+      fits: [data.user, ...data.member]
+        .map((m) => m.fit && m.fit.map((f) => f))
+        .flat(),
     },
   };
 };
 
-export default Collection;
+export default Group;

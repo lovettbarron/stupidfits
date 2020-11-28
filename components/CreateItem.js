@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import fetch from "isomorphic-unfetch";
 import Link from "next/link";
-import { Select, TYPE } from "baseui/select";
+import { Select, TYPE, SIZE } from "baseui/select";
 import { Input } from "baseui/input";
 import { StatefulButtonGroup, MODE } from "baseui/button-group";
 import { Button } from "baseui/button";
@@ -139,6 +139,7 @@ const CreateItem = (props) => {
 
             <Select
               creatable
+              size={SIZE.large}
               options={brandList}
               value={brand}
               isLoading={!brandList}

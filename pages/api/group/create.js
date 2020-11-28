@@ -21,7 +21,7 @@ export default async function handle(req, res) {
     },
   });
 
-  const review = await prisma.create
+  const group = await prisma.group
     .create({
       data: {
         user: {
@@ -31,9 +31,9 @@ export default async function handle(req, res) {
         },
         public: req.body.public,
         inviteonly: req.body.inviteonly,
-        name: req.body.title,
+        name: req.body.name,
         description: req.body.description || "",
-        slug: req.body.title
+        slug: req.body.slug
           .toLowerCase()
           .split(" ")
           .join("-")
@@ -43,5 +43,5 @@ export default async function handle(req, res) {
     .finally(async () => {
       await prisma.$disconnect();
     });
-  res.json(review);
+  res.json(group);
 }

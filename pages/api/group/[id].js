@@ -22,67 +22,91 @@ async function handleGET(req, res) {
   const id = req.query.id;
   // console.log(req.query);
 
-  const review = await prisma.collection.findOne({
+  const group = await prisma.group.findOne({
     where: { id: Number(id) },
     include: {
-      user: true,
-      fits: {
-        where: {
-          user: {
-            public: true,
-          },
-        },
+      user: {
         include: {
-          media: {
+          fit: {
             include: {
-              layers: {
+              media: {
                 include: {
-                  item: {
-                    include: { brand: true },
+                  layers: {
+                    include: {
+                      item: {
+                        include: { brand: true },
+                      },
+                      media: true,
+                    },
                   },
-                  media: true,
+                },
+              },
+              user: true,
+              components: {
+                include: {
+                  brand: true,
                 },
               },
             },
           },
-          user: true,
-          components: {
+        },
+      },
+      collection: {
+        include: {
+          fits: {
             include: {
-              brand: true,
+              media: {
+                include: {
+                  layers: {
+                    include: {
+                      item: {
+                        include: { brand: true },
+                      },
+                      media: true,
+                    },
+                  },
+                },
+              },
+              user: true,
+              components: {
+                include: {
+                  brand: true,
+                },
+              },
             },
           },
         },
       },
-      tags: true,
-      Comment: {
-        orderBy: {
-          id: "asc",
-        },
+      member: {
         include: {
-          user: true,
+          fit: {
+            include: {
+              media: {
+                include: {
+                  layers: {
+                    include: {
+                      item: {
+                        include: { brand: true },
+                      },
+                      media: true,
+                    },
+                  },
+                },
+              },
+              user: true,
+              components: {
+                include: {
+                  brand: true,
+                },
+              },
+            },
+          },
         },
       },
     },
   });
-  const battle = await prisma.battle
-    .findMany({
-      where: { collection: { id: Number(id) } },
-      include: {
-        winners: {
-          include: {
-            media: true,
-            user: true,
-          },
-        },
-      },
-    })
-    .finally(async () => {
-      await prisma.$disconnect();
-    });
 
-  review.Battle = battle;
-
-  res.json(review);
+  res.json(group);
 }
 
 // POST /api/post/:id

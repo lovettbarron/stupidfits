@@ -3,7 +3,7 @@ import fetch from "isomorphic-unfetch";
 import Layout from "../../components/Layout";
 import Router from "next/router";
 import Link from "next/link";
-import { Select, TYPE } from "baseui/select";
+import { Select, TYPE, SIZE as SELSIZE } from "baseui/select";
 import FitBox from "../../components/FitBox";
 import CreateItem from "../../components/CreateItem";
 import { getSession, useSession } from "next-auth/client";
@@ -155,6 +155,7 @@ const Fit = (props) => {
               value={components}
               isLoading={newItemLoad || !items}
               multi
+              size={SELSIZE.large}
               type={TYPE.search}
               closeOnSelect
               clearable={false}
