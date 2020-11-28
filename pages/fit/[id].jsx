@@ -219,14 +219,14 @@ const Fit = (props) => {
               setIsOpen(false);
               fetchItems();
             }}
-            closeable
-            autoFocus
+            // closeable
+            // autoFocus
             focusLock
             isOpen={isOpen}
             animate
             unstable_ModalBackdropScroll
-            size={SIZE.default}
-            role={ROLE.dialog}
+            size={SIZE.auto}
+            role={ROLE.alertdialog}
           >
             <ModalHeader>Add To Your Closet</ModalHeader>
             <ModalBody>

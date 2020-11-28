@@ -107,6 +107,7 @@ const CreateItem = (props) => {
 
             <StatefulButtonGroup
               mode={MODE.radio}
+              initialState={{ selected: types.length - 1 }}
               overrides={{
                 Root: {
                   style: {
