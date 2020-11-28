@@ -12,7 +12,6 @@ export default async function handle(req, res) {
 
     const feature = !session
       ? {
-          archive: false,
           feature: true,
         }
       : undefined;
@@ -20,6 +19,7 @@ export default async function handle(req, res) {
     const review = await prisma.battle
       .findMany({
         where: {
+          archive: false,
           OR: [
             feature,
             {
@@ -28,7 +28,6 @@ export default async function handle(req, res) {
               },
             },
             {
-              archive: false,
               BattleMatchup: {
                 some: {
                   Fits: {
