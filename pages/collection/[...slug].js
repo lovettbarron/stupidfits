@@ -292,24 +292,26 @@ const Collection = ({ collection }) => {
               </div>
             </Tab>
           )}
-          {session && collection.user.id === session.user.id && (
-            <Tab title="Archived">
-              <div className="flex">
-                {collection.Battle &&
-                  collection.Battle.filter((b) => b.archive)
-                    .sort((a, b) => {
-                      return a.createdAt - b.createdAt;
-                    })
-                    .map((battle) => (
-                      <BattleCard
-                        key={battle.id}
-                        battle={battle}
-                        collection={collection}
-                      />
-                    ))}
-              </div>
-            </Tab>
-          )}
+          {session &&
+            collection.user.id === session.user.id &&
+            collection.Battle.length > 0 && (
+              <Tab title="Archived">
+                <div className="flex">
+                  {collection.Battle &&
+                    collection.Battle.filter((b) => b.archive)
+                      .sort((a, b) => {
+                        return a.createdAt - b.createdAt;
+                      })
+                      .map((battle) => (
+                        <BattleCard
+                          key={battle.id}
+                          battle={battle}
+                          collection={collection}
+                        />
+                      ))}
+                </div>
+              </Tab>
+            )}
         </Tabs>
         <Modal
           onClose={() => {

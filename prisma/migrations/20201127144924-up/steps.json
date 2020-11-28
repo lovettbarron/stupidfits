@@ -1,0 +1,79 @@
+{
+  "version": "0.3.14-fixed",
+  "steps": [
+    {
+      "tag": "CreateField",
+      "model": "Battle",
+      "field": "roundLength",
+      "type": "Int",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Battle",
+          "field": "roundLength"
+        },
+        "directive": "default"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Battle",
+          "field": "roundLength"
+        },
+        "directive": "default"
+      },
+      "argument": "value",
+      "value": "24"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Battle",
+      "field": "feature",
+      "type": "Boolean",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Battle",
+          "field": "feature"
+        },
+        "directive": "default"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Battle",
+          "field": "feature"
+        },
+        "directive": "default"
+      },
+      "argument": "",
+      "value": "false"
+    },
+    {
+      "tag": "DeleteField",
+      "model": "Battle",
+      "field": "startDate"
+    },
+    {
+      "tag": "DeleteField",
+      "model": "Battle",
+      "field": "endDate"
+    }
+  ]
+}

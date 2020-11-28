@@ -11,16 +11,18 @@ import { Cap } from "./Anatomy";
 const CollectionBox = (props) => {
   const router = useRouter();
   const [session, loading] = useSession();
+  const [isLoading, setIsLoading] = useState(false);
 
   return (
     <>
       <div
         className="fitbox"
-        onClick={() =>
+        onClick={() => {
+          setIsLoading(true);
           Router.push({
             pathname: `/collection/${props.id}/${props.slug}`,
-          })
-        }
+          });
+        }}
       >
         <div className="mediawrap">
           <div className="overlay">
@@ -39,7 +41,7 @@ const CollectionBox = (props) => {
         {props.public && <div className="priv">Open Submissions</div>}
         <ul className="style">
           {props.tags.map((t) => (
-            <li>{t.name}</li>
+            <li>{isLoading ? "Loading" : t.name}</li>
           ))}
         </ul>
       </div>

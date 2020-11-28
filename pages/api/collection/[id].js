@@ -68,7 +68,12 @@ async function handleGET(req, res) {
     .findMany({
       where: { collection: { id: Number(id) } },
       include: {
-        winners: true,
+        winners: {
+          include: {
+            media: true,
+            user: true,
+          },
+        },
       },
     })
     .finally(async () => {

@@ -11,6 +11,7 @@ import { Cap } from "./Anatomy";
 const BattleCard = ({ collection, battle }) => {
   const router = useRouter();
   const [session, loading] = useSession();
+  const [isLoading, setIsLoading] = useState(false);
 
   return (
     <>
@@ -22,31 +23,41 @@ const BattleCard = ({ collection, battle }) => {
           })
         }
       >
+        <div className="overlay">
+          <h3>Go to Tournament</h3>
+        </div>
         <div className="mediawrap">
-          <div className="overlay">
-            <h3>Go to Tournament</h3>
-          </div>
           {(collection.fits.length > 0 && (
             <ImageMini
               media={
+                (battle.winners &&
+                  battle.winners.length > 0 &&
+                  battle.winners[0].media[0]) ||
                 collection.fits[~~(collection.fits.length * Math.random())]
                   .media[0]
               }
+              maxwidth={"100px"}
               hideid={true}
             />
           )) || <ImageMini media={null} hideid={true} />}
         </div>
-        <h2>{collection.title}</h2>
-        <h4>
-          {new Date(battle.createdAt).toLocaleString("en-US", {
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-          })}
-        </h4>
-        {(battle.winners.length > 0 && (
-          <div className="priv">Competition Closed</div>
-        )) || <div className="priv">Round {battle.activeRound}</div>}
+        <div className="info">
+          <h3 style={{ marginBttom: ".5rem" }}>{collection.title}</h3>
+          {battle.winners && battle.winners.length > 0 && (
+            <h4 className="priv">Winner: {battle.winners[0].user.username}</h4>
+          )}
+          <small>
+            {new Date(battle.createdAt).toLocaleString("en-US", {
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            })}
+          </small>
+          {battle.archive && <div className="priv">Competition Archived</div>}
+          {(battle.winners && battle.winners.length > 0 && (
+            <div className="priv">Competition Closed</div>
+          )) || <div className="priv">Round {battle.activeRound}</div>}
+        </div>
       </div>
 
       <style jsx>{`
@@ -58,9 +69,17 @@ const BattleCard = ({ collection, battle }) => {
           display: flex;
           flex-wrap: wrap;
           cursor: pointer;
+          position: relative;
+          min-width: 300px;
         }
         .fitbox:hover .overlay {
           opacity: 0.8;
+        }
+
+        .info {
+          width: 70%;
+          padding: 0 1rem;
+          text-align: left;
         }
 
         ul {
@@ -87,12 +106,11 @@ const BattleCard = ({ collection, battle }) => {
         }
 
         .mediawrap {
-          max-width: 600px;
-          min-height: 70%;
+          max-width: 100px;
+          min-height: 100%;
           padding: 0;
           margin: 0;
-          width: 100%;
-          position: relative;
+          width: 30%;
         }
 
         .overlay {

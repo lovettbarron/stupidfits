@@ -10,31 +10,49 @@ export default async function handle(req, res) {
   if (req.method === "GET") {
     const session = await getSession({ req });
 
-    const review = await prisma.collection
+    const feature = !session
+      ? {
+          archive: false,
+          feature: true,
+        }
+      : undefined;
+
+    const review = await prisma.battle
       .findMany({
         where: {
           OR: [
-            {
-              published: true,
-            },
+            feature,
             {
               user: {
                 id: session ? session.user.id : -1,
+              },
+            },
+            {
+              archive: false,
+              BattleMatchup: {
+                some: {
+                  Fits: {
+                    some: {
+                      user: {
+                        id: session ? session.user.id : -1,
+                      },
+                    },
+                  },
+                },
               },
             },
           ],
         },
         include: {
           user: true,
-          fits: {
+          collection: {
             include: {
-              media: true,
-            },
-          },
-          tags: true,
-          Comment: {
-            include: {
-              user: true,
+              fits: {
+                include: {
+                  media: true,
+                  user: true,
+                },
+              },
             },
           },
         },

@@ -5,6 +5,7 @@ import fetch from "isomorphic-unfetch";
 import Post from "../components/Post";
 import FitMini from "../components/FitMini";
 import ReviewBox from "../components/ReviewBox";
+import BattleCard from "../components/BattleCard";
 import Link from "next/link";
 import { getSession, useSession, signin, signout } from "next-auth/client";
 import { extractHostname } from "../components/Clicker";
@@ -213,6 +214,24 @@ const Main = (props) => {
                       .map((fit, i) => <ReviewBox key={"r" + i} {...fit} />)}
                 </div>
               </Tab>
+              <Tab title="Active Tournaments">
+                <div className="main">
+                  {props.battle &&
+                    Array.isArray(props.battle) &&
+                    props.battle
+                      .sort((a, b) => {
+                        return b.createdAt - a.createdAt;
+                        // return b.media[0].timestamp - a.media[0].timestamp;
+                      })
+                      .map((battle, i) => (
+                        <BattleCard
+                          key={battle.id}
+                          battle={battle}
+                          collection={battle.collection}
+                        />
+                      ))}
+                </div>
+              </Tab>
             </Tabs>
           </main>
           <footer>
@@ -363,6 +382,20 @@ export const getServerSideProps = async (context) => {
     console.log("error:", e.message);
   }
 
+  const bat = await fetch(`${process.env.HOST}/api/battle/`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      cookie: context.req.headers.cookie,
+    },
+  });
+  let batfeed = [];
+  try {
+    batfeed = await bat.json();
+  } catch (e) {
+    console.log("error:", e.message);
+  }
+
   // console.log(revfeed);
 
   return {
@@ -374,6 +407,7 @@ export const getServerSideProps = async (context) => {
           return b.media[0].timestamp - a.media[0].timestamp;
         }),
       review: revfeed,
+      battle: batfeed,
       user,
       url: process.env.HOST,
     },
