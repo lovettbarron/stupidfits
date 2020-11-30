@@ -7,7 +7,7 @@ import { Input } from "baseui/input";
 
 import { Button, KIND, SIZE as BUTTONSIZE } from "baseui/button";
 import { Block } from "baseui/block";
-import { Check } from "baseui/icon";
+import { Alert } from "baseui/icon";
 import { Spinner } from "baseui/spinner";
 
 const Notifications = (props) => {
@@ -120,16 +120,43 @@ const Notifications = (props) => {
         returnFocus
         autoFocus
       >
-        {notif.filter((n) => !n.seen).length > 0 ? (
-          <div className="counter">{notif.filter((n) => !n.seen).length}</div>
+        {notif.filter((n) => !n.seen).length > 0 ||
+        invites.filter((n) => !n.done).length > 0 ? (
+          <div className="alert active">
+            {notif.filter((n) => !n.seen).length +
+              invites.filter((n) => !n.done).length}
+          </div>
         ) : (
-          <Check size={64} />
+          <div className="alert">0</div>
         )}
       </StatefulPopover>
 
       <style jsx>{`
         .save {
           width: 100%;
+        }
+
+        .alert {
+          min-width: 40px;
+          margin: 0 1rem;
+          font-size: 1.2rem;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 0;
+          height: 40px;
+          border-radius: 100%;
+          color: #151515;
+          background: #fff;
+          transition: all 0.4s;
+        }
+        .alert:hover {
+          background: #151515;
+          color: #fff;
+        }
+
+        .alert.active {
+          background: rgba(200, 100, 100);
         }
 
         img {
