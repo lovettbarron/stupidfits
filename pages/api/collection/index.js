@@ -42,11 +42,6 @@ export default async function handle(req, res) {
             },
           },
           tags: true,
-          Comment: {
-            include: {
-              user: true,
-            },
-          },
         },
       })
       .finally(async () => {

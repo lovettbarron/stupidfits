@@ -54,14 +54,6 @@ async function handleGET(req, res) {
         },
       },
       tags: true,
-      Comment: {
-        orderBy: {
-          id: "asc",
-        },
-        include: {
-          user: true,
-        },
-      },
     },
   });
   const battle = await prisma.battle

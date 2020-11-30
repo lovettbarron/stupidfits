@@ -21,7 +21,7 @@ import {
 const InviteUser = (props) => {
   const router = useRouter();
   const [session, loading] = useSession();
-  const [collections, setCollections] = useState([]);
+  const [users, setUsers] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
 
   const addFit = async (id) => {
@@ -43,26 +43,18 @@ const InviteUser = (props) => {
 
   const fetchUsers = async () => {
     let res;
-    if (global) {
-      res = await fetch(`${process.env.HOST}/api/collection`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-    } else {
-      res = await fetch(`${process.env.HOST}/api/feed/${session.user.id}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-    }
+
+    res = await fetch(`${process.env.HOST}/api/group/user/all`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
 
     let feed = [];
     try {
       feed = await res.json();
-      setCollections(feed);
+      setUsers(feed);
     } catch (e) {
       console.log("error:", e.message);
     }
@@ -76,23 +68,48 @@ const InviteUser = (props) => {
     <>
       <StatefulPopover
         content={() => {
-          fetchCollection();
+          fetchUsers();
           return (
             <Block padding={"20px"}>
               <h4>Invite</h4>
-              {collections.length === 0 && (
+              {users.length === 0 && (
                 <Spinner
                   size={36}
                   overrides={{ Svg: { borderTopColor: "#fff" } }}
                 />
               )}
+              <ul>
+                {users.map((c) => {
+                  let ex = false;
+                  if (c.oneperuser) {
+                    ex = !!group.member.find(
+                      (f) => f.user.id === props.user.id
+                    );
+                  } else {
+                    ex = !!c.fits.find((f) => f.id === props.id);
+                  }
 
+                  return (
+                    <li
+                      key={c.id}
+                      className={ex && `added`}
+                      onClick={() => {
+                        if (!ex) addFit(c.id);
+                      }}
+                    >
+                      {c.title}
+                    </li>
+                  );
+                })}
+              </ul>
+
+              <br />
               <Button
                 kind={KIND.secondary}
                 size={BUTTONSIZE.mini}
                 onClick={() => setIsOpen(true)}
               >
-                New Collection
+                Invite by Email
               </Button>
 
               <Modal
@@ -108,17 +125,9 @@ const InviteUser = (props) => {
                 size={SIZE.default}
                 role={ROLE.dialog}
               >
-                <ModalHeader>Create New Collection</ModalHeader>
+                <ModalHeader>Invite via Email</ModalHeader>
                 <ModalBody>
-                  {isOpen && (
-                    <CreateCollection
-                      fit={props.id}
-                      handler={(data) => {
-                        setIsLoading(true);
-                        setIsOpen(false);
-                      }}
-                    />
-                  )}
+                  {isOpen && <>Email Invite Component goes here</>}
                 </ModalBody>
               </Modal>
             </Block>
@@ -127,9 +136,7 @@ const InviteUser = (props) => {
         returnFocus
         autoFocus
       >
-        <Button kind={KIND.secondary} size={BUTTONSIZE.mini}>
-          +Collection
-        </Button>
+        <Button>Invite To Group</Button>
       </StatefulPopover>
 
       <style jsx>{`

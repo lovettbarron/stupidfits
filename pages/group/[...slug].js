@@ -14,6 +14,7 @@ import FitMini from "../../components/FitMini";
 import BattleCard from "../../components/BattleCard";
 import CreateCollection from "../../components/CreateCollection";
 import CreateGroup from "../../components/CreateGroup";
+import InviteUser from "../../components/InviteUser";
 
 import {
   Modal,
@@ -151,6 +152,7 @@ const Group = ({ group, collections, members, fits }) => {
             {(session.user.id === group.user.id || group.public) && (
               <>
                 <Button onClick={() => setIsOpen(true)}>Modal Open</Button>{" "}
+                <InviteUser group={group} />
               </>
             )}
             {group.user.id === session.user.id && (
