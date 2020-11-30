@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import { getSession, session } from "next-auth/client";
 import * as cloudinary from "cloudinary";
-import notice from "../../../lib/notif";
+import { notif } from "../../../lib/notif";
 
 const prisma = new PrismaClient();
 
@@ -98,7 +98,7 @@ export default async function handle(req, res) {
     .finally(async () => {
       await prisma.$disconnect();
     });
-  notice(
+  notif(
     userInvite,
     `You've been invited to ${group.name}`,
     `/group/${group.id}/${proup.slug}`
