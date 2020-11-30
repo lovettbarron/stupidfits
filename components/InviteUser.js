@@ -26,10 +26,10 @@ const InviteUser = (props) => {
   const [search, setSearch] = useState("");
   const [isOpen, setIsOpen] = useState(false);
 
-  const addFit = async (id) => {
+  const addMember = async (id) => {
     console.log("Adding fit", id, props.id);
     try {
-      const body = { id: id, fit: props.id };
+      const body = { user: id, group: props.id };
       const res = await fetch(`${process.env.HOST}/api/group/add`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -108,7 +108,7 @@ const InviteUser = (props) => {
                         key={c.id}
                         className={ex && `added`}
                         onClick={() => {
-                          if (!ex) addFit(c.id);
+                          if (!ex) addMember(c.id);
                         }}
                       >
                         {c.username}

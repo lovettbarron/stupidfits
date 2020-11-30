@@ -6,6 +6,7 @@ import { Drawer, SIZE, ANCHOR } from "baseui/drawer";
 import { Button } from "baseui/button";
 import { useSession, signin, signout } from "next-auth/client";
 import LoginBox from "../components/Login";
+import Notifications from "../components/Notifications";
 
 const Nav = (props) => {
   const router = useRouter();
@@ -43,11 +44,13 @@ const Nav = (props) => {
             <h1>Stupid Fits</h1>
           </Link>
           {(!session && <LoginBox />) || (
-            <Link href="/feed">
-              <a>
-                <Button>Add Fit</Button>
-              </a>
-            </Link>
+            <>
+              <Link href="/feed">
+                <a>
+                  <Button>+Add Fit</Button>
+                </a>
+              </Link>
+            </>
           )}
           {(session && (
             <>
@@ -88,7 +91,7 @@ const Nav = (props) => {
             </a>
           </Link>
         </div>
-
+        {/* <Notifications /> */}
         <a className="main" onClick={toggleTrueFalse}>
           <img alt="Open menu" src="/img/menu.png" />
         </a>

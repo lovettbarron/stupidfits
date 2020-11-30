@@ -17,16 +17,21 @@ export default async function handle(req, res) {
 
   const user = await prisma.user.findOne({
     where: {
-      email: session.user.email,
+      id: session.user.id,
     },
   });
 
-  const collectionCheck = await prisma.collection.findOne({
+  const groupCheck = await prisma.group.findOne({
     where: {
-      id: req.body.id,
+      id: req.body.group,
     },
     include: {
-      fits: {
+      member: {
+        include: {
+          user: true,
+        },
+      },
+      Invite: {
         include: {
           user: true,
         },
@@ -34,61 +39,46 @@ export default async function handle(req, res) {
     },
   });
 
-  if (collectionCheck.oneperuser) {
-    const userCheck = await prisma.fit.findOne({
-      where: { id: req.body.fit },
-      include: {
-        user: true,
-      },
-    });
+  // Check if invite and membership exists
+  let exist = null;
+  exist = groupCheck.member.some((m) => m.id === req.body.user);
+  exist = !exist
+    ? groupCheck.Invite.some((i) => i.user.id === req.body.user && !i.done)
+    : exist;
 
-    const exist = collectionCheck.fits.find(
-      (f) => f.user.id === userCheck.user.id
-    );
-
-    if (exist) {
-      res.json({});
-      res.end();
-      return {};
-    }
+  if (exist) {
+    res.json({});
+    res.end();
+    return {};
   }
 
-  const review = await prisma.collection
+  const group = await prisma.group
     .update({
       where: {
         id: req.body.id,
       },
       data: {
-        fits: {
-          connect: { id: req.body.fit },
+        Invite: {
+          create: {
+            email: userInvite.email,
+            user: {
+              connect: {
+                id: userInvite.id,
+              },
+            },
+            group: {
+              connect: {
+                id: req.body.group,
+              },
+            },
+          },
         },
       },
       include: {
-        fits: {
-          where: {
-            user: {
-              public: true,
-            },
-          },
+        member: true,
+        Invite: {
           include: {
-            media: {
-              include: {
-                layers: {
-                  include: {
-                    item: {
-                      include: { brand: true },
-                    },
-                    media: true,
-                  },
-                },
-              },
-            },
             user: true,
-            components: {
-              include: {
-                brand: true,
-              },
-            },
           },
         },
       },
@@ -96,5 +86,5 @@ export default async function handle(req, res) {
     .finally(async () => {
       await prisma.$disconnect();
     });
-  res.json(review);
+  res.json(group);
 }

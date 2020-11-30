@@ -10,6 +10,10 @@ export default async function handle(req, res) {
     const users = await prisma.user.findMany({
       where: { public: true },
       orderBy: { name: "asc" },
+      select: {
+        id: true,
+        username: true,
+      },
     });
     console.log("Returning users", users);
     res.json(users);
