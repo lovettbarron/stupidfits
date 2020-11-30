@@ -137,14 +137,14 @@ const Notifications = (props) => {
         }
 
         .alert {
-          min-width: 40px;
+          min-width: 36px;
+          height: 36px;
           margin: 0 1rem;
           font-size: 1.2rem;
           display: flex;
           align-items: center;
           justify-content: center;
           padding: 0;
-          height: 40px;
           border-radius: 100%;
           color: #151515;
           background: #fff;
