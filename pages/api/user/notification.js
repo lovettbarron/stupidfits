@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-
+import { getSession } from "next-auth/client";
 const prisma = new PrismaClient();
 
 // POST /api/brand
@@ -10,6 +10,7 @@ export default async function handle(req, res) {
     const session = await getSession({ req });
     if (!session || (session && !session.user)) {
       res.status(400).json(null);
+    }
 
     const notif = await prisma.notification.findMany({
       where: {
@@ -27,7 +28,7 @@ export default async function handle(req, res) {
         },
         done: false,
       },
-      orderBy: { createdAt: "desc" },
+      orderBy: { id: "desc" },
       include: {
         collection: true,
         group: true,

@@ -15,7 +15,7 @@ export default async function handle(req, res) {
         username: true,
       },
     });
-    console.log("Returning users", users);
+    // console.log("Returning users", users);
     res.json(users);
   } else {
     throw new Error(

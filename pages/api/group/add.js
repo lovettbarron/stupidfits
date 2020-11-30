@@ -1,6 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import { getSession, session } from "next-auth/client";
 import * as cloudinary from "cloudinary";
+import notice from "../../../lib/notif";
 
 const prisma = new PrismaClient();
 
@@ -15,22 +16,27 @@ export default async function handle(req, res) {
     return {};
   }
 
+  console.log(req.body);
+
   const user = await prisma.user.findOne({
     where: {
       id: session.user.id,
     },
   });
 
+  const userInvite = await prisma.user.findOne({
+    where: {
+      id: req.body.user,
+    },
+  });
+
   const groupCheck = await prisma.group.findOne({
     where: {
-      id: req.body.group,
+      id: Number(req.body.group),
     },
     include: {
-      member: {
-        include: {
-          user: true,
-        },
-      },
+      user: true,
+      member: true,
       Invite: {
         include: {
           user: true,
@@ -38,6 +44,16 @@ export default async function handle(req, res) {
       },
     },
   });
+
+  if (
+    !groupCheck.member.some((m) => m.id === user.id) &&
+    groupCheck.user.id !== user.id
+  ) {
+    console.log("This user isn't a member of the group");
+    res.json({});
+    res.end();
+    return {};
+  }
 
   // Check if invite and membership exists
   let exist = null;
@@ -47,6 +63,7 @@ export default async function handle(req, res) {
     : exist;
 
   if (exist) {
+    console.log("Member already invited to or part of this group");
     res.json({});
     res.end();
     return {};
@@ -55,7 +72,7 @@ export default async function handle(req, res) {
   const group = await prisma.group
     .update({
       where: {
-        id: req.body.id,
+        id: groupCheck.id,
       },
       data: {
         Invite: {
@@ -64,11 +81,6 @@ export default async function handle(req, res) {
             user: {
               connect: {
                 id: userInvite.id,
-              },
-            },
-            group: {
-              connect: {
-                id: req.body.group,
               },
             },
           },
@@ -86,5 +98,10 @@ export default async function handle(req, res) {
     .finally(async () => {
       await prisma.$disconnect();
     });
+  notice(
+    userInvite,
+    `You've been invited to ${group.name}`,
+    `/group/${group.id}/${proup.slug}`
+  );
   res.json(group);
 }

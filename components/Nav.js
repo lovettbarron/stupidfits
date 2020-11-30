@@ -91,10 +91,12 @@ const Nav = (props) => {
             </a>
           </Link>
         </div>
-        {/* <Notifications /> */}
-        <a className="main" onClick={toggleTrueFalse}>
-          <img alt="Open menu" src="/img/menu.png" />
-        </a>
+        <div className="mainnav">
+          {session && <Notifications />}
+          <a className="main" onClick={toggleTrueFalse}>
+            <img alt="Open menu" src="/img/menu.png" />
+          </a>
+        </div>
       </div>
       <Drawer
         isOpen={isOpen}
@@ -237,6 +239,12 @@ const Nav = (props) => {
           justify-self: flex-start;
           justify-content: flex-start;
           align-items: center;
+        }
+
+        .mainnav {
+          display: flex;
+          align-items: center;
+          justify-content: flex-end;
         }
 
         .mobile {

@@ -1,34 +1,41 @@
 import React, { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import Router, { useRouter } from "next/router";
-import { useSession, getProviders, getCsrfToken } from "next-auth/client";
+import { useSession } from "next-auth/client";
 import { StatefulPopover } from "baseui/popover";
 import { Input } from "baseui/input";
 
 import { Button, KIND, SIZE as BUTTONSIZE } from "baseui/button";
 import { Block } from "baseui/block";
 import { Check } from "baseui/icon";
-
-import {
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  ModalButton,
-  SIZE,
-  ROLE,
-} from "baseui/modal";
-import { State } from "instagram-private-api/dist/core/state";
+import { Spinner } from "baseui/spinner";
 
 const Notifications = (props) => {
   const router = useRouter();
   const [session, loading] = useSession();
   const [isOpen, setIsOpen] = useState(false);
-
+  const [firstload, setFirstload] = useState(false);
   const [notif, setNotif] = useState([]);
   const [invites, setInvites] = useState([]);
 
-  const setup = async () => {};
+  const acceptInvite = async (id) => {
+    try {
+      const body = { id: id, accept: true };
+      const res = await fetch(`${process.env.HOST}/api/user/invite`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+      const data = await res.json();
+
+      if (data)
+        Router.push({
+          pathname: data.path,
+        });
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const fetchNotification = async () => {
     let res;
@@ -43,19 +50,16 @@ const Notifications = (props) => {
     let feed = [];
     try {
       feed = await res.json();
-      setNotif(feed.notifications);
-      setInvites(feed.invites);
+      setNotif(feed.notification || []);
+      setInvites(feed.invite || []);
+      setFirstload(true);
     } catch (e) {
       console.log("error:", e.message);
     }
   };
 
   useEffect(() => {
-    return () => {};
-  }, [session]);
-
-  useEffect(() => {
-    setup();
+    if (!firstload) fetchNotification();
     return () => {};
   }, [session]);
 
@@ -63,47 +67,64 @@ const Notifications = (props) => {
     <>
       <StatefulPopover
         content={() => {
-          fetchNotification();
           return (
             <Block padding={"20px"}>
+              {invites.length > 0 && (
+                <>
+                  <h4>Invites</h4>
+                  <ul>
+                    {invites.map((c) => {
+                      return (
+                        <li
+                          key={c.id}
+                          className={c.seen && `added`}
+                          onClick={() => {
+                            acceptInvite(c.id);
+                          }}
+                        >
+                          {c.collection
+                            ? `Contribute to ${c.collection.title}`
+                            : `Join group ${c.group.name}`}
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </>
+              )}
               <h4>Notifications</h4>
-
-              <Button
-                kind={KIND.secondary}
-                size={BUTTONSIZE.mini}
-                onClick={() => setIsOpen(true)}
-              >
-                Explain accounts to me?
-              </Button>
-
-              <Modal
-                onClose={() => {
-                  setIsOpen(false);
-                }}
-                closeable
-                autoFocus
-                focusLock
-                isOpen={isOpen}
-                animate
-                unstable_ModalBackdropScroll
-                size={SIZE.default}
-                role={ROLE.dialog}
-              >
-                <ModalHeader>About StupidFits Accounts</ModalHeader>
-                <ModalBody>
-                  <p>
-                    Hi! Having an account all over the internet is kind of
-                    annoying.
-                  </p>
-                </ModalBody>
-              </Modal>
+              {!firstload && (
+                <Spinner
+                  size={36}
+                  overrides={{ Svg: { borderTopColor: "#fff" } }}
+                />
+              )}
+              {firstload && notif.length < 1 && <div>No notifications</div>}
+              <ul>
+                {notif.map((c) => {
+                  return (
+                    <li
+                      key={c.id}
+                      className={c.seen && `added`}
+                      onClick={() => {
+                        router.route(c.cta);
+                      }}
+                    >
+                      {c.content}
+                    </li>
+                  );
+                })}
+              </ul>
             </Block>
           );
         }}
         returnFocus
         autoFocus
       >
-        <Check size={64} />
+        {notif.filter((n) => !n.seen).length > 0 ? (
+          <div className="counter">{notif.filter((n) => !n.seen).length}</div>
+        ) : (
+          <Check size={64} />
+        )}
       </StatefulPopover>
 
       <style jsx>{`

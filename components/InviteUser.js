@@ -23,20 +23,22 @@ const InviteUser = (props) => {
   const router = useRouter();
   const [session, loading] = useSession();
   const [users, setUsers] = useState([]);
+  const [members, setMembers] = useState(props.group.member);
+  const [invites, setInvites] = useState(props.group.Invite || []);
   const [search, setSearch] = useState("");
   const [isOpen, setIsOpen] = useState(false);
 
   const addMember = async (id) => {
-    console.log("Adding fit", id, props.id);
     try {
-      const body = { user: id, group: props.id };
+      const body = { user: id, group: props.group.id };
       const res = await fetch(`${process.env.HOST}/api/group/add`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
       });
       const data = await res.json();
-
+      if (data.members) setMembers(data.member);
+      if (data.Invite) setInvites(data.Invite);
       console.log("Invited user!", data);
     } catch (error) {
       console.error(error);
@@ -90,6 +92,11 @@ const InviteUser = (props) => {
               )}
               <ul>
                 {users
+                  .filter(
+                    (u) =>
+                      !members.some((m) => m.id === u.id) &&
+                      props.group.user.id !== u.id
+                  )
                   .filter((u) =>
                     search.length > 0 ? u.username.includes(search) : true
                   )
@@ -100,7 +107,8 @@ const InviteUser = (props) => {
                     //     (f) => f.user.id === props.user.id
                     //   );
                     // } else {
-                    ex = props.group.member.some((g) => g.id === c.id);
+                    ex = members.some((g) => g.id === c.id);
+                    ex = ex ? ex : invites.some((g) => g.user.id === c.id);
                     // }
 
                     return (
