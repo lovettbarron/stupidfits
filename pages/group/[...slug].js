@@ -11,8 +11,9 @@ import { NextSeo } from "next-seo";
 import { Button } from "baseui/button";
 import FitGallery from "../../components/FitGallery";
 import FitMini from "../../components/FitMini";
-import CreateCollection from "../../components/CreateCollection";
 import BattleCard from "../../components/BattleCard";
+import CreateCollection from "../../components/CreateCollection";
+import CreateGroup from "../../components/CreateGroup";
 
 import {
   Modal,
@@ -222,11 +223,11 @@ const Group = ({ group, collections, members, fits }) => {
           size={SIZE.default}
           role={ROLE.dialog}
         >
-          <ModalHeader>Update Collection</ModalHeader>
+          <ModalHeader>Update Group</ModalHeader>
           <ModalBody>
             {editOpen && (
-              <CreateCollection
-                collection={collection}
+              <CreateGroup
+                group={group}
                 handler={(data) => {
                   setIsLoading(true);
                   setIsOpen(false);

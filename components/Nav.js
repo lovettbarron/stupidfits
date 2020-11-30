@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import { Drawer, SIZE, ANCHOR } from "baseui/drawer";
 import { Button } from "baseui/button";
 import { useSession, signin, signout } from "next-auth/client";
+import LoginBox from "../components/Login";
 
 const Nav = (props) => {
   const router = useRouter();
@@ -41,11 +42,7 @@ const Nav = (props) => {
           <Link href="/">
             <h1>Stupid Fits</h1>
           </Link>
-          {(!session && (
-            <a className="topauth" onClick={signin}>
-              <img alt="Login or Create Account" src={`/img/login.png`} />
-            </a>
-          )) || (
+          {(!session && <LoginBox />) || (
             <Link href="/feed">
               <a>
                 <Button>Add Fit</Button>

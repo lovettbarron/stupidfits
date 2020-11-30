@@ -12,6 +12,7 @@ import { extractHostname } from "../components/Clicker";
 import { Button } from "baseui/button";
 import { Tabs, Tab, FILL } from "baseui/tabs-motion";
 import InfiniteScroll from "react-infinite-scroll-component";
+import Login from "../components/Login";
 
 const Main = (props) => {
   const [session, loading] = useSession();
@@ -61,9 +62,7 @@ const Main = (props) => {
                   Stupidfits is an outfit diary made for you
                 </h2>
                 <div className="col">
-                  <a className="auth" onClick={signin}>
-                    <img alt="Login or Create Account" src={`/img/login.png`} />
-                  </a>
+                  <Login big={true} />
                 </div>
                 <div className="col">
                   <ol>
