@@ -44,7 +44,7 @@ const InviteUser = (props) => {
   const fetchUsers = async () => {
     let res;
 
-    res = await fetch(`${process.env.HOST}/api/group/user/all`, {
+    res = await fetch(`${process.env.HOST}/api/user/all`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -81,13 +81,13 @@ const InviteUser = (props) => {
               <ul>
                 {users.map((c) => {
                   let ex = false;
-                  if (c.oneperuser) {
-                    ex = !!group.member.find(
-                      (f) => f.user.id === props.user.id
-                    );
-                  } else {
-                    ex = !!c.fits.find((f) => f.id === props.id);
-                  }
+                  // if (c.oneperuser) {
+                  //   ex = !!group.member.find(
+                  //     (f) => f.user.id === props.user.id
+                  //   );
+                  // } else {
+                  ex = props.group.member.some((g) => g.id === c.id);
+                  // }
 
                   return (
                     <li
@@ -97,7 +97,7 @@ const InviteUser = (props) => {
                         if (!ex) addFit(c.id);
                       }}
                     >
-                      {c.title}
+                      {c.username}
                     </li>
                   );
                 })}
