@@ -152,7 +152,7 @@ const Group = ({ group, collections, members, fits }) => {
             {(session.user.id === group.user.id || group.public) && (
               <>
                 <Button onClick={() => setIsOpen(true)}>Modal Open</Button>{" "}
-                <InviteUser group={group} />
+                <InviteUser group={group} />{" "}
               </>
             )}
             {group.user.id === session.user.id && (

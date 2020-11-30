@@ -7,6 +7,7 @@ import CreateCollection from "./CreateCollection";
 import { Button, KIND, SIZE as BUTTONSIZE } from "baseui/button";
 import { Block } from "baseui/block";
 import { Spinner } from "baseui/spinner";
+import { Input, SIZE as INSIZE } from "baseui/input";
 
 import {
   Modal,
@@ -22,6 +23,7 @@ const InviteUser = (props) => {
   const router = useRouter();
   const [session, loading] = useSession();
   const [users, setUsers] = useState([]);
+  const [search, setSearch] = useState("");
   const [isOpen, setIsOpen] = useState(false);
 
   const addFit = async (id) => {
@@ -72,35 +74,47 @@ const InviteUser = (props) => {
           return (
             <Block padding={"20px"}>
               <h4>Invite</h4>
-              {users.length === 0 && (
+              {(users.length === 0 && (
                 <Spinner
                   size={36}
                   overrides={{ Svg: { borderTopColor: "#fff" } }}
                 />
+              )) || (
+                <Input
+                  value={search}
+                  size={INSIZE.mini}
+                  onChange={(e) => setSearch(e.target.value)}
+                  placeholder="Search for User"
+                  clearOnEscape
+                />
               )}
               <ul>
-                {users.map((c) => {
-                  let ex = false;
-                  // if (c.oneperuser) {
-                  //   ex = !!group.member.find(
-                  //     (f) => f.user.id === props.user.id
-                  //   );
-                  // } else {
-                  ex = props.group.member.some((g) => g.id === c.id);
-                  // }
+                {users
+                  .filter((u) =>
+                    search.length > 0 ? u.username.includes(search) : true
+                  )
+                  .map((c) => {
+                    let ex = false;
+                    // if (c.oneperuser) {
+                    //   ex = !!group.member.find(
+                    //     (f) => f.user.id === props.user.id
+                    //   );
+                    // } else {
+                    ex = props.group.member.some((g) => g.id === c.id);
+                    // }
 
-                  return (
-                    <li
-                      key={c.id}
-                      className={ex && `added`}
-                      onClick={() => {
-                        if (!ex) addFit(c.id);
-                      }}
-                    >
-                      {c.username}
-                    </li>
-                  );
-                })}
+                    return (
+                      <li
+                        key={c.id}
+                        className={ex && `added`}
+                        onClick={() => {
+                          if (!ex) addFit(c.id);
+                        }}
+                      >
+                        {c.username}
+                      </li>
+                    );
+                  })}
               </ul>
 
               <br />
