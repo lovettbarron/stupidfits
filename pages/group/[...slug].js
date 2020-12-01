@@ -16,6 +16,7 @@ import CollectionBox from "../../components/CollectionBox";
 import CreateCollection from "../../components/CreateCollection";
 import CreateGroup from "../../components/CreateGroup";
 import InviteUser from "../../components/InviteUser";
+import UserBox from "../../components/UserBox";
 
 import {
   Modal,
@@ -140,6 +141,14 @@ const Group = ({ group, collections, invites, members, fits }) => {
                     return b.media[0].timestamp - a.media[0].timestamp;
                   })
                   .map((fit) => <FitMini key={fit.id} {...fit} fit={fit.id} />)}
+            </div>
+          </Tab>
+          <Tab title="Members">
+            <div className="flex">
+              {members &&
+                [group.user, ...members].map((m) => (
+                  <UserBox key={m.id} {...m} />
+                ))}
             </div>
           </Tab>
           <Tab title="Collections">
