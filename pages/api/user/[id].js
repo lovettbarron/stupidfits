@@ -61,11 +61,6 @@ async function handleGET(req, res) {
                 },
               },
               tags: true,
-              Comment: {
-                include: {
-                  user: true,
-                },
-              },
             },
           },
         },

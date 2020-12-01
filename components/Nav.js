@@ -345,6 +345,11 @@ const Nav = (props) => {
           animation-iteration-count: infinite;
         }
         @media screen and (max-width: 800px) {
+          .navgation {
+            max-width: 95vw;
+            padding: 0;
+            margin: 0.5rem 0;
+          }
           h1:hover {
             animation: none;
           }
