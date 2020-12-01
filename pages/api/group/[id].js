@@ -53,6 +53,8 @@ async function handleGET(req, res) {
       },
       collection: {
         include: {
+          user: true,
+          tags: true,
           fits: {
             include: {
               media: {
