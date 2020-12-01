@@ -37,7 +37,14 @@ export default async function handle(req, res) {
         fits: req.body.fit
           ? {
               connect: {
-                id: req.body.fit,
+                id: Number(req.body.fit),
+              },
+            }
+          : undefined,
+        group: req.body.group
+          ? {
+              connect: {
+                id: Number(req.body.group),
               },
             }
           : undefined,

@@ -185,6 +185,13 @@ const Collection = ({ collection }) => {
       </Head>
       <Layout>
         <h1>{collection.title}</h1>
+        {collection.group && (
+          <Link href={`/group/${group.id}/${group.slug}`}>
+            <a>
+              <h4>By {group.name}</h4>
+            </a>
+          </Link>
+        )}
         {collection.description && (
           <p className="center">{collection.description}</p>
         )}

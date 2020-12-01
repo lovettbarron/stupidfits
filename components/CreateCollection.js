@@ -13,7 +13,7 @@ import { FileUploader } from "baseui/file-uploader";
 import { useUpload } from "use-cloudinary";
 import { useSession } from "next-auth/client";
 
-const CreateCollection = ({ collection, fit }) => {
+const CreateCollection = ({ collection, group, fit }) => {
   const [session, loading] = useSession();
 
   const [pub, setPub] = useState((collection && collection.public) || false);
@@ -57,6 +57,7 @@ const CreateCollection = ({ collection, fit }) => {
       const body = {
         title,
         slug,
+        group: group.id,
         description,
         published,
         public: pub,

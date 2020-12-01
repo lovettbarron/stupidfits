@@ -54,6 +54,11 @@ const Nav = (props) => {
           )}
           {(session && (
             <>
+              <Link href="/">
+                <a className="bold" data-active={isActive("/")}>
+                  Feed
+                </a>
+              </Link>
               <Link href={`/u/${session.user.username}`}>
                 <a
                   className="bold"
@@ -62,9 +67,9 @@ const Nav = (props) => {
                   Profile
                 </a>
               </Link>
-              <Link href="/">
-                <a className="bold" data-active={isActive("/")}>
-                  Feed
+              <Link href="/group">
+                <a className="bold" data-active={isActive("/group")}>
+                  Groups
                 </a>
               </Link>
             </>
@@ -114,6 +119,11 @@ const Nav = (props) => {
                 <Button>Add Fit</Button>
               </a>
             </Link>
+            <Link href="/">
+              <a className="bold" data-active={isActive("/")}>
+                Feed
+              </a>
+            </Link>
             <Link href={`/u/${session.user.username}`}>
               <a
                 className="bold"
@@ -122,11 +132,15 @@ const Nav = (props) => {
                 Profile
               </a>
             </Link>
-            <Link href="/">
-              <a className="bold" data-active={isActive("/")}>
-                Feed
+            <Link href="/group">
+              <a className="bold" data-active={isActive("/group")}>
+                Groups
               </a>
             </Link>
+            <Link href="/me">
+              <a data-active={isActive("/me")}>Setting</a>
+            </Link>
+            <hr />
 
             <Link href="/review">
               <a data-active={isActive("/review")}>Reviews</a>
@@ -145,9 +159,7 @@ const Nav = (props) => {
             <Link href="/global">
               <a data-active={isActive("/global")}>Global Feed</a>
             </Link>
-            <Link href="/me">
-              <a data-active={isActive("/me")}>Setting</a>
-            </Link>
+
             <hr />
 
             <a onClick={signout}>Sign out</a>

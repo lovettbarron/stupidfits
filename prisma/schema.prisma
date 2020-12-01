@@ -85,8 +85,8 @@ model User {
   Battle       Battle[]
   BattleVote   BattleVote[]
   BattleJudge  Battle[]       @relation(name: "battleJudges")
+  Invite       Invite[]
   @@map(name: "users")
-  Invite Invite[]
 }
 
 model VerificationRequest {

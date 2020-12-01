@@ -12,6 +12,7 @@ import { Button } from "baseui/button";
 import FitGallery from "../../components/FitGallery";
 import FitMini from "../../components/FitMini";
 import BattleCard from "../../components/BattleCard";
+import CollectionBox from "../../components/CollectionBox";
 import CreateCollection from "../../components/CreateCollection";
 import CreateGroup from "../../components/CreateGroup";
 import InviteUser from "../../components/InviteUser";
@@ -33,46 +34,6 @@ const Group = ({ group, collections, members, fits }) => {
   const [coll, setColl] = useState(group || null);
   const [isLoading, setIsLoading] = useState(false);
   const [activeKey, setActiveKey] = React.useState("0");
-
-  const addFit = async (id, cb) => {
-    console.log("Adding fit", id);
-    try {
-      const body = { id: group.id, fit: id };
-      const res = await fetch(`${process.env.HOST}/api/group/add`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-      });
-      const data = await res.json();
-      console.log("Added fit!", data);
-      setFits(data.fits);
-      if (group.oneperuser) setIsOpen(false);
-      cb(true);
-    } catch (error) {
-      console.error(error);
-      cb(false);
-    }
-  };
-
-  const deleteFit = async (id, cb) => {
-    console.log("Deleting fit", id);
-    try {
-      const body = { id: group.id, fit: id };
-      const res = await fetch(`${process.env.HOST}/api/group/delete`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-      });
-      const data = await res.json();
-      console.log("Deleting fit!", data);
-      setFits(data.fits);
-      // if (group.oneperuser) setIsOpen(false);
-      cb(true);
-    } catch (error) {
-      console.error(error);
-      cb(false);
-    }
-  };
 
   const seourl =
     // (group.fits.length > 0 &&
@@ -149,9 +110,9 @@ const Group = ({ group, collections, members, fits }) => {
         {group.description && <p className="center">{group.description}</p>}
         {session && (
           <p className="center">
-            {(session.user.id === group.user.id || group.public) && (
+            {(session.user.id === group.user.id || group.inviteonly) && (
               <>
-                <Button onClick={() => setIsOpen(true)}>Modal Open</Button>{" "}
+                <Button onClick={() => setIsOpen(true)}>New Collection</Button>{" "}
                 <InviteUser group={group} />{" "}
               </>
             )}
@@ -181,6 +142,17 @@ const Group = ({ group, collections, members, fits }) => {
                   .map((fit) => <FitMini key={fit.id} {...fit} fit={fit.id} />)}
             </div>
           </Tab>
+          <Tab title="Collections">
+            <div className="flex">
+              {collections &&
+                Array.isArray(collections) &&
+                collections
+                  .sort((a, b) => {
+                    return b.createdAt - a.createdAt;
+                  })
+                  .map((c) => <CollectionBox key={c.id} {...c} />)}
+            </div>
+          </Tab>
         </Tabs>
         <Modal
           onClose={() => {
@@ -195,19 +167,16 @@ const Group = ({ group, collections, members, fits }) => {
           size={SIZE.full}
           role={ROLE.dialog}
         >
-          <ModalHeader>Add Fit</ModalHeader>
+          <ModalHeader>Create Collection</ModalHeader>
           <ModalBody>
+            This collection will be part of {group.name}.
             {isOpen && (
-              <FitGallery
-                handler={addFit}
-                deleteHandler={deleteFit}
-                collection={collection}
-                select={
-                  fits &&
-                  fits
-                    .filter((f) => f.user.id === session.user.id)
-                    .map((f) => f.id)
-                }
+              <CreateCollection
+                group={group}
+                handler={(data) => {
+                  setIsLoading(true);
+                  setIsOpen(false);
+                }}
               />
             )}
           </ModalBody>

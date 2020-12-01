@@ -26,6 +26,7 @@ async function handleGET(req, res) {
     where: { id: Number(id) },
     include: {
       user: true,
+      group: true,
       fits: {
         where: {
           user: {
