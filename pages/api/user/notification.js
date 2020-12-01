@@ -36,6 +36,17 @@ export default async function handle(req, res) {
     });
 
     res.json({ notification: notif, invite: invite });
+  } else if (req.method === "POST") {
+    const ids = req.body.seen.map((s) => Number(s));
+    const notif = await prisma.notification.updateMany({
+      where: {
+        id: ids,
+      },
+      data: {
+        seen: true,
+      },
+    });
+    res.json(notif);
   } else {
     throw new Error(
       `The HTTP ${req.method} method is not supported at this route.`

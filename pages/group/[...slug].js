@@ -284,7 +284,11 @@ export const getServerSideProps = async (context) => {
     return {};
   }
 
-  if ((!session || !session.user) && !data.published && !data.public) {
+  if (
+    (!session && !data.public) ||
+    (!data.public &&
+      ![data.user, ...data.member].some((t) => t.id === session.user.id))
+  ) {
     if (context.res) {
       context.res.writeHead(302, { Location: `/` });
       context.res.end();

@@ -17,6 +17,7 @@ const Notifications = (props) => {
   const [firstload, setFirstload] = useState(false);
   const [notif, setNotif] = useState([]);
   const [invites, setInvites] = useState([]);
+  const [seen, setSeen] = useState([]);
 
   const acceptInvite = async (id) => {
     try {
@@ -35,6 +36,30 @@ const Notifications = (props) => {
     } catch (error) {
       console.error(error);
     }
+  };
+
+  const sawNotifications = async (id) => {
+    if (seen.length > 0)
+      setTimeout(async () => {
+        try {
+          const body = { seen: seen };
+          console.log(body);
+          const res = await fetch(`${process.env.HOST}/api/user/notification`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(body),
+          });
+          const data = await res.json();
+
+          if (data) {
+            console.log("notifications seen");
+            setNotif(data.notification || []);
+            setSeen([]);
+          }
+        } catch (error) {
+          console.error(error);
+        }
+      }, 500);
   };
 
   const fetchNotification = async () => {
@@ -68,7 +93,11 @@ const Notifications = (props) => {
       <StatefulPopover
         content={() => {
           return (
-            <Block padding={"20px"} minWidth={"250px"}>
+            <Block
+              padding={"20px"}
+              minWidth={"250px"}
+              onMouseEnter={() => sawNotifications()}
+            >
               {invites.length > 0 && (
                 <>
                   <h4>Invites</h4>
@@ -105,8 +134,18 @@ const Notifications = (props) => {
                     <li
                       key={c.id}
                       className={c.seen && `added`}
+                      onMouseEnter={() =>
+                        setSeen((s) =>
+                          s.includes((t) => t.id === cid)
+                            ? s
+                            : [...s, { id: c.id }]
+                        )
+                      }
                       onClick={() => {
-                        router.route(c.cta);
+                        c.cta &&
+                          Router.push({
+                            pathname: c.cta,
+                          });
                       }}
                     >
                       {c.content}
