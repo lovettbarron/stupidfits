@@ -37,10 +37,12 @@ export default async function handle(req, res) {
 
     res.json({ notification: notif, invite: invite });
   } else if (req.method === "POST") {
-    const ids = req.body.seen.map((s) => Number(s));
+    const ids = req.body.seen.map((t) => Number(t.id));
     const notif = await prisma.notification.updateMany({
       where: {
-        id: ids,
+        id: {
+          in: ids,
+        },
       },
       data: {
         seen: true,

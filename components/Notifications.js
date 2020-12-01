@@ -39,11 +39,12 @@ const Notifications = (props) => {
   };
 
   const sawNotifications = async (id) => {
+    console.log(seen);
     if (seen.length > 0)
       setTimeout(async () => {
         try {
           const body = { seen: seen };
-          console.log(body);
+
           const res = await fetch(`${process.env.HOST}/api/user/notification`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -112,7 +113,7 @@ const Notifications = (props) => {
                           }}
                         >
                           {c.collection
-                            ? `Contribute to ${c.collection.title}`
+                            ? `Add Fits to ${c.collection.title}`
                             : `Join group ${c.group.name}`}
                         </li>
                       );
@@ -134,13 +135,14 @@ const Notifications = (props) => {
                     <li
                       key={c.id}
                       className={c.seen && `added`}
-                      onMouseEnter={() =>
-                        setSeen((s) =>
-                          s.includes((t) => t.id === cid)
-                            ? s
-                            : [...s, { id: c.id }]
-                        )
-                      }
+                      onMouseEnter={() => {
+                        if (!c.seen)
+                          setSeen((s) =>
+                            s.some((t) => t.id === c.id)
+                              ? [...s]
+                              : [...s, { id: c.id }]
+                          );
+                      }}
                       onClick={() => {
                         c.cta &&
                           Router.push({
