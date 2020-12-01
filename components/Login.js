@@ -88,7 +88,17 @@ const LoginBox = (props) => {
                               value={callbackUrl}
                             />
                           )} */}
-                        <Button type="submit" className="button">
+                        <Button
+                          type="submit"
+                          className="button"
+                          overrides={{
+                            BaseButton: {
+                              style: {
+                                width: "100%",
+                              },
+                            },
+                          }}
+                        >
                           Sign in with {provider.name}
                         </Button>
                       </form>
@@ -120,7 +130,16 @@ const LoginBox = (props) => {
                           value={email}
                           placeholder="email@example.com"
                         />
-                        <Button type="submit">
+                        <Button
+                          type="submit"
+                          overrides={{
+                            BaseButton: {
+                              style: {
+                                width: "100%",
+                              },
+                            },
+                          }}
+                        >
                           Sign in with {provider.name}
                         </Button>
                       </form>
@@ -159,7 +178,16 @@ const LoginBox = (props) => {
                             </div>
                           );
                         })}
-                        <Button type="submit">
+                        <Button
+                          type="submit"
+                          overrides={{
+                            BaseButton: {
+                              style: {
+                                width: "100%",
+                              },
+                            },
+                          }}
+                        >
                           Sign in with {provider.name}
                         </Button>
                       </form>

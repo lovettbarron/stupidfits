@@ -25,6 +25,11 @@ async function handleGET(req, res) {
   const group = await prisma.group.findOne({
     where: { id: Number(id) },
     include: {
+      Invite: {
+        include: {
+          user: true,
+        },
+      },
       user: {
         include: {
           fit: {

@@ -68,7 +68,7 @@ const Notifications = (props) => {
       <StatefulPopover
         content={() => {
           return (
-            <Block padding={"20px"}>
+            <Block padding={"20px"} minWidth={"250px"}>
               {invites.length > 0 && (
                 <>
                   <h4>Invites</h4>
@@ -157,11 +157,6 @@ const Notifications = (props) => {
 
         .alert.active {
           background: rgba(200, 100, 100);
-        }
-
-        img {
-          // max-width: 200px;
-          margin: 0 2rem 0 0;
         }
 
         ul {

@@ -7,6 +7,9 @@ import { Button } from "baseui/button";
 import { useSession, signin, signout } from "next-auth/client";
 import LoginBox from "../components/Login";
 import Notifications from "../components/Notifications";
+import ChevronDown from "baseui/icon/chevron-down";
+import { StatefulPopover, PLACEMENT } from "baseui/popover";
+import { StatefulMenu } from "baseui/menu";
 
 const Nav = (props) => {
   const router = useRouter();
@@ -90,11 +93,11 @@ const Nav = (props) => {
               Collections
             </a>
           </Link>
-          <Link href="/brand">
+          {/* <Link href="/brand">
             <a className="bold" data-active={isActive("/brand")}>
               Brands
             </a>
-          </Link>
+          </Link> */}
         </div>
         <div className="mainnav">
           {session && <Notifications />}
@@ -268,7 +271,7 @@ const Nav = (props) => {
         }
 
         .mobile h1 {
-          font-size: 2.6rem;
+          font-size: 2rem;
           margin: 0;
         }
 

@@ -101,7 +101,7 @@ export default async function handle(req, res) {
   notif(
     userInvite,
     `You've been invited to ${group.name}`,
-    `/group/${group.id}/${proup.slug}`
+    `/group/${group.id}/${group.slug}`
   );
   res.json(group);
 }

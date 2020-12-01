@@ -27,7 +27,7 @@ import {
   ROLE,
 } from "baseui/modal";
 
-const Group = ({ group, collections, members, fits }) => {
+const Group = ({ group, collections, invites, members, fits }) => {
   const [session, loading] = useSession();
   const [isOpen, setIsOpen] = useState(false);
   const [editOpen, setEditOpen] = useState(false);
@@ -264,6 +264,7 @@ export const getServerSideProps = async (context) => {
       group: data,
       collections: data.collection,
       members: data.member,
+      invites: data.Invite,
       fits: [data.user, ...data.member]
         .map((m) => m.fit && m.fit.map((f) => f))
         .flat(),

@@ -33,6 +33,11 @@ async function handleGET(req, res) {
             public: true,
           },
         },
+        Invite: {
+          include: {
+            user: true,
+          },
+        },
         include: {
           media: {
             include: {

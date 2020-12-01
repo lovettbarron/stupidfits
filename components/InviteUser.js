@@ -74,7 +74,7 @@ const InviteUser = (props) => {
         content={() => {
           fetchUsers();
           return (
-            <Block padding={"20px"}>
+            <Block padding={"20px"} minWidth={"250px"}>
               <h4>Invite</h4>
               {(users.length === 0 && (
                 <Spinner
@@ -102,11 +102,6 @@ const InviteUser = (props) => {
                   )
                   .map((c) => {
                     let ex = false;
-                    // if (c.oneperuser) {
-                    //   ex = !!group.member.find(
-                    //     (f) => f.user.id === props.user.id
-                    //   );
-                    // } else {
                     ex = members.some((g) => g.id === c.id);
                     ex = ex ? ex : invites.some((g) => g.user.id === c.id);
                     // }
