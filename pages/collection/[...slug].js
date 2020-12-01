@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { getSession, useSession } from "next-auth/client";
 import Head from "next/head";
+import Link from "next/link";
 import Router from "next/router";
 import fetch from "isomorphic-unfetch";
 import { Tabs, Tab, FILL } from "baseui/tabs-motion";
@@ -186,9 +187,9 @@ const Collection = ({ collection }) => {
       <Layout>
         <h1>{collection.title}</h1>
         {collection.group && (
-          <Link href={`/group/${group.id}/${group.slug}`}>
+          <Link href={`/group/${collection.group.id}/${collection.group.slug}`}>
             <a>
-              <h4>By {group.name}</h4>
+              <h3>by {collection.group.name}</h3>
             </a>
           </Link>
         )}
@@ -197,7 +198,12 @@ const Collection = ({ collection }) => {
         )}
         {session && (
           <p className="center">
-            {(session.user.id === collection.user.id || collection.public) && (
+            {(session.user.id === collection.user.id ||
+              collection.public ||
+              (collection.group &&
+                collection.group.member.some(
+                  (g) => g.id === session.user.id
+                ))) && (
               <>
                 <Button onClick={() => setIsOpen(true)}>
                   {fits && fits.some((f) => f.user.id === session.user.id)
