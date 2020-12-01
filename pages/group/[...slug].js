@@ -8,6 +8,7 @@ import Layout from "../../components/Layout";
 import { StatefulTooltip } from "baseui/tooltip";
 import { Block } from "baseui/block";
 import { NextSeo } from "next-seo";
+import InfiniteScroll from "react-infinite-scroll-component";
 import { Button } from "baseui/button";
 import FitGallery from "../../components/FitGallery";
 import FitMini from "../../components/FitMini";
@@ -35,6 +36,15 @@ const Group = ({ group, collections, invites, members, fits }) => {
   const [coll, setColl] = useState(group || null);
   const [isLoading, setIsLoading] = useState(false);
   const [activeKey, setActiveKey] = React.useState("0");
+  const [visible, setVisible] = useState(fits.slice(0, 10));
+
+  const fetch = () => {
+    const nextMax = () => {
+      let t = visible.length + 4;
+      return t > fits.length - 1 ? fits.length : t;
+    };
+    setVisible(fits.slice(0, nextMax()));
+  };
 
   const seourl =
     // (group.fits.length > 0 &&
@@ -135,12 +145,28 @@ const Group = ({ group, collections, invites, members, fits }) => {
         >
           <Tab title="Fits">
             <div className="flex">
-              {fits &&
+              <InfiniteScroll
+                dataLength={visible.length} //This is important field to render the next data
+                next={fetch}
+                style={{
+                  display: "flex",
+                  flexWrap: "wrap",
+                  justifyContent: "center",
+                }}
+                hasMore={fits.length > visible.length}
+                loader={<h4>Loading...</h4>}
+              >
+                {visible.map((fit, i) => (
+                  <FitMini key={i} {...fit} fit={fit.id} />
+                ))}
+              </InfiniteScroll>
+
+              {/* {fits &&
                 fits
-                  .sort((a, b) => {
-                    return b.media[0].timestamp - a.media[0].timestamp;
-                  })
-                  .map((fit) => <FitMini key={fit.id} {...fit} fit={fit.id} />)}
+                .sort((a, b) => {
+                  return b.media[0].timestamp - a.media[0].timestamp;
+                })
+                  .map((fit) => <FitMini key={fit.id} {...fit} fit={fit.id} />)} */}
             </div>
           </Tab>
           <Tab title="Members">
@@ -276,7 +302,10 @@ export const getServerSideProps = async (context) => {
       invites: data.Invite,
       fits: [data.user, ...data.member]
         .map((m) => m.fit && m.fit.map((f) => f))
-        .flat(),
+        .flat()
+        .sort((a, b) => {
+          return b.media[0].timestamp - a.media[0].timestamp;
+        }),
     },
   };
 };
