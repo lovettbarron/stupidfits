@@ -169,7 +169,7 @@ const Group = ({ group, collections, invites, members, fits }) => {
                   .map((fit) => <FitMini key={fit.id} {...fit} fit={fit.id} />)} */}
             </div>
           </Tab>
-          <Tab title="Members">
+          <Tab title={`Members (${members.length + 1})`}>
             <div className="flex">
               {members &&
                 [group.user, ...members].map((m) => (
@@ -177,7 +177,7 @@ const Group = ({ group, collections, invites, members, fits }) => {
                 ))}
             </div>
           </Tab>
-          <Tab title="Collections">
+          <Tab title={`Collections (${collections.length})`}>
             <div className="flex">
               {collections &&
                 Array.isArray(collections) &&
