@@ -110,6 +110,10 @@ const options = {
 
       const user = await prisma.user.findOne({
         where: { email: session.user.email },
+        include: {
+          Group: true,
+          GroupAdmin: true,
+        },
       });
       // console.log("token", token);
       session.user.uid = user.id;
@@ -117,6 +121,7 @@ const options = {
       session.user.instagram = user.instagram;
       session.user.id = user.id;
       session.user.username = user.username;
+      session.user.group = [...user.Group, ...user.GroupAdmin];
       // session.user.id = token.user.id;
       // session.accessToken = token.account.accessToken;
       // console.log("Updated", session);

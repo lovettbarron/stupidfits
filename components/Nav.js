@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 
-import { useRouter } from "next/router";
+import Router, { useRouter } from "next/router";
 import { Drawer, SIZE, ANCHOR } from "baseui/drawer";
-import { Button } from "baseui/button";
+import { Button, KIND } from "baseui/button";
 import { useSession, signin, signout } from "next-auth/client";
 import LoginBox from "../components/Login";
 import Notifications from "../components/Notifications";
@@ -70,11 +70,48 @@ const Nav = (props) => {
                   Profile
                 </a>
               </Link>
-              <Link href="/group">
-                <a className="bold" data-active={isActive("/group")}>
+
+              <StatefulPopover
+                focusLock
+                placement={PLACEMENT.bottomLeft}
+                content={({ close }) => (
+                  <>
+                    <StatefulMenu
+                      items={session.user.group.map((m) => ({
+                        label: m.name,
+                        path: `/group/${m.id}/${m.slug}`,
+                      }))}
+                      onItemSelect={({ item, event }) => {
+                        console.log(item);
+                        Router.push({
+                          pathname: item.path,
+                        });
+                        close();
+                      }}
+                      overrides={{
+                        BaseButton: {
+                          style: {
+                            fontFamily: "Apercu-Mono",
+                          },
+                        },
+                        List: { style: { height: "150px", width: "138px" } },
+                      }}
+                    />
+                    <Link href="/group">
+                      <a className="bold" data-active={isActive("/group")}>
+                        <Button kind={KIND.minimal}>All Groups</Button>
+                      </a>
+                    </Link>
+                  </>
+                )}
+              >
+                <Button
+                  kind={KIND.minimal}
+                  endEnhancer={() => <ChevronDown size={24} />}
+                >
                   Groups
-                </a>
-              </Link>
+                </Button>
+              </StatefulPopover>
             </>
           )) || (
             <Link href="/global">
