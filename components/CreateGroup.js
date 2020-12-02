@@ -36,9 +36,11 @@ const CreateGroup = ({ group, fit }) => {
   const [saveLoading, setSaveLoading] = useState(false);
 
   const [brand, setBrand] = useState(
-    Array.isArray(group.brands)
-      ? group.brands.map((b) => ({ label: b.name, id: b.id }))
-      : [{ label: group.brand.name, id: group.brand.id }] || []
+    (group &&
+      (Array.isArray(group.brands)
+        ? group.brands.map((b) => ({ label: b.name, id: b.id }))
+        : [{ label: group.brand.name, id: group.brand.id }])) ||
+      []
   );
   const [brandList, setBrandList] = useState([]);
 

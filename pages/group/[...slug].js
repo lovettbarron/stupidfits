@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { getSession, useSession } from "next-auth/client";
+
 import Head from "next/head";
 import Router from "next/router";
 import fetch from "isomorphic-unfetch";
@@ -38,12 +39,39 @@ const Group = ({ group, collections, invites, members, fits }) => {
   const [activeKey, setActiveKey] = React.useState("0");
   const [visible, setVisible] = useState(fits.slice(0, 10));
 
-  const fetch = () => {
+  const fetchVis = () => {
     const nextMax = () => {
       let t = visible.length + 4;
       return t > fits.length - 1 ? fits.length : t;
     };
     setVisible(fits.slice(0, nextMax()));
+  };
+
+  const joinGroup = async (e) => {
+    setIsLoading(true);
+    try {
+      const body = {
+        id: group.id,
+      };
+      const res = await fetch(`${process.env.HOST}/api/group/join`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+      try {
+        const data = await res.json();
+        Router.push({
+          pathname: `/group/${data.id}/`,
+        });
+        setIsLoading(false);
+      } catch (e) {
+        setIsLoading(false);
+        console.log("error:", e.message);
+      }
+    } catch (error) {
+      console.error(error);
+      setIsLoading(false);
+    }
   };
 
   const seourl =
@@ -121,6 +149,16 @@ const Group = ({ group, collections, invites, members, fits }) => {
         {group.description && <p className="center">{group.description}</p>}
         {session && (
           <p className="center">
+            {!group.inviteonly &&
+              session.user.id !== group.user.id &&
+              !group.member.some((m) => m.id === session.user.id) && (
+                <>
+                  <Button isLoading={isLoading} onClick={() => joinGroup()}>
+                    Join Group
+                  </Button>{" "}
+                </>
+              )}
+
             {(session.user.id === group.user.id || group.inviteonly) && (
               <>
                 <Button onClick={() => setIsOpen(true)}>New Collection</Button>{" "}
@@ -147,7 +185,7 @@ const Group = ({ group, collections, invites, members, fits }) => {
             <div className="flex">
               <InfiniteScroll
                 dataLength={visible.length} //This is important field to render the next data
-                next={fetch}
+                next={fetchVis}
                 style={{
                   display: "flex",
                   flexWrap: "wrap",
