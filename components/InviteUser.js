@@ -121,13 +121,13 @@ const InviteUser = (props) => {
               </ul>
 
               <br />
-              <Button
+              {/* <Button
                 kind={KIND.secondary}
                 size={BUTTONSIZE.mini}
                 onClick={() => setIsOpen(true)}
               >
                 Invite by Email
-              </Button>
+              </Button> */}
 
               <Modal
                 onClose={() => {
