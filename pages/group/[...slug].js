@@ -159,7 +159,8 @@ const Group = ({ group, collections, invites, members, fits }) => {
                 </>
               )}
 
-            {(session.user.id === group.user.id || group.inviteonly) && (
+            {(session.user.id === group.user.id ||
+              group.member.some((m) => m.id === session.user.id)) && (
               <>
                 <Button onClick={() => setIsOpen(true)}>New Collection</Button>{" "}
                 <InviteUser group={group} />{" "}
