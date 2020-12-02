@@ -24,14 +24,14 @@ const GroupBox = (props) => {
           });
         }}
       >
-        <div className="mediawrap">
+        {/* <div className="mediawrap">
           <div className="overlay">
-            <h3>Checkout the {props.titnamele} Group</h3>
+            <h3>Checkout the {props.name} Group</h3>
           </div>
-        </div>
+        </div> */}
         <h2>{props.name}</h2>
         <h4>Admin: {props.user.username}</h4>
-        {!props.inviteonly && <div className="priv">Invite Only</div>}
+        {props.inviteonly && <div className="priv">Invite Only</div>}
         {!props.public && <div className="priv">Private</div>}
       </div>
 
@@ -44,6 +44,7 @@ const GroupBox = (props) => {
           display: flex;
           flex-wrap: wrap;
           cursor: pointer;
+          min-width: 300px;
         }
         .fitbox:hover .overlay {
           opacity: 0.8;
