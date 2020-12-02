@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import fetch from "isomorphic-unfetch";
 import Link from "next/link";
 import Router from "next/router";
-import { Select, TYPE } from "baseui/select";
+import { Select, TYPE, SIZE } from "baseui/select";
 import { Input } from "baseui/input";
 import { StatefulButtonGroup, MODE } from "baseui/button-group";
 import { Button } from "baseui/button";
@@ -35,6 +35,11 @@ const CreateGroup = ({ group, fit }) => {
   const [errorMessage, setErrorMessage] = useState("");
   const [saveLoading, setSaveLoading] = useState(false);
 
+  const [brand, setBrand] = useState(
+    Array.isArray(group.brands)
+      ? group.brands.map((b) => ({ label: b.name, id: b.id }))
+      : [{ label: group.brand.name, id: group.brand.id }] || []
+  );
   const [brandList, setBrandList] = useState([]);
 
   const { upload, data, isLoading, isError, error } = useUpload({
@@ -48,6 +53,23 @@ const CreateGroup = ({ group, fit }) => {
     props.handler(data);
   };
 
+  const fetchBrand = async () => {
+    // console.log("Fetch Branding");
+    const b = await fetch(`${process.env.HOST}/api/brand`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    let brands;
+    try {
+      brands = await b.json();
+      setBrandList(brands && brands.map((b) => ({ label: b.name, id: b.id })));
+    } catch (e) {
+      console.log("error:", e.message);
+    }
+  };
+
   const submitData = async (e) => {
     e.preventDefault();
     setSaveLoading(true);
@@ -59,6 +81,8 @@ const CreateGroup = ({ group, fit }) => {
         description,
         public: pub,
         inviteonly,
+        tags: [],
+        brands: brand,
       };
       const res = await fetch(
         `${process.env.HOST}/api/group/${group ? group.id : "create"}`,
@@ -83,13 +107,15 @@ const CreateGroup = ({ group, fit }) => {
   };
 
   useEffect(() => {
-    return () => {
-      if (!defslug) {
-        const v = name.split(" ").join("-").toLowerCase();
-        const safe = v.replace(/[^\w\s-_]/gi, "");
-        setSlug(safe);
-      }
-    };
+    if (brandList.length === 0) {
+      fetchBrand();
+    }
+    if (!defslug) {
+      const v = name.split(" ").join("-").toLowerCase();
+      const safe = v.replace(/[^\w\s-_]/gi, "");
+      setSlug(safe);
+    }
+    return () => {};
   }, [session, name, defslug]);
 
   return (
@@ -139,7 +165,23 @@ const CreateGroup = ({ group, fit }) => {
               placeholder="Any instructions for or description of the group?"
             />
           </label>
+          <label>
+            <br />
+            <h4>Filter feed by brand</h4>
 
+            <Select
+              creatable
+              size={SIZE.large}
+              options={brandList}
+              value={brand}
+              isLoading={!brandList}
+              multi
+              type={TYPE.search}
+              placeholder="Brand Filter"
+              onChange={(params) => setBrand(params.value)}
+            />
+          </label>
+          <h4>Acess Controls</h4>
           <Checkbox
             checked={pub}
             checkmarkType={STYLE_TYPE.toggle_round}

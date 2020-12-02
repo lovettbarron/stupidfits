@@ -307,6 +307,13 @@ export const getServerSideProps = async (context) => {
       fits: [data.user, ...data.member]
         .map((m) => m.fit && m.fit.map((f) => f))
         .flat()
+        .filter((f) => {
+          if (data.brands.length < 1) return true;
+          else
+            return f.components.some((c) =>
+              data.brands.some((g) => g.id === c.brand.id)
+            );
+        })
         .sort((a, b) => {
           return b.media[0].timestamp - a.media[0].timestamp;
         }),

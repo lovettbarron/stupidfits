@@ -25,6 +25,8 @@ async function handleGET(req, res) {
   const group = await prisma.group.findOne({
     where: { id: Number(id) },
     include: {
+      brands: true,
+      tags: true,
       Invite: {
         include: {
           user: true,
@@ -119,37 +121,40 @@ async function handleGET(req, res) {
 // POST /api/post/:id
 async function handlePOST(req, res) {
   const session = await getSession({ req });
-  console.log("Update Fit", session.user.email, req.body);
+  console.log("Update Group", session.user.email, req.query.id, req.body);
 
   const user = await prisma.user.findOne({
     where: {
-      email: session.user.email,
+      id: session.user.id,
     },
     include: {
-      Collection: true,
+      GroupAdmin: true,
     },
   });
 
-  if (!user.Collection.find((c) => Number(c.id) === Number(req.query.id))) {
+  if (!user.GroupAdmin.some((c) => Number(c.id) === Number(req.query.id))) {
     console.log("This doesn't belong to you");
     return;
   }
-  const collection = await prisma.collection
+
+  const group = await prisma.group
     .update({
       where: {
         id: Number(req.query.id),
       },
       data: {
-        published: req.body.published,
         public: req.body.public,
-        oneperuser: req.body.oneperuser,
-        title: req.body.title,
+        inviteonly: req.body.inviteonly,
+        name: req.body.name,
         description: req.body.description,
         slug: req.body.slug
           .toLowerCase()
           .split(" ")
           .join("-")
           .replace(/[^\w\s-_]/gi, ""),
+        brands: {
+          set: req.body.brands.map((i) => ({ id: i.id })),
+        },
         tags: {
           set: req.body.tags.map((i) => ({ id: i.id })),
         },
@@ -158,7 +163,7 @@ async function handlePOST(req, res) {
     .finally(async () => {
       await prisma.$disconnect();
     });
-  res.json(collection);
+  res.json(group);
 }
 
 // DELETE /api/post/:id

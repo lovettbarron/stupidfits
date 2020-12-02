@@ -1,0 +1,33 @@
+{
+  "version": "0.3.14-fixed",
+  "steps": [
+    {
+      "tag": "CreateField",
+      "model": "Brand",
+      "field": "Group",
+      "type": "Group",
+      "arity": "List"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Style",
+      "field": "Group",
+      "type": "Group",
+      "arity": "List"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Group",
+      "field": "brands",
+      "type": "Brand",
+      "arity": "List"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Group",
+      "field": "tags",
+      "type": "Style",
+      "arity": "List"
+    }
+  ]
+}
