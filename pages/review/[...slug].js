@@ -64,6 +64,7 @@ const Review = (props) => {
         }}
       />
       <Head>
+        <title>{`${props.review.title} by ${props.review.user.username} on Stupid Fits`}</title>
         <link
           rel="alternate"
           type="application/json+oembed"
