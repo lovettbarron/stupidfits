@@ -198,7 +198,7 @@ const Main = (props) => {
                   </InfiniteScroll>
                 </div>
               </Tab>
-              <Tab title="Recent Reviews">
+              <Tab title="Reviews">
                 <div className="main">
                   {props.feed &&
                     Array.isArray(props.feed) &&
@@ -213,7 +213,7 @@ const Main = (props) => {
                       .map((fit, i) => <ReviewBox key={"r" + i} {...fit} />)}
                 </div>
               </Tab>
-              <Tab title="Active Tournaments">
+              <Tab title="Tournaments">
                 <div className="main">
                   {props.battle &&
                     Array.isArray(props.battle) &&
