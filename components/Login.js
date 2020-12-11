@@ -30,7 +30,7 @@ const LoginBox = (props) => {
 
   const setup = async () => {
     const p = await getProviders();
-    console.log(p);
+    // console.log(p);
     const c = await getCsrfToken();
     setCsrfToken(c);
     setProviders(Object.keys(p).map((key) => p[key]));
