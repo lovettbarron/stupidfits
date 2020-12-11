@@ -57,7 +57,7 @@ const CreateCollection = ({ collection, group, fit }) => {
       const body = {
         title,
         slug,
-        group: group.id,
+        group: (group && group.id) || undefined,
         description,
         published,
         public: pub,
