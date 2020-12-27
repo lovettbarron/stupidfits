@@ -38,11 +38,11 @@ const Canvas = (props) => {
     });
 
     img = fabric.util.loadImage(
-      `https://res.cloudinary.com/stupidsystems/image/upload/b_rgb:151515,${
+      `https://res.cloudinary.com/stupidsystems/image/upload/f_auto,b_rgb:151515,${
         props.p.s
       }${hideface ? `,e_pixelate_faces:15` : ""},h_${props.p.h},w_${
         props.p.w
-      }/${props.image.cloudinary}.png`,
+      }/${props.image.cloudinary}`,
       function (url) {
         var img = new fabric.Image(url);
 
