@@ -13,15 +13,13 @@
     "build": "next build",
     "start": "next start -p $PORT",
     "heroku-postbuild": "npx prisma generate && next build",
-    "prismastage": "npx prisma generate && npx prisma migrate save  -n 'up' --experimental && npx prisma migrate up --experimental",
-    "prismaprod": "npx prisma generate && npx prisma migrate save -n 'up' --experimental && npx prisma migrate up --experimental",
+    "prisma": "npx prisma generate && npx prisma migrate save  -n 'up' --experimental && npx prisma migrate up --experimental",
     "db": "npx prisma studio --experimental"
   },
   "keywords": [],
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@prisma/client": "2.11.0",
     "@sentry/react": "^5.26.0",
     "@sentry/tracing": "^5.26.0",
     "baseui": "^9.102.0",
@@ -64,7 +62,10 @@
     "user-instagram": "^2.1.3"
   },
   "devDependencies": {
-    "@prisma/cli": "2.11.0",
-    "dotenv-webpack": "^2.0.0"
+    "@prisma/cli": "^2.11.0",
+    "@prisma/client": "^2.11.0",
+    "dotenv-webpack": "^2.0.0",
+    "i": "^0.3.6",
+    "npm": "^6.14.10"
   }
 }

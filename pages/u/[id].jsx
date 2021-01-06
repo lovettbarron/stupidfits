@@ -16,9 +16,11 @@ const UserProfile = (props) => {
   const [session, loading] = useSession();
   const [activeKey, setActiveKey] = React.useState("0");
 
-  const getTopFit = props.fits
-    .reverse()
-    .find((f) => f.media[0] && f.media[0].cloudinary.length > 0);
+  const getTopFit =
+    props.fits &&
+    props.fits
+      .reverse()
+      .find((f) => f.media[0] && f.media[0].cloudinary.length > 0);
   // console.log("GetTopFit", getTopFit);
 
   const brandKeywords = props.fits
