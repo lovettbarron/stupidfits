@@ -198,7 +198,7 @@ const Main = (props) => {
                   </InfiniteScroll>
                 </div>
               </Tab>
-              <Tab title="Reviews">
+              {/* <Tab title="Reviews">
                 <div className="main">
                   {props.feed &&
                     Array.isArray(props.feed) &&
@@ -212,8 +212,8 @@ const Main = (props) => {
                       })
                       .map((fit, i) => <ReviewBox key={"r" + i} {...fit} />)}
                 </div>
-              </Tab>
-              <Tab title="Tournaments">
+              </Tab> */}
+              {/* <Tab title="Tournaments">
                 <div className="main">
                   {props.battle &&
                     Array.isArray(props.battle) &&
@@ -230,7 +230,7 @@ const Main = (props) => {
                         />
                       ))}
                 </div>
-              </Tab>
+              </Tab> */}
             </Tabs>
           </main>
           <footer>
@@ -367,33 +367,33 @@ export const getServerSideProps = async (context) => {
     console.log("error:", e.message);
   }
 
-  const rev = await fetch(`${process.env.HOST}/api/review/`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      cookie: context.req.headers.cookie,
-    },
-  });
-  let revfeed = [];
-  try {
-    revfeed = await rev.json();
-  } catch (e) {
-    console.log("error:", e.message);
-  }
+  // const rev = await fetch(`${process.env.HOST}/api/review/`, {
+  //   method: "GET",
+  //   headers: {
+  //     "Content-Type": "application/json",
+  //     cookie: context.req.headers.cookie,
+  //   },
+  // });
+  // let revfeed = [];
+  // try {
+  //   revfeed = await rev.json();
+  // } catch (e) {
+  //   console.log("error:", e.message);
+  // }
 
-  const bat = await fetch(`${process.env.HOST}/api/battle/`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      cookie: context.req.headers.cookie,
-    },
-  });
-  let batfeed = [];
-  try {
-    batfeed = await bat.json();
-  } catch (e) {
-    console.log("error:", e.message);
-  }
+  // const bat = await fetch(`${process.env.HOST}/api/battle/`, {
+  //   method: "GET",
+  //   headers: {
+  //     "Content-Type": "application/json",
+  //     cookie: context.req.headers.cookie,
+  //   },
+  // });
+  // let batfeed = [];
+  // try {
+  //   batfeed = await bat.json();
+  // } catch (e) {
+  //   console.log("error:", e.message);
+  // }
 
   // console.log(revfeed);
 
@@ -405,8 +405,8 @@ export const getServerSideProps = async (context) => {
           // return b.createdAt - a.createdAt;
           return b.media[0].timestamp - a.media[0].timestamp;
         }),
-      review: revfeed,
-      battle: batfeed,
+      // review: revfeed,
+      // battle: batfeed,
       user,
       url: process.env.HOST,
     },
